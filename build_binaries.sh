@@ -66,10 +66,12 @@ for SRC in "$SAMPLES_DIR"/*.c; do
 
     echo -n "Building $OUTNAME ... "
 
-    # Level 9 needs shared object flags
+    # Level 9 is a shared object — needs -shared -fPIC, must NOT use -static
     EXTRA_FLAGS=""
+    BUILD_CFLAGS="$CFLAGS"
     if [[ "$BASENAME" == *"level9"* ]]; then
         EXTRA_FLAGS="-shared -fPIC -ldl"
+        BUILD_CFLAGS="${CFLAGS//-static/}"
     fi
 
     if [ "$USE_DOCKER" = true ]; then
@@ -80,7 +82,7 @@ for SRC in "$SAMPLES_DIR"/*.c; do
             -v "$BINARIES_DIR:/out" \
             -w /src \
             "$DOCKER_IMAGE" \
-            bash -c "gcc $CFLAGS $EXTRA_FLAGS -o '/out/$OUTNAME' '/src/$BASENAME.c' -lm 2>&1" \
+            bash -c "gcc $BUILD_CFLAGS $EXTRA_FLAGS -o '/out/$OUTNAME' '/src/$BASENAME.c' -lm 2>&1" \
         ; then
             echo "OK"
             SUCCESS=$((SUCCESS + 1))
@@ -90,7 +92,7 @@ for SRC in "$SAMPLES_DIR"/*.c; do
         fi
     else
         # Local gcc build (Linux x86-64)
-        if gcc $CFLAGS $EXTRA_FLAGS -o "$BINARIES_DIR/$OUTNAME" "$SRC" -lm 2>&1; then
+        if gcc $BUILD_CFLAGS $EXTRA_FLAGS -o "$BINARIES_DIR/$OUTNAME" "$SRC" -lm 2>&1; then
             echo "OK"
             SUCCESS=$((SUCCESS + 1))
         else
