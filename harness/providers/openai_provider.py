@@ -18,6 +18,10 @@ class OpenAIProvider(AgentProvider):
         self.model = model
         self.base_url = (base_url or DEFAULT_BASE_URL).rstrip("/")
 
+    def _token_param(self) -> str:
+        """Parameter name for max output tokens. Override for API compatibility."""
+        return "max_completion_tokens"
+
     def create_message(
         self,
         system: str,
@@ -35,7 +39,7 @@ class OpenAIProvider(AgentProvider):
             "model": self.model,
             "messages": oai_messages,
             "tools": openai_tools,
-            "max_completion_tokens": max_tokens,
+            self._token_param(): max_tokens,
         }
 
         headers = {
