@@ -2,7 +2,9 @@
 
 A benchmark for evaluating LLM agents on **long-horizon reverse engineering tasks** with deterministic scoring.
 
-AgentRE-Bench gives an LLM agent a compiled binary and a set of static analysis tools (strings, objdump, readelf, etc.), then measures how well it can identify C2 infrastructure, encoding schemes, anti-analysis techniques, and communication protocols — all without human guidance.
+> **Platform:** Linux/Unix (ELF x86-64). Windows PE support planned for a future release.
+
+AgentRE-Bench gives an LLM agent a compiled ELF binary and a set of Linux static analysis tools (strings, objdump, readelf, etc.), then measures how well it can identify C2 infrastructure, encoding schemes, anti-analysis techniques, and communication protocols — all without human guidance.
 
 ## Why This Benchmark?
 
@@ -292,14 +294,14 @@ python scorer.py -G ground_truths/ -A agent_outputs/ -r report.json
 - **Fixed tool set** — agents can't install tools, write scripts, or use Ghidra/IDA. Standardizes evaluation but limits agent creativity.
 - **Single-agent** — no multi-agent collaboration or human-in-the-loop.
 - **Token cost** — a full 13-task run uses ~5-10M tokens on frontier models. Budget accordingly.
-- **x86-64 only** — all binaries target Linux x86-64. No Windows PE, ARM, or MIPS samples yet.
+- **Linux/Unix only** — all binaries are ELF x86-64 targeting Linux/Unix systems. No Windows PE, ARM, or MIPS samples yet.
 
 ## Roadmap
 
 - **Failure taxonomy** — systematic categorization of failure modes across models
 - **Baseline comparisons** — published results for Claude, GPT, Gemini, and open models
 - **Dynamic analysis tools** — strace, ltrace, sandboxed execution
-- **Extended task set** — Windows PE, ARM binaries, packed samples
+- **Windows PE support** — Windows binaries, ARM targets, packed samples
 - **Multi-turn refinement** — tasks requiring iterative hypothesis refinement
 - **Public leaderboard** — model comparison across providers and versions
 

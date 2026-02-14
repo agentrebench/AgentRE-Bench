@@ -501,12 +501,13 @@ footer a:hover { color: var(--accent); }
 <section class="hero">
   <div class="container">
     <img src="logo.svg" alt="AgentRE-Bench logo" class="hero-logo">
-    <div class="hero-label">Reverse Engineering Benchmark</div>
+    <div class="hero-label">Linux/Unix Reverse Engineering Benchmark</div>
     <h1>Agent<span class="accent">RE</span>-Bench</h1>
     <p class="subtitle">Long-horizon reverse engineering tasks for LLM agents, scored deterministically.</p>
     <p class="pitch">
-      Give an LLM agent a compiled binary and a set of static analysis tools.
+      Give an LLM agent a compiled ELF binary and a set of Linux static analysis tools.
       Measure how well it identifies C2 infrastructure, encoding schemes, anti-analysis techniques, and communication protocols &mdash; all without human guidance.
+      Currently targeting Linux/Unix (ELF x86-64). Windows PE support planned.
     </p>
     <div>
       <a href="https://github.com/agentrebench/AgentRE-Bench" class="btn btn-primary">
@@ -531,7 +532,7 @@ footer a:hover { color: var(--accent); }
       <div class="card">
         <div class="card-icon" style="background: var(--accent-dim); color: var(--accent);">&#x2727;</div>
         <h3>Synthetic</h3>
-        <p>All 13 binaries are compiled from purpose-built C sources with known ground truths. No licensing or ethics issues &mdash; anyone can compile identical binaries and verify scores.</p>
+        <p>All 13 ELF x86-64 binaries are compiled from purpose-built C sources targeting Linux/Unix. Known ground truths, no licensing issues &mdash; anyone can compile identical binaries and verify scores.</p>
       </div>
       <div class="card">
         <div class="card-icon" style="background: var(--indigo-dim); color: var(--indigo);">&#x2263;</div>
@@ -814,7 +815,7 @@ cp .env.example .env   # add your API key(s)</code>
         <div class="step-num">2</div>
         <div>
           <h3>Build binaries</h3>
-          <p>Compile the 13 ELF64 challenge binaries. Uses local gcc on Linux, Docker on macOS.</p>
+          <p>Compile the 13 ELF64 Linux/Unix challenge binaries. Uses local gcc on Linux x86-64, Docker on macOS.</p>
           <code>chmod +x build_binaries.sh
 ./build_binaries.sh</code>
         </div>
