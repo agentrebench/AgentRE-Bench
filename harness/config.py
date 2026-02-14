@@ -68,7 +68,9 @@ class BenchmarkConfig:
         self.ground_truths_dir = Path(self.ground_truths_dir).resolve()
 
         if self.results_dir is None:
-            self.results_dir = self.project_root / "results"
+            # Namespace by provider/model to avoid overwriting across runs
+            safe_model = self.model.replace("/", "_").replace(":", "_")
+            self.results_dir = self.project_root / "results" / f"{self.provider}_{safe_model}"
         else:
             self.results_dir = Path(self.results_dir).resolve()
 
