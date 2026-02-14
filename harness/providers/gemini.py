@@ -38,8 +38,13 @@ class GeminiProvider(AgentProvider):
         data = json.dumps(body).encode("utf-8")
         req = urllib.request.Request(url, data=data, headers=headers, method="POST")
 
-        with urllib.request.urlopen(req, timeout=300) as resp:
-            result = json.loads(resp.read().decode("utf-8"))
+        try:
+            with urllib.request.urlopen(req, timeout=300) as resp:
+                result = json.loads(resp.read().decode("utf-8"))
+        except urllib.error.HTTPError as e:
+            error_body = e.read().decode("utf-8", errors="replace")
+            log.error("Gemini API error %s: %s", e.code, error_body)
+            raise
 
         candidate = result["candidates"][0]
         text_parts = []
@@ -48,11 +53,15 @@ class GeminiProvider(AgentProvider):
         for part in candidate.get("content", {}).get("parts", []):
             if "functionCall" in part:
                 fc = part["functionCall"]
+                meta = {}
+                if "thoughtSignature" in part:
+                    meta["thoughtSignature"] = part["thoughtSignature"]
                 tool_calls.append(
                     ToolCall(
                         id=f"gemini_{fc['name']}_{len(tool_calls)}",
                         name=fc["name"],
                         input=fc.get("args", {}),
+                        metadata=meta,
                     )
                 )
             elif "text" in part:
@@ -119,12 +128,16 @@ class GeminiProvider(AgentProvider):
                             if block.get("type") == "text":
                                 parts.append({"text": block.get("text", "")})
                             elif block.get("type") == "tool_use":
-                                parts.append({
+                                fc_part = {
                                     "functionCall": {
                                         "name": block["name"],
                                         "args": block.get("input", {}),
                                     }
-                                })
+                                }
+                                sig = block.get("metadata", {}).get("thoughtSignature")
+                                if sig:
+                                    fc_part["thoughtSignature"] = sig
+                                parts.append(fc_part)
                 gemini_msgs.append({"role": "model", "parts": parts or [{"text": ""}]})
 
         return gemini_msgs

@@ -9,6 +9,7 @@ class ToolCall:
     id: str
     name: str
     input: dict
+    metadata: dict = field(default_factory=dict)
 
 
 @dataclass

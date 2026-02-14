@@ -97,12 +97,15 @@ class AgentLoop:
                     })
 
                 for tc in response.tool_calls:
-                    assistant_content.append({
+                    block = {
                         "type": "tool_use",
                         "id": tc.id,
                         "name": tc.name,
                         "input": tc.input,
-                    })
+                    }
+                    if tc.metadata:
+                        block["metadata"] = tc.metadata
+                    assistant_content.append(block)
 
                 self.messages.append({"role": "assistant", "content": assistant_content})
 
