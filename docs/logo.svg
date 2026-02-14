@@ -82,7 +82,7 @@
     font-size="100" font-weight="800" fill="url(#glow)" filter="url(#soft-glow)">RE</text>
 
   <!-- Small "Agent" label above -->
-  <text x="256" y="215" text-anchor="middle"
+  <text x="256" y="200" text-anchor="middle"
     font-family="'SF Mono', 'Cascadia Code', 'Fira Code', Consolas, monospace"
     font-size="24" font-weight="600" fill="#e0e0e8" letter-spacing="0.15em" opacity="0.7">AGENT</text>
 
