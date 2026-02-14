@@ -704,7 +704,7 @@ footer a:hover { color: var(--accent); }
     <div class="section-tag">Results</div>
     <h2 class="section-title">How frontier models perform</h2>
     <p class="section-desc">
-      All 13 levels, 25 tool-call budget, static analysis only. Gemini and DeepSeek results coming soon.
+      All 13 levels, 25 tool-call budget, static analysis only. Gemini results coming soon.
     </p>
 
     <!-- Leaderboard -->
@@ -713,6 +713,11 @@ footer a:hover { color: var(--accent); }
         <div class="lb-model" style="color: var(--accent);">Claude Opus 4.6</div>
         <div class="lb-bar-track"><div class="lb-bar" style="width: 48.7%; background: var(--accent);"></div></div>
         <div class="lb-score" style="color: var(--accent);">0.487</div>
+      </div>
+      <div class="lb-row">
+        <div class="lb-model" style="color: var(--yellow);">DeepSeek V3.2</div>
+        <div class="lb-bar-track"><div class="lb-bar" style="width: 47.6%; background: var(--yellow);"></div></div>
+        <div class="lb-score" style="color: var(--yellow);">0.476</div>
       </div>
       <div class="lb-row">
         <div class="lb-model" style="color: var(--indigo);">GPT-5.2</div>
@@ -728,6 +733,9 @@ footer a:hover { color: var(--accent); }
         <div class="stat-row"><span class="stat-label">Claude Opus 4.6</span><span class="stat-val" style="color:var(--accent);">0.487</span></div>
         <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;Main (L1&ndash;12)</span><span class="stat-val">0.487</span></div>
         <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;Bonus (L13)</span><span class="stat-val">0.000</span></div>
+        <div class="stat-row"><span class="stat-label">DeepSeek V3.2</span><span class="stat-val" style="color:var(--yellow);">0.476</span></div>
+        <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;Main (L1&ndash;12)</span><span class="stat-val">0.476</span></div>
+        <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;Bonus (L13)</span><span class="stat-val">0.000</span></div>
         <div class="stat-row"><span class="stat-label">GPT-5.2</span><span class="stat-val" style="color:var(--indigo);">0.190</span></div>
         <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;Main (L1&ndash;12)</span><span class="stat-val">0.190</span></div>
         <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;Bonus (L13)</span><span class="stat-val">0.000</span></div>
@@ -737,6 +745,9 @@ footer a:hover { color: var(--accent); }
         <div class="stat-row"><span class="stat-label">Claude &mdash; wall time</span><span class="stat-val">958.6s</span></div>
         <div class="stat-row"><span class="stat-label">Claude &mdash; tokens</span><span class="stat-val">8.59M</span></div>
         <div class="stat-row"><span class="stat-label">Claude &mdash; avg calls/task</span><span class="stat-val">12.3</span></div>
+        <div class="stat-row"><span class="stat-label">DeepSeek &mdash; wall time</span><span class="stat-val">1607.6s</span></div>
+        <div class="stat-row"><span class="stat-label">DeepSeek &mdash; tokens</span><span class="stat-val">9.92M</span></div>
+        <div class="stat-row"><span class="stat-label">DeepSeek &mdash; avg calls/task</span><span class="stat-val">12.9</span></div>
         <div class="stat-row"><span class="stat-label">GPT-5.2 &mdash; wall time</span><span class="stat-val">151.2s</span></div>
         <div class="stat-row"><span class="stat-label">GPT-5.2 &mdash; tokens</span><span class="stat-val">2.23M</span></div>
         <div class="stat-row"><span class="stat-label">GPT-5.2 &mdash; avg calls/task</span><span class="stat-val">10.0</span></div>
@@ -749,14 +760,17 @@ footer a:hover { color: var(--accent); }
         <h3>Task Completion Rate</h3>
         <div class="stat-row"><span class="stat-label">Claude Opus 4.6</span><span class="stat-val" style="color:var(--accent);">84.6%</span></div>
         <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;(11/13 &mdash; hit 200K context on L4, L13)</span><span class="stat-val"></span></div>
+        <div class="stat-row"><span class="stat-label">DeepSeek V3.2</span><span class="stat-val" style="color:var(--yellow);">61.5%</span></div>
+        <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;(8/13 &mdash; failed to submit on 5 tasks)</span><span class="stat-val"></span></div>
         <div class="stat-row"><span class="stat-label">GPT-5.2</span><span class="stat-val" style="color:var(--indigo);">100%</span></div>
         <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;(13/13 &mdash; all tasks answered)</span><span class="stat-val"></span></div>
       </div>
       <div class="results-card">
         <h3>Avg Hallucinated Techniques / Task</h3>
+        <div class="stat-row"><span class="stat-label">DeepSeek V3.2</span><span class="stat-val" style="color:var(--green);">1.77</span></div>
         <div class="stat-row"><span class="stat-label">Claude Opus 4.6</span><span class="stat-val">3.31</span></div>
         <div class="stat-row"><span class="stat-label">GPT-5.2</span><span class="stat-val" style="color:var(--red);">6.23</span></div>
-        <div class="stat-row" style="border-bottom:none; padding-top:12px;"><span class="stat-label" style="font-size:0.78rem; color:var(--text-dim);">GPT hallucinates ~2x more techniques per task, resulting in heavy score penalties despite answering every task.</span></div>
+        <div class="stat-row" style="border-bottom:none; padding-top:12px;"><span class="stat-label" style="font-size:0.78rem; color:var(--text-dim);">DeepSeek hallucinates the least. GPT hallucinates ~3.5x more per task, resulting in heavy score penalties despite answering every task.</span></div>
       </div>
     </div>
 
@@ -769,23 +783,24 @@ footer a:hover { color: var(--accent); }
             <th>Level</th>
             <th>Task</th>
             <th>Claude</th>
+            <th>DeepSeek</th>
             <th>GPT-5.2</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td>1</td><td>TCP Reverse Shell</td><td class="h-max">0.88</td><td class="h-hi">0.55</td></tr>
-          <tr><td>2</td><td>XOR Encoded</td><td class="h-max">0.75</td><td class="h-0">0.00</td></tr>
-          <tr><td>3</td><td>Anti-Debug</td><td class="h-hi">0.55</td><td class="h-med">0.29</td></tr>
-          <tr><td>4</td><td>Polymorphic</td><td class="h-med">0.40</td><td class="h-0">0.00</td></tr>
-          <tr><td>5</td><td>Multistage</td><td class="h-hi">0.63</td><td class="h-med">0.38</td></tr>
-          <tr><td>6</td><td>ICMP Covert</td><td class="h-med">0.48</td><td class="h-0">0.00</td></tr>
-          <tr><td>7</td><td>DNS Tunnel</td><td class="h-low">0.07</td><td class="h-0">0.00</td></tr>
-          <tr><td>8</td><td>Process Hollow</td><td class="h-med">0.30</td><td class="h-low">0.05</td></tr>
-          <tr><td>9</td><td>SO Injection</td><td class="h-med">0.35</td><td class="h-low">0.12</td></tr>
-          <tr><td>10</td><td>AES Encrypted</td><td class="h-0">0.00</td><td class="h-0">0.00</td></tr>
-          <tr><td>11</td><td>Fork Bomb</td><td class="h-max">0.75</td><td class="h-med">0.38</td></tr>
-          <tr><td>12</td><td>JIT Shellcode</td><td class="h-hi">0.70</td><td class="h-hi">0.51</td></tr>
-          <tr><td>13</td><td>Metamorphic <span class="diff-badge diff-bonus" style="font-size:0.65rem;padding:1px 6px;">Bonus</span></td><td class="h-0">0.00</td><td class="h-0">0.00</td></tr>
+          <tr><td>1</td><td>TCP Reverse Shell</td><td class="h-max">0.88</td><td class="h-max">0.80</td><td class="h-hi">0.55</td></tr>
+          <tr><td>2</td><td>XOR Encoded</td><td class="h-max">0.75</td><td class="h-hi">0.59</td><td class="h-0">0.00</td></tr>
+          <tr><td>3</td><td>Anti-Debug</td><td class="h-hi">0.55</td><td class="h-med">0.48</td><td class="h-med">0.29</td></tr>
+          <tr><td>4</td><td>Polymorphic</td><td class="h-med">0.40</td><td class="h-med">0.40</td><td class="h-0">0.00</td></tr>
+          <tr><td>5</td><td>Multistage</td><td class="h-hi">0.63</td><td class="h-max">0.75</td><td class="h-med">0.38</td></tr>
+          <tr><td>6</td><td>ICMP Covert</td><td class="h-med">0.48</td><td class="h-hi">0.54</td><td class="h-0">0.00</td></tr>
+          <tr><td>7</td><td>DNS Tunnel</td><td class="h-low">0.07</td><td class="h-0">0.00</td><td class="h-0">0.00</td></tr>
+          <tr><td>8</td><td>Process Hollow</td><td class="h-med">0.30</td><td class="h-0">0.00</td><td class="h-low">0.05</td></tr>
+          <tr><td>9</td><td>SO Injection</td><td class="h-med">0.35</td><td class="h-med">0.38</td><td class="h-low">0.12</td></tr>
+          <tr><td>10</td><td>AES Encrypted</td><td class="h-0">0.00</td><td class="h-med">0.40</td><td class="h-0">0.00</td></tr>
+          <tr><td>11</td><td>Fork Bomb</td><td class="h-max">0.75</td><td class="h-hi">0.62</td><td class="h-med">0.38</td></tr>
+          <tr><td>12</td><td>JIT Shellcode</td><td class="h-hi">0.70</td><td class="h-max">0.76</td><td class="h-hi">0.51</td></tr>
+          <tr><td>13</td><td>Metamorphic <span class="diff-badge diff-bonus" style="font-size:0.65rem;padding:1px 6px;">Bonus</span></td><td class="h-0">0.00</td><td class="h-0">0.00</td><td class="h-0">0.00</td></tr>
         </tbody>
       </table>
     </div>
