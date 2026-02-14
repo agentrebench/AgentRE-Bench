@@ -32,7 +32,7 @@ class OpenAIProvider(AgentProvider):
             oai_messages.extend(self._convert_message(msg))
 
         # GPT-5+ models require max_output_tokens instead of max_tokens
-        if self.model.startswith(("gpt-5", "o3", "o4")):
+        if self.model.startswith(("gpt-5", "o1", "o3", "o4")):
             token_param = {"max_output_tokens": max_tokens}
         else:
             token_param = {"max_tokens": max_tokens}
