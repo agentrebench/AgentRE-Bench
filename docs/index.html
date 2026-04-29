@@ -884,6 +884,83 @@ footer a:hover { color: var(--accent); }
   </div>
 </section>
 
+<!-- ── Where Models Break ── -->
+<section id="findings">
+  <div class="container">
+    <div class="section-tag">Findings</div>
+    <h2 class="section-title">Where models break</h2>
+    <p class="section-desc">
+      Across 7 frontier models and 13 RE tasks, the failures cluster into recognizable patterns. None of these are about model size or thinking budget. They're about specific cognitive moves that current LLMs cannot reliably execute on a binary, even when every byte of evidence is statically visible.
+    </p>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon" style="background: rgba(239, 68, 68, 0.12); color: var(--red);">&#x26A0;</div>
+        <h3>Nested misdirection &mdash; "the binary lies"</h3>
+        <p><strong>L10 AES Encrypted Shell &mdash; max 0.15 valid score across all models.</strong> The binary's strings advertise AES and the symbol table mentions key schedules, but the actual implementation is 16-byte XOR. Every model identifies the surface narrative ("this uses AES") and stops. Nobody disproves the lie by tracing the actual control flow to the encryption routine. Models trust the labels.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-icon" style="background: rgba(99, 102, 241, 0.12); color: var(--indigo);">&#x2261;</div>
+        <h3>Symbolic execution at scale</h3>
+        <p><strong>L13 Metamorphic Dropper &mdash; thinking models hit 1.0 on every metadata field, 0.0 on every execution field.</strong> V4 Pro and Opus 4.7 both perfectly identify "this is RC4 with key X stored at offset Y" but cannot mentally run RC4 across the 4 KB ciphertext to produce the decoded C2 URL or plaintext string table. The recognition layer is solved; the in-head computation layer is the wall.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-icon" style="background: rgba(245, 158, 11, 0.12); color: var(--orange);">&#x21BB;</div>
+        <h3>Polymorphism &amp; runtime-generated code</h3>
+        <p><strong>L4 Polymorphic Shell &mdash; max valid 0.05.</strong> The binary contains a NOP-sled generator that randomizes shellcode at runtime. The C2 IP/port live in a static template that <em>doesn't</em> mutate. Every model reads "polymorphic generator" and concludes the answer is unknowable, instead of recognizing that randomization decorates noise while signal stays static. Models conflate "generates random output" with "answer is random."</p>
+      </div>
+
+      <div class="card">
+        <div class="card-icon" style="background: rgba(0, 212, 170, 0.12); color: var(--accent);">&#x21C6;</div>
+        <h3>Stateful protocol reverse-engineering</h3>
+        <p><strong>L7 DNS Tunnel &mdash; 5 of 6 models score below 0.10; only Gemini Flash Lite breaks through at 0.54.</strong> The C2 protocol uses TXT-record commands across multiple beacon/response pairs, with hex-encoded subdomain exfiltration. Reconstructing framing from static disassembly requires sustained reasoning across many control-flow paths. Most models get lost; the ones that succeed are fast and focused, not deep thinkers.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-icon" style="background: rgba(34, 197, 94, 0.12); color: var(--green);">&#x270E;</div>
+        <h3>Over-claiming techniques (calibration failure)</h3>
+        <p><strong>The hallucination ranking and the score ranking are nearly identical.</strong> GPT-5.5 invents 6.31 fabricated techniques per task and pays a ~4.1 point penalty. Opus 4.7 with thinking surfaces broader candidate lists, hits 5.62 hallucinations, pays ~3.6 points. Gemini Flash Lite (1.92) and Kimi (2.08) lead the bench because they don't claim techniques they can't defend. Calibration eats reasoning depth on this bench.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-icon" style="background: rgba(6, 182, 212, 0.12); color: var(--cyan);">&#x21BB;</div>
+        <h3>Reasoning runaway on hard tasks</h3>
+        <p><strong>GPT-5.5 on L13: 22 minutes, 72,493 reasoning tokens, never submitted an answer.</strong> The reasoning trace appears to attempt symbolic decryption, gets lost, and never converges to a final tool call. Kimi's L4/L8/L10/L13 also fail this way (HTTP 400s on payload reconstruction mid-thinking). Long thinking budgets without grounding in tool output produce expensive zeros.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-icon" style="background: rgba(234, 179, 8, 0.12); color: var(--yellow);">&#x29C9;</div>
+        <h3>Multi-step inference under noise</h3>
+        <p><strong>L8 Process Hollowing, L9 SO Injection &mdash; consistent mid-pack scores (0.30&ndash;0.54), no model dominates.</strong> Both tasks require tracking many evidential threads (PTRACE_POKETEXT call, RIP modification, dlsym hijacking, RTLD_NEXT lookup) and synthesizing them into a coherent attack chain. Models recover individual techniques but miss the synthesis; partial credit is the norm.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-icon" style="background: rgba(139, 92, 246, 0.12); color: #a78bfa;">&#x231B;</div>
+        <h3>Cumulative complexity (the bonus tax)</h3>
+        <p><strong>L13 Metamorphic Dropper &mdash; 18 ground-truth techniques, max bench score 0.27.</strong> RC4-encrypted strings + control-flow flattening + triple anti-debug + self-modifying code + process hiding via /proc/self/mem. Even thinking models get only 25-30% of the technique set on Jaccard. Failure compounds: every missed technique reduces overlap, every fabricated technique reduces score by 0.03. The bench's hardest task isn't unsolvable in principle &mdash; it's unsolvable in practice without a compute aid like a Python sandbox.</p>
+      </div>
+    </div>
+
+    <div style="margin-top: 32px; padding: 24px 28px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px;">
+      <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 12px;">What kinds of malware are still hard?</h3>
+      <p style="font-size: 0.92rem; color: var(--text-dim); line-height: 1.7; margin-bottom: 12px;">
+        Frontier reasoning models in V2 reliably handle <strong style="color: var(--text);">plaintext C2, single-byte XOR, named anti-debug syscalls, fork bombs, and ICMP covert channels</strong> &mdash; anything that maps cleanly to a well-known training-data pattern with literal artifacts in <code>strings</code> or <code>objdump</code>.
+      </p>
+      <p style="font-size: 0.92rem; color: var(--text-dim); line-height: 1.7; margin-bottom: 0;">
+        They <strong style="color: var(--text);">struggle reliably</strong> when the malware:
+        (1) lies about what it's doing (claimed AES, actual XOR);
+        (2) requires symbolic execution beyond a few hundred bytes (RC4 on a 4 KB ciphertext);
+        (3) generates code at runtime that defeats static signatures (polymorphic shellcode);
+        (4) uses stateful protocols that span multiple control-flow paths (DNS tunneling);
+        (5) layers many techniques cumulatively (the metamorphic dropper).
+        These five failure modes are the design lever for V3 &mdash; samples that exercise them are where the leaderboard will spread.
+      </p>
+    </div>
+  </div>
+</section>
+
 <!-- ── Getting Started ── -->
 <section id="getting-started">
   <div class="container">
