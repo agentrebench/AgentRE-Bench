@@ -1,0 +1,27 @@
+{
+  "file_type": "ELF64",
+  "encoded_strings": false,
+  "decoded_c2": "cmd.attacker.com",
+  "c2_protocol": "DNS",
+  "techniques": [
+    "dns_tunneling",
+    "gethostbyname_resolve",
+    "hex_encoding",
+    "popen_command_execution",
+    "beacon_loop",
+    "dns_exfiltration"
+  ],
+  "encryption_details": {
+    "algorithm": "hex_encoding",
+    "key": "none",
+    "key_storage": "none"
+  },
+  "decoded_strings": {
+    "0x4a2010": "%02x",
+    "0x4a2015": "%s.%s.attacker.com",
+    "0x4a2028": "beacon",
+    "0x4a202f": "cmd.attacker.com",
+    "0x4a2040": "r",
+    "0x4a2042": "ls"
+  }
+}

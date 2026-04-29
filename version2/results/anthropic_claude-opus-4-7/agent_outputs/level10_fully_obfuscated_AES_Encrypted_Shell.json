@@ -1,0 +1,34 @@
+{
+  "file_type": "ELF64",
+  "encoded_strings": true,
+  "decoded_c2": "unknown (XOR-decrypted shellcode embedded - dynamic execution required)",
+  "c2_protocol": "TCP",
+  "techniques": [
+    "xor_encoding",
+    "shellcode_injection",
+    "mmap_rwx",
+    "anti_debug_envvar",
+    "static_linking_obfuscation",
+    "fake_aes_misdirection",
+    "syscall_direct"
+  ],
+  "anti_analysis": [
+    "env_var_check_STRACE",
+    "env_var_check_LT_TRACE",
+    "static_linking_to_hide_imports",
+    "hide_imports_decoy_syscall",
+    "name_misdirection_AES_actually_XOR"
+  ],
+  "encryption_details": {
+    "algorithm": "XOR (mislabeled as AES)",
+    "key": "deadbeefcafebabedeadbeefcafebabe",
+    "key_storage": "stored at .data 0x4a3110 (16 bytes)"
+  },
+  "decoded_strings": {
+    "env_var_1_at_0x476010": "STRACE",
+    "env_var_2_at_0x476017": "LT_TRACE",
+    "encrypted_payload_at_0x4a30e0": "8c9f8d9e8a9b899886978594829381 90acbfadbeaabba9b8a6b7a5b4a2b3a1b0 7c6f7d6e7a6b796876677564726371 60",
+    "xor_key_at_0x4a3110": "deadbeefcafebabedeadbeefcafebabe",
+    "decrypted_shellcode_48bytes": "5232337140653326583a3b7b486d3b2e 7212135160451306781a1b5b684d1b0e a2c2c381b095c3d6a8cacb8bb89dcbde"
+  }
+}

@@ -1,0 +1,334 @@
+{
+  "task_id": "level13_MetamorphicDropper",
+  "model": "kimi-k2.6",
+  "provider": "moonshot",
+  "difficulty": 13,
+  "score": {
+    "tier": "bonus",
+    "field_scores": {
+      "decoded_c2": 0.0,
+      "encryption_algorithm": 0.0,
+      "encryption_key": 0.0,
+      "encryption_key_storage": 0.0,
+      "techniques": 0.0,
+      "decoded_strings": 0.0,
+      "anti_analysis": 0.0,
+      "file_type": 0.0,
+      "encoded_strings": 0.0,
+      "c2_protocol": 0.0
+    },
+    "hallucinated_techniques": [],
+    "missing_techniques": [
+      "anti_debug_proc_status",
+      "anti_debug_ptrace",
+      "anti_debug_timing",
+      "control_flow_flattening",
+      "curl_download",
+      "dead_code_paths",
+      "encrypted_string_table",
+      "fork_exec",
+      "indirect_syscall",
+      "infection_marker_check",
+      "key_derivation_xor_mask",
+      "metamorphic_nop_equivalent",
+      "opaque_predicates",
+      "os_fingerprint",
+      "process_hiding",
+      "rc4_encryption",
+      "self_modifying_code",
+      "system_exec"
+    ],
+    "hallucination_penalty": 0.0,
+    "weighted_score": 0.0,
+    "final_score": 0.0,
+    "sample": "level13_MetamorphicDropper"
+  },
+  "agent_result": {
+    "task_id": "level13_MetamorphicDropper",
+    "final_answer": null,
+    "tool_call_count": 21,
+    "tool_calls_by_type": {
+      "file": 1,
+      "strings": 3,
+      "nm": 1,
+      "readelf": 2,
+      "objdump": 7,
+      "hexdump": 3,
+      "xxd": 4
+    },
+    "tool_calls_log": [
+      {
+        "call_number": 1,
+        "tool": "file",
+        "input": {
+          "path": "/workspace/level13_MetamorphicDropper"
+        },
+        "output_preview": "/workspace/level13_MetamorphicDropper: ELF 64-bit LSB executable, x86-64, version 1 (GNU/Linux), statically linked, for GNU/Linux 3.2.0, with debug_info, not stripped\n"
+      },
+      {
+        "call_number": 2,
+        "tool": "strings",
+        "input": {
+          "path": "/workspace/level13_MetamorphicDropper",
+          "min_length": 4
+        },
+        "output_preview": "u=E1\nD$HdH+\nD$8dH+\n[]A\\\nPTE1\nu+UH\nPXS[\nPXS[H\nPXS[\nPXS[\nRPXS[\nuHdH\nD$hdH\nD$pH\nD$ dH\nATUSM\nA\\A]A^A_\n$\tA\t\n[]A\\A]\nAVAUATUSH\n[]A\\A]A^A_\nAWAVAUATUSH\nD\t%(\nP[]A\\A]A^A_\nAVAUATUSH\nGenuun\nnteluf\nineI\nHygo@\nuine\nnGenu^H\nL$hH\n|$`L\nAuth\ncAMD\nenti\nD$hH\nnD$dD\n\\$,u\nL$ H\nD$pH\nD$xL\nH=?@\nT$pH\nD$ H\nD$ L\nL9d$\n[]A\\A]A^A_\nCent\nauls\naurH\nt$dH\nD$dD\nnD$d\nD$pI\n\\$HH\nL$0H\nT$lH\nt$xH\n|$pH\nL$0H\nD$8L\nD$@L\n\\$HL\nT$PL\nt$dL\nL$hH\nT$`f\nnD$d\nD$hD\nD$pI\n\\$@H\nL$0H\nT$lH\nt$xH\n|$pI\nL$0L\nD$8H\n\\$@L\nT$HL\nD$pH\nD$8H\nt$0I\nt$0L\nD$8H\nL$@L\nL$HH\nL$pH\n"
+      },
+      {
+        "call_number": 3,
+        "tool": "nm",
+        "input": {
+          "path": "/workspace/level13_MetamorphicDropper"
+        },
+        "output_preview": "000000000047b180 r CSWTCH.101\n00000000004a91e8 V DW.ref.__gcc_personality_v0\n000000000041f720 W _Exit\n000000000044d960 T _Fork\n00000000004a8fe8 d _GLOBAL_OFFSET_TABLE_\n00000000004a9220 D _IO_2_1_stderr_\n00000000004a95e0 D _IO_2_1_stdin_\n00000000004a9400 D _IO_2_1_stdout_\n000000000040a470 T _IO_adjust_column\n000000000043d090 T _IO_adjust_wcolumn\n000000000040ab40 T _IO_cleanup\n0000000000409fd0 T _IO_default_doallocate\n000000000040a2f0 T _IO_default_finish\n000000000040b300 T _IO_default_imbue\n00000"
+      },
+      {
+        "call_number": 4,
+        "tool": "readelf",
+        "input": {
+          "path": "/workspace/level13_MetamorphicDropper",
+          "flags": "-h"
+        },
+        "output_preview": "ELF Header:\n  Magic:   7f 45 4c 46 02 01 01 03 00 00 00 00 00 00 00 00 \n  Class:                             ELF64\n  Data:                              2's complement, little endian\n  Version:                           1 (current)\n  OS/ABI:                            UNIX - GNU\n  ABI Version:                       0\n  Type:                              EXEC (Executable file)\n  Machine:                           Advanced Micro Devices X86-64\n  Version:                           0x1\n  Entry point "
+      },
+      {
+        "call_number": 5,
+        "tool": "objdump",
+        "input": {
+          "path": "/workspace/level13_MetamorphicDropper",
+          "flags": "-d",
+          "section": ".text"
+        },
+        "output_preview": "\n/workspace/level13_MetamorphicDropper:     file format elf64-x86-64\n\n\nDisassembly of section .text:\n\n0000000000401100 <_IO_new_fclose.cold>:\n  401100:\tf6 43 01 80          \ttestb  $0x80,0x1(%rbx)\n  401104:\t75 21                \tjne    401127 <_IO_new_fclose.cold+0x27>\n  401106:\t48 8b bb 88 00 00 00 \tmov    0x88(%rbx),%rdi\n  40110d:\t80 3d 24 90 0a 00 00 \tcmpb   $0x0,0xa9024(%rip)        # 4aa138 <__libc_single_threaded>\n  401114:\t8b 47 04             \tmov    0x4(%rdi),%eax\n  401117:\t74 16       "
+      },
+      {
+        "call_number": 6,
+        "tool": "objdump",
+        "input": {
+          "path": "/workspace/level13_MetamorphicDropper",
+          "flags": "-d",
+          "section": ".text"
+        },
+        "output_preview": "\n/workspace/level13_MetamorphicDropper:     file format elf64-x86-64\n\n\nDisassembly of section .text:\n\n0000000000401100 <_IO_new_fclose.cold>:\n  401100:\tf6 43 01 80          \ttestb  $0x80,0x1(%rbx)\n  401104:\t75 21                \tjne    401127 <_IO_new_fclose.cold+0x27>\n  401106:\t48 8b bb 88 00 00 00 \tmov    0x88(%rbx),%rdi\n  40110d:\t80 3d 24 90 0a 00 00 \tcmpb   $0x0,0xa9024(%rip)        # 4aa138 <__libc_single_threaded>\n  401114:\t8b 47 04             \tmov    0x4(%rdi),%eax\n  401117:\t74 16       "
+      },
+      {
+        "call_number": 7,
+        "tool": "objdump",
+        "input": {
+          "path": "/workspace/level13_MetamorphicDropper",
+          "flags": "-d"
+        },
+        "output_preview": "\n/workspace/level13_MetamorphicDropper:     file format elf64-x86-64\n\n\nDisassembly of section .init:\n\n0000000000401000 <_init>:\n  401000:\t48 83 ec 08          \tsub    $0x8,%rsp\n  401004:\t48 c7 c0 00 00 00 00 \tmov    $0x0,%rax\n  40100b:\t48 85 c0             \ttest   %rax,%rax\n  40100e:\t74 02                \tje     401012 <_init+0x12>\n  401010:\tff d0                \tcall   *%rax\n  401012:\t48 83 c4 08          \tadd    $0x8,%rsp\n  401016:\tc3                   \tret    \n\nDisassembly of section .plt:\n\n0"
+      },
+      {
+        "call_number": 8,
+        "tool": "hexdump",
+        "input": {
+          "path": "/workspace/level13_MetamorphicDropper",
+          "offset": 4897024,
+          "length": 512
+        },
+        "output_preview": "000eb218\n"
+      },
+      {
+        "call_number": 9,
+        "tool": "readelf",
+        "input": {
+          "path": "/workspace/level13_MetamorphicDropper",
+          "flags": "-S"
+        },
+        "output_preview": "There are 33 section headers, starting at offset 0xea9d8:\n\nSection Headers:\n  [Nr] Name              Type             Address           Offset\n       Size              EntSize          Flags  Link  Info  Align\n  [ 0]                   NULL             0000000000000000  00000000\n       0000000000000000  0000000000000000           0     0     0\n  [ 1] .rela.plt         RELA             0000000000400270  00000270\n       0000000000000210  0000000000000018  AI       0    18     8\n  [ 2] .init        "
+      },
+      {
+        "call_number": 10,
+        "tool": "hexdump",
+        "input": {
+          "path": "/workspace/level13_MetamorphicDropper",
+          "offset": 688352,
+          "length": 512
+        },
+        "output_preview": "000a80e0  c2 cd 95 d6 d1 fa ce 96  dc fa 97 95 97 91 00 00  |................|\n000a80f0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|\n000a8100  92 97 c7 bb e5 f1 8a c4  be b2 69 0b 9d 9d 25 1e  |..........i...%.|\n000a8110  6c 42 8b b9 a0 11 62 f1  8e db a1 fe 21 10 97 82  |lB....b.....!...|\n000a8120  37 6e 72 4f 83 bd 8b db  a2 b6 8a dd be a7 21 4c  |7nrO..........!L|\n000a8130  97 96 30 2c 6f 46 8b fb  af 50 6c c4 06 c6 ce c8  |..0,oF...Pl.....|\n000a8140  f3 5d b5 a1 82 6"
+      },
+      {
+        "call_number": 11,
+        "tool": "objdump",
+        "input": {
+          "path": "/workspace/level13_MetamorphicDropper",
+          "flags": "-d",
+          "section": ".text"
+        },
+        "output_preview": "\n/workspace/level13_MetamorphicDropper:     file format elf64-x86-64\n\n\nDisassembly of section .text:\n\n0000000000401100 <_IO_new_fclose.cold>:\n  401100:\tf6 43 01 80          \ttestb  $0x80,0x1(%rbx)\n  401104:\t75 21                \tjne    401127 <_IO_new_fclose.cold+0x27>\n  401106:\t48 8b bb 88 00 00 00 \tmov    0x88(%rbx),%rdi\n  40110d:\t80 3d 24 90 0a 00 00 \tcmpb   $0x0,0xa9024(%rip)        # 4aa138 <__libc_single_threaded>\n  401114:\t8b 47 04             \tmov    0x4(%rdi),%eax\n  401117:\t74 16       "
+      },
+      {
+        "call_number": 12,
+        "tool": "objdump",
+        "input": {
+          "path": "/workspace/level13_MetamorphicDropper",
+          "flags": "-d",
+          "section": ".text"
+        },
+        "output_preview": "\n/workspace/level13_MetamorphicDropper:     file format elf64-x86-64\n\n\nDisassembly of section .text:\n\n0000000000401100 <_IO_new_fclose.cold>:\n  401100:\tf6 43 01 80          \ttestb  $0x80,0x1(%rbx)\n  401104:\t75 21                \tjne    401127 <_IO_new_fclose.cold+0x27>\n  401106:\t48 8b bb 88 00 00 00 \tmov    0x88(%rbx),%rdi\n  40110d:\t80 3d 24 90 0a 00 00 \tcmpb   $0x0,0xa9024(%rip)        # 4aa138 <__libc_single_threaded>\n  401114:\t8b 47 04             \tmov    0x4(%rdi),%eax\n  401117:\t74 16       "
+      },
+      {
+        "call_number": 13,
+        "tool": "objdump",
+        "input": {
+          "path": "/workspace/level13_MetamorphicDropper",
+          "flags": "-D",
+          "section": ".text"
+        },
+        "output_preview": "\n/workspace/level13_MetamorphicDropper:     file format elf64-x86-64\n\n\nDisassembly of section .text:\n\n0000000000401100 <_IO_new_fclose.cold>:\n  401100:\tf6 43 01 80          \ttestb  $0x80,0x1(%rbx)\n  401104:\t75 21                \tjne    401127 <_IO_new_fclose.cold+0x27>\n  401106:\t48 8b bb 88 00 00 00 \tmov    0x88(%rbx),%rdi\n  40110d:\t80 3d 24 90 0a 00 00 \tcmpb   $0x0,0xa9024(%rip)        # 4aa138 <__libc_single_threaded>\n  401114:\t8b 47 04             \tmov    0x4(%rdi),%eax\n  401117:\t74 16       "
+      },
+      {
+        "call_number": 14,
+        "tool": "xxd",
+        "input": {
+          "path": "/workspace/level13_MetamorphicDropper",
+          "offset": 2102607,
+          "length": 2048
+        },
+        "output_preview": "(no output)"
+      },
+      {
+        "call_number": 15,
+        "tool": "xxd",
+        "input": {
+          "path": "/workspace/level13_MetamorphicDropper",
+          "offset": 8751,
+          "length": 2048
+        },
+        "output_preview": "0000222f: 5548 89e5 4883 ec10 c745 fc3c 7a00 00c7  UH..H....E.<z...\n0000223f: 45f8 0100 0000 e886 e201 0089 45f4 817d  E...........E..}\n0000224f: fcdd dd00 000f 84a4 0200 0081 7dfc dddd  ............}...\n0000225f: 0000 0f87 9e02 0000 817d fccc cc00 000f  .........}......\n0000226f: 8485 0200 0081 7dfc cccc 0000 0f87 8402  ......}.........\n0000227f: 0000 817d fcf6 b500 000f 844b 0200 0081  ...}.......K....\n0000228f: 7dfc f6b5 0000 0f87 6a02 0000 817d fc20  }.......j....}. \n0000229f: a400 000f 8412"
+      },
+      {
+        "call_number": 16,
+        "tool": "hexdump",
+        "input": {
+          "path": "/workspace/level13_MetamorphicDropper",
+          "offset": 688384,
+          "length": 512
+        },
+        "output_preview": "000a8100  92 97 c7 bb e5 f1 8a c4  be b2 69 0b 9d 9d 25 1e  |..........i...%.|\n000a8110  6c 42 8b b9 a0 11 62 f1  8e db a1 fe 21 10 97 82  |lB....b.....!...|\n000a8120  37 6e 72 4f 83 bd 8b db  a2 b6 8a dd be a7 21 4c  |7nrO..........!L|\n000a8130  97 96 30 2c 6f 46 8b fb  af 50 6c c4 06 c6 ce c8  |..0,oF...Pl.....|\n000a8140  f3 5d b5 a1 82 6f f3 91  f1 8a c4 be b2 6b 0d 91  |.]...o.......k..|\n000a8150  9c 28 31 6b 04 9d bd bd  96 c4 a1 f9 2e 48 8a ce  |.(1k.........H..|\n000a8160  7e 35 72 5a c1 b"
+      },
+      {
+        "call_number": 17,
+        "tool": "objdump",
+        "input": {
+          "path": "/workspace/level13_MetamorphicDropper",
+          "flags": "-d",
+          "section": ".text"
+        },
+        "output_preview": "\n/workspace/level13_MetamorphicDropper:     file format elf64-x86-64\n\n\nDisassembly of section .text:\n\n0000000000401100 <_IO_new_fclose.cold>:\n  401100:\tf6 43 01 80          \ttestb  $0x80,0x1(%rbx)\n  401104:\t75 21                \tjne    401127 <_IO_new_fclose.cold+0x27>\n  401106:\t48 8b bb 88 00 00 00 \tmov    0x88(%rbx),%rdi\n  40110d:\t80 3d 24 90 0a 00 00 \tcmpb   $0x0,0xa9024(%rip)        # 4aa138 <__libc_single_threaded>\n  401114:\t8b 47 04             \tmov    0x4(%rdi),%eax\n  401117:\t74 16       "
+      },
+      {
+        "call_number": 18,
+        "tool": "xxd",
+        "input": {
+          "path": "/workspace/level13_MetamorphicDropper",
+          "offset": 7720,
+          "length": 1024
+        },
+        "output_preview": "00001e28: 7dfc 8b45 fc0f afc0 89c2 8b45 fc01 d083  }..E.......E....\n00001e38: c001 83e0 0183 e001 83f0 010f b6c0 5dc3  ..............].\n00001e48: 5548 89e5 4881 eca0 0100 0048 8d85 60fe  UH..H......H..`.\n00001e58: ffff 4889 c7e8 ceed 0100 85c0 7407 b800  ..H.........t...\n00001e68: 0000 00eb 51be 0500 0000 bf00 0000 00e8  ....Q...........\n00001e78: 5ffb ffff 4889 45f8 4883 7df8 0075 07b8  _...H.E.H.}..u..\n00001e88: 0000 0000 eb30 488b 55f8 488d 8560 feff  .....0H.U.H..`..\n00001e98: ff48 89d6 4889"
+      },
+      {
+        "call_number": 19,
+        "tool": "strings",
+        "input": {
+          "path": "/workspace/level13_MetamorphicDropper",
+          "min_length": 8
+        },
+        "output_preview": "A\\A]A^A_\nAVAUATUSH\n[]A\\A]A^A_\nAWAVAUATUSH\nP[]A\\A]A^A_\nAVAUATUSH\n[]A\\A]A^A_\n([]A\\A]A^A_\nAVAUATUSH\n[]A\\A]A^A_\n([]A\\A]A^A_\n([]A\\A]A^A_\nAWAVAUATUSH\nC@H+C8H9\nAWAVAUATUSH\n[]A\\A]A^A_\nAVAUATUSH\n[]A\\A]A^\nAWAVAUATUSH\n[]A\\A]A^A_\nAWAVAUATI\n[]A\\A]A^A_\n[]A\\A]A^A_\n[]A\\A]A^A_\n]A\\A]A^A_\n[]A\\A]A^A_\n[]A\\A]A^A_\n8[]A\\A]A^A_\nG(H9G s0H\n[]A\\A]A^A_\nAVAUATUSH\n[]A\\A]A^\nAVAUATUSH\n[]A\\A]A^\nAWAVAUATU\n[]A\\A]A^A_\nAWAVAUATA\n[]A\\A]A^A_\n[]A\\A]A^A_\n[]A\\A]A^\n[]A\\A]A^\nAWAVAUATU\n[]A\\A]A^A_\n]A\\A]A^A_\n[]A\\A]A^A_\nAVAUATUSH\n[]A\\A]A^A_\nO("
+      },
+      {
+        "call_number": 20,
+        "tool": "xxd",
+        "input": {
+          "path": "/workspace/level13_MetamorphicDropper",
+          "offset": 8751,
+          "length": 4096
+        },
+        "output_preview": "0000222f: 5548 89e5 4883 ec10 c745 fc3c 7a00 00c7  UH..H....E.<z...\n0000223f: 45f8 0100 0000 e886 e201 0089 45f4 817d  E...........E..}\n0000224f: fcdd dd00 000f 84a4 0200 0081 7dfc dddd  ............}...\n0000225f: 0000 0f87 9e02 0000 817d fccc cc00 000f  .........}......\n0000226f: 8485 0200 0081 7dfc cccc 0000 0f87 8402  ......}.........\n0000227f: 0000 817d fcf6 b500 000f 844b 0200 0081  ...}.......K....\n0000228f: 7dfc f6b5 0000 0f87 6a02 0000 817d fc20  }.......j....}. \n0000229f: a400 000f 8412"
+      },
+      {
+        "call_number": 21,
+        "tool": "strings",
+        "input": {
+          "path": "/workspace/level13_MetamorphicDropper",
+          "min_length": 4
+        },
+        "output_preview": "u=E1\nD$HdH+\nD$8dH+\n[]A\\\nPTE1\nu+UH\nPXS[\nPXS[H\nPXS[\nPXS[\nRPXS[\nuHdH\nD$hdH\nD$pH\nD$ dH\nATUSM\nA\\A]A^A_\n$\tA\t\n[]A\\A]\nAVAUATUSH\n[]A\\A]A^A_\nAWAVAUATUSH\nD\t%(\nP[]A\\A]A^A_\nAVAUATUSH\nGenuun\nnteluf\nineI\nHygo@\nuine\nnGenu^H\nL$hH\n|$`L\nAuth\ncAMD\nenti\nD$hH\nnD$dD\n\\$,u\nL$ H\nD$pH\nD$xL\nH=?@\nT$pH\nD$ H\nD$ L\nL9d$\n[]A\\A]A^A_\nCent\nauls\naurH\nt$dH\nD$dD\nnD$d\nD$pI\n\\$HH\nL$0H\nT$lH\nt$xH\n|$pH\nL$0H\nD$8L\nD$@L\n\\$HL\nT$PL\nt$dL\nL$hH\nT$`f\nnD$d\nD$hD\nD$pI\n\\$@H\nL$0H\nT$lH\nt$xH\n|$pI\nL$0L\nD$8H\n\\$@L\nT$HL\nD$pH\nD$8H\nt$0I\nt$0L\nD$8H\nL$@L\nL$HH\nL$pH\n"
+      }
+    ],
+    "redundant_tool_calls": 5,
+    "invalid_tool_calls": 0,
+    "invalid_json_attempts": 0,
+    "input_tokens": 2730736,
+    "output_tokens": 6348,
+    "reasoning_tokens": 0,
+    "total_tokens": 2737084,
+    "wall_time_seconds": 348.31,
+    "llm_seconds": 343.33,
+    "max_steps_hit": false,
+    "has_valid_answer": false
+  },
+  "metrics": {
+    "task_id": "level13_MetamorphicDropper",
+    "score": 0.0,
+    "tier": "bonus",
+    "field_scores": {
+      "decoded_c2": 0.0,
+      "encryption_algorithm": 0.0,
+      "encryption_key": 0.0,
+      "encryption_key_storage": 0.0,
+      "techniques": 0.0,
+      "decoded_strings": 0.0,
+      "anti_analysis": 0.0,
+      "file_type": 0.0,
+      "encoded_strings": 0.0,
+      "c2_protocol": 0.0
+    },
+    "tool_calls_total": 21,
+    "tool_calls_by_type": {
+      "file": 1,
+      "strings": 3,
+      "nm": 1,
+      "readelf": 2,
+      "objdump": 7,
+      "hexdump": 3,
+      "xxd": 4
+    },
+    "redundant_tool_calls": 5,
+    "invalid_tool_calls": 0,
+    "invalid_json_attempts": 0,
+    "steps_to_answer": 21,
+    "max_steps_hit": false,
+    "has_valid_answer": false,
+    "hallucinated_techniques": [],
+    "hallucination_count": 0,
+    "missing_techniques": [
+      "anti_debug_proc_status",
+      "anti_debug_ptrace",
+      "anti_debug_timing",
+      "control_flow_flattening",
+      "curl_download",
+      "dead_code_paths",
+      "encrypted_string_table",
+      "fork_exec",
+      "indirect_syscall",
+      "infection_marker_check",
+      "key_derivation_xor_mask",
+      "metamorphic_nop_equivalent",
+      "opaque_predicates",
+      "os_fingerprint",
+      "process_hiding",
+      "rc4_encryption",
+      "self_modifying_code",
+      "system_exec"
+    ],
+    "wall_time_seconds": 348.31,
+    "llm_seconds": 343.33,
+    "total_tokens": 2737084,
+    "input_tokens": 2730736,
+    "output_tokens": 6348,
+    "reasoning_tokens": 0
+  }
+}

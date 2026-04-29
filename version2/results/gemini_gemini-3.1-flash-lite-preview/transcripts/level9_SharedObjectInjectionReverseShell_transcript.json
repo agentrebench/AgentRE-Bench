@@ -1,0 +1,167 @@
+{
+  "task_id": "level9_SharedObjectInjectionReverseShell",
+  "model": "gemini-3.1-flash-lite-preview",
+  "provider": "gemini",
+  "difficulty": 9,
+  "score": {
+    "tier": "standard",
+    "field_scores": {
+      "decoded_c2": 1.0,
+      "techniques": 0.1,
+      "file_type": 0.0,
+      "encoded_strings": 1.0,
+      "c2_protocol": 1.0
+    },
+    "hallucinated_techniques": [
+      "dup2_redirection",
+      "shared_object_injection_via_preload_or_audit",
+      "socket_connect"
+    ],
+    "missing_techniques": [
+      "constructor_attribute",
+      "dlsym_hijack",
+      "dup2_redirect",
+      "env_check",
+      "function_hooking",
+      "shared_object_injection"
+    ],
+    "hallucination_penalty": 0.15,
+    "weighted_score": 0.63,
+    "final_score": 0.48,
+    "sample": "level9_SharedObjectInjectionReverseShell"
+  },
+  "agent_result": {
+    "task_id": "level9_SharedObjectInjectionReverseShell",
+    "final_answer": {
+      "decoded_c2": "192.168.1.100:4444",
+      "encoded_strings": false,
+      "file_type": "ELF64",
+      "c2_protocol": "TCP",
+      "techniques": [
+        "socket_connect",
+        "dup2_redirection",
+        "execve_shell",
+        "shared_object_injection_via_preload_or_audit"
+      ]
+    },
+    "tool_call_count": 5,
+    "tool_calls_by_type": {
+      "file": 1,
+      "strings": 1,
+      "objdump": 1,
+      "hexdump": 1,
+      "final_answer": 1
+    },
+    "tool_calls_log": [
+      {
+        "call_number": 1,
+        "tool": "file",
+        "input": {
+          "path": "/workspace/level9_SharedObjectInjectionReverseShell"
+        },
+        "output_preview": "/workspace/level9_SharedObjectInjectionReverseShell: ELF 64-bit LSB shared object, x86-64, version 1 (SYSV), dynamically linked, not stripped\n"
+      },
+      {
+        "call_number": 2,
+        "tool": "strings",
+        "input": {
+          "path": "/workspace/level9_SharedObjectInjectionReverseShell"
+        },
+        "output_preview": "__gmon_start__\n_ITM_deregisterTMCloneTable\n_ITM_registerTMCloneTable\n__cxa_finalize\ngetenv\nsocket\nhtons\ninet_pton\nconnect\ndup2\nexecve\nputs\ndlsym\nlibm.so.6\nlibc.so.6\nGLIBC_2.34\nGLIBC_2.2.5\nu+UH\nLD_AUDIT\nLD_PRELOAD\n192.168.1.100\n/bin/sh\nputs\n;*3$\"\nGCC: (GNU) 15.2.0\ncrtstuff.c\nderegister_tm_clones\n__do_global_dtors_aux\ncompleted.0\n__do_global_dtors_aux_fini_array_entry\nframe_dummy\n__frame_dummy_init_array_entry\nlevel9_SharedObjectInjectionReverseShell.c\nreverse_shell\n__FRAME_END__\n_fini\n__dso_handl"
+      },
+      {
+        "call_number": 3,
+        "tool": "objdump",
+        "input": {
+          "path": "/workspace/level9_SharedObjectInjectionReverseShell",
+          "flags": "-d"
+        },
+        "output_preview": "\n/workspace/level9_SharedObjectInjectionReverseShell:     file format elf64-x86-64\n\n\nDisassembly of section .init:\n\n0000000000001000 <_init>:\n    1000:\t48 83 ec 08          \tsub    $0x8,%rsp\n    1004:\t48 8b 05 c5 2f 00 00 \tmov    0x2fc5(%rip),%rax        # 3fd0 <__gmon_start__@Base>\n    100b:\t48 85 c0             \ttest   %rax,%rax\n    100e:\t74 02                \tje     1012 <_init+0x12>\n    1010:\tff d0                \tcall   *%rax\n    1012:\t48 83 c4 08          \tadd    $0x8,%rsp\n    1016:\tc3    "
+      },
+      {
+        "call_number": 4,
+        "tool": "hexdump",
+        "input": {
+          "path": "/workspace/level9_SharedObjectInjectionReverseShell",
+          "length": 100,
+          "offset": 8192
+        },
+        "output_preview": "00002000  4c 44 5f 41 55 44 49 54  00 4c 44 5f 50 52 45 4c  |LD_AUDIT.LD_PREL|\n00002010  4f 41 44 00 31 39 32 2e  31 36 38 2e 31 2e 31 30  |OAD.192.168.1.10|\n00002020  30 00 2f 62 69 6e 2f 73  68 00 70 75 74 73 00 00  |0./bin/sh.puts..|\n00002030  01 1b 03 3b 2c 00 00 00  04 00 00 00 f0 ef ff ff  |...;,...........|\n00002040  48 00 00 00 80 f0 ff ff  70 00 00 00 49 f1 ff ff  |H.......p...I...|\n00002050  88 00 00 00 30 f2 ff ff  a8 00 00 00 00 00 00 00  |....0...........|\n00002060  14 00 00 00     "
+      },
+      {
+        "call_number": 5,
+        "tool": "final_answer",
+        "input": {
+          "decoded_c2": "192.168.1.100:4444",
+          "encoded_strings": false,
+          "file_type": "ELF64",
+          "c2_protocol": "TCP",
+          "techniques": [
+            "socket_connect",
+            "dup2_redirection",
+            "execve_shell",
+            "shared_object_injection_via_preload_or_audit"
+          ]
+        },
+        "is_final_answer": true
+      }
+    ],
+    "redundant_tool_calls": 0,
+    "invalid_tool_calls": 0,
+    "invalid_json_attempts": 0,
+    "input_tokens": 21539,
+    "output_tokens": 221,
+    "reasoning_tokens": 0,
+    "total_tokens": 21760,
+    "wall_time_seconds": 4.78,
+    "llm_seconds": 4.12,
+    "max_steps_hit": false,
+    "has_valid_answer": true
+  },
+  "metrics": {
+    "task_id": "level9_SharedObjectInjectionReverseShell",
+    "score": 0.48,
+    "tier": "standard",
+    "field_scores": {
+      "decoded_c2": 1.0,
+      "techniques": 0.1,
+      "file_type": 0.0,
+      "encoded_strings": 1.0,
+      "c2_protocol": 1.0
+    },
+    "tool_calls_total": 5,
+    "tool_calls_by_type": {
+      "file": 1,
+      "strings": 1,
+      "objdump": 1,
+      "hexdump": 1,
+      "final_answer": 1
+    },
+    "redundant_tool_calls": 0,
+    "invalid_tool_calls": 0,
+    "invalid_json_attempts": 0,
+    "steps_to_answer": 5,
+    "max_steps_hit": false,
+    "has_valid_answer": true,
+    "hallucinated_techniques": [
+      "dup2_redirection",
+      "shared_object_injection_via_preload_or_audit",
+      "socket_connect"
+    ],
+    "hallucination_count": 3,
+    "missing_techniques": [
+      "constructor_attribute",
+      "dlsym_hijack",
+      "dup2_redirect",
+      "env_check",
+      "function_hooking",
+      "shared_object_injection"
+    ],
+    "wall_time_seconds": 4.78,
+    "llm_seconds": 4.12,
+    "total_tokens": 21760,
+    "input_tokens": 21539,
+    "output_tokens": 221,
+    "reasoning_tokens": 0
+  }
+}

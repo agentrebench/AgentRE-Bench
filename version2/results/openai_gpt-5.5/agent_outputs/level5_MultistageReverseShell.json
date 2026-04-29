@@ -1,0 +1,23 @@
+{
+  "file_type": "ELF64",
+  "encoded_strings": true,
+  "decoded_c2": "192.168.1.100:4444",
+  "techniques": [
+    "socket_connect",
+    "inet_pton",
+    "htons",
+    "tcp_client",
+    "recv",
+    "xor_encoding",
+    "staged_payload",
+    "indirect_call_decrypted_payload",
+    "executable_stack"
+  ],
+  "c2_protocol": "TCP",
+  "encryption_details": {
+    "algorithm": "single-byte XOR",
+    "key": "received from C2 as first byte after connect",
+    "key_storage": "runtime stack byte used to decrypt 0x57-byte stage2 buffer at 0x4a40e0"
+  },
+  "anti_analysis": []
+}

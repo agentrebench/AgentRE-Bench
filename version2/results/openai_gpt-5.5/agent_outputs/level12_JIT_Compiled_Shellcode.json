@@ -1,0 +1,19 @@
+{
+  "file_type": "ELF64 x86-64 executable, statically linked",
+  "encoded_strings": false,
+  "decoded_c2": "192.168.1.100:4444",
+  "techniques": [
+    "rwx_mmap",
+    "runtime_code_generation",
+    "jit_compiled_shellcode",
+    "direct_syscall_socket",
+    "socket_connect",
+    "inet_pton",
+    "htons",
+    "dup2_stdio_redirection",
+    "execve_bin_sh",
+    "reverse_shell"
+  ],
+  "c2_protocol": "TCP",
+  "anti_analysis": []
+}

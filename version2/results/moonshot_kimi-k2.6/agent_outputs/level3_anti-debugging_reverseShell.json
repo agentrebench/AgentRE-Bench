@@ -1,0 +1,16 @@
+{
+  "file_type": "ELF64",
+  "encoded_strings": false,
+  "decoded_c2": "192.168.1.100:4444",
+  "techniques": [
+    "socket_connect",
+    "reverse_shell",
+    "anti_debug_ptrace",
+    "dup2_redirection",
+    "execve"
+  ],
+  "c2_protocol": "TCP",
+  "anti_analysis": [
+    "anti_debug_ptrace"
+  ]
+}

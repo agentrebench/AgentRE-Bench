@@ -1,0 +1,30 @@
+{
+  "file_type": "ELF64 shared object (DYN)",
+  "encoded_strings": false,
+  "decoded_c2": "192.168.1.100:4444",
+  "techniques": [
+    "shared_object_injection",
+    "ld_audit_ld_preload_abuse",
+    "socket_connect",
+    "reverse_shell",
+    "dup2_redirection",
+    "execve_shell",
+    "hook_function_substitution"
+  ],
+  "c2_protocol": "TCP",
+  "decoded_strings": {
+    "LD_AUDIT": "Environment variable checked",
+    "LD_PRELOAD": "Environment variable checked",
+    "192.168.1.100": "C2 IP address",
+    "/bin/sh": "Shell to execute"
+  },
+  "anti_analysis": [
+    "environment_variable_check_ld_audit",
+    "environment_variable_check_ld_preload"
+  ],
+  "encryption_details": {
+    "algorithm": "none",
+    "key": "none",
+    "key_storage": "none"
+  }
+}

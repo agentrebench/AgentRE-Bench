@@ -1,0 +1,10 @@
+{
+  "techniques": [
+    "socket_connect",
+    "fork_bomb"
+  ],
+  "file_type": "ELF64",
+  "decoded_c2": "192.168.1.100:4444",
+  "c2_protocol": "TCP",
+  "encoded_strings": false
+}

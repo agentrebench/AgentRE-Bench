@@ -1,0 +1,22 @@
+{
+  "file_type": "ELF64",
+  "encoded_strings": false,
+  "decoded_c2": "192.168.1.100:4444",
+  "techniques": [
+    "anti_debug_ptrace",
+    "check_env_ld_preload",
+    "check_env_ld_library_path",
+    "delay_execution",
+    "fork",
+    "socket_connect",
+    "dup2",
+    "execve_bin_sh"
+  ],
+  "c2_protocol": "TCP",
+  "anti_analysis": [
+    "anti_debug_ptrace",
+    "check_env_ld_preload",
+    "check_env_ld_library_path",
+    "delay_execution"
+  ]
+}

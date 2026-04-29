@@ -1,0 +1,11 @@
+{
+  "encoded_strings": true,
+  "c2_protocol": "TCP",
+  "techniques": [
+    "mmap_execution",
+    "xor_decryption",
+    "anti_debugging_detection"
+  ],
+  "decoded_c2": "127.0.0.1:4444",
+  "file_type": "ELF64"
+}

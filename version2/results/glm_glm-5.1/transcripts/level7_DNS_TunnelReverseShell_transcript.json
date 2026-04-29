@@ -1,0 +1,81 @@
+{
+  "task_id": "level7_DNS_TunnelReverseShell",
+  "model": "glm-5.1",
+  "provider": "glm",
+  "difficulty": 7,
+  "score": {
+    "tier": "standard",
+    "field_scores": {
+      "decoded_c2": 0.0,
+      "techniques": 0.0,
+      "file_type": 0.0,
+      "encoded_strings": 0.0,
+      "c2_protocol": 0.0
+    },
+    "hallucinated_techniques": [],
+    "missing_techniques": [
+      "command_exec_popen",
+      "dns_beacon",
+      "dns_exfiltration",
+      "dns_tunneling",
+      "hex_encode"
+    ],
+    "hallucination_penalty": 0.0,
+    "weighted_score": 0.0,
+    "final_score": 0.0,
+    "sample": "level7_DNS_TunnelReverseShell"
+  },
+  "agent_result": {
+    "task_id": "level7_DNS_TunnelReverseShell",
+    "final_answer": null,
+    "tool_call_count": 0,
+    "tool_calls_by_type": {},
+    "tool_calls_log": [],
+    "redundant_tool_calls": 0,
+    "invalid_tool_calls": 0,
+    "invalid_json_attempts": 0,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "reasoning_tokens": 0,
+    "total_tokens": 0,
+    "wall_time_seconds": 214.93,
+    "llm_seconds": 214.93,
+    "max_steps_hit": false,
+    "has_valid_answer": false
+  },
+  "metrics": {
+    "task_id": "level7_DNS_TunnelReverseShell",
+    "score": 0.0,
+    "tier": "standard",
+    "field_scores": {
+      "decoded_c2": 0.0,
+      "techniques": 0.0,
+      "file_type": 0.0,
+      "encoded_strings": 0.0,
+      "c2_protocol": 0.0
+    },
+    "tool_calls_total": 0,
+    "tool_calls_by_type": {},
+    "redundant_tool_calls": 0,
+    "invalid_tool_calls": 0,
+    "invalid_json_attempts": 0,
+    "steps_to_answer": 0,
+    "max_steps_hit": false,
+    "has_valid_answer": false,
+    "hallucinated_techniques": [],
+    "hallucination_count": 0,
+    "missing_techniques": [
+      "command_exec_popen",
+      "dns_beacon",
+      "dns_exfiltration",
+      "dns_tunneling",
+      "hex_encode"
+    ],
+    "wall_time_seconds": 214.93,
+    "llm_seconds": 214.93,
+    "total_tokens": 0,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "reasoning_tokens": 0
+  }
+}

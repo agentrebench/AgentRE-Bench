@@ -51,7 +51,7 @@ class OpenAIProvider(AgentProvider):
         url = f"{self.base_url}/chat/completions"
         req = urllib.request.Request(url, data=data, headers=headers, method="POST")
 
-        with urllib.request.urlopen(req, timeout=300) as resp:
+        with urllib.request.urlopen(req, timeout=120) as resp:
             result = json.loads(resp.read().decode("utf-8"))
 
         choice = result["choices"][0]
@@ -74,6 +74,7 @@ class OpenAIProvider(AgentProvider):
             stop_reason = "max_tokens"
 
         usage = result.get("usage", {})
+        completion_details = usage.get("completion_tokens_details") or {}
 
         return ProviderResponse(
             stop_reason=stop_reason,
@@ -81,6 +82,8 @@ class OpenAIProvider(AgentProvider):
             tool_calls=tool_calls,
             input_tokens=usage.get("prompt_tokens", 0),
             output_tokens=usage.get("completion_tokens", 0),
+            reasoning_tokens=completion_details.get("reasoning_tokens", 0) or 0,
+            reasoning_content=message.get("reasoning_content") or "",
         )
 
     def _convert_message(self, msg: dict) -> list[dict]:
@@ -124,11 +127,14 @@ class OpenAIProvider(AgentProvider):
                 return [{"role": "assistant", "content": content}]
 
             text_parts = []
+            reasoning_parts = []
             oai_tool_calls = []
             for block in content:
                 if isinstance(block, dict):
                     if block.get("type") == "text":
                         text_parts.append(block.get("text", ""))
+                    elif block.get("type") == "reasoning":
+                        reasoning_parts.append(block.get("text", ""))
                     elif block.get("type") == "tool_use":
                         oai_tool_calls.append({
                             "id": block["id"],
@@ -141,6 +147,8 @@ class OpenAIProvider(AgentProvider):
 
             assistant_msg = {"role": "assistant"}
             assistant_msg["content"] = "\n".join(text_parts) if text_parts else None
+            if reasoning_parts:
+                assistant_msg["reasoning_content"] = "\n".join(reasoning_parts)
             if oai_tool_calls:
                 assistant_msg["tool_calls"] = oai_tool_calls
             return [assistant_msg]

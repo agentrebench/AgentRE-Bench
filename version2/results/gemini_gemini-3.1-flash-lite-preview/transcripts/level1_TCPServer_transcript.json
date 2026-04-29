@@ -1,0 +1,162 @@
+{
+  "task_id": "level1_TCPServer",
+  "model": "gemini-3.1-flash-lite-preview",
+  "provider": "gemini",
+  "difficulty": 1,
+  "score": {
+    "tier": "standard",
+    "field_scores": {
+      "decoded_c2": 1.0,
+      "techniques": 0.5,
+      "file_type": 1.0,
+      "encoded_strings": 1.0,
+      "c2_protocol": 1.0
+    },
+    "hallucinated_techniques": [
+      "dup2_redirection"
+    ],
+    "missing_techniques": [
+      "dup2_redirect"
+    ],
+    "hallucination_penalty": 0.05,
+    "weighted_score": 0.85,
+    "final_score": 0.8,
+    "sample": "level1_TCPServer"
+  },
+  "agent_result": {
+    "task_id": "level1_TCPServer",
+    "final_answer": {
+      "file_type": "ELF64",
+      "techniques": [
+        "socket_connect",
+        "dup2_redirection",
+        "execve_shell"
+      ],
+      "c2_protocol": "TCP",
+      "anti_analysis": [],
+      "decoded_c2": "192.168.1.100:4444",
+      "encoded_strings": false
+    },
+    "tool_call_count": 6,
+    "tool_calls_by_type": {
+      "file": 1,
+      "strings": 2,
+      "objdump": 1,
+      "hexdump": 1,
+      "final_answer": 1
+    },
+    "tool_calls_log": [
+      {
+        "call_number": 1,
+        "tool": "file",
+        "input": {
+          "path": "/workspace/level1_TCPServer"
+        },
+        "output_preview": "/workspace/level1_TCPServer: ELF 64-bit LSB executable, x86-64, version 1 (GNU/Linux), statically linked, for GNU/Linux 3.2.0, with debug_info, not stripped\n"
+      },
+      {
+        "call_number": 2,
+        "tool": "strings",
+        "input": {
+          "path": "/workspace/level1_TCPServer"
+        },
+        "output_preview": "u=E1\nD$HdH+\nD$8dH+\n[]A\\\nPTE1\nu+UH\nuHdH\nD$hdH\nD$pH\nD$ dH\nATUSM\nA\\A]A^A_\n$\tA\t\n[]A\\A]\nAVAUATUSH\n[]A\\A]A^A_\nAWAVAUATUSH\nP[]A\\A]A^A_\nAVAUATUSH\nGenuun\nnteluf\nineI\nHygo@\nuine\nnGenu^H\nL$hH\n|$`L\nAuth\ncAMD\nenti\nD$hH\nnD$dD\n\\$,u\nL$ H\nD$pH\nD$xL\nH=?@\nT$pH\nD$ H\nD$ L\nL9d$\n[]A\\A]A^A_\nCent\nauls\naurH\nt$dH\nD$dD\nnD$d\nD$pI\n\\$HH\nL$0H\nT$lH\nt$xH\n|$pH\nL$0H\nD$8L\nD$@L\n\\$HL\nT$PL\nt$dL\nL$hH\nT$`f\nnD$d\nD$hD\nD$pI\n\\$@H\nL$0H\nT$lH\nt$xH\n|$pI\nL$0L\nD$8H\n\\$@L\nT$HL\nD$pH\nD$8H\nt$0I\nt$0L\nD$8H\nL$@L\nL$HH\nL$pH\n  Sh@\nai  \nangh\nD$pI\nL$0I\nL$hL\nt"
+      },
+      {
+        "call_number": 3,
+        "tool": "strings",
+        "input": {
+          "min_length": 15,
+          "path": "/workspace/level1_TCPServer"
+        },
+        "output_preview": "@@192.168.1.100\n../sysdeps/x86/dl-cacheinfo.h\nchunk_is_mmapped (p)\ncorrupted size vs. prev_size\ncorrupted double-linked list\n glibc: malloc arena\nresult->attached_threads == 0\np->attached_threads == 0\nheap->ar_ptr == av\ninvalid fastbin entry (free)\nfree(): invalid pointer\ncorrection >= 0\nfree(): invalid size\nchunk_main_arena (bck->bk)\nchunk_main_arena (fwd)\nmalloc(): corrupted top size\nrealloc(): invalid old size\n!chunk_is_mmapped (oldp)\nrealloc(): invalid next size\na->attached_threads > 0\nreall"
+      },
+      {
+        "call_number": 4,
+        "tool": "objdump",
+        "input": {
+          "flags": "-d",
+          "path": "/workspace/level1_TCPServer"
+        },
+        "output_preview": "\n/workspace/level1_TCPServer:     file format elf64-x86-64\n\n\nDisassembly of section .init:\n\n0000000000401000 <_init>:\n  401000:\t48 83 ec 08          \tsub    $0x8,%rsp\n  401004:\t48 c7 c0 00 00 00 00 \tmov    $0x0,%rax\n  40100b:\t48 85 c0             \ttest   %rax,%rax\n  40100e:\t74 02                \tje     401012 <_init+0x12>\n  401010:\tff d0                \tcall   *%rax\n  401012:\t48 83 c4 08          \tadd    $0x8,%rsp\n  401016:\tc3                   \tret    \n\nDisassembly of section .plt:\n\n00000000004"
+      },
+      {
+        "call_number": 5,
+        "tool": "hexdump",
+        "input": {
+          "path": "/workspace/level1_TCPServer",
+          "length": 1024,
+          "offset": 5861
+        },
+        "output_preview": "000016e5  55 48 89 e5 48 83 ec 20  ba 00 00 00 00 be 01 00  |UH..H.. ........|\n000016f5  00 00 bf 02 00 00 00 e8  bf 09 01 00 89 45 fc 66  |.............E.f|\n00001705  c7 45 e0 02 00 bf 5c 11  00 00 e8 dc 0a 01 00 66  |.E....\\........f|\n00001715  89 45 e2 48 8d 45 e0 48  83 c0 04 48 89 c2 be 10  |.E.H.E.H...H....|\n00001725  70 47 00 bf 02 00 00 00  e8 8e 0e 01 00 48 8d 4d  |pG...........H.M|\n00001735  e0 8b 45 fc ba 10 00 00  00 48 89 ce 89 c7 e8 58  |..E......H.....X|\n00001745  09 01 00 8b 45 f"
+      },
+      {
+        "call_number": 6,
+        "tool": "final_answer",
+        "input": {
+          "file_type": "ELF64",
+          "techniques": [
+            "socket_connect",
+            "dup2_redirection",
+            "execve_shell"
+          ],
+          "c2_protocol": "TCP",
+          "anti_analysis": [],
+          "decoded_c2": "192.168.1.100:4444",
+          "encoded_strings": false
+        },
+        "is_final_answer": true
+      }
+    ],
+    "redundant_tool_calls": 0,
+    "invalid_tool_calls": 0,
+    "invalid_json_attempts": 0,
+    "input_tokens": 245909,
+    "output_tokens": 232,
+    "reasoning_tokens": 0,
+    "total_tokens": 246141,
+    "wall_time_seconds": 10.44,
+    "llm_seconds": 9.41,
+    "max_steps_hit": false,
+    "has_valid_answer": true
+  },
+  "metrics": {
+    "task_id": "level1_TCPServer",
+    "score": 0.8,
+    "tier": "standard",
+    "field_scores": {
+      "decoded_c2": 1.0,
+      "techniques": 0.5,
+      "file_type": 1.0,
+      "encoded_strings": 1.0,
+      "c2_protocol": 1.0
+    },
+    "tool_calls_total": 6,
+    "tool_calls_by_type": {
+      "file": 1,
+      "strings": 2,
+      "objdump": 1,
+      "hexdump": 1,
+      "final_answer": 1
+    },
+    "redundant_tool_calls": 0,
+    "invalid_tool_calls": 0,
+    "invalid_json_attempts": 0,
+    "steps_to_answer": 6,
+    "max_steps_hit": false,
+    "has_valid_answer": true,
+    "hallucinated_techniques": [
+      "dup2_redirection"
+    ],
+    "hallucination_count": 1,
+    "missing_techniques": [
+      "dup2_redirect"
+    ],
+    "wall_time_seconds": 10.44,
+    "llm_seconds": 9.41,
+    "total_tokens": 246141,
+    "input_tokens": 245909,
+    "output_tokens": 232,
+    "reasoning_tokens": 0
+  }
+}

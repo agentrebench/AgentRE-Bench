@@ -1,0 +1,15 @@
+{
+  "file_type": "ELF64",
+  "encoded_strings": false,
+  "decoded_c2": "cmd.attacker.com; exfiltration queries use <hex>.<data>.attacker.com",
+  "techniques": [
+    "dns_query_gethostbyname",
+    "dns_exfiltration",
+    "hex_encoding",
+    "command_execution_popen",
+    "periodic_beacon_sleep",
+    "static_linking"
+  ],
+  "c2_protocol": "DNS",
+  "anti_analysis": []
+}

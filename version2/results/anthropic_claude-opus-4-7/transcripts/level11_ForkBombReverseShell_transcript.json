@@ -1,0 +1,191 @@
+{
+  "task_id": "level11_ForkBombReverseShell",
+  "model": "claude-opus-4-7",
+  "provider": "anthropic",
+  "difficulty": 11,
+  "score": {
+    "tier": "standard",
+    "field_scores": {
+      "decoded_c2": 1.0,
+      "techniques": 0.18181818181818182,
+      "file_type": 1.0,
+      "encoded_strings": 1.0,
+      "c2_protocol": 1.0
+    },
+    "hallucinated_techniques": [
+      "dup2_stdio",
+      "execve_bin_sh",
+      "htons_port",
+      "inet_pton",
+      "reverse_shell"
+    ],
+    "missing_techniques": [
+      "denial_of_service",
+      "dup2_redirect",
+      "execve_shell",
+      "fork_exec"
+    ],
+    "hallucination_penalty": 0.25,
+    "weighted_score": 0.7545,
+    "final_score": 0.5045,
+    "sample": "level11_ForkBombReverseShell"
+  },
+  "agent_result": {
+    "task_id": "level11_ForkBombReverseShell",
+    "final_answer": {
+      "file_type": "ELF64",
+      "encoded_strings": false,
+      "decoded_c2": "192.168.1.100:4444",
+      "c2_protocol": "TCP",
+      "techniques": [
+        "socket_connect",
+        "reverse_shell",
+        "dup2_stdio",
+        "execve_bin_sh",
+        "fork_bomb",
+        "inet_pton",
+        "htons_port"
+      ],
+      "encryption_details": {
+        "algorithm": "none",
+        "key": "",
+        "key_storage": ""
+      },
+      "decoded_strings": {
+        "c2_ip": "192.168.1.100",
+        "c2_port_hex": "0x115c",
+        "c2_port_dec": "4444",
+        "shell_path": "/bin/sh"
+      },
+      "anti_analysis": [
+        "fork_bomb_dos"
+      ]
+    },
+    "tool_call_count": 4,
+    "tool_calls_by_type": {
+      "file": 1,
+      "strings": 1,
+      "objdump": 1,
+      "final_answer": 1
+    },
+    "tool_calls_log": [
+      {
+        "call_number": 1,
+        "tool": "file",
+        "input": {
+          "path": "/workspace/level11_ForkBombReverseShell"
+        },
+        "output_preview": "/workspace/level11_ForkBombReverseShell: ELF 64-bit LSB executable, x86-64, version 1 (GNU/Linux), statically linked, for GNU/Linux 3.2.0, with debug_info, not stripped\n"
+      },
+      {
+        "call_number": 2,
+        "tool": "strings",
+        "input": {
+          "path": "/workspace/level11_ForkBombReverseShell",
+          "min_length": 5
+        },
+        "output_preview": "D$8dH+\nD$HdH+\nD$hdH\nD$ dH\nATUSM\nA\\A]A^A_\n[]A\\A]\nAVAUATUSH\n[]A\\A]A^A_\nAWAVAUATUSH\nP[]A\\A]A^A_\nAVAUATUSH\nGenuun\nnteluf\nHygo@\nnGenu^H\nnD$dD\n[]A\\A]A^A_\n  Sh@\nAUATI\nATUSH\nAWAVAUI\nD$ H9\nD$ H9\nAWAVAUATUSH\nAWAVA\nAUATUSH\n tbdJ\n[]A\\A]A^A_\nt.ff.\nAVAUATUSH\n\\$pI9\n[]A\\A]A^A_\nu{H;z\nH;z(uvH\nO(H;y ulH\nAVAUATL\n8[]A\\A]A^A_\nu`H9r\n[A\\A]\n[A\\A]\n,$3l$\nAWAVAUI\nATUSH\n[]A\\A]A^A_\nAUATUH\n[]A\\A]\n[]A\\A]\nAUATI\n]A\\A]A^\nATUSH\nATUSH\nAWAVAUATUSH\nL$0H9\nT$ H)\n([]A\\A]A^A_\n([]A\\A]A^A_\nx/ujK\nAVAUL\nATUSH\n[]A\\A]A^\n]A\\A]A^\nAVAUA\n[]A\\A]A^\n"
+      },
+      {
+        "call_number": 3,
+        "tool": "objdump",
+        "input": {
+          "path": "/workspace/level11_ForkBombReverseShell",
+          "flags": "-d",
+          "section": ".text"
+        },
+        "output_preview": "\n/workspace/level11_ForkBombReverseShell:     file format elf64-x86-64\n\n\nDisassembly of section .text:\n\n0000000000401100 <__libc_message_impl.cold>:\n  401100:\te8 06 00 00 00       \tcall   40110b <abort>\n\n0000000000401105 <_dl_start>:\n  401105:\t50                   \tpush   %rax\n  401106:\te8 00 00 00 00       \tcall   40110b <abort>\n\n000000000040110b <abort>:\n  40110b:\t48 81 ec b8 00 00 00 \tsub    $0xb8,%rsp\n  401112:\t64 48 8b 3c 25 28 00 \tmov    %fs:0x28,%rdi\n  401119:\t00 00 \n  40111b:\t48 89 bc 24"
+      },
+      {
+        "call_number": 4,
+        "tool": "final_answer",
+        "input": {
+          "file_type": "ELF64",
+          "encoded_strings": false,
+          "decoded_c2": "192.168.1.100:4444",
+          "c2_protocol": "TCP",
+          "techniques": [
+            "socket_connect",
+            "reverse_shell",
+            "dup2_stdio",
+            "execve_bin_sh",
+            "fork_bomb",
+            "inet_pton",
+            "htons_port"
+          ],
+          "encryption_details": {
+            "algorithm": "none",
+            "key": "",
+            "key_storage": ""
+          },
+          "decoded_strings": {
+            "c2_ip": "192.168.1.100",
+            "c2_port_hex": "0x115c",
+            "c2_port_dec": "4444",
+            "shell_path": "/bin/sh"
+          },
+          "anti_analysis": [
+            "fork_bomb_dos"
+          ]
+        },
+        "is_final_answer": true
+      }
+    ],
+    "redundant_tool_calls": 0,
+    "invalid_tool_calls": 0,
+    "invalid_json_attempts": 0,
+    "input_tokens": 104920,
+    "output_tokens": 1036,
+    "reasoning_tokens": 0,
+    "total_tokens": 105956,
+    "wall_time_seconds": 23.46,
+    "llm_seconds": 22.78,
+    "max_steps_hit": false,
+    "has_valid_answer": true
+  },
+  "metrics": {
+    "task_id": "level11_ForkBombReverseShell",
+    "score": 0.5045,
+    "tier": "standard",
+    "field_scores": {
+      "decoded_c2": 1.0,
+      "techniques": 0.18181818181818182,
+      "file_type": 1.0,
+      "encoded_strings": 1.0,
+      "c2_protocol": 1.0
+    },
+    "tool_calls_total": 4,
+    "tool_calls_by_type": {
+      "file": 1,
+      "strings": 1,
+      "objdump": 1,
+      "final_answer": 1
+    },
+    "redundant_tool_calls": 0,
+    "invalid_tool_calls": 0,
+    "invalid_json_attempts": 0,
+    "steps_to_answer": 4,
+    "max_steps_hit": false,
+    "has_valid_answer": true,
+    "hallucinated_techniques": [
+      "dup2_stdio",
+      "execve_bin_sh",
+      "htons_port",
+      "inet_pton",
+      "reverse_shell"
+    ],
+    "hallucination_count": 5,
+    "missing_techniques": [
+      "denial_of_service",
+      "dup2_redirect",
+      "execve_shell",
+      "fork_exec"
+    ],
+    "wall_time_seconds": 23.46,
+    "llm_seconds": 22.78,
+    "total_tokens": 105956,
+    "input_tokens": 104920,
+    "output_tokens": 1036,
+    "reasoning_tokens": 0
+  }
+}

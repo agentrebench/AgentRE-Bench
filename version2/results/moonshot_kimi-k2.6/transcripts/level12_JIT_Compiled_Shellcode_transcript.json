@@ -1,0 +1,329 @@
+{
+  "task_id": "level12_JIT_Compiled_Shellcode",
+  "model": "kimi-k2.6",
+  "provider": "moonshot",
+  "difficulty": 12,
+  "score": {
+    "tier": "standard",
+    "field_scores": {
+      "decoded_c2": 1.0,
+      "techniques": 0.3,
+      "file_type": 1.0,
+      "encoded_strings": 1.0,
+      "c2_protocol": 1.0
+    },
+    "hallucinated_techniques": [
+      "execve",
+      "mmap_rwx",
+      "reverse_shell"
+    ],
+    "missing_techniques": [
+      "execve_shell",
+      "mmap_exec",
+      "runtime_patching",
+      "self_modifying_code"
+    ],
+    "hallucination_penalty": 0.15,
+    "weighted_score": 0.79,
+    "final_score": 0.64,
+    "sample": "level12_JIT_Compiled_Shellcode"
+  },
+  "agent_result": {
+    "task_id": "level12_JIT_Compiled_Shellcode",
+    "final_answer": {
+      "file_type": "ELF64",
+      "encoded_strings": false,
+      "decoded_c2": "192.168.1.100:4444",
+      "techniques": [
+        "jit_compilation",
+        "mmap_rwx",
+        "socket_connect",
+        "dup2_redirect",
+        "execve",
+        "reverse_shell"
+      ],
+      "c2_protocol": "TCP"
+    },
+    "tool_call_count": 21,
+    "tool_calls_by_type": {
+      "file": 1,
+      "strings": 1,
+      "readelf": 3,
+      "nm": 1,
+      "objdump": 5,
+      "xxd": 8,
+      "entropy": 1,
+      "final_answer": 1
+    },
+    "tool_calls_log": [
+      {
+        "call_number": 1,
+        "tool": "file",
+        "input": {
+          "path": "/workspace/level12_JIT_Compiled_Shellcode"
+        },
+        "output_preview": "/workspace/level12_JIT_Compiled_Shellcode: ELF 64-bit LSB executable, x86-64, version 1 (GNU/Linux), statically linked, for GNU/Linux 3.2.0, with debug_info, not stripped\n"
+      },
+      {
+        "call_number": 2,
+        "tool": "strings",
+        "input": {
+          "path": "/workspace/level12_JIT_Compiled_Shellcode",
+          "min_length": 4
+        },
+        "output_preview": "u=E1\nD$HdH+\nD$8dH+\n[]A\\\nPTE1\nu+UH\nuHdH\nD$hdH\nD$pH\nD$ dH\nATUSM\nA\\A]A^A_\n$\tA\t\n[]A\\A]\nAVAUATUSH\n[]A\\A]A^A_\nAWAVAUATUSH\nD\t%H\nP[]A\\A]A^A_\nAVAUATUSH\nGenuun\nnteluf\nineI\nHygo@\nuine\nnGenu^H\nL$hH\n|$`L\nAuth\ncAMD\nenti\nD$hH\nnD$dD\n\\$,u\nL$ H\nD$pH\nD$xL\nH=?@\nT$pH\nD$ H\nD$ L\nL9d$\n[]A\\A]A^A_\nCent\nauls\naurH\nt$dH\nD$dD\nnD$d\nD$pI\n\\$HH\nL$0H\nT$lH\nt$xH\n|$pH\nL$0H\nD$8L\nD$@L\n\\$HL\nT$PL\nt$dL\nL$hH\nT$`f\nnD$d\nD$hD\nD$pI\n\\$@H\nL$0H\nT$lH\nt$xH\n|$pI\nL$0L\nD$8H\n\\$@L\nT$HL\nD$pH\nD$8H\nt$0I\nt$0L\nD$8H\nL$@L\nL$HH\nL$pH\n  Sh@\nai  \nangh\nD$pI\nL$0I\nL"
+      },
+      {
+        "call_number": 3,
+        "tool": "readelf",
+        "input": {
+          "path": "/workspace/level12_JIT_Compiled_Shellcode",
+          "flags": "-h"
+        },
+        "output_preview": "ELF Header:\n  Magic:   7f 45 4c 46 02 01 01 03 00 00 00 00 00 00 00 00 \n  Class:                             ELF64\n  Data:                              2's complement, little endian\n  Version:                           1 (current)\n  OS/ABI:                            UNIX - GNU\n  ABI Version:                       0\n  Type:                              EXEC (Executable file)\n  Machine:                           Advanced Micro Devices X86-64\n  Version:                           0x1\n  Entry point "
+      },
+      {
+        "call_number": 4,
+        "tool": "nm",
+        "input": {
+          "path": "/workspace/level12_JIT_Compiled_Shellcode"
+        },
+        "output_preview": "00000000004771a0 r CSWTCH.101\n00000000004a5140 V DW.ref.__gcc_personality_v0\n0000000000411270 W _Exit\n00000000004a3fe8 d _GLOBAL_OFFSET_TABLE_\n00000000004a5180 D _IO_2_1_stderr_\n00000000004a5540 D _IO_2_1_stdin_\n00000000004a5360 D _IO_2_1_stdout_\n0000000000420cf0 T _IO_adjust_column\n00000000004535b0 T _IO_adjust_wcolumn\n00000000004213c0 T _IO_cleanup\n0000000000420850 T _IO_default_doallocate\n0000000000420b70 T _IO_default_finish\n0000000000421b80 T _IO_default_imbue\n0000000000421990 T _IO_default"
+      },
+      {
+        "call_number": 5,
+        "tool": "objdump",
+        "input": {
+          "path": "/workspace/level12_JIT_Compiled_Shellcode",
+          "flags": "-d",
+          "section": ".text"
+        },
+        "output_preview": "\n/workspace/level12_JIT_Compiled_Shellcode:     file format elf64-x86-64\n\n\nDisassembly of section .text:\n\n0000000000401100 <__libc_message_impl.cold>:\n  401100:\te8 06 00 00 00       \tcall   40110b <abort>\n\n0000000000401105 <_dl_start>:\n  401105:\t50                   \tpush   %rax\n  401106:\te8 00 00 00 00       \tcall   40110b <abort>\n\n000000000040110b <abort>:\n  40110b:\t48 81 ec b8 00 00 00 \tsub    $0xb8,%rsp\n  401112:\t64 48 8b 3c 25 28 00 \tmov    %fs:0x28,%rdi\n  401119:\t00 00 \n  40111b:\t48 89 bc "
+      },
+      {
+        "call_number": 6,
+        "tool": "readelf",
+        "input": {
+          "path": "/workspace/level12_JIT_Compiled_Shellcode",
+          "flags": "-S"
+        },
+        "output_preview": "There are 33 section headers, starting at offset 0xe47a8:\n\nSection Headers:\n  [Nr] Name              Type             Address           Offset\n       Size              EntSize          Flags  Link  Info  Align\n  [ 0]                   NULL             0000000000000000  00000000\n       0000000000000000  0000000000000000           0     0     0\n  [ 1] .rela.plt         RELA             0000000000400270  00000270\n       0000000000000210  0000000000000018  AI       0    18     8\n  [ 2] .init        "
+      },
+      {
+        "call_number": 7,
+        "tool": "xxd",
+        "input": {
+          "path": "/workspace/level12_JIT_Compiled_Shellcode",
+          "offset": 477010,
+          "length": 64
+        },
+        "output_preview": "00074752: 4889 c2e9 f9f5 ffff 4839 c60f 83d3 0000  H.......H9......\n00074762: 0049 6346 0448 01c5 4863 4504 488d 7d04  .IcF.H..HcE.H.}.\n00074772: 4829 c7e8 66da ffff 89c7 3dff 0000 0074  H)..f.....=....t\n00074782: 6e89 c283 e207 80fa 0274 5d0f 8691 0000  n........t].....\n"
+      },
+      {
+        "call_number": 8,
+        "tool": "xxd",
+        "input": {
+          "path": "/workspace/level12_JIT_Compiled_Shellcode",
+          "offset": 477010,
+          "length": 32
+        },
+        "output_preview": "00074752: 4889 c2e9 f9f5 ffff 4839 c60f 83d3 0000  H.......H9......\n00074762: 0049 6346 0448 01c5 4863 4504 488d 7d04  .IcF.H..HcE.H.}.\n"
+      },
+      {
+        "call_number": 9,
+        "tool": "xxd",
+        "input": {
+          "path": "/workspace/level12_JIT_Compiled_Shellcode",
+          "offset": 479264,
+          "length": 64
+        },
+        "output_preview": "00075020: faf8 ff66 662e 0f1f 8400 0000 0000 6690  ...ff.........f.\n00075030: 4154 4989 f141 89d0 5589 cd53 4889 fb48  ATI..A..U..SH..H\n00075040: 83c7 188b 4318 a803 0f85 8200 0000 89c2  ....C...........\n00075050: 83ca 01f0 0fb1 1775 ed48 8b53 0849 39d1  .......u.H.S.I9.\n"
+      },
+      {
+        "call_number": 10,
+        "tool": "xxd",
+        "input": {
+          "path": "/workspace/level12_JIT_Compiled_Shellcode",
+          "offset": 479248,
+          "length": 64
+        },
+        "output_preview": "00075010: 1683 e0f7 74d6 5048 8d3d 4246 0000 e8ad  ....t.PH.=BF....\n00075020: faf8 ff66 662e 0f1f 8400 0000 0000 6690  ...ff.........f.\n00075030: 4154 4989 f141 89d0 5589 cd53 4889 fb48  ATI..A..U..SH..H\n00075040: 83c7 188b 4318 a803 0f85 8200 0000 89c2  ....C...........\n"
+      },
+      {
+        "call_number": 11,
+        "tool": "objdump",
+        "input": {
+          "path": "/workspace/level12_JIT_Compiled_Shellcode",
+          "flags": "-s",
+          "section": ".rodata"
+        },
+        "output_preview": "\n/workspace/level12_JIT_Compiled_Shellcode:     file format elf64-x86-64\n\nContents of section .rodata:\n 477000 01000200 00000000 0000803f 00004040  ...........?..@@\n 477010 c0a80164 00115c00 3139322e 3136382e  ...d..\\.192.168.\n 477020 312e3130 30002f62 696e2f73 68000000  1.100./bin/sh...\n 477030 00000000 00000000 00000000 00000000  ................\n 477040 9eaaf8ff 6aaaf8ff 6eabf8ff 56abf8ff  ....j...n...V...\n 477050 63aaf8ff c0aaf8ff 3eabf8ff 89abf8ff  c.......>.......\n 477060 dba9f8ff dba9f8ff"
+      },
+      {
+        "call_number": 12,
+        "tool": "objdump",
+        "input": {
+          "path": "/workspace/level12_JIT_Compiled_Shellcode",
+          "flags": "-s",
+          "section": ".data"
+        },
+        "output_preview": "\n/workspace/level12_JIT_Compiled_Shellcode:     file format elf64-x86-64\n\nContents of section .data:\n 4a40c0 00000000 00000000 00000000 00000000  ................\n 4a40d0 00000000 00000000 00000000 00000000  ................\n 4a40e0 4889f848 31c94831 d24831f6 4d31c048  H..H1.H1.H1.M1.H\n 4a40f0 31ff4831 c06a2958 6a025f6a 015e6a06  1.H1.j)Xj._j.^j.\n 4a4100 5a0f05c3 00000000 00080000 00000000  Z...............\n 4a4110 00080000 00000000 00001000 00000000  ................\n 4a4120 00000800 00000000 0"
+      },
+      {
+        "call_number": 13,
+        "tool": "objdump",
+        "input": {
+          "path": "/workspace/level12_JIT_Compiled_Shellcode",
+          "flags": "-d",
+          "section": ".plt"
+        },
+        "output_preview": "\n/workspace/level12_JIT_Compiled_Shellcode:     file format elf64-x86-64\n\n\nDisassembly of section .plt:\n\n0000000000401018 <.plt>:\n  401018:\tff 25 e2 2f 0a 00    \tjmp    *0xa2fe2(%rip)        # 4a4000 <_GLOBAL_OFFSET_TABLE_+0x18>\n  40101e:\t66 90                \txchg   %ax,%ax\n  401020:\tff 25 e2 2f 0a 00    \tjmp    *0xa2fe2(%rip)        # 4a4008 <_GLOBAL_OFFSET_TABLE_+0x20>\n  401026:\t66 90                \txchg   %ax,%ax\n  401028:\tff 25 e2 2f 0a 00    \tjmp    *0xa2fe2(%rip)        # 4a4010 <_GLOBAL"
+      },
+      {
+        "call_number": 14,
+        "tool": "xxd",
+        "input": {
+          "path": "/workspace/level12_JIT_Compiled_Shellcode",
+          "offset": 479232,
+          "length": 48
+        },
+        "output_preview": "00075000: ca00 0000 0f05 483d 00f0 ffff 76de 83c0  ......H=....v...\n00075010: 1683 e0f7 74d6 5048 8d3d 4246 0000 e8ad  ....t.PH.=BF....\n00075020: faf8 ff66 662e 0f1f 8400 0000 0000 6690  ...ff.........f.\n"
+      },
+      {
+        "call_number": 15,
+        "tool": "xxd",
+        "input": {
+          "path": "/workspace/level12_JIT_Compiled_Shellcode",
+          "offset": 479248,
+          "length": 48
+        },
+        "output_preview": "00075010: 1683 e0f7 74d6 5048 8d3d 4246 0000 e8ad  ....t.PH.=BF....\n00075020: faf8 ff66 662e 0f1f 8400 0000 0000 6690  ...ff.........f.\n00075030: 4154 4989 f141 89d0 5589 cd53 4889 fb48  ATI..A..U..SH..H\n"
+      },
+      {
+        "call_number": 16,
+        "tool": "readelf",
+        "input": {
+          "path": "/workspace/level12_JIT_Compiled_Shellcode",
+          "flags": "-l"
+        },
+        "output_preview": "\nElf file type is EXEC (Executable file)\nEntry point 0x4015c0\nThere are 10 program headers, starting at offset 64\n\nProgram Headers:\n  Type           Offset             VirtAddr           PhysAddr\n                 FileSiz            MemSiz              Flags  Align\n  LOAD           0x0000000000000000 0x0000000000400000 0x0000000000400000\n                 0x0000000000000480 0x0000000000000480  R      0x1000\n  LOAD           0x0000000000001000 0x0000000000401000 0x0000000000401000\n                 "
+      },
+      {
+        "call_number": 17,
+        "tool": "xxd",
+        "input": {
+          "path": "/workspace/level12_JIT_Compiled_Shellcode",
+          "offset": 487440,
+          "length": 48
+        },
+        "output_preview": "00077010: c0a8 0164 0011 5c00 3139 322e 3136 382e  ...d..\\.192.168.\n00077020: 312e 3130 3000 2f62 696e 2f73 6800 0000  1.100./bin/sh...\n00077030: 0000 0000 0000 0000 0000 0000 0000 0000  ................\n"
+      },
+      {
+        "call_number": 18,
+        "tool": "xxd",
+        "input": {
+          "path": "/workspace/level12_JIT_Compiled_Shellcode",
+          "offset": 667872,
+          "length": 48
+        },
+        "output_preview": "000a30e0: 4889 f848 31c9 4831 d248 31f6 4d31 c048  H..H1.H1.H1.M1.H\n000a30f0: 31ff 4831 c06a 2958 6a02 5f6a 015e 6a06  1.H1.j)Xj._j.^j.\n000a3100: 5a0f 05c3 0000 0000 0008 0000 0000 0000  Z...............\n"
+      },
+      {
+        "call_number": 19,
+        "tool": "objdump",
+        "input": {
+          "path": "/workspace/level12_JIT_Compiled_Shellcode",
+          "flags": "-d",
+          "section": ".text"
+        },
+        "output_preview": "\n/workspace/level12_JIT_Compiled_Shellcode:     file format elf64-x86-64\n\n\nDisassembly of section .text:\n\n0000000000401100 <__libc_message_impl.cold>:\n  401100:\te8 06 00 00 00       \tcall   40110b <abort>\n\n0000000000401105 <_dl_start>:\n  401105:\t50                   \tpush   %rax\n  401106:\te8 00 00 00 00       \tcall   40110b <abort>\n\n000000000040110b <abort>:\n  40110b:\t48 81 ec b8 00 00 00 \tsub    $0xb8,%rsp\n  401112:\t64 48 8b 3c 25 28 00 \tmov    %fs:0x28,%rdi\n  401119:\t00 00 \n  40111b:\t48 89 bc "
+      },
+      {
+        "call_number": 20,
+        "tool": "entropy",
+        "input": {
+          "path": "/workspace/level12_JIT_Compiled_Shellcode",
+          "section": ".rodata"
+        },
+        "output_preview": "Total size: 113564 bytes\nOverall entropy: 4.7560 bits/byte\nWindow size: 256 bytes\nWindows analyzed: 444\n\nMin window entropy: 0.0000\nMax window entropy: 7.2790\nAvg window entropy: 3.0302\n\nOffset      Size  Entropy\n-----------------------------------\n0x00000000   256  4.2400  ################\n0x00000100   256  3.6215  ##############\n0x00000200   256  3.5986  ##############\n0x00000300   256  3.6540  ##############\n0x00000400   256  4.7666  ###################\n0x00000500   256  4.7761  #############"
+      },
+      {
+        "call_number": 21,
+        "tool": "final_answer",
+        "input": {
+          "file_type": "ELF64",
+          "encoded_strings": false,
+          "decoded_c2": "192.168.1.100:4444",
+          "techniques": [
+            "jit_compilation",
+            "mmap_rwx",
+            "socket_connect",
+            "dup2_redirect",
+            "execve",
+            "reverse_shell"
+          ],
+          "c2_protocol": "TCP"
+        },
+        "is_final_answer": true
+      }
+    ],
+    "redundant_tool_calls": 1,
+    "invalid_tool_calls": 0,
+    "invalid_json_attempts": 0,
+    "input_tokens": 1899137,
+    "output_tokens": 20812,
+    "reasoning_tokens": 0,
+    "total_tokens": 1919949,
+    "wall_time_seconds": 571.34,
+    "llm_seconds": 567.4,
+    "max_steps_hit": false,
+    "has_valid_answer": true
+  },
+  "metrics": {
+    "task_id": "level12_JIT_Compiled_Shellcode",
+    "score": 0.64,
+    "tier": "standard",
+    "field_scores": {
+      "decoded_c2": 1.0,
+      "techniques": 0.3,
+      "file_type": 1.0,
+      "encoded_strings": 1.0,
+      "c2_protocol": 1.0
+    },
+    "tool_calls_total": 21,
+    "tool_calls_by_type": {
+      "file": 1,
+      "strings": 1,
+      "readelf": 3,
+      "nm": 1,
+      "objdump": 5,
+      "xxd": 8,
+      "entropy": 1,
+      "final_answer": 1
+    },
+    "redundant_tool_calls": 1,
+    "invalid_tool_calls": 0,
+    "invalid_json_attempts": 0,
+    "steps_to_answer": 21,
+    "max_steps_hit": false,
+    "has_valid_answer": true,
+    "hallucinated_techniques": [
+      "execve",
+      "mmap_rwx",
+      "reverse_shell"
+    ],
+    "hallucination_count": 3,
+    "missing_techniques": [
+      "execve_shell",
+      "mmap_exec",
+      "runtime_patching",
+      "self_modifying_code"
+    ],
+    "wall_time_seconds": 571.34,
+    "llm_seconds": 567.4,
+    "total_tokens": 1919949,
+    "input_tokens": 1899137,
+    "output_tokens": 20812,
+    "reasoning_tokens": 0
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "anti_analysis": [
+    "anti_debug_ptrace",
+    "anti_analysis_timing_check"
+  ],
+  "techniques": [
+    "socket_connect",
+    "rc4_encryption",
+    "anti_debug_ptrace",
+    "anti_analysis_timing_check"
+  ],
+  "c2_protocol": "TCP",
+  "file_type": "ELF64",
+  "encryption_details": {
+    "algorithm": "RC4",
+    "key": "[Hardcoded/Generated key based on PID/random, stored in memory]",
+    "key_storage": "Runtime generated and stored in a memory buffer (e.g., _recover_key)"
+  },
+  "encoded_strings": true,
+  "decoded_c2": "192.168.1.100:4444"
+}

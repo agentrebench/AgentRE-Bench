@@ -1,0 +1,195 @@
+{
+  "task_id": "level9_SharedObjectInjectionReverseShell",
+  "model": "claude-opus-4-7",
+  "provider": "anthropic",
+  "difficulty": 9,
+  "score": {
+    "tier": "standard",
+    "field_scores": {
+      "decoded_c2": 1.0,
+      "techniques": 0.25,
+      "file_type": 0.0,
+      "encoded_strings": 1.0,
+      "c2_protocol": 1.0
+    },
+    "hallucinated_techniques": [
+      "dlsym_RTLD_NEXT",
+      "ld_audit_check",
+      "ld_preload_check",
+      "puts_hook",
+      "socket_connect"
+    ],
+    "missing_techniques": [
+      "constructor_attribute",
+      "dlsym_hijack",
+      "env_check",
+      "function_hooking"
+    ],
+    "hallucination_penalty": 0.25,
+    "weighted_score": 0.675,
+    "final_score": 0.425,
+    "sample": "level9_SharedObjectInjectionReverseShell"
+  },
+  "agent_result": {
+    "task_id": "level9_SharedObjectInjectionReverseShell",
+    "final_answer": {
+      "file_type": "ELF64 shared object",
+      "encoded_strings": false,
+      "decoded_c2": "192.168.1.100:4444",
+      "c2_protocol": "TCP",
+      "techniques": [
+        "shared_object_injection",
+        "puts_hook",
+        "socket_connect",
+        "dup2_redirect",
+        "execve_shell",
+        "dlsym_RTLD_NEXT",
+        "ld_preload_check",
+        "ld_audit_check"
+      ],
+      "anti_analysis": [
+        "LD_PRELOAD environment check (skip reverse shell to avoid recursion)",
+        "LD_AUDIT environment check"
+      ],
+      "encryption_details": {
+        "algorithm": "none",
+        "key": "",
+        "key_storage": ""
+      },
+      "decoded_strings": {
+        "port_hex": "0x115c -> 4444",
+        "ip": "192.168.1.100",
+        "shell": "/bin/sh",
+        "hooked_function": "puts"
+      }
+    },
+    "tool_call_count": 4,
+    "tool_calls_by_type": {
+      "file": 1,
+      "strings": 1,
+      "objdump": 1,
+      "final_answer": 1
+    },
+    "tool_calls_log": [
+      {
+        "call_number": 1,
+        "tool": "file",
+        "input": {
+          "path": "/workspace/level9_SharedObjectInjectionReverseShell"
+        },
+        "output_preview": "/workspace/level9_SharedObjectInjectionReverseShell: ELF 64-bit LSB shared object, x86-64, version 1 (SYSV), dynamically linked, not stripped\n"
+      },
+      {
+        "call_number": 2,
+        "tool": "strings",
+        "input": {
+          "path": "/workspace/level9_SharedObjectInjectionReverseShell",
+          "min_length": 5
+        },
+        "output_preview": "__gmon_start__\n_ITM_deregisterTMCloneTable\n_ITM_registerTMCloneTable\n__cxa_finalize\ngetenv\nsocket\nhtons\ninet_pton\nconnect\nexecve\ndlsym\nlibm.so.6\nlibc.so.6\nGLIBC_2.34\nGLIBC_2.2.5\nLD_AUDIT\nLD_PRELOAD\n192.168.1.100\n/bin/sh\n;*3$\"\nGCC: (GNU) 15.2.0\ncrtstuff.c\nderegister_tm_clones\n__do_global_dtors_aux\ncompleted.0\n__do_global_dtors_aux_fini_array_entry\nframe_dummy\n__frame_dummy_init_array_entry\nlevel9_SharedObjectInjectionReverseShell.c\nreverse_shell\n__FRAME_END__\n_fini\n__dso_handle\n_DYNAMIC\n__GNU_EH_"
+      },
+      {
+        "call_number": 3,
+        "tool": "objdump",
+        "input": {
+          "path": "/workspace/level9_SharedObjectInjectionReverseShell",
+          "flags": "-d",
+          "section": ".text"
+        },
+        "output_preview": "\n/workspace/level9_SharedObjectInjectionReverseShell:     file format elf64-x86-64\n\n\nDisassembly of section .text:\n\n00000000000010c0 <deregister_tm_clones>:\n    10c0:\t48 8d 3d 81 2f 00 00 \tlea    0x2f81(%rip),%rdi        # 4048 <completed.0>\n    10c7:\t48 8d 05 7a 2f 00 00 \tlea    0x2f7a(%rip),%rax        # 4048 <completed.0>\n    10ce:\t48 39 f8             \tcmp    %rdi,%rax\n    10d1:\t74 15                \tje     10e8 <deregister_tm_clones+0x28>\n    10d3:\t48 8b 05 ee 2e 00 00 \tmov    0x2eee(%rip),"
+      },
+      {
+        "call_number": 4,
+        "tool": "final_answer",
+        "input": {
+          "file_type": "ELF64 shared object",
+          "encoded_strings": false,
+          "decoded_c2": "192.168.1.100:4444",
+          "c2_protocol": "TCP",
+          "techniques": [
+            "shared_object_injection",
+            "puts_hook",
+            "socket_connect",
+            "dup2_redirect",
+            "execve_shell",
+            "dlsym_RTLD_NEXT",
+            "ld_preload_check",
+            "ld_audit_check"
+          ],
+          "anti_analysis": [
+            "LD_PRELOAD environment check (skip reverse shell to avoid recursion)",
+            "LD_AUDIT environment check"
+          ],
+          "encryption_details": {
+            "algorithm": "none",
+            "key": "",
+            "key_storage": ""
+          },
+          "decoded_strings": {
+            "port_hex": "0x115c -> 4444",
+            "ip": "192.168.1.100",
+            "shell": "/bin/sh",
+            "hooked_function": "puts"
+          }
+        },
+        "is_final_answer": true
+      }
+    ],
+    "redundant_tool_calls": 0,
+    "invalid_tool_calls": 0,
+    "invalid_json_attempts": 0,
+    "input_tokens": 15015,
+    "output_tokens": 1139,
+    "reasoning_tokens": 0,
+    "total_tokens": 16154,
+    "wall_time_seconds": 17.07,
+    "llm_seconds": 16.51,
+    "max_steps_hit": false,
+    "has_valid_answer": true
+  },
+  "metrics": {
+    "task_id": "level9_SharedObjectInjectionReverseShell",
+    "score": 0.425,
+    "tier": "standard",
+    "field_scores": {
+      "decoded_c2": 1.0,
+      "techniques": 0.25,
+      "file_type": 0.0,
+      "encoded_strings": 1.0,
+      "c2_protocol": 1.0
+    },
+    "tool_calls_total": 4,
+    "tool_calls_by_type": {
+      "file": 1,
+      "strings": 1,
+      "objdump": 1,
+      "final_answer": 1
+    },
+    "redundant_tool_calls": 0,
+    "invalid_tool_calls": 0,
+    "invalid_json_attempts": 0,
+    "steps_to_answer": 4,
+    "max_steps_hit": false,
+    "has_valid_answer": true,
+    "hallucinated_techniques": [
+      "dlsym_RTLD_NEXT",
+      "ld_audit_check",
+      "ld_preload_check",
+      "puts_hook",
+      "socket_connect"
+    ],
+    "hallucination_count": 5,
+    "missing_techniques": [
+      "constructor_attribute",
+      "dlsym_hijack",
+      "env_check",
+      "function_hooking"
+    ],
+    "wall_time_seconds": 17.07,
+    "llm_seconds": 16.51,
+    "total_tokens": 16154,
+    "input_tokens": 15015,
+    "output_tokens": 1139,
+    "reasoning_tokens": 0
+  }
+}

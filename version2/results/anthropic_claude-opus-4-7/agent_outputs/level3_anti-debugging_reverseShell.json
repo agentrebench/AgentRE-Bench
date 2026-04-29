@@ -1,0 +1,33 @@
+{
+  "file_type": "ELF64",
+  "encoded_strings": false,
+  "decoded_c2": "192.168.1.100:4444",
+  "c2_protocol": "TCP",
+  "techniques": [
+    "socket_connect",
+    "reverse_shell",
+    "fork",
+    "dup2_stdio_redirect",
+    "execve_bin_sh",
+    "anti_debug_ptrace",
+    "anti_debug_ld_preload_check",
+    "anti_debug_ld_library_path_check",
+    "delay_execution_sleep",
+    "statically_linked"
+  ],
+  "anti_analysis": [
+    "ptrace(PTRACE_TRACEME) self-attach check - exits if ptrace returns -1",
+    "getenv(LD_PRELOAD) check - exits if set",
+    "getenv(LD_LIBRARY_PATH) check - exits if set",
+    "Random sleep delay (srand(time(0)) + rand()%60 + 30 seconds) via __sleep",
+    "Statically linked (no dynamic imports to hook)",
+    "Fork to detach child reverse shell from parent"
+  ],
+  "decoded_strings": {
+    "0x47a011": "LD_PRELOAD",
+    "0x47a01b": "LD_LIBRARY_PATH",
+    "0x47a02b": "192.168.1.100",
+    "0x47a039": "/bin/sh",
+    "port_0x115c": "4444"
+  }
+}

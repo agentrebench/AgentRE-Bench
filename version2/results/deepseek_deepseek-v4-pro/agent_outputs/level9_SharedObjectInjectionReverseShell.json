@@ -1,0 +1,14 @@
+{
+  "file_type": "ELF64 shared object",
+  "encoded_strings": false,
+  "decoded_c2": "192.168.1.100:4444",
+  "techniques": [
+    "socket_connect",
+    "shared_object_injection",
+    "function_hooking",
+    "dlsym_rtld_next",
+    "reverse_shell",
+    "anti_debug_environment"
+  ],
+  "c2_protocol": "TCP"
+}

@@ -26,9 +26,11 @@ class TaskMetrics:
     missing_techniques: list[str] = field(default_factory=list)
 
     wall_time_seconds: float = 0.0
+    llm_seconds: float = 0.0
     total_tokens: int = 0
     input_tokens: int = 0
     output_tokens: int = 0
+    reasoning_tokens: int = 0
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -48,9 +50,11 @@ class TaskMetrics:
             "hallucination_count": self.hallucination_count,
             "missing_techniques": self.missing_techniques,
             "wall_time_seconds": self.wall_time_seconds,
+            "llm_seconds": self.llm_seconds,
             "total_tokens": self.total_tokens,
             "input_tokens": self.input_tokens,
             "output_tokens": self.output_tokens,
+            "reasoning_tokens": self.reasoning_tokens,
         }
 
 
@@ -72,7 +76,10 @@ class AggregateMetrics:
     episode_length_median: float = 0.0
 
     total_wall_time: float = 0.0
+    total_llm_seconds: float = 0.0
+    avg_llm_seconds_per_task: float = 0.0
     total_tokens: int = 0
+    total_reasoning_tokens: int = 0
     max_steps_hit_count: int = 0
 
     tasks_run: int = 0
@@ -93,7 +100,10 @@ class AggregateMetrics:
             "episode_length_mean": round(self.episode_length_mean, 2),
             "episode_length_median": round(self.episode_length_median, 2),
             "total_wall_time": round(self.total_wall_time, 2),
+            "total_llm_seconds": round(self.total_llm_seconds, 2),
+            "avg_llm_seconds_per_task": round(self.avg_llm_seconds_per_task, 2),
             "total_tokens": self.total_tokens,
+            "total_reasoning_tokens": self.total_reasoning_tokens,
             "max_steps_hit_count": self.max_steps_hit_count,
             "tasks_run": self.tasks_run,
             "tasks_with_answer": self.tasks_with_answer,
@@ -124,9 +134,11 @@ def collect_task_metrics(
         hallucination_count=len(hallucinated),
         missing_techniques=score_result.get("missing_techniques", []),
         wall_time_seconds=agent_result.get("wall_time_seconds", 0.0),
+        llm_seconds=agent_result.get("llm_seconds", 0.0),
         total_tokens=agent_result.get("total_tokens", 0),
         input_tokens=agent_result.get("input_tokens", 0),
         output_tokens=agent_result.get("output_tokens", 0),
+        reasoning_tokens=agent_result.get("reasoning_tokens", 0),
     )
 
 
@@ -182,7 +194,13 @@ def compute_aggregate(task_metrics: list[TaskMetrics]) -> AggregateMetrics:
     agg.episode_length_median = statistics.median(times)
 
     agg.total_wall_time = sum(times)
+    llm_times = [m.llm_seconds for m in task_metrics]
+    agg.total_llm_seconds = sum(llm_times)
+    agg.avg_llm_seconds_per_task = (
+        agg.total_llm_seconds / len(llm_times) if llm_times else 0.0
+    )
     agg.total_tokens = sum(m.total_tokens for m in task_metrics)
+    agg.total_reasoning_tokens = sum(m.reasoning_tokens for m in task_metrics)
     agg.max_steps_hit_count = sum(1 for m in task_metrics if m.max_steps_hit)
 
     return agg

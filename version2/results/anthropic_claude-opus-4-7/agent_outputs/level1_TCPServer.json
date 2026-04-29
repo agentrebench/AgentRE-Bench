@@ -1,0 +1,20 @@
+{
+  "file_type": "ELF64",
+  "encoded_strings": false,
+  "decoded_c2": "192.168.1.100:4444",
+  "c2_protocol": "TCP",
+  "techniques": [
+    "socket_connect",
+    "reverse_shell",
+    "dup2_stdio_redirect",
+    "execve_bin_sh",
+    "inet_pton",
+    "htons_port",
+    "static_linking"
+  ],
+  "decoded_strings": {
+    "0x477010": "192.168.1.100",
+    "0x47701e": "/bin/sh",
+    "port_0x115c": "4444"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "file_type": "ELF64",
+  "encoded_strings": true,
+  "decoded_c2": "192.168.1.100:4444",
+  "techniques": [
+    "xor_encoding",
+    "socket_connect",
+    "reverse_shell"
+  ],
+  "c2_protocol": "TCP",
+  "encryption_details": {
+    "algorithm": "XOR",
+    "key": "0x22",
+    "key_storage": "hardcoded as immediate value in main function"
+  },
+  "decoded_strings": {
+    "ip_address": "192.168.1.100",
+    "port": "4444",
+    "shell_path": "/bin/sh"
+  }
+}

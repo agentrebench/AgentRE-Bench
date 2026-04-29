@@ -1,0 +1,29 @@
+{
+  "file_type": "ELF64",
+  "encoded_strings": false,
+  "decoded_c2": "192.168.1.100:4444",
+  "c2_protocol": "TCP",
+  "techniques": [
+    "socket_connect",
+    "reverse_shell",
+    "dup2_stdio",
+    "execve_bin_sh",
+    "fork_bomb",
+    "inet_pton",
+    "htons_port"
+  ],
+  "encryption_details": {
+    "algorithm": "none",
+    "key": "",
+    "key_storage": ""
+  },
+  "decoded_strings": {
+    "c2_ip": "192.168.1.100",
+    "c2_port_hex": "0x115c",
+    "c2_port_dec": "4444",
+    "shell_path": "/bin/sh"
+  },
+  "anti_analysis": [
+    "fork_bomb_dos"
+  ]
+}

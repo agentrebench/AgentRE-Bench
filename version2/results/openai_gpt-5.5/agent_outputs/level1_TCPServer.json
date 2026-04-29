@@ -1,0 +1,15 @@
+{
+  "file_type": "ELF64",
+  "encoded_strings": false,
+  "decoded_c2": "192.168.1.100:4444",
+  "techniques": [
+    "socket_create",
+    "socket_connect",
+    "inet_pton_ip_conversion",
+    "dup2_stdio_redirection",
+    "execve_bin_sh",
+    "static_linking"
+  ],
+  "c2_protocol": "TCP",
+  "anti_analysis": []
+}

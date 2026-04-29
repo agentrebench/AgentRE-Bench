@@ -1,0 +1,11 @@
+{
+  "techniques": [
+    "dns_tunneling",
+    "socket_connect",
+    "popen_execution"
+  ],
+  "file_type": "ELF64",
+  "decoded_c2": "attacker.com",
+  "encoded_strings": false,
+  "c2_protocol": "DNS"
+}

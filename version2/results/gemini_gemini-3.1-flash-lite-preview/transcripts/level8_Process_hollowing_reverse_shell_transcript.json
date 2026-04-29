@@ -1,0 +1,328 @@
+{
+  "task_id": "level8_Process_hollowing_reverse_shell",
+  "model": "gemini-3.1-flash-lite-preview",
+  "provider": "gemini",
+  "difficulty": 8,
+  "score": {
+    "tier": "standard",
+    "field_scores": {
+      "decoded_c2": 1.0,
+      "techniques": 0.14285714285714285,
+      "file_type": 1.0,
+      "encoded_strings": 0.0,
+      "c2_protocol": 1.0
+    },
+    "hallucinated_techniques": [
+      "fork",
+      "ptrace_injection"
+    ],
+    "missing_techniques": [
+      "fork_exec",
+      "ptrace_inject",
+      "register_manipulation",
+      "shellcode_injection"
+    ],
+    "hallucination_penalty": 0.1,
+    "weighted_score": 0.6429,
+    "final_score": 0.5429,
+    "sample": "level8_Process_hollowing_reverse_shell"
+  },
+  "agent_result": {
+    "task_id": "level8_Process_hollowing_reverse_shell",
+    "final_answer": {
+      "file_type": "ELF64",
+      "encoded_strings": false,
+      "techniques": [
+        "process_hollowing",
+        "ptrace_injection",
+        "fork"
+      ],
+      "decoded_c2": "127.0.0.1:4444",
+      "c2_protocol": "TCP"
+    },
+    "tool_call_count": 22,
+    "tool_calls_by_type": {
+      "file": 1,
+      "strings": 1,
+      "objdump": 18,
+      "hexdump": 1,
+      "final_answer": 1
+    },
+    "tool_calls_log": [
+      {
+        "call_number": 1,
+        "tool": "file",
+        "input": {
+          "path": "/workspace/level8_Process_hollowing_reverse_shell"
+        },
+        "output_preview": "/workspace/level8_Process_hollowing_reverse_shell: ELF 64-bit LSB executable, x86-64, version 1 (GNU/Linux), statically linked, for GNU/Linux 3.2.0, with debug_info, not stripped\n"
+      },
+      {
+        "call_number": 2,
+        "tool": "strings",
+        "input": {
+          "path": "/workspace/level8_Process_hollowing_reverse_shell"
+        },
+        "output_preview": "D$8dH+\nu=E1\nD$HdH+\n[]A\\\nPTE1\nu+UH\nj*XH\n/biH\nn//shSH\nuHdH\nD$hdH\nD$pH\nD$ dH\nATUSM\nA\\A]A^A_\n$\tA\t\n[]A\\A]\nAVAUATUSH\n[]A\\A]A^A_\nAWAVAUATUSH\nP[]A\\A]A^A_\nAVAUATUSH\nGenuun\nnteluf\nineI\nHygo@\nuine\nnGenu^H\nL$hH\n|$`L\nAuth\ncAMD\nenti\nD$hH\nnD$dD\n\\$,u\nL$ H\nD$pH\nD$xL\nH=?@\nT$pH\nD$ H\nD$ L\nL9d$\n[]A\\A]A^A_\nCent\nauls\naurH\nt$dH\nD$dD\nnD$d\nD$pI\n\\$HH\nL$0H\nT$lH\nt$xH\n|$pH\nL$0H\nD$8L\nD$@L\n\\$HL\nT$PL\nt$dL\nL$hH\nT$`f\nnD$d\nD$hD\nD$pI\n\\$@H\nL$0H\nT$lH\nt$xH\n|$pI\nL$0L\nD$8H\n\\$@L\nT$HL\nD$pH\nD$8H\nt$0I\nt$0L\nD$8H\nL$@L\nL$HH\nL$pH\n  Sh@\nai  \nang"
+      },
+      {
+        "call_number": 3,
+        "tool": "objdump",
+        "input": {
+          "flags": "-d",
+          "path": "/workspace/level8_Process_hollowing_reverse_shell"
+        },
+        "output_preview": "\n/workspace/level8_Process_hollowing_reverse_shell:     file format elf64-x86-64\n\n\nDisassembly of section .init:\n\n0000000000401000 <_init>:\n  401000:\t48 83 ec 08          \tsub    $0x8,%rsp\n  401004:\t48 c7 c0 00 00 00 00 \tmov    $0x0,%rax\n  40100b:\t48 85 c0             \ttest   %rax,%rax\n  40100e:\t74 02                \tje     401012 <_init+0x12>\n  401010:\tff d0                \tcall   *%rax\n  401012:\t48 83 c4 08          \tadd    $0x8,%rsp\n  401016:\tc3                   \tret    \n\nDisassembly of sect"
+      },
+      {
+        "call_number": 4,
+        "tool": "objdump",
+        "input": {
+          "flags": "-d",
+          "path": "/workspace/level8_Process_hollowing_reverse_shell",
+          "section": ".text"
+        },
+        "output_preview": "\n/workspace/level8_Process_hollowing_reverse_shell:     file format elf64-x86-64\n\n\nDisassembly of section .text:\n\n0000000000401100 <__libc_message_impl.cold>:\n  401100:\te8 06 00 00 00       \tcall   40110b <abort>\n\n0000000000401105 <_dl_start>:\n  401105:\t50                   \tpush   %rax\n  401106:\te8 00 00 00 00       \tcall   40110b <abort>\n\n000000000040110b <abort>:\n  40110b:\t48 81 ec b8 00 00 00 \tsub    $0xb8,%rsp\n  401112:\t64 48 8b 3c 25 28 00 \tmov    %fs:0x28,%rdi\n  401119:\t00 00 \n  40111b:\t4"
+      },
+      {
+        "call_number": 5,
+        "tool": "objdump",
+        "input": {
+          "flags": "-s",
+          "path": "/workspace/level8_Process_hollowing_reverse_shell",
+          "section": ".rodata"
+        },
+        "output_preview": "\n/workspace/level8_Process_hollowing_reverse_shell:     file format elf64-x86-64\n\nContents of section .rodata:\n 47a000 01000200 00000000 0000803f 00004040  ...........?..@@\n 47a010 31303030 00736c65 6570002f 62696e2f  1000.sleep./bin/\n 47a020 736c6565 70000000 00000000 00000000  sleep...........\n 47a030 00000000 00000000 00000000 00000000  ................\n 47a040 6e7bf8ff 3a7bf8ff 3e7cf8ff 267cf8ff  n{..:{..>|..&|..\n 47a050 337bf8ff 907bf8ff 0e7cf8ff 597cf8ff  3{...{...|..Y|..\n 47a060 ab7af8ff "
+      },
+      {
+        "call_number": 6,
+        "tool": "objdump",
+        "input": {
+          "path": "/workspace/level8_Process_hollowing_reverse_shell",
+          "flags": "-d",
+          "section": ".text"
+        },
+        "output_preview": "\n/workspace/level8_Process_hollowing_reverse_shell:     file format elf64-x86-64\n\n\nDisassembly of section .text:\n\n0000000000401100 <__libc_message_impl.cold>:\n  401100:\te8 06 00 00 00       \tcall   40110b <abort>\n\n0000000000401105 <_dl_start>:\n  401105:\t50                   \tpush   %rax\n  401106:\te8 00 00 00 00       \tcall   40110b <abort>\n\n000000000040110b <abort>:\n  40110b:\t48 81 ec b8 00 00 00 \tsub    $0xb8,%rsp\n  401112:\t64 48 8b 3c 25 28 00 \tmov    %fs:0x28,%rdi\n  401119:\t00 00 \n  40111b:\t4"
+      },
+      {
+        "call_number": 7,
+        "tool": "objdump",
+        "input": {
+          "flags": "-d",
+          "section": ".text",
+          "path": "/workspace/level8_Process_hollowing_reverse_shell"
+        },
+        "output_preview": "\n/workspace/level8_Process_hollowing_reverse_shell:     file format elf64-x86-64\n\n\nDisassembly of section .text:\n\n0000000000401100 <__libc_message_impl.cold>:\n  401100:\te8 06 00 00 00       \tcall   40110b <abort>\n\n0000000000401105 <_dl_start>:\n  401105:\t50                   \tpush   %rax\n  401106:\te8 00 00 00 00       \tcall   40110b <abort>\n\n000000000040110b <abort>:\n  40110b:\t48 81 ec b8 00 00 00 \tsub    $0xb8,%rsp\n  401112:\t64 48 8b 3c 25 28 00 \tmov    %fs:0x28,%rdi\n  401119:\t00 00 \n  40111b:\t4"
+      },
+      {
+        "call_number": 8,
+        "tool": "objdump",
+        "input": {
+          "flags": "-d",
+          "section": ".text",
+          "path": "/workspace/level8_Process_hollowing_reverse_shell"
+        },
+        "output_preview": "\n/workspace/level8_Process_hollowing_reverse_shell:     file format elf64-x86-64\n\n\nDisassembly of section .text:\n\n0000000000401100 <__libc_message_impl.cold>:\n  401100:\te8 06 00 00 00       \tcall   40110b <abort>\n\n0000000000401105 <_dl_start>:\n  401105:\t50                   \tpush   %rax\n  401106:\te8 00 00 00 00       \tcall   40110b <abort>\n\n000000000040110b <abort>:\n  40110b:\t48 81 ec b8 00 00 00 \tsub    $0xb8,%rsp\n  401112:\t64 48 8b 3c 25 28 00 \tmov    %fs:0x28,%rdi\n  401119:\t00 00 \n  40111b:\t4"
+      },
+      {
+        "call_number": 9,
+        "tool": "objdump",
+        "input": {
+          "flags": "-s",
+          "section": ".data",
+          "path": "/workspace/level8_Process_hollowing_reverse_shell"
+        },
+        "output_preview": "\n/workspace/level8_Process_hollowing_reverse_shell:     file format elf64-x86-64\n\nContents of section .data:\n 4a70c0 00000000 00000000 00000000 00000000  ................\n 4a70d0 00080000 00000000 00080000 00000000  ................\n 4a70e0 00001000 00000000 00000800 00000000  ................\n 4a70f0 00800000 00000000 00400000 00000000  .........@......\n 4a7100 00944a00 00000000 01000000 00000000  ..J.............\n 4a7110 00000000 00000000 00000000 00000000  ................\n 4a7120 ffffffff 00"
+      },
+      {
+        "call_number": 10,
+        "tool": "objdump",
+        "input": {
+          "path": "/workspace/level8_Process_hollowing_reverse_shell",
+          "section": ".rodata",
+          "flags": "-s"
+        },
+        "output_preview": "\n/workspace/level8_Process_hollowing_reverse_shell:     file format elf64-x86-64\n\nContents of section .rodata:\n 47a000 01000200 00000000 0000803f 00004040  ...........?..@@\n 47a010 31303030 00736c65 6570002f 62696e2f  1000.sleep./bin/\n 47a020 736c6565 70000000 00000000 00000000  sleep...........\n 47a030 00000000 00000000 00000000 00000000  ................\n 47a040 6e7bf8ff 3a7bf8ff 3e7cf8ff 267cf8ff  n{..:{..>|..&|..\n 47a050 337bf8ff 907bf8ff 0e7cf8ff 597cf8ff  3{...{...|..Y|..\n 47a060 ab7af8ff "
+      },
+      {
+        "call_number": 11,
+        "tool": "objdump",
+        "input": {
+          "flags": "-d",
+          "path": "/workspace/level8_Process_hollowing_reverse_shell",
+          "section": ".text"
+        },
+        "output_preview": "\n/workspace/level8_Process_hollowing_reverse_shell:     file format elf64-x86-64\n\n\nDisassembly of section .text:\n\n0000000000401100 <__libc_message_impl.cold>:\n  401100:\te8 06 00 00 00       \tcall   40110b <abort>\n\n0000000000401105 <_dl_start>:\n  401105:\t50                   \tpush   %rax\n  401106:\te8 00 00 00 00       \tcall   40110b <abort>\n\n000000000040110b <abort>:\n  40110b:\t48 81 ec b8 00 00 00 \tsub    $0xb8,%rsp\n  401112:\t64 48 8b 3c 25 28 00 \tmov    %fs:0x28,%rdi\n  401119:\t00 00 \n  40111b:\t4"
+      },
+      {
+        "call_number": 12,
+        "tool": "objdump",
+        "input": {
+          "path": "/workspace/level8_Process_hollowing_reverse_shell",
+          "flags": "-s",
+          "section": ".rodata"
+        },
+        "output_preview": "\n/workspace/level8_Process_hollowing_reverse_shell:     file format elf64-x86-64\n\nContents of section .rodata:\n 47a000 01000200 00000000 0000803f 00004040  ...........?..@@\n 47a010 31303030 00736c65 6570002f 62696e2f  1000.sleep./bin/\n 47a020 736c6565 70000000 00000000 00000000  sleep...........\n 47a030 00000000 00000000 00000000 00000000  ................\n 47a040 6e7bf8ff 3a7bf8ff 3e7cf8ff 267cf8ff  n{..:{..>|..&|..\n 47a050 337bf8ff 907bf8ff 0e7cf8ff 597cf8ff  3{...{...|..Y|..\n 47a060 ab7af8ff "
+      },
+      {
+        "call_number": 13,
+        "tool": "objdump",
+        "input": {
+          "flags": "-d",
+          "section": ".text",
+          "path": "/workspace/level8_Process_hollowing_reverse_shell"
+        },
+        "output_preview": "\n/workspace/level8_Process_hollowing_reverse_shell:     file format elf64-x86-64\n\n\nDisassembly of section .text:\n\n0000000000401100 <__libc_message_impl.cold>:\n  401100:\te8 06 00 00 00       \tcall   40110b <abort>\n\n0000000000401105 <_dl_start>:\n  401105:\t50                   \tpush   %rax\n  401106:\te8 00 00 00 00       \tcall   40110b <abort>\n\n000000000040110b <abort>:\n  40110b:\t48 81 ec b8 00 00 00 \tsub    $0xb8,%rsp\n  401112:\t64 48 8b 3c 25 28 00 \tmov    %fs:0x28,%rdi\n  401119:\t00 00 \n  40111b:\t4"
+      },
+      {
+        "call_number": 14,
+        "tool": "objdump",
+        "input": {
+          "section": ".text",
+          "flags": "-d",
+          "path": "/workspace/level8_Process_hollowing_reverse_shell"
+        },
+        "output_preview": "\n/workspace/level8_Process_hollowing_reverse_shell:     file format elf64-x86-64\n\n\nDisassembly of section .text:\n\n0000000000401100 <__libc_message_impl.cold>:\n  401100:\te8 06 00 00 00       \tcall   40110b <abort>\n\n0000000000401105 <_dl_start>:\n  401105:\t50                   \tpush   %rax\n  401106:\te8 00 00 00 00       \tcall   40110b <abort>\n\n000000000040110b <abort>:\n  40110b:\t48 81 ec b8 00 00 00 \tsub    $0xb8,%rsp\n  401112:\t64 48 8b 3c 25 28 00 \tmov    %fs:0x28,%rdi\n  401119:\t00 00 \n  40111b:\t4"
+      },
+      {
+        "call_number": 15,
+        "tool": "objdump",
+        "input": {
+          "path": "/workspace/level8_Process_hollowing_reverse_shell",
+          "flags": "-d",
+          "section": ".text"
+        },
+        "output_preview": "\n/workspace/level8_Process_hollowing_reverse_shell:     file format elf64-x86-64\n\n\nDisassembly of section .text:\n\n0000000000401100 <__libc_message_impl.cold>:\n  401100:\te8 06 00 00 00       \tcall   40110b <abort>\n\n0000000000401105 <_dl_start>:\n  401105:\t50                   \tpush   %rax\n  401106:\te8 00 00 00 00       \tcall   40110b <abort>\n\n000000000040110b <abort>:\n  40110b:\t48 81 ec b8 00 00 00 \tsub    $0xb8,%rsp\n  401112:\t64 48 8b 3c 25 28 00 \tmov    %fs:0x28,%rdi\n  401119:\t00 00 \n  40111b:\t4"
+      },
+      {
+        "call_number": 16,
+        "tool": "objdump",
+        "input": {
+          "flags": "-s",
+          "section": ".rodata",
+          "path": "/workspace/level8_Process_hollowing_reverse_shell"
+        },
+        "output_preview": "\n/workspace/level8_Process_hollowing_reverse_shell:     file format elf64-x86-64\n\nContents of section .rodata:\n 47a000 01000200 00000000 0000803f 00004040  ...........?..@@\n 47a010 31303030 00736c65 6570002f 62696e2f  1000.sleep./bin/\n 47a020 736c6565 70000000 00000000 00000000  sleep...........\n 47a030 00000000 00000000 00000000 00000000  ................\n 47a040 6e7bf8ff 3a7bf8ff 3e7cf8ff 267cf8ff  n{..:{..>|..&|..\n 47a050 337bf8ff 907bf8ff 0e7cf8ff 597cf8ff  3{...{...|..Y|..\n 47a060 ab7af8ff "
+      },
+      {
+        "call_number": 17,
+        "tool": "objdump",
+        "input": {
+          "flags": "-d",
+          "section": ".text",
+          "path": "/workspace/level8_Process_hollowing_reverse_shell"
+        },
+        "output_preview": "\n/workspace/level8_Process_hollowing_reverse_shell:     file format elf64-x86-64\n\n\nDisassembly of section .text:\n\n0000000000401100 <__libc_message_impl.cold>:\n  401100:\te8 06 00 00 00       \tcall   40110b <abort>\n\n0000000000401105 <_dl_start>:\n  401105:\t50                   \tpush   %rax\n  401106:\te8 00 00 00 00       \tcall   40110b <abort>\n\n000000000040110b <abort>:\n  40110b:\t48 81 ec b8 00 00 00 \tsub    $0xb8,%rsp\n  401112:\t64 48 8b 3c 25 28 00 \tmov    %fs:0x28,%rdi\n  401119:\t00 00 \n  40111b:\t4"
+      },
+      {
+        "call_number": 18,
+        "tool": "objdump",
+        "input": {
+          "flags": "-d",
+          "path": "/workspace/level8_Process_hollowing_reverse_shell"
+        },
+        "output_preview": "\n/workspace/level8_Process_hollowing_reverse_shell:     file format elf64-x86-64\n\n\nDisassembly of section .init:\n\n0000000000401000 <_init>:\n  401000:\t48 83 ec 08          \tsub    $0x8,%rsp\n  401004:\t48 c7 c0 00 00 00 00 \tmov    $0x0,%rax\n  40100b:\t48 85 c0             \ttest   %rax,%rax\n  40100e:\t74 02                \tje     401012 <_init+0x12>\n  401010:\tff d0                \tcall   *%rax\n  401012:\t48 83 c4 08          \tadd    $0x8,%rsp\n  401016:\tc3                   \tret    \n\nDisassembly of sect"
+      },
+      {
+        "call_number": 19,
+        "tool": "objdump",
+        "input": {
+          "section": ".text",
+          "path": "/workspace/level8_Process_hollowing_reverse_shell",
+          "flags": "-s"
+        },
+        "output_preview": "\n/workspace/level8_Process_hollowing_reverse_shell:     file format elf64-x86-64\n\nContents of section .text:\n 401100 e8060000 0050e800 00000048 81ecb800  .....P.....H....\n 401110 00006448 8b3c2528 00000048 89bc24a8  ..dH.<%(...H..$.\n 401120 000000bf 06000000 e8e3dc04 0031ffe8  .............1..\n 401130 4c580100 31c0488d 7c241031 d2b92600  LX..1.H.|$.1..&.\n 401140 0000488d 742410f3 abbf0600 000048c7  ..H.t$........H.\n 401150 442418ff ffffffe8 14dd0400 bf060000  D$..............\n 401160 00e8aa2c 02"
+      },
+      {
+        "call_number": 20,
+        "tool": "objdump",
+        "input": {
+          "path": "/workspace/level8_Process_hollowing_reverse_shell",
+          "section": ".text",
+          "flags": "-d"
+        },
+        "output_preview": "\n/workspace/level8_Process_hollowing_reverse_shell:     file format elf64-x86-64\n\n\nDisassembly of section .text:\n\n0000000000401100 <__libc_message_impl.cold>:\n  401100:\te8 06 00 00 00       \tcall   40110b <abort>\n\n0000000000401105 <_dl_start>:\n  401105:\t50                   \tpush   %rax\n  401106:\te8 00 00 00 00       \tcall   40110b <abort>\n\n000000000040110b <abort>:\n  40110b:\t48 81 ec b8 00 00 00 \tsub    $0xb8,%rsp\n  401112:\t64 48 8b 3c 25 28 00 \tmov    %fs:0x28,%rdi\n  401119:\t00 00 \n  40111b:\t4"
+      },
+      {
+        "call_number": 21,
+        "tool": "hexdump",
+        "input": {
+          "offset": 5916,
+          "path": "/workspace/level8_Process_hollowing_reverse_shell",
+          "length": 256
+        },
+        "output_preview": "0000171c  b9 00 00 00 00 ba 10 a0  47 00 be 15 a0 47 00 bf  |........G....G..|\n0000172c  1b a0 47 00 b8 00 00 00  00 e8 26 fc 00 00 e9 b8  |..G.......&.....|\n0000173c  01 00 00 bf 00 00 00 00  e8 a7 0a 01 00 48 8d 95  |.............H..|\n0000174c  20 ff ff ff 8b 45 f8 48  89 d1 ba 00 00 00 00 89  | ....E.H........|\n0000175c  c6 bf 0c 00 00 00 b8 00  00 00 00 e8 f4 12 01 00  |................|\n0000176c  48 b8 48 31 c0 48 31 ff  48 31 48 ba f6 48 31 d2  |H.H1.H1.H1H..H1.|\n0000177c  4d 31 c0 6a 48 8"
+      },
+      {
+        "call_number": 22,
+        "tool": "final_answer",
+        "input": {
+          "file_type": "ELF64",
+          "encoded_strings": false,
+          "techniques": [
+            "process_hollowing",
+            "ptrace_injection",
+            "fork"
+          ],
+          "decoded_c2": "127.0.0.1:4444",
+          "c2_protocol": "TCP"
+        },
+        "is_final_answer": true
+      }
+    ],
+    "redundant_tool_calls": 13,
+    "invalid_tool_calls": 0,
+    "invalid_json_attempts": 0,
+    "input_tokens": 6616048,
+    "output_tokens": 921,
+    "reasoning_tokens": 0,
+    "total_tokens": 6616969,
+    "wall_time_seconds": 65.03,
+    "llm_seconds": 59.08,
+    "max_steps_hit": false,
+    "has_valid_answer": true
+  },
+  "metrics": {
+    "task_id": "level8_Process_hollowing_reverse_shell",
+    "score": 0.5429,
+    "tier": "standard",
+    "field_scores": {
+      "decoded_c2": 1.0,
+      "techniques": 0.14285714285714285,
+      "file_type": 1.0,
+      "encoded_strings": 0.0,
+      "c2_protocol": 1.0
+    },
+    "tool_calls_total": 22,
+    "tool_calls_by_type": {
+      "file": 1,
+      "strings": 1,
+      "objdump": 18,
+      "hexdump": 1,
+      "final_answer": 1
+    },
+    "redundant_tool_calls": 13,
+    "invalid_tool_calls": 0,
+    "invalid_json_attempts": 0,
+    "steps_to_answer": 22,
+    "max_steps_hit": false,
+    "has_valid_answer": true,
+    "hallucinated_techniques": [
+      "fork",
+      "ptrace_injection"
+    ],
+    "hallucination_count": 2,
+    "missing_techniques": [
+      "fork_exec",
+      "ptrace_inject",
+      "register_manipulation",
+      "shellcode_injection"
+    ],
+    "wall_time_seconds": 65.03,
+    "llm_seconds": 59.08,
+    "total_tokens": 6616969,
+    "input_tokens": 6616048,
+    "output_tokens": 921,
+    "reasoning_tokens": 0
+  }
+}

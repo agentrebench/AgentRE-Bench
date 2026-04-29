@@ -40,21 +40,10 @@ else
 fi
 echo ""
 
-# Mapping: source filename (may have spaces) → output binary name
-declare -A NAME_MAP
-NAME_MAP["level1_TCPServer"]="level1_TCPServer"
-NAME_MAP["level2_XorEncodedStrings"]="level2_XorEncodedStrings"
-NAME_MAP["level3_anti-debugging_reverseShell"]="level3_anti-debugging_reverseShell"
-NAME_MAP["level4_polymorphicReverseShell"]="level4_polymorphicReverseShell"
-NAME_MAP["level5_MultistageReverseShell"]="level5_MultistageReverseShell"
-NAME_MAP["level6_ICMP Covert Channel Shell"]="level6_ICMP_CovertChannelShell"
-NAME_MAP["level7_DNS_TunnelReverse Shell"]="level7_DNS_TunnelReverseShell"
-NAME_MAP["level8_Process_hollowing_reverse_shell"]="level8_Process_hollowing_reverse_shell"
-NAME_MAP["level9_SharedObjectInjectionReverseShell"]="level9_SharedObjectInjectionReverseShell"
-NAME_MAP["level10_fully_obfuscated_AES_Encrypted Shell"]="level10_fully_obfuscated_AES_Encrypted_Shell"
-NAME_MAP["level11_ForkBombReverseShell"]="level11_ForkBombReverseShell"
-NAME_MAP["level12_JIT_Compiled_Shellcode"]="level12_JIT_Compiled_Shellcode"
-NAME_MAP["level13_MetamorphicDropper"]="level13_MetamorphicDropper"
+# Output binary name: replace spaces with underscores in the basename
+_name_map() {
+    echo "$1" | sed 's/ /_/g'
+}
 
 SUCCESS=0
 FAIL=0
@@ -62,7 +51,7 @@ FAIL=0
 for SRC in "$SAMPLES_DIR"/*.c; do
     # Extract base name without extension
     BASENAME="$(basename "$SRC" .c)"
-    OUTNAME="${NAME_MAP[$BASENAME]:-$BASENAME}"
+    OUTNAME="$(_name_map "$BASENAME")"
 
     echo -n "Building $OUTNAME ... "
 

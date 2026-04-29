@@ -1,0 +1,21 @@
+{
+  "c2_protocol": "TCP",
+  "decoded_strings": {
+    "address": "192.168.1.100",
+    "command": "/bin/sh",
+    "port": "4444"
+  },
+  "encryption_details": {
+    "key": "0x22",
+    "algorithm": "XOR"
+  },
+  "encoded_strings": true,
+  "techniques": [
+    "xor_encoding",
+    "socket_connect",
+    "execve",
+    "dup2_redirection"
+  ],
+  "file_type": "ELF64",
+  "decoded_c2": "192.168.1.100:4444"
+}

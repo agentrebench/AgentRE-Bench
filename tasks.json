@@ -38,14 +38,14 @@
     {
       "task_id": "level6_ICMP_CovertChannelShell",
       "source_file": "samples/level6_ICMP Covert Channel Shell.c",
-      "binary_name": "level6_ICMP_CovertChannelShell",
+      "binary_name": "level6_ICMP_Covert_Channel_Shell",
       "ground_truth": "ground_truths/level6_ICMP_CovertChannelShell.json",
       "difficulty": 6
     },
     {
       "task_id": "level7_DNS_TunnelReverseShell",
       "source_file": "samples/level7_DNS_TunnelReverse Shell.c",
-      "binary_name": "level7_DNS_TunnelReverseShell",
+      "binary_name": "level7_DNS_TunnelReverse_Shell",
       "ground_truth": "ground_truths/level7_DNS_TunnelReverseShell.json",
       "difficulty": 7
     },

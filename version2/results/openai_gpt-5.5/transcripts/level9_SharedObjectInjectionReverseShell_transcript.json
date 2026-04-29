@@ -1,0 +1,234 @@
+{
+  "task_id": "level9_SharedObjectInjectionReverseShell",
+  "model": "gpt-5.5",
+  "provider": "openai",
+  "difficulty": 9,
+  "score": {
+    "tier": "standard",
+    "field_scores": {
+      "decoded_c2": 1.0,
+      "techniques": 0.06666666666666667,
+      "file_type": 0.0,
+      "encoded_strings": 1.0,
+      "c2_protocol": 1.0
+    },
+    "hallucinated_techniques": [
+      "dlsym_RTLD_NEXT",
+      "dup2_stdio_redirection",
+      "environment_variable_check_LD_AUDIT_LD_PRELOAD",
+      "execve_bin_sh_reverse_shell",
+      "htons_port",
+      "inet_pton_ipv4",
+      "libc_function_interposition_puts",
+      "socket_connect"
+    ],
+    "missing_techniques": [
+      "constructor_attribute",
+      "dlsym_hijack",
+      "dup2_redirect",
+      "env_check",
+      "execve_shell",
+      "function_hooking"
+    ],
+    "hallucination_penalty": 0.4,
+    "weighted_score": 0.62,
+    "final_score": 0.22,
+    "sample": "level9_SharedObjectInjectionReverseShell"
+  },
+  "agent_result": {
+    "task_id": "level9_SharedObjectInjectionReverseShell",
+    "final_answer": {
+      "file_type": "ELF64 shared object (x86-64, dynamically linked, not stripped)",
+      "encoded_strings": false,
+      "decoded_c2": "192.168.1.100:4444",
+      "techniques": [
+        "shared_object_injection",
+        "libc_function_interposition_puts",
+        "dlsym_RTLD_NEXT",
+        "environment_variable_check_LD_AUDIT_LD_PRELOAD",
+        "socket_connect",
+        "inet_pton_ipv4",
+        "htons_port",
+        "dup2_stdio_redirection",
+        "execve_bin_sh_reverse_shell"
+      ],
+      "anti_analysis": [
+        "environment_variable_check_LD_AUDIT_LD_PRELOAD"
+      ],
+      "c2_protocol": "TCP"
+    },
+    "tool_call_count": 9,
+    "tool_calls_by_type": {
+      "file": 1,
+      "strings": 1,
+      "readelf": 3,
+      "objdump": 2,
+      "entropy": 1,
+      "final_answer": 1
+    },
+    "tool_calls_log": [
+      {
+        "call_number": 1,
+        "tool": "file",
+        "input": {
+          "path": "/workspace/level9_SharedObjectInjectionReverseShell"
+        },
+        "output_preview": "/workspace/level9_SharedObjectInjectionReverseShell: ELF 64-bit LSB shared object, x86-64, version 1 (SYSV), dynamically linked, not stripped\n"
+      },
+      {
+        "call_number": 2,
+        "tool": "strings",
+        "input": {
+          "path": "/workspace/level9_SharedObjectInjectionReverseShell",
+          "min_length": 4
+        },
+        "output_preview": "__gmon_start__\n_ITM_deregisterTMCloneTable\n_ITM_registerTMCloneTable\n__cxa_finalize\ngetenv\nsocket\nhtons\ninet_pton\nconnect\ndup2\nexecve\nputs\ndlsym\nlibm.so.6\nlibc.so.6\nGLIBC_2.34\nGLIBC_2.2.5\nu+UH\nLD_AUDIT\nLD_PRELOAD\n192.168.1.100\n/bin/sh\nputs\n;*3$\"\nGCC: (GNU) 15.2.0\ncrtstuff.c\nderegister_tm_clones\n__do_global_dtors_aux\ncompleted.0\n__do_global_dtors_aux_fini_array_entry\nframe_dummy\n__frame_dummy_init_array_entry\nlevel9_SharedObjectInjectionReverseShell.c\nreverse_shell\n__FRAME_END__\n_fini\n__dso_handl"
+      },
+      {
+        "call_number": 3,
+        "tool": "readelf",
+        "input": {
+          "path": "/workspace/level9_SharedObjectInjectionReverseShell",
+          "flags": "-h"
+        },
+        "output_preview": "ELF Header:\n  Magic:   7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00 \n  Class:                             ELF64\n  Data:                              2's complement, little endian\n  Version:                           1 (current)\n  OS/ABI:                            UNIX - System V\n  ABI Version:                       0\n  Type:                              DYN (Shared object file)\n  Machine:                           Advanced Micro Devices X86-64\n  Version:                           0x1\n  Entry"
+      },
+      {
+        "call_number": 4,
+        "tool": "readelf",
+        "input": {
+          "path": "/workspace/level9_SharedObjectInjectionReverseShell",
+          "flags": "-s"
+        },
+        "output_preview": "\nSymbol table '.dynsym' contains 14 entries:\n   Num:    Value          Size Type    Bind   Vis      Ndx Name\n     0: 0000000000000000     0 NOTYPE  LOCAL  DEFAULT  UND \n     1: 0000000000000000     0 FUNC    GLOBAL DEFAULT  UND [...]@GLIBC_2.2.5 (2)\n     2: 0000000000000000     0 NOTYPE  WEAK   DEFAULT  UND _ITM_deregisterT[...]\n     3: 0000000000000000     0 FUNC    GLOBAL DEFAULT  UND htons@GLIBC_2.2.5 (2)\n     4: 0000000000000000     0 FUNC    GLOBAL DEFAULT  UND dup2@GLIBC_2.2.5 (2)\n     5: "
+      },
+      {
+        "call_number": 5,
+        "tool": "objdump",
+        "input": {
+          "path": "/workspace/level9_SharedObjectInjectionReverseShell",
+          "flags": "-d",
+          "section": ".text"
+        },
+        "output_preview": "\n/workspace/level9_SharedObjectInjectionReverseShell:     file format elf64-x86-64\n\n\nDisassembly of section .text:\n\n00000000000010c0 <deregister_tm_clones>:\n    10c0:\t48 8d 3d 81 2f 00 00 \tlea    0x2f81(%rip),%rdi        # 4048 <completed.0>\n    10c7:\t48 8d 05 7a 2f 00 00 \tlea    0x2f7a(%rip),%rax        # 4048 <completed.0>\n    10ce:\t48 39 f8             \tcmp    %rdi,%rax\n    10d1:\t74 15                \tje     10e8 <deregister_tm_clones+0x28>\n    10d3:\t48 8b 05 ee 2e 00 00 \tmov    0x2eee(%rip),"
+      },
+      {
+        "call_number": 6,
+        "tool": "objdump",
+        "input": {
+          "path": "/workspace/level9_SharedObjectInjectionReverseShell",
+          "flags": "-s",
+          "section": ".rodata"
+        },
+        "output_preview": "\n/workspace/level9_SharedObjectInjectionReverseShell:     file format elf64-x86-64\n\nContents of section .rodata:\n 2000 4c445f41 55444954 004c445f 5052454c  LD_AUDIT.LD_PREL\n 2010 4f414400 3139322e 3136382e 312e3130  OAD.192.168.1.10\n 2020 30002f62 696e2f73 68007075 747300    0./bin/sh.puts. \n"
+      },
+      {
+        "call_number": 7,
+        "tool": "readelf",
+        "input": {
+          "path": "/workspace/level9_SharedObjectInjectionReverseShell",
+          "flags": "-d"
+        },
+        "output_preview": "\nDynamic section at offset 0x2df8 contains 25 entries:\n  Tag        Type                         Name/Value\n 0x0000000000000001 (NEEDED)             Shared library: [libm.so.6]\n 0x0000000000000001 (NEEDED)             Shared library: [libc.so.6]\n 0x000000000000000c (INIT)               0x1000\n 0x000000000000000d (FINI)               0x129c\n 0x0000000000000019 (INIT_ARRAY)         0x3de0\n 0x000000000000001b (INIT_ARRAYSZ)       16 (bytes)\n 0x000000000000001a (FINI_ARRAY)         0x3df0\n 0x0000000"
+      },
+      {
+        "call_number": 8,
+        "tool": "entropy",
+        "input": {
+          "path": "/workspace/level9_SharedObjectInjectionReverseShell",
+          "section": ".rodata",
+          "window_size": 256
+        },
+        "output_preview": "Total size: 47 bytes\nOverall entropy: 4.5520 bits/byte\nWindow size: 256 bytes\nWindows analyzed: 1\n\nMin window entropy: 4.5520\nMax window entropy: 4.5520\nAvg window entropy: 4.5520\n\nOffset      Size  Entropy\n-----------------------------------\n0x00000000    47  4.5520  ##################\n"
+      },
+      {
+        "call_number": 9,
+        "tool": "final_answer",
+        "input": {
+          "file_type": "ELF64 shared object (x86-64, dynamically linked, not stripped)",
+          "encoded_strings": false,
+          "decoded_c2": "192.168.1.100:4444",
+          "techniques": [
+            "shared_object_injection",
+            "libc_function_interposition_puts",
+            "dlsym_RTLD_NEXT",
+            "environment_variable_check_LD_AUDIT_LD_PRELOAD",
+            "socket_connect",
+            "inet_pton_ipv4",
+            "htons_port",
+            "dup2_stdio_redirection",
+            "execve_bin_sh_reverse_shell"
+          ],
+          "anti_analysis": [
+            "environment_variable_check_LD_AUDIT_LD_PRELOAD"
+          ],
+          "c2_protocol": "TCP"
+        },
+        "is_final_answer": true
+      }
+    ],
+    "redundant_tool_calls": 0,
+    "invalid_tool_calls": 0,
+    "invalid_json_attempts": 0,
+    "input_tokens": 12530,
+    "output_tokens": 1006,
+    "reasoning_tokens": 567,
+    "total_tokens": 13536,
+    "wall_time_seconds": 19.4,
+    "llm_seconds": 17.97,
+    "max_steps_hit": false,
+    "has_valid_answer": true
+  },
+  "metrics": {
+    "task_id": "level9_SharedObjectInjectionReverseShell",
+    "score": 0.22,
+    "tier": "standard",
+    "field_scores": {
+      "decoded_c2": 1.0,
+      "techniques": 0.06666666666666667,
+      "file_type": 0.0,
+      "encoded_strings": 1.0,
+      "c2_protocol": 1.0
+    },
+    "tool_calls_total": 9,
+    "tool_calls_by_type": {
+      "file": 1,
+      "strings": 1,
+      "readelf": 3,
+      "objdump": 2,
+      "entropy": 1,
+      "final_answer": 1
+    },
+    "redundant_tool_calls": 0,
+    "invalid_tool_calls": 0,
+    "invalid_json_attempts": 0,
+    "steps_to_answer": 9,
+    "max_steps_hit": false,
+    "has_valid_answer": true,
+    "hallucinated_techniques": [
+      "dlsym_RTLD_NEXT",
+      "dup2_stdio_redirection",
+      "environment_variable_check_LD_AUDIT_LD_PRELOAD",
+      "execve_bin_sh_reverse_shell",
+      "htons_port",
+      "inet_pton_ipv4",
+      "libc_function_interposition_puts",
+      "socket_connect"
+    ],
+    "hallucination_count": 8,
+    "missing_techniques": [
+      "constructor_attribute",
+      "dlsym_hijack",
+      "dup2_redirect",
+      "env_check",
+      "execve_shell",
+      "function_hooking"
+    ],
+    "wall_time_seconds": 19.4,
+    "llm_seconds": 17.97,
+    "total_tokens": 13536,
+    "input_tokens": 12530,
+    "output_tokens": 1006,
+    "reasoning_tokens": 567
+  }
+}

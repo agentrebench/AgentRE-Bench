@@ -1,0 +1,148 @@
+{
+  "task_id": "level11_ForkBombReverseShell",
+  "model": "gemini-3.1-flash-lite-preview",
+  "provider": "gemini",
+  "difficulty": 11,
+  "score": {
+    "tier": "standard",
+    "field_scores": {
+      "decoded_c2": 1.0,
+      "techniques": 0.3333333333333333,
+      "file_type": 1.0,
+      "encoded_strings": 1.0,
+      "c2_protocol": 1.0
+    },
+    "hallucinated_techniques": [],
+    "missing_techniques": [
+      "denial_of_service",
+      "dup2_redirect",
+      "execve_shell",
+      "fork_exec"
+    ],
+    "hallucination_penalty": 0.0,
+    "weighted_score": 0.8,
+    "final_score": 0.8,
+    "sample": "level11_ForkBombReverseShell"
+  },
+  "agent_result": {
+    "task_id": "level11_ForkBombReverseShell",
+    "final_answer": {
+      "techniques": [
+        "socket_connect",
+        "fork_bomb"
+      ],
+      "file_type": "ELF64",
+      "decoded_c2": "192.168.1.100:4444",
+      "c2_protocol": "TCP",
+      "encoded_strings": false
+    },
+    "tool_call_count": 5,
+    "tool_calls_by_type": {
+      "file": 1,
+      "strings": 2,
+      "objdump": 1,
+      "final_answer": 1
+    },
+    "tool_calls_log": [
+      {
+        "call_number": 1,
+        "tool": "file",
+        "input": {
+          "path": "/workspace/level11_ForkBombReverseShell"
+        },
+        "output_preview": "/workspace/level11_ForkBombReverseShell: ELF 64-bit LSB executable, x86-64, version 1 (GNU/Linux), statically linked, for GNU/Linux 3.2.0, with debug_info, not stripped\n"
+      },
+      {
+        "call_number": 2,
+        "tool": "strings",
+        "input": {
+          "path": "/workspace/level11_ForkBombReverseShell"
+        },
+        "output_preview": "D$8dH+\nu=E1\nD$HdH+\n[]A\\\nPTE1\nu+UH\nuHdH\nD$hdH\nD$pH\nD$ dH\nATUSM\nA\\A]A^A_\n$\tA\t\n[]A\\A]\nAVAUATUSH\n[]A\\A]A^A_\nAWAVAUATUSH\nP[]A\\A]A^A_\nAVAUATUSH\nGenuun\nnteluf\nineI\nHygo@\nuine\nnGenu^H\nL$hH\n|$`L\nAuth\ncAMD\nenti\nD$hH\nnD$dD\n\\$,u\nL$ H\nD$pH\nD$xL\nH=?@\nT$pH\nD$ H\nD$ L\nL9d$\n[]A\\A]A^A_\nCent\nauls\naurH\nt$dH\nD$dD\nnD$d\nD$pI\n\\$HH\nL$0H\nT$lH\nt$xH\n|$pH\nL$0H\nD$8L\nD$@L\n\\$HL\nT$PL\nt$dL\nL$hH\nT$`f\nnD$d\nD$hD\nD$pI\n\\$@H\nL$0H\nT$lH\nt$xH\n|$pI\nL$0L\nD$8H\n\\$@L\nT$HL\nD$pH\nD$8H\nt$0I\nt$0L\nD$8H\nL$@L\nL$HH\nL$pH\n  Sh@\nai  \nangh\nD$pI\nL$0I\nL$hL\nt"
+      },
+      {
+        "call_number": 3,
+        "tool": "objdump",
+        "input": {
+          "flags": "-d",
+          "path": "/workspace/level11_ForkBombReverseShell"
+        },
+        "output_preview": "\n/workspace/level11_ForkBombReverseShell:     file format elf64-x86-64\n\n\nDisassembly of section .init:\n\n0000000000401000 <_init>:\n  401000:\t48 83 ec 08          \tsub    $0x8,%rsp\n  401004:\t48 c7 c0 00 00 00 00 \tmov    $0x0,%rax\n  40100b:\t48 85 c0             \ttest   %rax,%rax\n  40100e:\t74 02                \tje     401012 <_init+0x12>\n  401010:\tff d0                \tcall   *%rax\n  401012:\t48 83 c4 08          \tadd    $0x8,%rsp\n  401016:\tc3                   \tret    \n\nDisassembly of section .plt:\n"
+      },
+      {
+        "call_number": 4,
+        "tool": "strings",
+        "input": {
+          "min_length": 10,
+          "path": "/workspace/level11_ForkBombReverseShell"
+        },
+        "output_preview": "[]A\\A]A^A_\nAWAVAUATUSH\nP[]A\\A]A^A_\n[]A\\A]A^A_\nAWAVAUATUSH\n[]A\\A]A^A_\n[]A\\A]A^A_\n8[]A\\A]A^A_\n[]A\\A]A^A_\nAWAVAUATUSH\n([]A\\A]A^A_\n([]A\\A]A^A_\nAWAVAUATUH\nH[]A\\A]A^A_\n[]A\\A]A^A_\nAWAVAUATUSH\n[]A\\A]A^A_\n[]A\\A]A^A_\nAWAVAUATUH\n([]A\\A]A^A_\nAWAVAUATUH\n[]A\\A]A^A_\n[]A\\A]A^A_\nAWAVAUATUSH\n([]A\\A]A^A_\nAWAVAUATUSH\nx[]A\\A]A^A_\nAWAVAUATE1\n[]A\\A]A^A_\n[]A\\A]A^A_\n[]A\\A]A^A_\n[]A\\A]A^A_\n[]A\\A]A^A_\n[]A\\A]A^A_\n[]A\\A]A^A_\nAWAVAUATUSH\n8[]A\\A]A^A_\n[]A\\A]A^A_\n[]A\\A]A^A_\nAWAVAUATUSH\n[]A\\A]A^A_\nAvoid_NoI3\nn_TemporI3x\nFast_UnaI"
+      },
+      {
+        "call_number": 5,
+        "tool": "final_answer",
+        "input": {
+          "techniques": [
+            "socket_connect",
+            "fork_bomb"
+          ],
+          "file_type": "ELF64",
+          "decoded_c2": "192.168.1.100:4444",
+          "c2_protocol": "TCP",
+          "encoded_strings": false
+        },
+        "is_final_answer": true
+      }
+    ],
+    "redundant_tool_calls": 0,
+    "invalid_tool_calls": 0,
+    "invalid_json_attempts": 0,
+    "input_tokens": 174910,
+    "output_tokens": 186,
+    "reasoning_tokens": 0,
+    "total_tokens": 175096,
+    "wall_time_seconds": 6.6,
+    "llm_seconds": 5.75,
+    "max_steps_hit": false,
+    "has_valid_answer": true
+  },
+  "metrics": {
+    "task_id": "level11_ForkBombReverseShell",
+    "score": 0.8,
+    "tier": "standard",
+    "field_scores": {
+      "decoded_c2": 1.0,
+      "techniques": 0.3333333333333333,
+      "file_type": 1.0,
+      "encoded_strings": 1.0,
+      "c2_protocol": 1.0
+    },
+    "tool_calls_total": 5,
+    "tool_calls_by_type": {
+      "file": 1,
+      "strings": 2,
+      "objdump": 1,
+      "final_answer": 1
+    },
+    "redundant_tool_calls": 0,
+    "invalid_tool_calls": 0,
+    "invalid_json_attempts": 0,
+    "steps_to_answer": 5,
+    "max_steps_hit": false,
+    "has_valid_answer": true,
+    "hallucinated_techniques": [],
+    "hallucination_count": 0,
+    "missing_techniques": [
+      "denial_of_service",
+      "dup2_redirect",
+      "execve_shell",
+      "fork_exec"
+    ],
+    "wall_time_seconds": 6.6,
+    "llm_seconds": 5.75,
+    "total_tokens": 175096,
+    "input_tokens": 174910,
+    "output_tokens": 186,
+    "reasoning_tokens": 0
+  }
+}

@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import logging
 import sys
+import time
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -170,6 +171,8 @@ def run_single_task(
 def run_benchmark(
     config: BenchmarkConfig,
     task_filter: str | None = None,
+    skip_tasks: list[str] | None = None,
+    only_tasks: list[str] | None = None,
 ) -> tuple[AggregateMetrics, list[TaskMetrics], list[dict]]:
     manifest_path = config.project_root / "tasks.json"
     tasks = load_tasks(manifest_path, config.project_root)
@@ -178,6 +181,19 @@ def run_benchmark(
         tasks = [t for t in tasks if t.task_id == task_filter]
         if not tasks:
             raise ValueError(f"No task found matching {task_filter!r}")
+
+    if only_tasks:
+        only_set = set(only_tasks)
+        tasks = [t for t in tasks if t.task_id in only_set]
+        if not tasks:
+            raise ValueError(f"No tasks matched --only-tasks {only_set}")
+
+    if skip_tasks:
+        skip_set = set(skip_tasks)
+        before = len(tasks)
+        tasks = [t for t in tasks if t.task_id not in skip_set]
+        if len(tasks) < before:
+            print(f"  (skipping {before - len(tasks)} tasks: {', '.join(sorted(skip_set))})")
 
     total = len(tasks)
     mode = "docker" if config.use_docker else "local"
@@ -192,6 +208,15 @@ def run_benchmark(
     all_scores: list[dict] = []
 
     for i, task in enumerate(tasks, 1):
+        # Pacing pause for providers with strict per-minute caps.
+        if i > 1 and config.inter_task_sleep_seconds > 0:
+            print(
+                f"  ... sleeping {config.inter_task_sleep_seconds:.0f}s "
+                f"to let provider rate-limit window reset",
+                flush=True,
+            )
+            time.sleep(config.inter_task_sleep_seconds)
+
         if config.verbose:
             # Verbose: full header, agent prints detailed output
             print(f"\n{'─'*60}")

@@ -1,0 +1,17 @@
+{
+  "file_type": "ELF64",
+  "encoded_strings": false,
+  "decoded_c2": "127.0.0.1:4444",
+  "techniques": [
+    "socket_connect",
+    "process_hollowing",
+    "ptrace_traceme",
+    "fork",
+    "execl",
+    "shellcode_injection",
+    "ptrace_pokedata",
+    "syscall_socket",
+    "reverse_shell"
+  ],
+  "c2_protocol": "TCP"
+}

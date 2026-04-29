@@ -1,0 +1,12 @@
+{
+  "file_type": "ELF64",
+  "encoded_strings": false,
+  "decoded_c2": "cmd.attacker.com",
+  "techniques": [
+    "dns_tunnel",
+    "popen",
+    "gethostbyname",
+    "hex_encoding"
+  ],
+  "c2_protocol": "DNS"
+}

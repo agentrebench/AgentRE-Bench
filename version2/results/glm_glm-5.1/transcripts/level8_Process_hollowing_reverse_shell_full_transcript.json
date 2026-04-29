@@ -1,0 +1,6 @@
+[
+  {
+    "role": "user",
+    "content": "Analyze the binary file in the workspace and submit your findings using the final_answer tool. The binary is located at the path shown in the system prompt. Use the available RE tools to examine it."
+  }
+]

@@ -1,0 +1,1035 @@
+{
+  "config": {
+    "model": "claude-opus-4-7",
+    "provider": "anthropic",
+    "max_tool_calls": 25,
+    "use_docker": true
+  },
+  "aggregate_metrics": {
+    "success_rate": 1.0,
+    "main_score": 0.3673,
+    "bonus_score": 0.1446,
+    "total_score": 0.5119,
+    "avg_tool_calls_per_task": 8.46,
+    "avg_tool_calls_per_success": 8.46,
+    "tool_usage_distribution": {
+      "file": 13,
+      "strings": 17,
+      "objdump": 33,
+      "nm": 12,
+      "readelf": 7,
+      "final_answer": 13,
+      "hexdump": 14,
+      "xxd": 1
+    },
+    "avg_hallucination_rate": 5.6154,
+    "episode_length_min": 17.07,
+    "episode_length_max": 443.03,
+    "episode_length_mean": 110.27,
+    "episode_length_median": 57.85,
+    "total_wall_time": 1433.45,
+    "total_llm_seconds": 1413.18,
+    "avg_llm_seconds_per_task": 108.71,
+    "total_tokens": 7665418,
+    "total_reasoning_tokens": 0,
+    "max_steps_hit_count": 0,
+    "tasks_run": 13,
+    "tasks_with_answer": 13
+  },
+  "task_metrics": [
+    {
+      "task_id": "level1_TCPServer",
+      "score": 0.4333,
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 1.0,
+        "techniques": 0.1111111111111111,
+        "file_type": 1.0,
+        "encoded_strings": 1.0,
+        "c2_protocol": 1.0
+      },
+      "tool_calls_total": 9,
+      "tool_calls_by_type": {
+        "file": 1,
+        "strings": 2,
+        "objdump": 3,
+        "nm": 1,
+        "readelf": 1,
+        "final_answer": 1
+      },
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 9,
+      "max_steps_hit": false,
+      "has_valid_answer": true,
+      "hallucinated_techniques": [
+        "dup2_stdio_redirect",
+        "execve_bin_sh",
+        "htons_port",
+        "inet_pton",
+        "reverse_shell",
+        "static_linking"
+      ],
+      "hallucination_count": 6,
+      "missing_techniques": [
+        "dup2_redirect",
+        "execve_shell"
+      ],
+      "wall_time_seconds": 45.51,
+      "llm_seconds": 43.95,
+      "total_tokens": 532400,
+      "input_tokens": 530447,
+      "output_tokens": 1953,
+      "reasoning_tokens": 0
+    },
+    {
+      "task_id": "level2_XorEncodedStrings",
+      "score": 0.75,
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 1.0,
+        "techniques": 0.5,
+        "file_type": 1.0,
+        "encoded_strings": 1.0,
+        "c2_protocol": 1.0
+      },
+      "tool_calls_total": 7,
+      "tool_calls_by_type": {
+        "file": 1,
+        "strings": 1,
+        "readelf": 1,
+        "nm": 1,
+        "objdump": 2,
+        "final_answer": 1
+      },
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 7,
+      "max_steps_hit": false,
+      "has_valid_answer": true,
+      "hallucinated_techniques": [
+        "reverse_shell",
+        "xor_encoding"
+      ],
+      "hallucination_count": 2,
+      "missing_techniques": [
+        "xor_decode"
+      ],
+      "wall_time_seconds": 61.82,
+      "llm_seconds": 60.54,
+      "total_tokens": 327969,
+      "input_tokens": 324308,
+      "output_tokens": 3661,
+      "reasoning_tokens": 0
+    },
+    {
+      "task_id": "level3_anti-debugging_reverseShell",
+      "score": 0.2687,
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 1.0,
+        "techniques": 0.0625,
+        "file_type": 1.0,
+        "encoded_strings": 1.0,
+        "c2_protocol": 1.0
+      },
+      "tool_calls_total": 7,
+      "tool_calls_by_type": {
+        "file": 1,
+        "strings": 1,
+        "nm": 1,
+        "objdump": 3,
+        "final_answer": 1
+      },
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 7,
+      "max_steps_hit": false,
+      "has_valid_answer": true,
+      "hallucinated_techniques": [
+        "anti_debug_ld_library_path_check",
+        "anti_debug_ld_preload_check",
+        "anti_debug_ptrace",
+        "delay_execution_sleep",
+        "dup2_stdio_redirect",
+        "execve_bin_sh",
+        "fork",
+        "reverse_shell",
+        "statically_linked"
+      ],
+      "hallucination_count": 9,
+      "missing_techniques": [
+        "delay_execution",
+        "dup2_redirect",
+        "env_check",
+        "execve_shell",
+        "fork_background",
+        "ptrace_anti_debug"
+      ],
+      "wall_time_seconds": 57.85,
+      "llm_seconds": 56.53,
+      "total_tokens": 462517,
+      "input_tokens": 460496,
+      "output_tokens": 2021,
+      "reasoning_tokens": 0
+    },
+    {
+      "task_id": "level4_polymorphicReverseShell",
+      "score": 0.0,
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 0.0,
+        "techniques": 0.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0,
+        "c2_protocol": 1.0
+      },
+      "tool_calls_total": 12,
+      "tool_calls_by_type": {
+        "file": 1,
+        "strings": 1,
+        "readelf": 3,
+        "nm": 1,
+        "objdump": 3,
+        "hexdump": 2,
+        "final_answer": 1
+      },
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 12,
+      "max_steps_hit": false,
+      "has_valid_answer": true,
+      "hallucinated_techniques": [
+        "heap_allocated_executable_buffer",
+        "nop_sled_padding",
+        "polymorphic_shellcode_generation",
+        "runtime_shellcode_execution",
+        "syscall_socket",
+        "time_based_rng_seeding"
+      ],
+      "hallucination_count": 6,
+      "missing_techniques": [
+        "dynamic_memory_exec",
+        "nop_sled",
+        "polymorphic_shellcode",
+        "socket_syscall"
+      ],
+      "wall_time_seconds": 117.33,
+      "llm_seconds": 115.07,
+      "total_tokens": 738654,
+      "input_tokens": 731969,
+      "output_tokens": 6685,
+      "reasoning_tokens": 0
+    },
+    {
+      "task_id": "level5_MultistageReverseShell",
+      "score": 0.5667,
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 1.0,
+        "techniques": 0.2222222222222222,
+        "file_type": 1.0,
+        "encoded_strings": 1.0,
+        "c2_protocol": 1.0
+      },
+      "tool_calls_total": 8,
+      "tool_calls_by_type": {
+        "file": 1,
+        "strings": 2,
+        "nm": 1,
+        "objdump": 3,
+        "final_answer": 1
+      },
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 8,
+      "max_steps_hit": false,
+      "has_valid_answer": true,
+      "hallucinated_techniques": [
+        "network_received_key",
+        "runtime_decryption",
+        "shellcode_execution",
+        "xor_encoding"
+      ],
+      "hallucination_count": 4,
+      "missing_techniques": [
+        "recv_key",
+        "shellcode_exec",
+        "xor_decode"
+      ],
+      "wall_time_seconds": 58.9,
+      "llm_seconds": 57.4,
+      "total_tokens": 604517,
+      "input_tokens": 601951,
+      "output_tokens": 2566,
+      "reasoning_tokens": 0
+    },
+    {
+      "task_id": "level6_ICMP_CovertChannelShell",
+      "score": 0.3773,
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 1.0,
+        "techniques": 0.09090909090909091,
+        "file_type": 1.0,
+        "encoded_strings": 1.0,
+        "c2_protocol": 1.0
+      },
+      "tool_calls_total": 6,
+      "tool_calls_by_type": {
+        "file": 1,
+        "strings": 2,
+        "nm": 1,
+        "objdump": 1,
+        "final_answer": 1
+      },
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 6,
+      "max_steps_hit": false,
+      "has_valid_answer": true,
+      "hallucinated_techniques": [
+        "custom_icmp_checksum",
+        "getpid_as_icmp_id",
+        "icmp_echo_covert_channel",
+        "inet_pton",
+        "sendto",
+        "sleep_loop",
+        "static_linking"
+      ],
+      "hallucination_count": 7,
+      "missing_techniques": [
+        "command_in_icmp_data",
+        "crafted_icmp_packets",
+        "icmp_covert_channel"
+      ],
+      "wall_time_seconds": 39.77,
+      "llm_seconds": 38.59,
+      "total_tokens": 327368,
+      "input_tokens": 325438,
+      "output_tokens": 1930,
+      "reasoning_tokens": 0
+    },
+    {
+      "task_id": "level7_DNS_TunnelReverseShell",
+      "score": 0.0667,
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 0.0,
+        "techniques": 0.2222222222222222,
+        "file_type": 1.0,
+        "encoded_strings": 0.0,
+        "c2_protocol": 1.0
+      },
+      "tool_calls_total": 6,
+      "tool_calls_by_type": {
+        "file": 1,
+        "strings": 1,
+        "objdump": 2,
+        "nm": 1,
+        "final_answer": 1
+      },
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 6,
+      "max_steps_hit": false,
+      "has_valid_answer": true,
+      "hallucinated_techniques": [
+        "beacon_loop",
+        "gethostbyname_resolve",
+        "hex_encoding",
+        "popen_command_execution"
+      ],
+      "hallucination_count": 4,
+      "missing_techniques": [
+        "command_exec_popen",
+        "dns_beacon",
+        "hex_encode"
+      ],
+      "wall_time_seconds": 53.89,
+      "llm_seconds": 52.74,
+      "total_tokens": 264640,
+      "input_tokens": 262089,
+      "output_tokens": 2551,
+      "reasoning_tokens": 0
+    },
+    {
+      "task_id": "level8_Process_hollowing_reverse_shell",
+      "score": 0.54,
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 1.0,
+        "techniques": 0.3,
+        "file_type": 1.0,
+        "encoded_strings": 1.0,
+        "c2_protocol": 1.0
+      },
+      "tool_calls_total": 8,
+      "tool_calls_by_type": {
+        "file": 1,
+        "strings": 2,
+        "nm": 1,
+        "objdump": 2,
+        "hexdump": 1,
+        "final_answer": 1
+      },
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 8,
+      "max_steps_hit": false,
+      "has_valid_answer": true,
+      "hallucinated_techniques": [
+        "dup2_redirection",
+        "execve_shell",
+        "ptrace_injection",
+        "reverse_shell",
+        "socket_connect"
+      ],
+      "hallucination_count": 5,
+      "missing_techniques": [
+        "ptrace_inject",
+        "register_manipulation"
+      ],
+      "wall_time_seconds": 208.26,
+      "llm_seconds": 206.75,
+      "total_tokens": 642652,
+      "input_tokens": 627391,
+      "output_tokens": 15261,
+      "reasoning_tokens": 0
+    },
+    {
+      "task_id": "level9_SharedObjectInjectionReverseShell",
+      "score": 0.425,
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 1.0,
+        "techniques": 0.25,
+        "file_type": 0.0,
+        "encoded_strings": 1.0,
+        "c2_protocol": 1.0
+      },
+      "tool_calls_total": 4,
+      "tool_calls_by_type": {
+        "file": 1,
+        "strings": 1,
+        "objdump": 1,
+        "final_answer": 1
+      },
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 4,
+      "max_steps_hit": false,
+      "has_valid_answer": true,
+      "hallucinated_techniques": [
+        "dlsym_RTLD_NEXT",
+        "ld_audit_check",
+        "ld_preload_check",
+        "puts_hook",
+        "socket_connect"
+      ],
+      "hallucination_count": 5,
+      "missing_techniques": [
+        "constructor_attribute",
+        "dlsym_hijack",
+        "env_check",
+        "function_hooking"
+      ],
+      "wall_time_seconds": 17.07,
+      "llm_seconds": 16.51,
+      "total_tokens": 16154,
+      "input_tokens": 15015,
+      "output_tokens": 1139,
+      "reasoning_tokens": 0
+    },
+    {
+      "task_id": "level10_fully_obfuscated_AES_Encrypted_Shell",
+      "score": 0.0,
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 0.0,
+        "techniques": 0.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0,
+        "c2_protocol": 1.0
+      },
+      "tool_calls_total": 17,
+      "tool_calls_by_type": {
+        "file": 1,
+        "strings": 1,
+        "nm": 1,
+        "objdump": 4,
+        "hexdump": 7,
+        "readelf": 1,
+        "xxd": 1,
+        "final_answer": 1
+      },
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 17,
+      "max_steps_hit": false,
+      "has_valid_answer": true,
+      "hallucinated_techniques": [
+        "anti_debug_envvar",
+        "fake_aes_misdirection",
+        "mmap_rwx",
+        "shellcode_injection",
+        "static_linking_obfuscation",
+        "syscall_direct",
+        "xor_encoding"
+      ],
+      "hallucination_count": 7,
+      "missing_techniques": [
+        "anti_analysis",
+        "env_check",
+        "inline_asm_syscall",
+        "mmap_exec",
+        "runtime_decrypt",
+        "xor_encrypt"
+      ],
+      "wall_time_seconds": 443.03,
+      "llm_seconds": 439.92,
+      "total_tokens": 1752462,
+      "input_tokens": 1720086,
+      "output_tokens": 32376,
+      "reasoning_tokens": 0
+    },
+    {
+      "task_id": "level11_ForkBombReverseShell",
+      "score": 0.5045,
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 1.0,
+        "techniques": 0.18181818181818182,
+        "file_type": 1.0,
+        "encoded_strings": 1.0,
+        "c2_protocol": 1.0
+      },
+      "tool_calls_total": 4,
+      "tool_calls_by_type": {
+        "file": 1,
+        "strings": 1,
+        "objdump": 1,
+        "final_answer": 1
+      },
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 4,
+      "max_steps_hit": false,
+      "has_valid_answer": true,
+      "hallucinated_techniques": [
+        "dup2_stdio",
+        "execve_bin_sh",
+        "htons_port",
+        "inet_pton",
+        "reverse_shell"
+      ],
+      "hallucination_count": 5,
+      "missing_techniques": [
+        "denial_of_service",
+        "dup2_redirect",
+        "execve_shell",
+        "fork_exec"
+      ],
+      "wall_time_seconds": 23.46,
+      "llm_seconds": 22.78,
+      "total_tokens": 105956,
+      "input_tokens": 104920,
+      "output_tokens": 1036,
+      "reasoning_tokens": 0
+    },
+    {
+      "task_id": "level12_JIT_Compiled_Shellcode",
+      "score": 0.475,
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 1.0,
+        "techniques": 0.08333333333333333,
+        "file_type": 1.0,
+        "encoded_strings": 1.0,
+        "c2_protocol": 1.0
+      },
+      "tool_calls_total": 6,
+      "tool_calls_by_type": {
+        "file": 1,
+        "strings": 1,
+        "nm": 1,
+        "objdump": 1,
+        "hexdump": 1,
+        "final_answer": 1
+      },
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 6,
+      "max_steps_hit": false,
+      "has_valid_answer": true,
+      "hallucinated_techniques": [
+        "dup2_stdio_redirect",
+        "execve_bin_sh",
+        "jit_shellcode",
+        "reverse_shell",
+        "rwx_mmap"
+      ],
+      "hallucination_count": 5,
+      "missing_techniques": [
+        "dup2_redirect",
+        "execve_shell",
+        "jit_compilation",
+        "mmap_exec",
+        "runtime_patching",
+        "self_modifying_code"
+      ],
+      "wall_time_seconds": 44.11,
+      "llm_seconds": 43.06,
+      "total_tokens": 284689,
+      "input_tokens": 282512,
+      "output_tokens": 2177,
+      "reasoning_tokens": 0
+    },
+    {
+      "task_id": "level13_MetamorphicDropper",
+      "score": 0.1446,
+      "tier": "bonus",
+      "field_scores": {
+        "decoded_c2": 0.0,
+        "encryption_algorithm": 1.0,
+        "encryption_key": 1.0,
+        "encryption_key_storage": 1.0,
+        "techniques": 0.23076923076923078,
+        "decoded_strings": 0.0,
+        "anti_analysis": 0.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0,
+        "c2_protocol": 0.0
+      },
+      "tool_calls_total": 16,
+      "tool_calls_by_type": {
+        "file": 1,
+        "strings": 1,
+        "readelf": 1,
+        "nm": 2,
+        "objdump": 7,
+        "hexdump": 3,
+        "final_answer": 1
+      },
+      "redundant_tool_calls": 2,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 16,
+      "max_steps_hit": false,
+      "has_valid_answer": true,
+      "hallucinated_techniques": [
+        "fork_exec_dropper",
+        "hide_proc_prctl",
+        "metamorphic_dispatcher",
+        "socket_connect",
+        "state_machine_dispatcher",
+        "static_linking",
+        "tracerpid_check",
+        "xor_key_obfuscation"
+      ],
+      "hallucination_count": 8,
+      "missing_techniques": [
+        "control_flow_flattening",
+        "curl_download",
+        "dead_code_paths",
+        "encrypted_string_table",
+        "fork_exec",
+        "indirect_syscall",
+        "infection_marker_check",
+        "key_derivation_xor_mask",
+        "metamorphic_nop_equivalent",
+        "os_fingerprint",
+        "process_hiding",
+        "system_exec"
+      ],
+      "wall_time_seconds": 262.45,
+      "llm_seconds": 259.34,
+      "total_tokens": 1605440,
+      "input_tokens": 1590487,
+      "output_tokens": 14953,
+      "reasoning_tokens": 0
+    }
+  ],
+  "score_results": [
+    {
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 1.0,
+        "techniques": 0.1111111111111111,
+        "file_type": 1.0,
+        "encoded_strings": 1.0,
+        "c2_protocol": 1.0
+      },
+      "hallucinated_techniques": [
+        "dup2_stdio_redirect",
+        "execve_bin_sh",
+        "htons_port",
+        "inet_pton",
+        "reverse_shell",
+        "static_linking"
+      ],
+      "missing_techniques": [
+        "dup2_redirect",
+        "execve_shell"
+      ],
+      "hallucination_penalty": 0.3,
+      "weighted_score": 0.7333,
+      "final_score": 0.4333,
+      "sample": "level1_TCPServer"
+    },
+    {
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 1.0,
+        "techniques": 0.5,
+        "file_type": 1.0,
+        "encoded_strings": 1.0,
+        "c2_protocol": 1.0
+      },
+      "hallucinated_techniques": [
+        "reverse_shell",
+        "xor_encoding"
+      ],
+      "missing_techniques": [
+        "xor_decode"
+      ],
+      "hallucination_penalty": 0.1,
+      "weighted_score": 0.85,
+      "final_score": 0.75,
+      "sample": "level2_XorEncodedStrings"
+    },
+    {
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 1.0,
+        "techniques": 0.0625,
+        "file_type": 1.0,
+        "encoded_strings": 1.0,
+        "c2_protocol": 1.0
+      },
+      "hallucinated_techniques": [
+        "anti_debug_ld_library_path_check",
+        "anti_debug_ld_preload_check",
+        "anti_debug_ptrace",
+        "delay_execution_sleep",
+        "dup2_stdio_redirect",
+        "execve_bin_sh",
+        "fork",
+        "reverse_shell",
+        "statically_linked"
+      ],
+      "missing_techniques": [
+        "delay_execution",
+        "dup2_redirect",
+        "env_check",
+        "execve_shell",
+        "fork_background",
+        "ptrace_anti_debug"
+      ],
+      "hallucination_penalty": 0.45,
+      "weighted_score": 0.7188,
+      "final_score": 0.2687,
+      "sample": "level3_anti-debugging_reverseShell"
+    },
+    {
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 0.0,
+        "techniques": 0.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0,
+        "c2_protocol": 1.0
+      },
+      "hallucinated_techniques": [
+        "heap_allocated_executable_buffer",
+        "nop_sled_padding",
+        "polymorphic_shellcode_generation",
+        "runtime_shellcode_execution",
+        "syscall_socket",
+        "time_based_rng_seeding"
+      ],
+      "missing_techniques": [
+        "dynamic_memory_exec",
+        "nop_sled",
+        "polymorphic_shellcode",
+        "socket_syscall"
+      ],
+      "hallucination_penalty": 0.3,
+      "weighted_score": 0.3,
+      "final_score": 0.0,
+      "sample": "level4_polymorphicReverseShell"
+    },
+    {
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 1.0,
+        "techniques": 0.2222222222222222,
+        "file_type": 1.0,
+        "encoded_strings": 1.0,
+        "c2_protocol": 1.0
+      },
+      "hallucinated_techniques": [
+        "network_received_key",
+        "runtime_decryption",
+        "shellcode_execution",
+        "xor_encoding"
+      ],
+      "missing_techniques": [
+        "recv_key",
+        "shellcode_exec",
+        "xor_decode"
+      ],
+      "hallucination_penalty": 0.2,
+      "weighted_score": 0.7667,
+      "final_score": 0.5667,
+      "sample": "level5_MultistageReverseShell"
+    },
+    {
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 1.0,
+        "techniques": 0.09090909090909091,
+        "file_type": 1.0,
+        "encoded_strings": 1.0,
+        "c2_protocol": 1.0
+      },
+      "hallucinated_techniques": [
+        "custom_icmp_checksum",
+        "getpid_as_icmp_id",
+        "icmp_echo_covert_channel",
+        "inet_pton",
+        "sendto",
+        "sleep_loop",
+        "static_linking"
+      ],
+      "missing_techniques": [
+        "command_in_icmp_data",
+        "crafted_icmp_packets",
+        "icmp_covert_channel"
+      ],
+      "hallucination_penalty": 0.35,
+      "weighted_score": 0.7273,
+      "final_score": 0.3773,
+      "sample": "level6_ICMP_CovertChannelShell"
+    },
+    {
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 0.0,
+        "techniques": 0.2222222222222222,
+        "file_type": 1.0,
+        "encoded_strings": 0.0,
+        "c2_protocol": 1.0
+      },
+      "hallucinated_techniques": [
+        "beacon_loop",
+        "gethostbyname_resolve",
+        "hex_encoding",
+        "popen_command_execution"
+      ],
+      "missing_techniques": [
+        "command_exec_popen",
+        "dns_beacon",
+        "hex_encode"
+      ],
+      "hallucination_penalty": 0.2,
+      "weighted_score": 0.2667,
+      "final_score": 0.0667,
+      "sample": "level7_DNS_TunnelReverseShell"
+    },
+    {
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 1.0,
+        "techniques": 0.3,
+        "file_type": 1.0,
+        "encoded_strings": 1.0,
+        "c2_protocol": 1.0
+      },
+      "hallucinated_techniques": [
+        "dup2_redirection",
+        "execve_shell",
+        "ptrace_injection",
+        "reverse_shell",
+        "socket_connect"
+      ],
+      "missing_techniques": [
+        "ptrace_inject",
+        "register_manipulation"
+      ],
+      "hallucination_penalty": 0.25,
+      "weighted_score": 0.79,
+      "final_score": 0.54,
+      "sample": "level8_Process_hollowing_reverse_shell"
+    },
+    {
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 1.0,
+        "techniques": 0.25,
+        "file_type": 0.0,
+        "encoded_strings": 1.0,
+        "c2_protocol": 1.0
+      },
+      "hallucinated_techniques": [
+        "dlsym_RTLD_NEXT",
+        "ld_audit_check",
+        "ld_preload_check",
+        "puts_hook",
+        "socket_connect"
+      ],
+      "missing_techniques": [
+        "constructor_attribute",
+        "dlsym_hijack",
+        "env_check",
+        "function_hooking"
+      ],
+      "hallucination_penalty": 0.25,
+      "weighted_score": 0.675,
+      "final_score": 0.425,
+      "sample": "level9_SharedObjectInjectionReverseShell"
+    },
+    {
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 0.0,
+        "techniques": 0.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0,
+        "c2_protocol": 1.0
+      },
+      "hallucinated_techniques": [
+        "anti_debug_envvar",
+        "fake_aes_misdirection",
+        "mmap_rwx",
+        "shellcode_injection",
+        "static_linking_obfuscation",
+        "syscall_direct",
+        "xor_encoding"
+      ],
+      "missing_techniques": [
+        "anti_analysis",
+        "env_check",
+        "inline_asm_syscall",
+        "mmap_exec",
+        "runtime_decrypt",
+        "xor_encrypt"
+      ],
+      "hallucination_penalty": 0.35,
+      "weighted_score": 0.3,
+      "final_score": 0.0,
+      "sample": "level10_fully_obfuscated_AES_Encrypted_Shell"
+    },
+    {
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 1.0,
+        "techniques": 0.18181818181818182,
+        "file_type": 1.0,
+        "encoded_strings": 1.0,
+        "c2_protocol": 1.0
+      },
+      "hallucinated_techniques": [
+        "dup2_stdio",
+        "execve_bin_sh",
+        "htons_port",
+        "inet_pton",
+        "reverse_shell"
+      ],
+      "missing_techniques": [
+        "denial_of_service",
+        "dup2_redirect",
+        "execve_shell",
+        "fork_exec"
+      ],
+      "hallucination_penalty": 0.25,
+      "weighted_score": 0.7545,
+      "final_score": 0.5045,
+      "sample": "level11_ForkBombReverseShell"
+    },
+    {
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 1.0,
+        "techniques": 0.08333333333333333,
+        "file_type": 1.0,
+        "encoded_strings": 1.0,
+        "c2_protocol": 1.0
+      },
+      "hallucinated_techniques": [
+        "dup2_stdio_redirect",
+        "execve_bin_sh",
+        "jit_shellcode",
+        "reverse_shell",
+        "rwx_mmap"
+      ],
+      "missing_techniques": [
+        "dup2_redirect",
+        "execve_shell",
+        "jit_compilation",
+        "mmap_exec",
+        "runtime_patching",
+        "self_modifying_code"
+      ],
+      "hallucination_penalty": 0.25,
+      "weighted_score": 0.725,
+      "final_score": 0.475,
+      "sample": "level12_JIT_Compiled_Shellcode"
+    },
+    {
+      "tier": "bonus",
+      "field_scores": {
+        "decoded_c2": 0.0,
+        "encryption_algorithm": 1.0,
+        "encryption_key": 1.0,
+        "encryption_key_storage": 1.0,
+        "techniques": 0.23076923076923078,
+        "decoded_strings": 0.0,
+        "anti_analysis": 0.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0,
+        "c2_protocol": 0.0
+      },
+      "hallucinated_techniques": [
+        "fork_exec_dropper",
+        "hide_proc_prctl",
+        "metamorphic_dispatcher",
+        "socket_connect",
+        "state_machine_dispatcher",
+        "static_linking",
+        "tracerpid_check",
+        "xor_key_obfuscation"
+      ],
+      "missing_techniques": [
+        "control_flow_flattening",
+        "curl_download",
+        "dead_code_paths",
+        "encrypted_string_table",
+        "fork_exec",
+        "indirect_syscall",
+        "infection_marker_check",
+        "key_derivation_xor_mask",
+        "metamorphic_nop_equivalent",
+        "os_fingerprint",
+        "process_hiding",
+        "system_exec"
+      ],
+      "hallucination_penalty": 0.24,
+      "weighted_score": 0.3846,
+      "final_score": 0.1446,
+      "sample": "level13_MetamorphicDropper"
+    }
+  ]
+}

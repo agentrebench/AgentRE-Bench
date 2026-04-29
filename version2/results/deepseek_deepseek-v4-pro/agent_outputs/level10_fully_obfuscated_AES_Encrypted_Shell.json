@@ -1,0 +1,29 @@
+{
+  "file_type": "ELF64",
+  "encoded_strings": true,
+  "decoded_c2": "encrypted within XOR-encoded shellcode at 0x4a30e0; key=deadbeefcafebabe",
+  "techniques": [
+    "xor_encoding",
+    "anti_debug_env",
+    "mmap_rwx",
+    "shellcode_execution",
+    "static_linking"
+  ],
+  "c2_protocol": "TCP",
+  "encryption_details": {
+    "algorithm": "XOR",
+    "key": "deadbeefcafebabe",
+    "key_storage": ".data section at 0x4a3110"
+  },
+  "decoded_strings": {
+    "decoy_socket_function": "hide_imports at 0x401751",
+    "anti_debug_env_vars": [
+      "STRACE",
+      "LT_TRACE"
+    ]
+  },
+  "anti_analysis": [
+    "anti_debug_ptrace_env",
+    "encoded_payload"
+  ]
+}

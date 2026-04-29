@@ -1,0 +1,349 @@
+{
+  "task_id": "level10_fully_obfuscated_AES_Encrypted_Shell",
+  "model": "gemini-3.1-flash-lite-preview",
+  "provider": "gemini",
+  "difficulty": 10,
+  "score": {
+    "tier": "standard",
+    "field_scores": {
+      "decoded_c2": 0.0,
+      "techniques": 0.0,
+      "file_type": 1.0,
+      "encoded_strings": 1.0,
+      "c2_protocol": 1.0
+    },
+    "hallucinated_techniques": [
+      "anti_debugging_detection",
+      "mmap_execution",
+      "xor_decryption"
+    ],
+    "missing_techniques": [
+      "anti_analysis",
+      "env_check",
+      "inline_asm_syscall",
+      "mmap_exec",
+      "runtime_decrypt",
+      "xor_encrypt"
+    ],
+    "hallucination_penalty": 0.15,
+    "weighted_score": 0.3,
+    "final_score": 0.15,
+    "sample": "level10_fully_obfuscated_AES_Encrypted_Shell"
+  },
+  "agent_result": {
+    "task_id": "level10_fully_obfuscated_AES_Encrypted_Shell",
+    "final_answer": {
+      "encoded_strings": true,
+      "c2_protocol": "TCP",
+      "techniques": [
+        "mmap_execution",
+        "xor_decryption",
+        "anti_debugging_detection"
+      ],
+      "decoded_c2": "127.0.0.1:4444",
+      "file_type": "ELF64"
+    },
+    "tool_call_count": 24,
+    "tool_calls_by_type": {
+      "file": 1,
+      "strings": 1,
+      "objdump": 13,
+      "hexdump": 8,
+      "final_answer": 1
+    },
+    "tool_calls_log": [
+      {
+        "call_number": 1,
+        "tool": "file",
+        "input": {
+          "path": "/workspace/level10_fully_obfuscated_AES_Encrypted_Shell"
+        },
+        "output_preview": "/workspace/level10_fully_obfuscated_AES_Encrypted_Shell: ELF 64-bit LSB executable, x86-64, version 1 (GNU/Linux), statically linked, for GNU/Linux 3.2.0, with debug_info, not stripped\n"
+      },
+      {
+        "call_number": 2,
+        "tool": "strings",
+        "input": {
+          "path": "/workspace/level10_fully_obfuscated_AES_Encrypted_Shell"
+        },
+        "output_preview": "u=E1\nD$HdH+\nD$8dH+\n[]A\\\nPTE1\nu+UH\nuHdH\nD$hdH\nD$pH\nD$ dH\nATUSM\nA\\A]A^A_\n$\tA\t\n[]A\\A]\nAVAUATUSH\n[]A\\A]A^A_\nAWAVAUATUSH\nD\t%Hr\n\t=(q\nP[]A\\A]A^A_\n\t-'o\nAVAUATUSH\nGenuun\nnteluf\nineI\nHygo@\nuine\nnGenu^H\nL$hH\n|$`L\nAuth\ncAMD\nenti\nD$hH\nnD$dD\n\\$,u\nL$ H\nD$pH\nD$xL\nH=?@\nT$pH\nD$ H\nD$ L\nL9d$\n[]A\\A]A^A_\nCent\nauls\naurH\nt$dH\nD$dD\nnD$d\nD$pI\n\\$HH\nL$0H\nT$lH\nt$xH\n|$pH\nL$0H\nD$8L\nD$@L\n\\$HL\nT$PL\nt$dL\nL$hH\nT$`f\nnD$d\nD$hD\nD$pI\n\\$@H\nL$0H\nT$lH\nt$xH\n|$pI\nL$0L\nD$8H\n\\$@L\nT$HL\nD$pH\nD$8H\nt$0I\nt$0L\nD$8H\nL$@L\nL$HH\nL$pH\n  Sh@\nai  \nangh\n"
+      },
+      {
+        "call_number": 3,
+        "tool": "objdump",
+        "input": {
+          "flags": "-d",
+          "path": "/workspace/level10_fully_obfuscated_AES_Encrypted_Shell"
+        },
+        "output_preview": "\n/workspace/level10_fully_obfuscated_AES_Encrypted_Shell:     file format elf64-x86-64\n\n\nDisassembly of section .init:\n\n0000000000401000 <_init>:\n  401000:\t48 83 ec 08          \tsub    $0x8,%rsp\n  401004:\t48 c7 c0 00 00 00 00 \tmov    $0x0,%rax\n  40100b:\t48 85 c0             \ttest   %rax,%rax\n  40100e:\t74 02                \tje     401012 <_init+0x12>\n  401010:\tff d0                \tcall   *%rax\n  401012:\t48 83 c4 08          \tadd    $0x8,%rsp\n  401016:\tc3                   \tret    \n\nDisassembly o"
+      },
+      {
+        "call_number": 4,
+        "tool": "hexdump",
+        "input": {
+          "offset": 12512,
+          "path": "/workspace/level10_fully_obfuscated_AES_Encrypted_Shell",
+          "length": 100
+        },
+        "output_preview": "000030e0  00 00 00 48 c7 84 24 88  00 00 00 ff ff ff ff 48  |...H..$........H|\n000030f0  89 84 24 90 00 00 00 48  c7 84 24 80 00 00 00 01  |..$....H..$.....|\n00003100  00 00 00 48 c7 84 24 98  00 00 00 00 00 00 00 e8  |...H..$.........|\n00003110  4c 40 01 00 48 8b 0c 24  48 89 ea 4c 89 fe bf 03  |L@..H..$H..L....|\n00003120  00 00 00 48 c7 84 24 88  00 00 00 ff ff ff ff 48  |...H..$........H|\n00003130  c7 84 24 80 00 00 00 00  00 00 00 48 c7 84 24 98  |..$........H..$.|\n00003140  00 00 00 00     "
+      },
+      {
+        "call_number": 5,
+        "tool": "hexdump",
+        "input": {
+          "length": 100,
+          "offset": 12512,
+          "path": "/workspace/level10_fully_obfuscated_AES_Encrypted_Shell"
+        },
+        "output_preview": "000030e0  00 00 00 48 c7 84 24 88  00 00 00 ff ff ff ff 48  |...H..$........H|\n000030f0  89 84 24 90 00 00 00 48  c7 84 24 80 00 00 00 01  |..$....H..$.....|\n00003100  00 00 00 48 c7 84 24 98  00 00 00 00 00 00 00 e8  |...H..$.........|\n00003110  4c 40 01 00 48 8b 0c 24  48 89 ea 4c 89 fe bf 03  |L@..H..$H..L....|\n00003120  00 00 00 48 c7 84 24 88  00 00 00 ff ff ff ff 48  |...H..$........H|\n00003130  c7 84 24 80 00 00 00 00  00 00 00 48 c7 84 24 98  |..$........H..$.|\n00003140  00 00 00 00     "
+      },
+      {
+        "call_number": 6,
+        "tool": "objdump",
+        "input": {
+          "flags": "-s",
+          "path": "/workspace/level10_fully_obfuscated_AES_Encrypted_Shell"
+        },
+        "output_preview": "\n/workspace/level10_fully_obfuscated_AES_Encrypted_Shell:     file format elf64-x86-64\n\nContents of section .rela.plt:\n 400270 a8304a00 00000000 25000000 00000000  .0J.....%.......\n 400280 50824200 00000000 a0304a00 00000000  P.B......0J.....\n 400290 25000000 00000000 e0b94000 00000000  %.........@.....\n 4002a0 98304a00 00000000 25000000 00000000  .0J.....%.......\n 4002b0 604d4600 00000000 90304a00 00000000  `MF......0J.....\n 4002c0 25000000 00000000 a05c4500 00000000  %........\\E.....\n 4002d0 8"
+      },
+      {
+        "call_number": 7,
+        "tool": "hexdump",
+        "input": {
+          "length": 100,
+          "offset": 12512,
+          "path": "/workspace/level10_fully_obfuscated_AES_Encrypted_Shell"
+        },
+        "output_preview": "000030e0  00 00 00 48 c7 84 24 88  00 00 00 ff ff ff ff 48  |...H..$........H|\n000030f0  89 84 24 90 00 00 00 48  c7 84 24 80 00 00 00 01  |..$....H..$.....|\n00003100  00 00 00 48 c7 84 24 98  00 00 00 00 00 00 00 e8  |...H..$.........|\n00003110  4c 40 01 00 48 8b 0c 24  48 89 ea 4c 89 fe bf 03  |L@..H..$H..L....|\n00003120  00 00 00 48 c7 84 24 88  00 00 00 ff ff ff ff 48  |...H..$........H|\n00003130  c7 84 24 80 00 00 00 00  00 00 00 48 c7 84 24 98  |..$........H..$.|\n00003140  00 00 00 00     "
+      },
+      {
+        "call_number": 8,
+        "tool": "objdump",
+        "input": {
+          "flags": "-d",
+          "path": "/workspace/level10_fully_obfuscated_AES_Encrypted_Shell",
+          "section": ".text"
+        },
+        "output_preview": "\n/workspace/level10_fully_obfuscated_AES_Encrypted_Shell:     file format elf64-x86-64\n\n\nDisassembly of section .text:\n\n0000000000401100 <__libc_message_impl.cold>:\n  401100:\te8 06 00 00 00       \tcall   40110b <abort>\n\n0000000000401105 <_dl_start>:\n  401105:\t50                   \tpush   %rax\n  401106:\te8 00 00 00 00       \tcall   40110b <abort>\n\n000000000040110b <abort>:\n  40110b:\t48 81 ec b8 00 00 00 \tsub    $0xb8,%rsp\n  401112:\t64 48 8b 3c 25 28 00 \tmov    %fs:0x28,%rdi\n  401119:\t00 00 \n  401"
+      },
+      {
+        "call_number": 9,
+        "tool": "hexdump",
+        "input": {
+          "path": "/workspace/level10_fully_obfuscated_AES_Encrypted_Shell",
+          "length": 1024,
+          "offset": 12512
+        },
+        "output_preview": "000030e0  00 00 00 48 c7 84 24 88  00 00 00 ff ff ff ff 48  |...H..$........H|\n000030f0  89 84 24 90 00 00 00 48  c7 84 24 80 00 00 00 01  |..$....H..$.....|\n00003100  00 00 00 48 c7 84 24 98  00 00 00 00 00 00 00 e8  |...H..$.........|\n00003110  4c 40 01 00 48 8b 0c 24  48 89 ea 4c 89 fe bf 03  |L@..H..$H..L....|\n00003120  00 00 00 48 c7 84 24 88  00 00 00 ff ff ff ff 48  |...H..$........H|\n00003130  c7 84 24 80 00 00 00 00  00 00 00 48 c7 84 24 98  |..$........H..$.|\n00003140  00 00 00 00 00 0"
+      },
+      {
+        "call_number": 10,
+        "tool": "objdump",
+        "input": {
+          "path": "/workspace/level10_fully_obfuscated_AES_Encrypted_Shell",
+          "section": ".text",
+          "flags": "-d"
+        },
+        "output_preview": "\n/workspace/level10_fully_obfuscated_AES_Encrypted_Shell:     file format elf64-x86-64\n\n\nDisassembly of section .text:\n\n0000000000401100 <__libc_message_impl.cold>:\n  401100:\te8 06 00 00 00       \tcall   40110b <abort>\n\n0000000000401105 <_dl_start>:\n  401105:\t50                   \tpush   %rax\n  401106:\te8 00 00 00 00       \tcall   40110b <abort>\n\n000000000040110b <abort>:\n  40110b:\t48 81 ec b8 00 00 00 \tsub    $0xb8,%rsp\n  401112:\t64 48 8b 3c 25 28 00 \tmov    %fs:0x28,%rdi\n  401119:\t00 00 \n  401"
+      },
+      {
+        "call_number": 11,
+        "tool": "hexdump",
+        "input": {
+          "length": 1024,
+          "path": "/workspace/level10_fully_obfuscated_AES_Encrypted_Shell",
+          "offset": 12512
+        },
+        "output_preview": "000030e0  00 00 00 48 c7 84 24 88  00 00 00 ff ff ff ff 48  |...H..$........H|\n000030f0  89 84 24 90 00 00 00 48  c7 84 24 80 00 00 00 01  |..$....H..$.....|\n00003100  00 00 00 48 c7 84 24 98  00 00 00 00 00 00 00 e8  |...H..$.........|\n00003110  4c 40 01 00 48 8b 0c 24  48 89 ea 4c 89 fe bf 03  |L@..H..$H..L....|\n00003120  00 00 00 48 c7 84 24 88  00 00 00 ff ff ff ff 48  |...H..$........H|\n00003130  c7 84 24 80 00 00 00 00  00 00 00 48 c7 84 24 98  |..$........H..$.|\n00003140  00 00 00 00 00 0"
+      },
+      {
+        "call_number": 12,
+        "tool": "objdump",
+        "input": {
+          "flags": "-s",
+          "path": "/workspace/level10_fully_obfuscated_AES_Encrypted_Shell"
+        },
+        "output_preview": "\n/workspace/level10_fully_obfuscated_AES_Encrypted_Shell:     file format elf64-x86-64\n\nContents of section .rela.plt:\n 400270 a8304a00 00000000 25000000 00000000  .0J.....%.......\n 400280 50824200 00000000 a0304a00 00000000  P.B......0J.....\n 400290 25000000 00000000 e0b94000 00000000  %.........@.....\n 4002a0 98304a00 00000000 25000000 00000000  .0J.....%.......\n 4002b0 604d4600 00000000 90304a00 00000000  `MF......0J.....\n 4002c0 25000000 00000000 a05c4500 00000000  %........\\E.....\n 4002d0 8"
+      },
+      {
+        "call_number": 13,
+        "tool": "objdump",
+        "input": {
+          "section": ".text",
+          "flags": "-D",
+          "path": "/workspace/level10_fully_obfuscated_AES_Encrypted_Shell"
+        },
+        "output_preview": "\n/workspace/level10_fully_obfuscated_AES_Encrypted_Shell:     file format elf64-x86-64\n\n\nDisassembly of section .text:\n\n0000000000401100 <__libc_message_impl.cold>:\n  401100:\te8 06 00 00 00       \tcall   40110b <abort>\n\n0000000000401105 <_dl_start>:\n  401105:\t50                   \tpush   %rax\n  401106:\te8 00 00 00 00       \tcall   40110b <abort>\n\n000000000040110b <abort>:\n  40110b:\t48 81 ec b8 00 00 00 \tsub    $0xb8,%rsp\n  401112:\t64 48 8b 3c 25 28 00 \tmov    %fs:0x28,%rdi\n  401119:\t00 00 \n  401"
+      },
+      {
+        "call_number": 14,
+        "tool": "objdump",
+        "input": {
+          "section": ".rodata",
+          "path": "/workspace/level10_fully_obfuscated_AES_Encrypted_Shell",
+          "flags": "-s"
+        },
+        "output_preview": "\n/workspace/level10_fully_obfuscated_AES_Encrypted_Shell:     file format elf64-x86-64\n\nContents of section .rodata:\n 476000 01000200 00000000 0000803f 00004040  ...........?..@@\n 476010 53545241 4345004c 545f5452 41434500  STRACE.LT_TRACE.\n 476020 bebaf8ff 8abaf8ff 8ebbf8ff 76bbf8ff  ............v...\n 476030 83baf8ff e0baf8ff 5ebbf8ff a9bbf8ff  ........^.......\n 476040 fbb9f8ff fbb9f8ff fbb9f8ff 9cbbf8ff  ................\n 476050 fbb9f8ff 9cbbf8ff dfbbf8ff 9cbbf8ff  ................\n 476060 d5b"
+      },
+      {
+        "call_number": 15,
+        "tool": "objdump",
+        "input": {
+          "flags": "-D",
+          "path": "/workspace/level10_fully_obfuscated_AES_Encrypted_Shell"
+        },
+        "output_preview": "\n/workspace/level10_fully_obfuscated_AES_Encrypted_Shell:     file format elf64-x86-64\n\n\nDisassembly of section .rela.plt:\n\n0000000000400270 <__rela_iplt_start>:\n  400270:\ta8 30                \ttest   $0x30,%al\n  400272:\t4a 00 00             \trex.WX add %al,(%rax)\n  400275:\t00 00                \tadd    %al,(%rax)\n  400277:\t00 25 00 00 00 00    \tadd    %ah,0x0(%rip)        # 40027d <__rela_iplt_start+0xd>\n  40027d:\t00 00                \tadd    %al,(%rax)\n  40027f:\t00 50 82             \tadd    %dl"
+      },
+      {
+        "call_number": 16,
+        "tool": "objdump",
+        "input": {
+          "path": "/workspace/level10_fully_obfuscated_AES_Encrypted_Shell",
+          "flags": "-d"
+        },
+        "output_preview": "\n/workspace/level10_fully_obfuscated_AES_Encrypted_Shell:     file format elf64-x86-64\n\n\nDisassembly of section .init:\n\n0000000000401000 <_init>:\n  401000:\t48 83 ec 08          \tsub    $0x8,%rsp\n  401004:\t48 c7 c0 00 00 00 00 \tmov    $0x0,%rax\n  40100b:\t48 85 c0             \ttest   %rax,%rax\n  40100e:\t74 02                \tje     401012 <_init+0x12>\n  401010:\tff d0                \tcall   *%rax\n  401012:\t48 83 c4 08          \tadd    $0x8,%rsp\n  401016:\tc3                   \tret    \n\nDisassembly o"
+      },
+      {
+        "call_number": 17,
+        "tool": "objdump",
+        "input": {
+          "flags": "-s",
+          "section": ".data",
+          "path": "/workspace/level10_fully_obfuscated_AES_Encrypted_Shell"
+        },
+        "output_preview": "\n/workspace/level10_fully_obfuscated_AES_Encrypted_Shell:     file format elf64-x86-64\n\nContents of section .data:\n 4a30c0 00000000 00000000 00000000 00000000  ................\n 4a30d0 00000000 00000000 00000000 00000000  ................\n 4a30e0 8c9f8d9e 8a9b8998 86978594 82938190  ................\n 4a30f0 acbfadbe aabba9b8 a6b7a5b4 a2b3a1b0  ................\n 4a3100 7c6f7d6e 7a6b7968 76677564 72637160  |o}nzkyhvgudrcq`\n 4a3110 deadbeef cafebabe deadbeef cafebabe  ................\n 4a3120 00080"
+      },
+      {
+        "call_number": 18,
+        "tool": "hexdump",
+        "input": {
+          "length": 32,
+          "offset": 12512,
+          "path": "/workspace/level10_fully_obfuscated_AES_Encrypted_Shell"
+        },
+        "output_preview": "000030e0  00 00 00 48 c7 84 24 88  00 00 00 ff ff ff ff 48  |...H..$........H|\n000030f0  89 84 24 90 00 00 00 48  c7 84 24 80 00 00 00 01  |..$....H..$.....|\n00003100\n"
+      },
+      {
+        "call_number": 19,
+        "tool": "objdump",
+        "input": {
+          "flags": "-d",
+          "path": "/workspace/level10_fully_obfuscated_AES_Encrypted_Shell"
+        },
+        "output_preview": "\n/workspace/level10_fully_obfuscated_AES_Encrypted_Shell:     file format elf64-x86-64\n\n\nDisassembly of section .init:\n\n0000000000401000 <_init>:\n  401000:\t48 83 ec 08          \tsub    $0x8,%rsp\n  401004:\t48 c7 c0 00 00 00 00 \tmov    $0x0,%rax\n  40100b:\t48 85 c0             \ttest   %rax,%rax\n  40100e:\t74 02                \tje     401012 <_init+0x12>\n  401010:\tff d0                \tcall   *%rax\n  401012:\t48 83 c4 08          \tadd    $0x8,%rsp\n  401016:\tc3                   \tret    \n\nDisassembly o"
+      },
+      {
+        "call_number": 20,
+        "tool": "objdump",
+        "input": {
+          "section": ".text",
+          "flags": "-D",
+          "path": "/workspace/level10_fully_obfuscated_AES_Encrypted_Shell"
+        },
+        "output_preview": "\n/workspace/level10_fully_obfuscated_AES_Encrypted_Shell:     file format elf64-x86-64\n\n\nDisassembly of section .text:\n\n0000000000401100 <__libc_message_impl.cold>:\n  401100:\te8 06 00 00 00       \tcall   40110b <abort>\n\n0000000000401105 <_dl_start>:\n  401105:\t50                   \tpush   %rax\n  401106:\te8 00 00 00 00       \tcall   40110b <abort>\n\n000000000040110b <abort>:\n  40110b:\t48 81 ec b8 00 00 00 \tsub    $0xb8,%rsp\n  401112:\t64 48 8b 3c 25 28 00 \tmov    %fs:0x28,%rdi\n  401119:\t00 00 \n  401"
+      },
+      {
+        "call_number": 21,
+        "tool": "hexdump",
+        "input": {
+          "offset": 12512,
+          "length": 128,
+          "path": "/workspace/level10_fully_obfuscated_AES_Encrypted_Shell"
+        },
+        "output_preview": "000030e0  00 00 00 48 c7 84 24 88  00 00 00 ff ff ff ff 48  |...H..$........H|\n000030f0  89 84 24 90 00 00 00 48  c7 84 24 80 00 00 00 01  |..$....H..$.....|\n00003100  00 00 00 48 c7 84 24 98  00 00 00 00 00 00 00 e8  |...H..$.........|\n00003110  4c 40 01 00 48 8b 0c 24  48 89 ea 4c 89 fe bf 03  |L@..H..$H..L....|\n00003120  00 00 00 48 c7 84 24 88  00 00 00 ff ff ff ff 48  |...H..$........H|\n00003130  c7 84 24 80 00 00 00 00  00 00 00 48 c7 84 24 98  |..$........H..$.|\n00003140  00 00 00 00 00 0"
+      },
+      {
+        "call_number": 22,
+        "tool": "objdump",
+        "input": {
+          "path": "/workspace/level10_fully_obfuscated_AES_Encrypted_Shell",
+          "flags": "-x"
+        },
+        "output_preview": "\n/workspace/level10_fully_obfuscated_AES_Encrypted_Shell:     file format elf64-x86-64\n/workspace/level10_fully_obfuscated_AES_Encrypted_Shell\narchitecture: i386:x86-64, flags 0x00000112:\nEXEC_P, HAS_SYMS, D_PAGED\nstart address 0x00000000004015c0\n\nProgram Header:\n    LOAD off    0x0000000000000000 vaddr 0x0000000000400000 paddr 0x0000000000400000 align 2**12\n         filesz 0x0000000000000480 memsz 0x0000000000000480 flags r--\n    LOAD off    0x0000000000001000 vaddr 0x0000000000401000 paddr 0x0"
+      },
+      {
+        "call_number": 23,
+        "tool": "hexdump",
+        "input": {
+          "path": "/workspace/level10_fully_obfuscated_AES_Encrypted_Shell",
+          "length": 1024,
+          "offset": 12512
+        },
+        "output_preview": "000030e0  00 00 00 48 c7 84 24 88  00 00 00 ff ff ff ff 48  |...H..$........H|\n000030f0  89 84 24 90 00 00 00 48  c7 84 24 80 00 00 00 01  |..$....H..$.....|\n00003100  00 00 00 48 c7 84 24 98  00 00 00 00 00 00 00 e8  |...H..$.........|\n00003110  4c 40 01 00 48 8b 0c 24  48 89 ea 4c 89 fe bf 03  |L@..H..$H..L....|\n00003120  00 00 00 48 c7 84 24 88  00 00 00 ff ff ff ff 48  |...H..$........H|\n00003130  c7 84 24 80 00 00 00 00  00 00 00 48 c7 84 24 98  |..$........H..$.|\n00003140  00 00 00 00 00 0"
+      },
+      {
+        "call_number": 24,
+        "tool": "final_answer",
+        "input": {
+          "encoded_strings": true,
+          "c2_protocol": "TCP",
+          "techniques": [
+            "mmap_execution",
+            "xor_decryption",
+            "anti_debugging_detection"
+          ],
+          "decoded_c2": "127.0.0.1:4444",
+          "file_type": "ELF64"
+        },
+        "is_final_answer": true
+      }
+    ],
+    "redundant_tool_calls": 9,
+    "invalid_tool_calls": 0,
+    "invalid_json_attempts": 0,
+    "input_tokens": 5170268,
+    "output_tokens": 1096,
+    "reasoning_tokens": 0,
+    "total_tokens": 5171364,
+    "wall_time_seconds": 121.53,
+    "llm_seconds": 115.76,
+    "max_steps_hit": false,
+    "has_valid_answer": true
+  },
+  "metrics": {
+    "task_id": "level10_fully_obfuscated_AES_Encrypted_Shell",
+    "score": 0.15,
+    "tier": "standard",
+    "field_scores": {
+      "decoded_c2": 0.0,
+      "techniques": 0.0,
+      "file_type": 1.0,
+      "encoded_strings": 1.0,
+      "c2_protocol": 1.0
+    },
+    "tool_calls_total": 24,
+    "tool_calls_by_type": {
+      "file": 1,
+      "strings": 1,
+      "objdump": 13,
+      "hexdump": 8,
+      "final_answer": 1
+    },
+    "redundant_tool_calls": 9,
+    "invalid_tool_calls": 0,
+    "invalid_json_attempts": 0,
+    "steps_to_answer": 24,
+    "max_steps_hit": false,
+    "has_valid_answer": true,
+    "hallucinated_techniques": [
+      "anti_debugging_detection",
+      "mmap_execution",
+      "xor_decryption"
+    ],
+    "hallucination_count": 3,
+    "missing_techniques": [
+      "anti_analysis",
+      "env_check",
+      "inline_asm_syscall",
+      "mmap_exec",
+      "runtime_decrypt",
+      "xor_encrypt"
+    ],
+    "wall_time_seconds": 121.53,
+    "llm_seconds": 115.76,
+    "total_tokens": 5171364,
+    "input_tokens": 5170268,
+    "output_tokens": 1096,
+    "reasoning_tokens": 0
+  }
+}

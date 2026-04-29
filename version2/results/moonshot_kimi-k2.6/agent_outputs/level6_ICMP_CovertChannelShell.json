@@ -1,0 +1,14 @@
+{
+  "file_type": "ELF64",
+  "encoded_strings": false,
+  "decoded_c2": "192.168.1.100",
+  "techniques": [
+    "raw_socket",
+    "icmp_covert_channel",
+    "sendto",
+    "inet_pton",
+    "stack_strings",
+    "icmp_checksum"
+  ],
+  "c2_protocol": "ICMP"
+}

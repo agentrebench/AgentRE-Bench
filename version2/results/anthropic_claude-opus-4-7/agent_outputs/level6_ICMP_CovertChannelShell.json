@@ -1,0 +1,27 @@
+{
+  "file_type": "ELF64",
+  "encoded_strings": false,
+  "decoded_c2": "192.168.1.100",
+  "c2_protocol": "ICMP",
+  "techniques": [
+    "raw_socket",
+    "icmp_echo_covert_channel",
+    "inet_pton",
+    "custom_icmp_checksum",
+    "sendto",
+    "getpid_as_icmp_id",
+    "sleep_loop",
+    "static_linking"
+  ],
+  "encryption_details": {
+    "algorithm": "none",
+    "key": "",
+    "key_storage": ""
+  },
+  "decoded_strings": {
+    "c2_ip": "192.168.1.100",
+    "embedded_command": "whoami",
+    "icmp_type": "8 (Echo Request)",
+    "icmp_code": "0"
+  }
+}

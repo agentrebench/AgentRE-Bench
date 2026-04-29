@@ -1,0 +1,23 @@
+{
+  "file_type": "ELF64",
+  "encoded_strings": true,
+  "decoded_c2": "192.168.1.100:4444",
+  "c2_protocol": "TCP",
+  "techniques": [
+    "socket_connect",
+    "xor_encoding",
+    "multistage_payload",
+    "runtime_decryption",
+    "shellcode_execution",
+    "network_received_key"
+  ],
+  "encryption_details": {
+    "algorithm": "XOR (single-byte key)",
+    "key": "received from C2 server (first byte of recv)",
+    "key_storage": "transmitted over network from C2; stage-2 blob at 0x4a40e0 (87 bytes) decrypted in-place by decrypt_stage2()"
+  },
+  "decoded_strings": {
+    "0x477010": "192.168.1.100",
+    "port_literal_0x115c": "4444"
+  }
+}

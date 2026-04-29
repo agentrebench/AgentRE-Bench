@@ -1,0 +1,17 @@
+{
+  "file_type": "ELF64",
+  "encoded_strings": false,
+  "decoded_c2": "192.168.1.100:4444",
+  "techniques": [
+    "fork_bomb",
+    "reverse_shell",
+    "fork_process",
+    "socket_create",
+    "socket_connect",
+    "inet_pton",
+    "dup2_stdio_redirect",
+    "execve_bin_sh"
+  ],
+  "c2_protocol": "TCP",
+  "anti_analysis": []
+}

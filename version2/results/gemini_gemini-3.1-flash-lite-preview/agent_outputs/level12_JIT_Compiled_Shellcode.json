@@ -1,0 +1,12 @@
+{
+  "c2_protocol": "TCP",
+  "encoded_strings": false,
+  "decoded_c2": "192.168.1.100:4444",
+  "file_type": "ELF64",
+  "techniques": [
+    "socket_connect",
+    "dup2_redirection",
+    "execve_shell",
+    "jit_compilation"
+  ]
+}

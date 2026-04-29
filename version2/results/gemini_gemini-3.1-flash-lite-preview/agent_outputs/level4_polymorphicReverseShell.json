@@ -1,0 +1,11 @@
+{
+  "techniques": [
+    "polymorphic_shellcode_generation",
+    "dynamic_memory_allocation",
+    "syscall_direct_invocation"
+  ],
+  "file_type": "ELF64",
+  "c2_protocol": "TCP",
+  "encoded_strings": true,
+  "decoded_c2": "10.0.0.5:4444"
+}

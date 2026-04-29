@@ -1,0 +1,75 @@
+{
+  "task_id": "level4_polymorphicReverseShell",
+  "model": "deepseek-v4-pro",
+  "provider": "deepseek",
+  "difficulty": 4,
+  "score": {
+    "tier": "standard",
+    "field_scores": {
+      "decoded_c2": 1.0,
+      "techniques": 0.0,
+      "file_type": 0.0,
+      "encoded_strings": 0.0,
+      "c2_protocol": 0.0
+    },
+    "hallucinated_techniques": [],
+    "missing_techniques": [
+      "dynamic_memory_exec",
+      "nop_sled",
+      "polymorphic_shellcode",
+      "socket_syscall"
+    ],
+    "hallucination_penalty": 0.0,
+    "weighted_score": 0.4,
+    "final_score": 0.4,
+    "sample": "level4_polymorphicReverseShell"
+  },
+  "agent_result": {
+    "task_id": "level4_polymorphicReverseShell",
+    "final_answer": null,
+    "tool_call_count": 0,
+    "tool_calls_by_type": {},
+    "tool_calls_log": [],
+    "redundant_tool_calls": 0,
+    "invalid_tool_calls": 0,
+    "invalid_json_attempts": 0,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "total_tokens": 0,
+    "wall_time_seconds": 18.09,
+    "max_steps_hit": false,
+    "has_valid_answer": false
+  },
+  "metrics": {
+    "task_id": "level4_polymorphicReverseShell",
+    "score": 0.4,
+    "tier": "standard",
+    "field_scores": {
+      "decoded_c2": 1.0,
+      "techniques": 0.0,
+      "file_type": 0.0,
+      "encoded_strings": 0.0,
+      "c2_protocol": 0.0
+    },
+    "tool_calls_total": 0,
+    "tool_calls_by_type": {},
+    "redundant_tool_calls": 0,
+    "invalid_tool_calls": 0,
+    "invalid_json_attempts": 0,
+    "steps_to_answer": 0,
+    "max_steps_hit": false,
+    "has_valid_answer": false,
+    "hallucinated_techniques": [],
+    "hallucination_count": 0,
+    "missing_techniques": [
+      "dynamic_memory_exec",
+      "nop_sled",
+      "polymorphic_shellcode",
+      "socket_syscall"
+    ],
+    "wall_time_seconds": 18.09,
+    "total_tokens": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  }
+}

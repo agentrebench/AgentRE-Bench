@@ -2,13 +2,62 @@ from __future__ import annotations
 
 import json
 import logging
+import random
+import re
+import socket
 import time
+import urllib.error
 from typing import Any
 
 from .providers.base import AgentProvider, ProviderResponse
 from .tools import ToolExecutor, get_tool_schemas
 
 log = logging.getLogger(__name__)
+
+# Transient HTTP statuses worth retrying. 408 request timeout, 425 too early,
+# 429 rate limit, 5xx server errors. 401/403/404 are NOT retried.
+_TRANSIENT_HTTP_STATUSES = {408, 425, 429, 500, 502, 503, 504, 529}
+_MAX_RETRIES = 3
+_BASE_BACKOFF_SECONDS = 30.0
+_MAX_BACKOFF_SECONDS = 120.0
+
+
+def _retry_delay_seconds(error: BaseException, attempt: int) -> float | None:
+    """Decide whether to retry and how long to wait.
+
+    Returns the sleep duration in seconds, or None to stop retrying.
+    """
+    # Connection-level / socket timeouts: retry with short backoff.
+    if isinstance(error, (urllib.error.URLError, socket.timeout, TimeoutError)):
+        if isinstance(error, urllib.error.HTTPError):
+            pass  # fall through to HTTP handling below
+        else:
+            return min(_BASE_BACKOFF_SECONDS * (2 ** attempt), _MAX_BACKOFF_SECONDS)
+
+    if isinstance(error, urllib.error.HTTPError):
+        if error.code not in _TRANSIENT_HTTP_STATUSES:
+            return None
+        # Try to honor server-supplied retry hints first.
+        retry_after = error.headers.get("Retry-After") if error.headers else None
+        if retry_after:
+            try:
+                return min(float(retry_after), _MAX_BACKOFF_SECONDS)
+            except ValueError:
+                pass
+        # Some providers (Gemini) put retry hints in the response body.
+        try:
+            body = error.read().decode("utf-8", errors="replace")
+            error.read = lambda *_a, **_k: body.encode()  # allow re-reads downstream
+            m = re.search(r'"retryDelay"\s*:\s*"(\d+)s"', body)
+            if m:
+                return min(float(m.group(1)) + 1.0, _MAX_BACKOFF_SECONDS)
+        except Exception:
+            pass
+        # Default: exponential backoff with jitter.
+        backoff = min(_BASE_BACKOFF_SECONDS * (2 ** attempt), _MAX_BACKOFF_SECONDS)
+        return backoff + random.uniform(0, 5)
+
+    return None
 
 
 class AgentLoop:
@@ -35,6 +84,8 @@ class AgentLoop:
         self.tool_calls_log: list[dict] = []
         self.input_tokens = 0
         self.output_tokens = 0
+        self.reasoning_tokens = 0
+        self.llm_seconds = 0.0
         self.invalid_tool_calls = 0
         self.invalid_json_attempts = 0
 
@@ -66,20 +117,44 @@ class AgentLoop:
         max_steps_hit = False
 
         while self.tool_call_count < self.max_tool_calls:
-            try:
-                response = self.provider.create_message(
-                    system=self.system_prompt,
-                    messages=self.messages,
-                    tools=tools,
-                    max_tokens=self.max_tokens,
-                )
-            except Exception as e:
-                log.error("[%s] Provider error: %s", self.task_id, e)
-                self._vprint(f"\n  !! Provider error: {e}")
+            llm_start = time.time()
+            response = None
+            last_error: BaseException | None = None
+            for attempt in range(_MAX_RETRIES + 1):
+                try:
+                    response = self.provider.create_message(
+                        system=self.system_prompt,
+                        messages=self.messages,
+                        tools=tools,
+                        max_tokens=self.max_tokens,
+                    )
+                    last_error = None
+                    break
+                except Exception as e:  # noqa: BLE001 — provider raises arbitrary types
+                    last_error = e
+                    delay = _retry_delay_seconds(e, attempt)
+                    if delay is None or attempt == _MAX_RETRIES:
+                        break
+                    log.warning(
+                        "[%s] Transient provider error (attempt %d/%d): %s — sleeping %.1fs",
+                        self.task_id, attempt + 1, _MAX_RETRIES + 1, e, delay,
+                    )
+                    self._vprint(
+                        f"\n  ~~ retrying after transient error "
+                        f"(attempt {attempt + 1}/{_MAX_RETRIES + 1}): sleeping {delay:.1f}s"
+                    )
+                    time.sleep(delay)
+
+            self.llm_seconds += time.time() - llm_start
+
+            if response is None:
+                log.error("[%s] Provider error: %s", self.task_id, last_error)
+                self._vprint(f"\n  !! Provider error: {last_error}")
                 break
 
             self.input_tokens += response.input_tokens
             self.output_tokens += response.output_tokens
+            self.reasoning_tokens += response.reasoning_tokens
 
             if response.stop_reason == "tool_use" and response.tool_calls:
                 # Show agent reasoning (verbose only)
@@ -90,6 +165,15 @@ class AgentLoop:
 
                 # Build assistant content blocks
                 assistant_content = []
+                # Anthropic thinking blocks must be preserved verbatim with
+                # their signature, and must precede text/tool_use in the message.
+                for tb in response.thinking_blocks:
+                    assistant_content.append(tb)
+                if response.reasoning_content:
+                    assistant_content.append({
+                        "type": "reasoning",
+                        "text": response.reasoning_content,
+                    })
                 if response.text_content:
                     assistant_content.append({
                         "type": "text",
@@ -273,8 +357,10 @@ class AgentLoop:
             "invalid_json_attempts": self.invalid_json_attempts,
             "input_tokens": self.input_tokens,
             "output_tokens": self.output_tokens,
+            "reasoning_tokens": self.reasoning_tokens,
             "total_tokens": self.input_tokens + self.output_tokens,
             "wall_time_seconds": round(wall_time, 2),
+            "llm_seconds": round(self.llm_seconds, 2),
             "max_steps_hit": max_steps_hit,
             "has_valid_answer": final_answer is not None,
         }

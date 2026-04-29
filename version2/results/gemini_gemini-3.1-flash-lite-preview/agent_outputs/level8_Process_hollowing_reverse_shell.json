@@ -1,0 +1,11 @@
+{
+  "file_type": "ELF64",
+  "encoded_strings": false,
+  "techniques": [
+    "process_hollowing",
+    "ptrace_injection",
+    "fork"
+  ],
+  "decoded_c2": "127.0.0.1:4444",
+  "c2_protocol": "TCP"
+}

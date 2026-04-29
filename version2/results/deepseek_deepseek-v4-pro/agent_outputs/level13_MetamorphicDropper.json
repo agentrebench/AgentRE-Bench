@@ -1,0 +1,42 @@
+{
+  "file_type": "ELF64",
+  "encoded_strings": true,
+  "decoded_c2": "192.168.56.101:8080",
+  "techniques": [
+    "socket_connect",
+    "rc4_encryption",
+    "xor_encoding",
+    "anti_debug_ptrace",
+    "anti_debug_timing",
+    "anti_debug_proc",
+    "self_modifying_code",
+    "opaque_predicates",
+    "process_hiding",
+    "junk_code"
+  ],
+  "c2_protocol": "TCP",
+  "encryption_details": {
+    "algorithm": "RC4",
+    "key": "gh0st_k3y_2024",
+    "key_storage": "Obfuscated key bytes stored at _ks (0x4a90e0): c2 cd 95 d6 d1 fa ce 96 dc fa 97 95 97 91. Key recovered by XOR with 0xa5. Parity check on (pid*(pid+1))&1 always yields 0, forcing XOR path. Key length: 14 bytes."
+  },
+  "decoded_strings": {
+    "_st+0x82 (17 bytes)": "/proc/self/stat",
+    "_st+0x93 (9 bytes)": "TracerPid",
+    "_st+0x17 (14 bytes)": "[process hide name]",
+    "_st+0x25 (4 bytes)": "[C2 IP component]",
+    "_st+0x29 (29 bytes)": "[C2 hostname/URL]",
+    "_st+0x46 (2 bytes)": "[C2 port]",
+    "_st+0x48 (15 bytes)": "[C2 path/URI]",
+    "_st+0x9c (9 bytes)": "[additional C2 param]"
+  },
+  "anti_analysis": [
+    "anti_debug_ptrace: Uses ptrace(PTRACE_TRACEME, 0, 0, 0) to detect debugger attachment",
+    "anti_debug_timing: Uses gettimeofday() to measure execution time of a loop (100000 iterations), compares against threshold 0x7a120 (~500ms) to detect step-through debugging",
+    "anti_debug_proc: Reads /proc/self/stat and parses TracerPid field to detect tracing",
+    "self_modifying_code: _self_modify function at 0x401db0 modifies .text section at runtime using mprotect+memcpy pattern",
+    "opaque_predicates: _opaque_true/_opaque_false functions use complex arithmetic that always evaluates to 1 or 0 to confuse static analysis",
+    "process_hiding: _hide_proc uses prctl(PR_SET_NAME) via syscall to rename process",
+    "junk_code: _ad_ptrace and _ad_timing contain dead/confusing instructions like xchg %bx,%bx and lea (%rsp),%rsp"
+  ]
+}

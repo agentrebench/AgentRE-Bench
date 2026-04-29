@@ -1,0 +1,10 @@
+{
+  "encoded_strings": true,
+  "techniques": [
+    "socket_connect",
+    "xor_encoding"
+  ],
+  "decoded_c2": "192.168.1.100:4444",
+  "c2_protocol": "TCP",
+  "file_type": "ELF64"
+}

@@ -1,0 +1,17 @@
+{
+  "encoded_strings": false,
+  "c2_protocol": "TCP",
+  "anti_analysis": [
+    "anti_debug_ptrace",
+    "anti_debug_getenv"
+  ],
+  "file_type": "ELF64",
+  "decoded_c2": "192.168.1.100:4444",
+  "techniques": [
+    "socket_connect",
+    "fork",
+    "dup2",
+    "execve",
+    "ptrace_anti_debug"
+  ]
+}

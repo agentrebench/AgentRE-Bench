@@ -1,0 +1,17 @@
+{
+  "file_type": "ELF64",
+  "encoded_strings": true,
+  "decoded_c2": "192.168.1.100:4444",
+  "techniques": [
+    "xor_encoding",
+    "anti_debug_ptrace",
+    "socket_connect",
+    "shellcode_execution"
+  ],
+  "c2_protocol": "TCP",
+  "encryption_details": {
+    "algorithm": "xor",
+    "key": "deadbeefcafebabe",
+    "key_storage": "embeddded_in_data_section_at_0x4a3110"
+  }
+}

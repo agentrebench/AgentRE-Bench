@@ -1,0 +1,49 @@
+{
+  "file_type": "ELF64",
+  "encoded_strings": true,
+  "decoded_c2": "RC4-encrypted at .data:0x4a9100+0x29 (29 bytes); decrypts at runtime via _ds() with key 'gh0st_k3y_2024' to remote host:port for TCP dropper download",
+  "c2_protocol": "TCP",
+  "techniques": [
+    "rc4_encryption",
+    "xor_key_obfuscation",
+    "anti_debug_ptrace",
+    "anti_debug_timing",
+    "anti_debug_proc_status",
+    "tracerpid_check",
+    "self_modifying_code",
+    "opaque_predicates",
+    "state_machine_dispatcher",
+    "metamorphic_dispatcher",
+    "hide_proc_prctl",
+    "static_linking",
+    "fork_exec_dropper",
+    "socket_connect"
+  ],
+  "encryption_details": {
+    "algorithm": "RC4",
+    "key": "gh0st_k3y_2024",
+    "key_storage": "Stored encrypted at .data 0x4a90e0 (14 bytes: c2 cd 95 d6 d1 fa ce 96 dc fa 97 95 97 91). Recovered at runtime by _recover_key() based on PID parity: if (pid*(pid+1))&1 then key[i] = ~enc[i], else key[i] = enc[i] XOR 0xa5. The XOR-0xA5 path yields the actual key 'gh0st_k3y_2024'. Decrypted key cached at 0x4aac10 with _key_ready flag at 0x4aac20."
+  },
+  "decoded_strings": {
+    "key_at_0x4a90e0_xor_0xA5": "gh0st_k3y_2024",
+    "string_table_at_0x4a9100_idx_0x82_len_17": "/proc/self/status",
+    "string_table_at_0x4a9100_idx_0x93_len_9": "TracerPid",
+    "string_table_at_0x4a9100_idx_0x17_len_14": "(used by _hide_proc; openat target)",
+    "string_table_at_0x4a9100_idx_0x29_len_29": "(C2 hostname/URL - RC4 encrypted)",
+    "string_table_at_0x4a9100_idx_0x46_len_2": "(C2 port - RC4 encrypted)"
+  },
+  "anti_analysis": [
+    "_ad_ptrace: PTRACE_TRACEME (and PTRACE_DETACH=0x11) check to detect debuggers",
+    "_ad_timing: gettimeofday delta over busy loop to detect single-step / breakpoints (threshold 0x7a120 us)",
+    "_ad_proc: opens /proc/self/status (decrypted) and parses TracerPid line for non-zero",
+    "_hide_proc: openat syscall to hide process artifact",
+    "_self_modify / _sm_check: self-modifying code with marker check",
+    "_opaque_true / _opaque_false: opaque predicates to obfuscate control flow",
+    "_check_marker / _check_os: integrity/environment checks",
+    "Metamorphic state-machine dispatcher in main (states 0x7a3c, 0x1f82, 0xb5f6, 0xa420, 0x93be, 0x62e9, 0x58c4, 0x4db1, 0x35af, 0x0d17, 0xcccc, 0xdddd) to obscure execution order",
+    "Junk instructions like 'xchg %bx,%bx', 'lea (%rsp),%rsp', 'push %rax; pop %rax' inserted in anti-debug routines",
+    "PID-dependent key obfuscation (pid parity selects between NOT and XOR-0xA5)",
+    "Statically linked glibc to hide imports",
+    "RC4-encrypted string table at 0x4a9100 to defeat strings-based analysis"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "file_type": "ELF64 shared object (x86-64, dynamically linked, not stripped)",
+  "encoded_strings": false,
+  "decoded_c2": "192.168.1.100:4444",
+  "techniques": [
+    "shared_object_injection",
+    "libc_function_interposition_puts",
+    "dlsym_RTLD_NEXT",
+    "environment_variable_check_LD_AUDIT_LD_PRELOAD",
+    "socket_connect",
+    "inet_pton_ipv4",
+    "htons_port",
+    "dup2_stdio_redirection",
+    "execve_bin_sh_reverse_shell"
+  ],
+  "anti_analysis": [
+    "environment_variable_check_LD_AUDIT_LD_PRELOAD"
+  ],
+  "c2_protocol": "TCP"
+}

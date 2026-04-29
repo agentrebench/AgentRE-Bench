@@ -1,0 +1,17 @@
+{
+  "file_type": "ELF64",
+  "encoded_strings": false,
+  "decoded_c2": "192.168.1.100",
+  "techniques": [
+    "static_linking",
+    "hardcoded_c2_address",
+    "raw_socket",
+    "icmp_echo_request",
+    "inet_pton",
+    "sendto",
+    "icmp_checksum",
+    "sleep_beacon_loop"
+  ],
+  "c2_protocol": "ICMP",
+  "anti_analysis": []
+}

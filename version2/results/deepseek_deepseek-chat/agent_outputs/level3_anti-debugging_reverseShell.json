@@ -1,0 +1,22 @@
+{
+  "file_type": "ELF64",
+  "encoded_strings": false,
+  "decoded_c2": "192.168.1.100:4444",
+  "techniques": [
+    "socket_connect",
+    "anti_debug_ptrace",
+    "anti_debug_envvar_check",
+    "fork",
+    "randomized_delay",
+    "dup2_redirect",
+    "execve_shell"
+  ],
+  "c2_protocol": "TCP",
+  "anti_analysis": [
+    "ptrace(PTRACE_TRACEME) anti-debug - exits if debugged",
+    "LD_PRELOAD environment variable check - exits if set",
+    "LD_LIBRARY_PATH environment variable check - exits if set",
+    "Randomized delay (30-89 seconds) to evade sandboxing",
+    "Fork - parent exits, child continues as daemon"
+  ]
+}

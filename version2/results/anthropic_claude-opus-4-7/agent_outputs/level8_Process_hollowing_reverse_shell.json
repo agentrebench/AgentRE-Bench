@@ -1,0 +1,33 @@
+{
+  "file_type": "ELF64",
+  "encoded_strings": true,
+  "decoded_c2": "127.0.0.1:4444",
+  "c2_protocol": "TCP",
+  "techniques": [
+    "process_hollowing",
+    "ptrace_injection",
+    "fork_exec",
+    "shellcode_injection",
+    "reverse_shell",
+    "socket_connect",
+    "dup2_redirection",
+    "execve_shell"
+  ],
+  "anti_analysis": [
+    "ptrace_PTRACE_TRACEME",
+    "shellcode_built_via_immediate_movabs_constants",
+    "statically_linked"
+  ],
+  "encryption_details": {
+    "algorithm": "none (shellcode bytes embedded as movabs immediate constants and written into stack buffer, then injected with PTRACE_POKEDATA)",
+    "key": "n/a",
+    "key_storage": "shellcode bytes inline in .text section of hollow_process()"
+  },
+  "decoded_strings": {
+    "target_process": "/bin/sleep 1000",
+    "shellcode_target_ip": "127.0.0.1",
+    "shellcode_target_port": "4444",
+    "shellcode_command": "/bin//sh",
+    "syscalls_used": "socket(2,1,6), connect, dup2 x3, execve"
+  }
+}

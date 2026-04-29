@@ -1,0 +1,25 @@
+{
+  "file_type": "ELF64",
+  "encoded_strings": false,
+  "decoded_c2": "N/A (shellcode only creates AF_INET/SOCK_STREAM socket; no connect target hardcoded)",
+  "c2_protocol": "TCP",
+  "techniques": [
+    "polymorphic_shellcode_generation",
+    "nop_sled_padding",
+    "runtime_shellcode_execution",
+    "heap_allocated_executable_buffer",
+    "syscall_socket",
+    "time_based_rng_seeding"
+  ],
+  "anti_analysis": [
+    "polymorphic_nop_padding"
+  ],
+  "encryption_details": {
+    "algorithm": "none",
+    "key": "none",
+    "key_storage": "none"
+  },
+  "decoded_strings": {
+    "shellcode@0x477010": "xor rax,rax; xor rdi,rdi; xor rsi,rsi; xor rdx,rdx; xor rcx,rcx; xor rbx,rbx; push 0x29; pop rax; push 2; pop rdi; push 1; pop rsi; syscall  -> socket(AF_INET, SOCK_STREAM, 0)"
+  }
+}

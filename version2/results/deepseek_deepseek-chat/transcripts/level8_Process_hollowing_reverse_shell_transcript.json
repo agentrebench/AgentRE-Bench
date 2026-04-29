@@ -1,0 +1,264 @@
+{
+  "task_id": "level8_Process_hollowing_reverse_shell",
+  "model": "deepseek-chat",
+  "provider": "deepseek",
+  "difficulty": 8,
+  "score": {
+    "tier": "standard",
+    "field_scores": {
+      "decoded_c2": 1.0,
+      "techniques": 0.16666666666666666,
+      "file_type": 1.0,
+      "encoded_strings": 0.0,
+      "c2_protocol": 1.0
+    },
+    "hallucinated_techniques": [
+      "execl",
+      "fork",
+      "ptrace_pokedata",
+      "ptrace_traceme",
+      "reverse_shell",
+      "socket_connect",
+      "syscall_socket"
+    ],
+    "missing_techniques": [
+      "fork_exec",
+      "ptrace_inject",
+      "register_manipulation"
+    ],
+    "hallucination_penalty": 0.35,
+    "weighted_score": 0.65,
+    "final_score": 0.3,
+    "sample": "level8_Process_hollowing_reverse_shell"
+  },
+  "agent_result": {
+    "task_id": "level8_Process_hollowing_reverse_shell",
+    "final_answer": {
+      "file_type": "ELF64",
+      "encoded_strings": false,
+      "decoded_c2": "127.0.0.1:4444",
+      "techniques": [
+        "socket_connect",
+        "process_hollowing",
+        "ptrace_traceme",
+        "fork",
+        "execl",
+        "shellcode_injection",
+        "ptrace_pokedata",
+        "syscall_socket",
+        "reverse_shell"
+      ],
+      "c2_protocol": "TCP"
+    },
+    "tool_call_count": 15,
+    "tool_calls_by_type": {
+      "file": 1,
+      "strings": 3,
+      "readelf": 1,
+      "nm": 1,
+      "objdump": 2,
+      "hexdump": 6,
+      "final_answer": 1
+    },
+    "tool_calls_log": [
+      {
+        "call_number": 1,
+        "tool": "file",
+        "input": {
+          "path": "/workspace/level8_Process_hollowing_reverse_shell"
+        },
+        "output_preview": "/workspace/level8_Process_hollowing_reverse_shell: ELF 64-bit LSB executable, x86-64, version 1 (GNU/Linux), statically linked, for GNU/Linux 3.2.0, with debug_info, not stripped\n"
+      },
+      {
+        "call_number": 2,
+        "tool": "strings",
+        "input": {
+          "path": "/workspace/level8_Process_hollowing_reverse_shell",
+          "min_length": 4
+        },
+        "output_preview": "D$8dH+\nu=E1\nD$HdH+\n[]A\\\nPTE1\nu+UH\nj*XH\n/biH\nn//shSH\nuHdH\nD$hdH\nD$pH\nD$ dH\nATUSM\nA\\A]A^A_\n$\tA\t\n[]A\\A]\nAVAUATUSH\n[]A\\A]A^A_\nAWAVAUATUSH\nP[]A\\A]A^A_\nAVAUATUSH\nGenuun\nnteluf\nineI\nHygo@\nuine\nnGenu^H\nL$hH\n|$`L\nAuth\ncAMD\nenti\nD$hH\nnD$dD\n\\$,u\nL$ H\nD$pH\nD$xL\nH=?@\nT$pH\nD$ H\nD$ L\nL9d$\n[]A\\A]A^A_\nCent\nauls\naurH\nt$dH\nD$dD\nnD$d\nD$pI\n\\$HH\nL$0H\nT$lH\nt$xH\n|$pH\nL$0H\nD$8L\nD$@L\n\\$HL\nT$PL\nt$dL\nL$hH\nT$`f\nnD$d\nD$hD\nD$pI\n\\$@H\nL$0H\nT$lH\nt$xH\n|$pI\nL$0L\nD$8H\n\\$@L\nT$HL\nD$pH\nD$8H\nt$0I\nt$0L\nD$8H\nL$@L\nL$HH\nL$pH\n  Sh@\nai  \nang"
+      },
+      {
+        "call_number": 3,
+        "tool": "strings",
+        "input": {
+          "path": "/workspace/level8_Process_hollowing_reverse_shell",
+          "min_length": 6
+        },
+        "output_preview": "D$8dH+\nD$HdH+\nn//shSH\nA\\A]A^A_\n[]A\\A]\nAVAUATUSH\n[]A\\A]A^A_\nAWAVAUATUSH\nP[]A\\A]A^A_\nAVAUATUSH\nGenuun\nnteluf\nnGenu^H\n[]A\\A]A^A_\nAWAVAUI\nAWAVAUATUSH\nAUATUSH\n[]A\\A]A^A_\nAVAUATUSH\n[]A\\A]A^A_\nH;z(uvH\nO(H;y ulH\nAVAUATL\n8[]A\\A]A^A_\nAWAVAUI\n[]A\\A]A^A_\nAUATUH\n[]A\\A]\n[]A\\A]\n]A\\A]A^\nAWAVAUATUSH\n([]A\\A]A^A_\n([]A\\A]A^A_\n[]A\\A]A^\n]A\\A]A^\n[]A\\A]A^\n]A\\A]A^\n[]A\\A]A^\n]A\\A]A^\nAWAVAUATUH\nT$8dH+\nH[]A\\A]A^A_\nAWAVAUATI\n[]A\\A]A^A_\nB H9H \nAWAVAUATUSH\n[]A\\A]A^A_\nAVAUATI\n[]A\\A]A^A_\ntWATE1\nAUATUH\n[]A\\A]\n[]A\\A]\n[]A\\A]\nAWAVAU"
+      },
+      {
+        "call_number": 4,
+        "tool": "readelf",
+        "input": {
+          "path": "/workspace/level8_Process_hollowing_reverse_shell",
+          "flags": "-S"
+        },
+        "output_preview": "There are 33 section headers, starting at offset 0xe94f0:\n\nSection Headers:\n  [Nr] Name              Type             Address           Offset\n       Size              EntSize          Flags  Link  Info  Align\n  [ 0]                   NULL             0000000000000000  00000000\n       0000000000000000  0000000000000000           0     0     0\n  [ 1] .rela.plt         RELA             0000000000400270  00000270\n       0000000000000210  0000000000000018  AI       0    18     8\n  [ 2] .init        "
+      },
+      {
+        "call_number": 5,
+        "tool": "nm",
+        "input": {
+          "path": "/workspace/level8_Process_hollowing_reverse_shell"
+        },
+        "output_preview": "000000000047a1a0 r CSWTCH.101\n00000000004a8100 V DW.ref.__gcc_personality_v0\n0000000000411330 W _Exit\n00000000004329e0 T _Fork\n00000000004a6fe8 d _GLOBAL_OFFSET_TABLE_\n00000000004a8140 D _IO_2_1_stderr_\n00000000004a8500 D _IO_2_1_stdin_\n00000000004a8320 D _IO_2_1_stdout_\n0000000000422130 T _IO_adjust_column\n0000000000456030 T _IO_adjust_wcolumn\n0000000000422800 T _IO_cleanup\n0000000000421c90 T _IO_default_doallocate\n0000000000421fb0 T _IO_default_finish\n0000000000422fc0 T _IO_default_imbue\n00000"
+      },
+      {
+        "call_number": 6,
+        "tool": "objdump",
+        "input": {
+          "path": "/workspace/level8_Process_hollowing_reverse_shell",
+          "flags": "-d",
+          "section": ".text"
+        },
+        "output_preview": "\n/workspace/level8_Process_hollowing_reverse_shell:     file format elf64-x86-64\n\n\nDisassembly of section .text:\n\n0000000000401100 <__libc_message_impl.cold>:\n  401100:\te8 06 00 00 00       \tcall   40110b <abort>\n\n0000000000401105 <_dl_start>:\n  401105:\t50                   \tpush   %rax\n  401106:\te8 00 00 00 00       \tcall   40110b <abort>\n\n000000000040110b <abort>:\n  40110b:\t48 81 ec b8 00 00 00 \tsub    $0xb8,%rsp\n  401112:\t64 48 8b 3c 25 28 00 \tmov    %fs:0x28,%rdi\n  401119:\t00 00 \n  40111b:\t4"
+      },
+      {
+        "call_number": 7,
+        "tool": "hexdump",
+        "input": {},
+        "output_preview": "[stderr] hexdump: /workspace/.: Is a directory\n"
+      },
+      {
+        "call_number": 8,
+        "tool": "hexdump",
+        "input": {},
+        "output_preview": "[stderr] hexdump: /workspace/.: Is a directory\n"
+      },
+      {
+        "call_number": 9,
+        "tool": "hexdump",
+        "input": {},
+        "output_preview": "[stderr] hexdump: /workspace/.: Is a directory\n"
+      },
+      {
+        "call_number": 10,
+        "tool": "strings",
+        "input": {
+          "path": "/workspace/level8_Process_hollowing_reverse_shell",
+          "min_length": 5
+        },
+        "output_preview": "D$8dH+\nD$HdH+\nn//shSH\nD$hdH\nD$ dH\nATUSM\nA\\A]A^A_\n[]A\\A]\nAVAUATUSH\n[]A\\A]A^A_\nAWAVAUATUSH\nP[]A\\A]A^A_\nAVAUATUSH\nGenuun\nnteluf\nHygo@\nnGenu^H\nnD$dD\n[]A\\A]A^A_\n  Sh@\nAUATI\nATUSH\nAWAVAUI\nD$ H9\nD$ H9\nAWAVAUATUSH\nAWAVA\nAUATUSH\n tbdJ\n[]A\\A]A^A_\nt.ff.\nAVAUATUSH\n\\$pI9\n[]A\\A]A^A_\nu{H;z\nH;z(uvH\nO(H;y ulH\nAVAUATL\n8[]A\\A]A^A_\nu`H9r\n[A\\A]\n[A\\A]\n,$3l$\nAWAVAUI\nATUSH\n[]A\\A]A^A_\nAUATUH\n[]A\\A]\n[]A\\A]\nAUATI\n]A\\A]A^\nATUSH\nATUSH\nAWAVAUATUSH\nL$0H9\nT$ H)\n([]A\\A]A^A_\n([]A\\A]A^A_\nx/ujK\nAVAUL\nATUSH\n[]A\\A]A^\n]A\\A]A^\nAVAUA\n["
+      },
+      {
+        "call_number": 11,
+        "tool": "hexdump",
+        "input": {
+          "path": "/workspace/level8_Process_hollowing_reverse_shell",
+          "offset": 797696,
+          "length": 128
+        },
+        "output_preview": "000c2c00  52 54 53 5f 44 45 50 45  4e 44 45 4e 43 59 00 58  |RTS_DEPENDENCY.X|\n000c2c10  38 36 5f 41 52 43 48 5f  58 41 44 44 00 58 38 36  |86_ARCH_XADD.X86|\n000c2c20  5f 54 55 4e 45 5f 46 55  53 45 5f 43 4d 50 5f 41  |_TUNE_FUSE_CMP_A|\n000c2c30  4e 44 5f 42 52 41 4e 43  48 5f 33 32 00 44 57 5f  |ND_BRANCH_32.DW_|\n000c2c40  4f 50 5f 47 4e 55 5f 76  61 72 69 61 62 6c 65 5f  |OP_GNU_variable_|\n000c2c50  76 61 6c 75 65 00 44 57  5f 4f 50 5f 72 65 67 33  |value.DW_OP_reg3|\n000c2c60  30 00 44 57 5f 4"
+      },
+      {
+        "call_number": 12,
+        "tool": "hexdump",
+        "input": {
+          "offset": 499664,
+          "length": 64,
+          "path": "/workspace/level8_Process_hollowing_reverse_shell"
+        },
+        "output_preview": "00079fd0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|\n*\n0007a000  01 00 02 00 00 00 00 00  00 00 80 3f 00 00 40 40  |...........?..@@|\n0007a010\n"
+      },
+      {
+        "call_number": 13,
+        "tool": "objdump",
+        "input": {
+          "path": "/workspace/level8_Process_hollowing_reverse_shell",
+          "flags": "-s",
+          "section": ".rodata"
+        },
+        "output_preview": "\n/workspace/level8_Process_hollowing_reverse_shell:     file format elf64-x86-64\n\nContents of section .rodata:\n 47a000 01000200 00000000 0000803f 00004040  ...........?..@@\n 47a010 31303030 00736c65 6570002f 62696e2f  1000.sleep./bin/\n 47a020 736c6565 70000000 00000000 00000000  sleep...........\n 47a030 00000000 00000000 00000000 00000000  ................\n 47a040 6e7bf8ff 3a7bf8ff 3e7cf8ff 267cf8ff  n{..:{..>|..&|..\n 47a050 337bf8ff 907bf8ff 0e7cf8ff 597cf8ff  3{...{...|..Y|..\n 47a060 ab7af8ff "
+      },
+      {
+        "call_number": 14,
+        "tool": "hexdump",
+        "input": {
+          "path": "/workspace/level8_Process_hollowing_reverse_shell",
+          "offset": 6000,
+          "length": 1024
+        },
+        "output_preview": "00001770  c0 48 31 ff 48 31 48 ba  f6 48 31 d2 4d 31 c0 6a  |.H1.H1H..H1.M1.j|\n00001780  48 89 85 b0 fe ff ff 48  89 95 b8 fe ff ff 48 b8  |H......H......H.|\n00001790  02 5f 6a 01 5e 6a 06 5a  48 ba 6a 29 58 0f 05 49  |._j.^j.ZH.j)X..I|\n000017a0  89 c4 48 89 85 c0 fe ff  ff 48 89 95 c8 fe ff ff  |..H......H......|\n000017b0  48 b8 48 31 c0 50 68 7f  00 00 48 ba 01 66 68 11  |H.H1.Ph...H..fh.|\n000017c0  5c 66 6a 02 48 89 85 d0  fe ff ff 48 89 95 d8 fe  |\\fj.H......H....|\n000017d0  ff ff 48 b8 48 3"
+      },
+      {
+        "call_number": 15,
+        "tool": "final_answer",
+        "input": {
+          "file_type": "ELF64",
+          "encoded_strings": false,
+          "decoded_c2": "127.0.0.1:4444",
+          "techniques": [
+            "socket_connect",
+            "process_hollowing",
+            "ptrace_traceme",
+            "fork",
+            "execl",
+            "shellcode_injection",
+            "ptrace_pokedata",
+            "syscall_socket",
+            "reverse_shell"
+          ],
+          "c2_protocol": "TCP"
+        },
+        "is_final_answer": true
+      }
+    ],
+    "redundant_tool_calls": 2,
+    "invalid_tool_calls": 0,
+    "invalid_json_attempts": 0,
+    "input_tokens": 1006333,
+    "output_tokens": 3586,
+    "total_tokens": 1009919,
+    "wall_time_seconds": 57.59,
+    "max_steps_hit": false,
+    "has_valid_answer": true
+  },
+  "metrics": {
+    "task_id": "level8_Process_hollowing_reverse_shell",
+    "score": 0.3,
+    "tier": "standard",
+    "field_scores": {
+      "decoded_c2": 1.0,
+      "techniques": 0.16666666666666666,
+      "file_type": 1.0,
+      "encoded_strings": 0.0,
+      "c2_protocol": 1.0
+    },
+    "tool_calls_total": 15,
+    "tool_calls_by_type": {
+      "file": 1,
+      "strings": 3,
+      "readelf": 1,
+      "nm": 1,
+      "objdump": 2,
+      "hexdump": 6,
+      "final_answer": 1
+    },
+    "redundant_tool_calls": 2,
+    "invalid_tool_calls": 0,
+    "invalid_json_attempts": 0,
+    "steps_to_answer": 15,
+    "max_steps_hit": false,
+    "has_valid_answer": true,
+    "hallucinated_techniques": [
+      "execl",
+      "fork",
+      "ptrace_pokedata",
+      "ptrace_traceme",
+      "reverse_shell",
+      "socket_connect",
+      "syscall_socket"
+    ],
+    "hallucination_count": 7,
+    "missing_techniques": [
+      "fork_exec",
+      "ptrace_inject",
+      "register_manipulation"
+    ],
+    "wall_time_seconds": 57.59,
+    "total_tokens": 1009919,
+    "input_tokens": 1006333,
+    "output_tokens": 3586
+  }
+}

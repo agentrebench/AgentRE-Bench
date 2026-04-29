@@ -1,0 +1,14 @@
+{
+  "file_type": "ELF64",
+  "encoded_strings": false,
+  "decoded_c2": "192.168.1.100:4444",
+  "techniques": [
+    "jit_compilation",
+    "mmap_rwx",
+    "socket_connect",
+    "execve_shell",
+    "reverse_shell",
+    "dup2_stdin_stdout_stderr"
+  ],
+  "c2_protocol": "TCP"
+}

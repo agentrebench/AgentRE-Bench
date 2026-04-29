@@ -1,0 +1,17 @@
+{
+  "file_type": "ELF64",
+  "encoded_strings": false,
+  "decoded_c2": "192.168.1.100:4444",
+  "techniques": [
+    "shared_object_injection",
+    "api_hooking",
+    "socket_connect",
+    "dup2_redirection",
+    "execve",
+    "environment_check"
+  ],
+  "c2_protocol": "TCP",
+  "anti_analysis": [
+    "environment_check"
+  ]
+}

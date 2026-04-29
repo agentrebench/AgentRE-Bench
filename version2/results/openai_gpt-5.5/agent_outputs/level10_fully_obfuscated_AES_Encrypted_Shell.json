@@ -1,0 +1,22 @@
+{
+  "file_type": "ELF64",
+  "encoded_strings": true,
+  "decoded_c2": "Not found / not recoverable from the provided binary evidence",
+  "techniques": [
+    "xor_payload_decryption",
+    "embedded_encrypted_payload",
+    "mmap_rwx_shellcode_allocation",
+    "indirect_shellcode_execution",
+    "anti_trace_environment_check"
+  ],
+  "anti_analysis": [
+    "checks STRACE environment variable",
+    "checks LT_TRACE environment variable"
+  ],
+  "c2_protocol": "Unknown",
+  "encryption_details": {
+    "algorithm": "XOR",
+    "key": "de ad be ef ca fe ba be de ad be ef ca fe ba be",
+    "key_storage": ".data symbol key at 0x4a3110"
+  }
+}

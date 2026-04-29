@@ -1,0 +1,17 @@
+{
+  "file_type": "ELF64",
+  "encoded_strings": false,
+  "decoded_c2": "192.168.1.100",
+  "techniques": [
+    "socket_connect",
+    "raw_socket",
+    "icmp_tunneling",
+    "checksum"
+  ],
+  "c2_protocol": "ICMP",
+  "decoded_strings": {
+    "c2_ip": "192.168.1.100",
+    "icmp_type": "Echo (Type 8)",
+    "payload": "whoami"
+  }
+}

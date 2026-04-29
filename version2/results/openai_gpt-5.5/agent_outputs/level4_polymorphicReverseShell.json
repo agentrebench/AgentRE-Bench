@@ -1,0 +1,16 @@
+{
+  "file_type": "ELF64",
+  "encoded_strings": false,
+  "decoded_c2": "not present / not found (embedded shellcode only performs socket(AF_INET, SOCK_STREAM, 0); no sockaddr/IP:port or URL is embedded)",
+  "techniques": [
+    "static_linking",
+    "embedded_shellcode",
+    "polymorphic_nop_sled",
+    "runtime_randomization",
+    "shellcode_execution",
+    "direct_syscall_socket",
+    "executable_stack"
+  ],
+  "c2_protocol": "TCP",
+  "anti_analysis": []
+}

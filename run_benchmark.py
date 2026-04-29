@@ -47,7 +47,7 @@ def main():
         "--provider",
         type=str,
         default="anthropic",
-        choices=["anthropic", "openai", "gemini", "deepseek"],
+        choices=["anthropic", "openai", "gemini", "deepseek", "glm", "moonshot"],
         help="LLM provider (default: anthropic)",
     )
     parser.add_argument(
@@ -86,6 +86,24 @@ def main():
         help="Run tools via subprocess instead of Docker",
     )
     parser.add_argument(
+        "--inter-task-sleep",
+        type=float,
+        default=0.0,
+        help="Seconds to sleep between tasks (e.g. 90 for Gemini rate-limit pacing)",
+    )
+    parser.add_argument(
+        "--skip-tasks",
+        type=str,
+        default="",
+        help="Comma-separated list of task IDs to skip (e.g. 'level1_TCPServer,level2_XorEncodedStrings')",
+    )
+    parser.add_argument(
+        "--only-tasks",
+        type=str,
+        default="",
+        help="Comma-separated list of task IDs to keep (skips everything else). Useful for parallel chunking.",
+    )
+    parser.add_argument(
         "-v", "--verbose",
         action="store_true",
         help="Show agent reasoning, tool calls, and outputs in real time",
@@ -102,6 +120,8 @@ def main():
         "openai": "gpt-4o",
         "gemini": "gemini-2.0-flash",
         "deepseek": "deepseek-chat",
+        "glm": "glm-5.1",
+        "moonshot": "kimi-k2.6",
     }
     model = args.model or model_defaults.get(args.provider, "claude-opus-4-6")
 
@@ -117,6 +137,7 @@ def main():
         max_tool_calls=args.max_tool_calls,
         max_tokens=args.max_tokens,
         use_docker=not args.no_docker,
+        inter_task_sleep_seconds=args.inter_task_sleep,
         results_dir=Path(args.report) if args.report else None,
         verbose=args.verbose,
     )
@@ -138,9 +159,13 @@ def main():
         sys.exit(1)
 
     task_filter = args.task if args.task else None
+    skip_tasks = [t.strip() for t in args.skip_tasks.split(",") if t.strip()] or None
+    only_tasks = [t.strip() for t in args.only_tasks.split(",") if t.strip()] or None
 
     try:
-        aggregate, task_metrics, score_results = run_benchmark(config, task_filter)
+        aggregate, task_metrics, score_results = run_benchmark(
+            config, task_filter, skip_tasks, only_tasks
+        )
     except Exception as e:
         logging.getLogger(__name__).error("Benchmark failed: %s", e, exc_info=True)
         sys.exit(1)

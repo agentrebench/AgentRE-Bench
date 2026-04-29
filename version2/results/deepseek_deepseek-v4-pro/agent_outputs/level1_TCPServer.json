@@ -1,0 +1,11 @@
+{
+  "file_type": "ELF64",
+  "encoded_strings": false,
+  "decoded_c2": "192.168.1.100:4444",
+  "techniques": [
+    "socket_connect",
+    "shell_exec",
+    "stdin_stdout_stderr_redirection"
+  ],
+  "c2_protocol": "TCP"
+}

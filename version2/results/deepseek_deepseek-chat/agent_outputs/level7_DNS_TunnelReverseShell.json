@@ -1,0 +1,25 @@
+{
+  "file_type": "ELF64",
+  "encoded_strings": false,
+  "decoded_c2": "attacker.com",
+  "techniques": [
+    "dns_tunneling",
+    "hex_encoding",
+    "popen_exec",
+    "command_execution",
+    "reverse_shell",
+    "socket_connect",
+    "beaconing"
+  ],
+  "c2_protocol": "DNS",
+  "decoded_strings": {
+    "%02x": "Hex encoding format for data exfiltration",
+    "%s.%s.attacker.com": "DNS exfiltration format: hexdata.beacon.attacker.com",
+    "beacon": "Beacon subdomain sent to attacker.com",
+    "cmd.attacker.com": "C2 command and control domain",
+    "r": "Read mode for popen",
+    "ls": "Command executed via popen",
+    "/bin/sh": "Shell path (found in glibc strings)"
+  },
+  "anti_analysis": []
+}

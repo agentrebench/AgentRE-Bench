@@ -1,0 +1,179 @@
+{
+  "task_id": "level6_ICMP_CovertChannelShell",
+  "model": "gpt-5.5",
+  "provider": "openai",
+  "difficulty": 6,
+  "score": {
+    "tier": "standard",
+    "field_scores": {
+      "decoded_c2": 1.0,
+      "techniques": 0.09090909090909091,
+      "file_type": 1.0,
+      "encoded_strings": 1.0,
+      "c2_protocol": 1.0
+    },
+    "hallucinated_techniques": [
+      "hardcoded_c2_address",
+      "icmp_checksum",
+      "icmp_echo_request",
+      "inet_pton",
+      "sendto",
+      "sleep_beacon_loop",
+      "static_linking"
+    ],
+    "missing_techniques": [
+      "command_in_icmp_data",
+      "crafted_icmp_packets",
+      "icmp_covert_channel"
+    ],
+    "hallucination_penalty": 0.35,
+    "weighted_score": 0.7273,
+    "final_score": 0.3773,
+    "sample": "level6_ICMP_CovertChannelShell"
+  },
+  "agent_result": {
+    "task_id": "level6_ICMP_CovertChannelShell",
+    "final_answer": {
+      "file_type": "ELF64",
+      "encoded_strings": false,
+      "decoded_c2": "192.168.1.100",
+      "techniques": [
+        "static_linking",
+        "hardcoded_c2_address",
+        "raw_socket",
+        "icmp_echo_request",
+        "inet_pton",
+        "sendto",
+        "icmp_checksum",
+        "sleep_beacon_loop"
+      ],
+      "c2_protocol": "ICMP",
+      "anti_analysis": []
+    },
+    "tool_call_count": 5,
+    "tool_calls_by_type": {
+      "file": 1,
+      "strings": 1,
+      "readelf": 1,
+      "objdump": 1,
+      "final_answer": 1
+    },
+    "tool_calls_log": [
+      {
+        "call_number": 1,
+        "tool": "file",
+        "input": {
+          "path": "/workspace/level6_ICMP_Covert_Channel_Shell"
+        },
+        "output_preview": "/workspace/level6_ICMP_Covert_Channel_Shell: ELF 64-bit LSB executable, x86-64, version 1 (GNU/Linux), statically linked, for GNU/Linux 3.2.0, with debug_info, not stripped\n"
+      },
+      {
+        "call_number": 2,
+        "tool": "strings",
+        "input": {
+          "path": "/workspace/level6_ICMP_Covert_Channel_Shell",
+          "min_length": 4
+        },
+        "output_preview": "u=E1\nD$HdH+\nD$8dH+\n[]A\\\nPTE1\nu+UH\nwhoa\nuHdH\nD$hdH\nD$pH\nD$ dH\nATUSM\nA\\A]A^A_\n$\tA\t\n[]A\\A]\nAVAUATUSH\n[]A\\A]A^A_\nAWAVAUATUSH\nP[]A\\A]A^A_\nAVAUATUSH\nGenuun\nnteluf\nineI\nHygo@\nuine\nnGenu^H\nL$hH\n|$`L\nAuth\ncAMD\nenti\nD$hH\nnD$dD\n\\$,u\nL$ H\nD$pH\nD$xL\nH=?@\nT$pH\nD$ H\nD$ L\nL9d$\n[]A\\A]A^A_\nCent\nauls\naurH\nt$dH\nD$dD\nnD$d\nD$pI\n\\$HH\nL$0H\nT$lH\nt$xH\n|$pH\nL$0H\nD$8L\nD$@L\n\\$HL\nT$PL\nt$dL\nL$hH\nT$`f\nnD$d\nD$hD\nD$pI\n\\$@H\nL$0H\nT$lH\nt$xH\n|$pI\nL$0L\nD$8H\n\\$@L\nT$HL\nD$pH\nD$8H\nt$0I\nt$0L\nD$8H\nL$@L\nL$HH\nL$pH\n  Sh@\nai  \nangh\nD$pI\nL$0I\nL"
+      },
+      {
+        "call_number": 3,
+        "tool": "readelf",
+        "input": {
+          "path": "/workspace/level6_ICMP_Covert_Channel_Shell",
+          "flags": "-a"
+        },
+        "output_preview": "ELF Header:\n  Magic:   7f 45 4c 46 02 01 01 03 00 00 00 00 00 00 00 00 \n  Class:                             ELF64\n  Data:                              2's complement, little endian\n  Version:                           1 (current)\n  OS/ABI:                            UNIX - GNU\n  ABI Version:                       0\n  Type:                              EXEC (Executable file)\n  Machine:                           Advanced Micro Devices X86-64\n  Version:                           0x1\n  Entry point "
+      },
+      {
+        "call_number": 4,
+        "tool": "objdump",
+        "input": {
+          "path": "/workspace/level6_ICMP_Covert_Channel_Shell",
+          "flags": "-d"
+        },
+        "output_preview": "\n/workspace/level6_ICMP_Covert_Channel_Shell:     file format elf64-x86-64\n\n\nDisassembly of section .init:\n\n0000000000401000 <_init>:\n  401000:\t48 83 ec 08          \tsub    $0x8,%rsp\n  401004:\t48 c7 c0 00 00 00 00 \tmov    $0x0,%rax\n  40100b:\t48 85 c0             \ttest   %rax,%rax\n  40100e:\t74 02                \tje     401012 <_init+0x12>\n  401010:\tff d0                \tcall   *%rax\n  401012:\t48 83 c4 08          \tadd    $0x8,%rsp\n  401016:\tc3                   \tret    \n\nDisassembly of section .p"
+      },
+      {
+        "call_number": 5,
+        "tool": "final_answer",
+        "input": {
+          "file_type": "ELF64",
+          "encoded_strings": false,
+          "decoded_c2": "192.168.1.100",
+          "techniques": [
+            "static_linking",
+            "hardcoded_c2_address",
+            "raw_socket",
+            "icmp_echo_request",
+            "inet_pton",
+            "sendto",
+            "icmp_checksum",
+            "sleep_beacon_loop"
+          ],
+          "c2_protocol": "ICMP",
+          "anti_analysis": []
+        },
+        "is_final_answer": true
+      }
+    ],
+    "redundant_tool_calls": 0,
+    "invalid_tool_calls": 0,
+    "invalid_json_attempts": 0,
+    "input_tokens": 74294,
+    "output_tokens": 752,
+    "reasoning_tokens": 519,
+    "total_tokens": 75046,
+    "wall_time_seconds": 15.52,
+    "llm_seconds": 14.67,
+    "max_steps_hit": false,
+    "has_valid_answer": true
+  },
+  "metrics": {
+    "task_id": "level6_ICMP_CovertChannelShell",
+    "score": 0.3773,
+    "tier": "standard",
+    "field_scores": {
+      "decoded_c2": 1.0,
+      "techniques": 0.09090909090909091,
+      "file_type": 1.0,
+      "encoded_strings": 1.0,
+      "c2_protocol": 1.0
+    },
+    "tool_calls_total": 5,
+    "tool_calls_by_type": {
+      "file": 1,
+      "strings": 1,
+      "readelf": 1,
+      "objdump": 1,
+      "final_answer": 1
+    },
+    "redundant_tool_calls": 0,
+    "invalid_tool_calls": 0,
+    "invalid_json_attempts": 0,
+    "steps_to_answer": 5,
+    "max_steps_hit": false,
+    "has_valid_answer": true,
+    "hallucinated_techniques": [
+      "hardcoded_c2_address",
+      "icmp_checksum",
+      "icmp_echo_request",
+      "inet_pton",
+      "sendto",
+      "sleep_beacon_loop",
+      "static_linking"
+    ],
+    "hallucination_count": 7,
+    "missing_techniques": [
+      "command_in_icmp_data",
+      "crafted_icmp_packets",
+      "icmp_covert_channel"
+    ],
+    "wall_time_seconds": 15.52,
+    "llm_seconds": 14.67,
+    "total_tokens": 75046,
+    "input_tokens": 74294,
+    "output_tokens": 752,
+    "reasoning_tokens": 519
+  }
+}

@@ -1,0 +1,209 @@
+{
+  "task_id": "level12_JIT_Compiled_Shellcode",
+  "model": "claude-opus-4-7",
+  "provider": "anthropic",
+  "difficulty": 12,
+  "score": {
+    "tier": "standard",
+    "field_scores": {
+      "decoded_c2": 1.0,
+      "techniques": 0.08333333333333333,
+      "file_type": 1.0,
+      "encoded_strings": 1.0,
+      "c2_protocol": 1.0
+    },
+    "hallucinated_techniques": [
+      "dup2_stdio_redirect",
+      "execve_bin_sh",
+      "jit_shellcode",
+      "reverse_shell",
+      "rwx_mmap"
+    ],
+    "missing_techniques": [
+      "dup2_redirect",
+      "execve_shell",
+      "jit_compilation",
+      "mmap_exec",
+      "runtime_patching",
+      "self_modifying_code"
+    ],
+    "hallucination_penalty": 0.25,
+    "weighted_score": 0.725,
+    "final_score": 0.475,
+    "sample": "level12_JIT_Compiled_Shellcode"
+  },
+  "agent_result": {
+    "task_id": "level12_JIT_Compiled_Shellcode",
+    "final_answer": {
+      "file_type": "ELF64",
+      "encoded_strings": false,
+      "decoded_c2": "192.168.1.100:4444",
+      "c2_protocol": "TCP",
+      "techniques": [
+        "jit_shellcode",
+        "rwx_mmap",
+        "socket_connect",
+        "dup2_stdio_redirect",
+        "execve_bin_sh",
+        "reverse_shell"
+      ],
+      "encryption_details": {
+        "algorithm": "none",
+        "key": "",
+        "key_storage": ""
+      },
+      "decoded_strings": {
+        "jit_template_offset_0x30": "sh\\x00\\x00",
+        "ip": "192.168.1.100",
+        "port": "4444",
+        "execve_target": "/bin/sh"
+      }
+    },
+    "tool_call_count": 6,
+    "tool_calls_by_type": {
+      "file": 1,
+      "strings": 1,
+      "nm": 1,
+      "objdump": 1,
+      "hexdump": 1,
+      "final_answer": 1
+    },
+    "tool_calls_log": [
+      {
+        "call_number": 1,
+        "tool": "file",
+        "input": {
+          "path": "/workspace/level12_JIT_Compiled_Shellcode"
+        },
+        "output_preview": "/workspace/level12_JIT_Compiled_Shellcode: ELF 64-bit LSB executable, x86-64, version 1 (GNU/Linux), statically linked, for GNU/Linux 3.2.0, with debug_info, not stripped\n"
+      },
+      {
+        "call_number": 2,
+        "tool": "strings",
+        "input": {
+          "path": "/workspace/level12_JIT_Compiled_Shellcode",
+          "min_length": 6
+        },
+        "output_preview": "D$HdH+\nD$8dH+\nA\\A]A^A_\n[]A\\A]\nAVAUATUSH\n[]A\\A]A^A_\nAWAVAUATUSH\nP[]A\\A]A^A_\nAVAUATUSH\nGenuun\nnteluf\nnGenu^H\n[]A\\A]A^A_\nAWAVAUI\nAWAVAUATUSH\nAUATUSH\n[]A\\A]A^A_\nAVAUATUSH\n[]A\\A]A^A_\nH;z(uvH\nO(H;y ulH\nAVAUATL\n8[]A\\A]A^A_\nAWAVAUI\n[]A\\A]A^A_\nAUATUH\n[]A\\A]\n[]A\\A]\n]A\\A]A^\nAWAVAUATUSH\n([]A\\A]A^A_\n([]A\\A]A^A_\n[]A\\A]A^\n]A\\A]A^\n[]A\\A]A^\n]A\\A]A^\n[]A\\A]A^\n]A\\A]A^\nAWAVAUATUH\nT$8dH+\nH[]A\\A]A^A_\nAWAVAUATI\n[]A\\A]A^A_\nB H9H \nAWAVAUATUSH\n[]A\\A]A^A_\nAVAUATI\n[]A\\A]A^A_\ntWATE1\nAUATUH\n[]A\\A]\n[]A\\A]\n[]A\\A]\nAWAVAUATUH\n([]"
+      },
+      {
+        "call_number": 3,
+        "tool": "nm",
+        "input": {
+          "path": "/workspace/level12_JIT_Compiled_Shellcode"
+        },
+        "output_preview": "00000000004771a0 r CSWTCH.101\n00000000004a5140 V DW.ref.__gcc_personality_v0\n0000000000411270 W _Exit\n00000000004a3fe8 d _GLOBAL_OFFSET_TABLE_\n00000000004a5180 D _IO_2_1_stderr_\n00000000004a5540 D _IO_2_1_stdin_\n00000000004a5360 D _IO_2_1_stdout_\n0000000000420cf0 T _IO_adjust_column\n00000000004535b0 T _IO_adjust_wcolumn\n00000000004213c0 T _IO_cleanup\n0000000000420850 T _IO_default_doallocate\n0000000000420b70 T _IO_default_finish\n0000000000421b80 T _IO_default_imbue\n0000000000421990 T _IO_default"
+      },
+      {
+        "call_number": 4,
+        "tool": "objdump",
+        "input": {
+          "path": "/workspace/level12_JIT_Compiled_Shellcode",
+          "flags": "-d",
+          "section": ".text"
+        },
+        "output_preview": "\n/workspace/level12_JIT_Compiled_Shellcode:     file format elf64-x86-64\n\n\nDisassembly of section .text:\n\n0000000000401100 <__libc_message_impl.cold>:\n  401100:\te8 06 00 00 00       \tcall   40110b <abort>\n\n0000000000401105 <_dl_start>:\n  401105:\t50                   \tpush   %rax\n  401106:\te8 00 00 00 00       \tcall   40110b <abort>\n\n000000000040110b <abort>:\n  40110b:\t48 81 ec b8 00 00 00 \tsub    $0xb8,%rsp\n  401112:\t64 48 8b 3c 25 28 00 \tmov    %fs:0x28,%rdi\n  401119:\t00 00 \n  40111b:\t48 89 bc "
+      },
+      {
+        "call_number": 5,
+        "tool": "hexdump",
+        "input": {
+          "path": "/workspace/level12_JIT_Compiled_Shellcode",
+          "offset": 487440,
+          "length": 64
+        },
+        "output_preview": "00077010  c0 a8 01 64 00 11 5c 00  31 39 32 2e 31 36 38 2e  |...d..\\.192.168.|\n00077020  31 2e 31 30 30 00 2f 62  69 6e 2f 73 68 00 00 00  |1.100./bin/sh...|\n00077030  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|\n00077040  9e aa f8 ff 6a aa f8 ff  6e ab f8 ff 56 ab f8 ff  |....j...n...V...|\n00077050\n"
+      },
+      {
+        "call_number": 6,
+        "tool": "final_answer",
+        "input": {
+          "file_type": "ELF64",
+          "encoded_strings": false,
+          "decoded_c2": "192.168.1.100:4444",
+          "c2_protocol": "TCP",
+          "techniques": [
+            "jit_shellcode",
+            "rwx_mmap",
+            "socket_connect",
+            "dup2_stdio_redirect",
+            "execve_bin_sh",
+            "reverse_shell"
+          ],
+          "encryption_details": {
+            "algorithm": "none",
+            "key": "",
+            "key_storage": ""
+          },
+          "decoded_strings": {
+            "jit_template_offset_0x30": "sh\\x00\\x00",
+            "ip": "192.168.1.100",
+            "port": "4444",
+            "execve_target": "/bin/sh"
+          }
+        },
+        "is_final_answer": true
+      }
+    ],
+    "redundant_tool_calls": 0,
+    "invalid_tool_calls": 0,
+    "invalid_json_attempts": 0,
+    "input_tokens": 282512,
+    "output_tokens": 2177,
+    "reasoning_tokens": 0,
+    "total_tokens": 284689,
+    "wall_time_seconds": 44.11,
+    "llm_seconds": 43.06,
+    "max_steps_hit": false,
+    "has_valid_answer": true
+  },
+  "metrics": {
+    "task_id": "level12_JIT_Compiled_Shellcode",
+    "score": 0.475,
+    "tier": "standard",
+    "field_scores": {
+      "decoded_c2": 1.0,
+      "techniques": 0.08333333333333333,
+      "file_type": 1.0,
+      "encoded_strings": 1.0,
+      "c2_protocol": 1.0
+    },
+    "tool_calls_total": 6,
+    "tool_calls_by_type": {
+      "file": 1,
+      "strings": 1,
+      "nm": 1,
+      "objdump": 1,
+      "hexdump": 1,
+      "final_answer": 1
+    },
+    "redundant_tool_calls": 0,
+    "invalid_tool_calls": 0,
+    "invalid_json_attempts": 0,
+    "steps_to_answer": 6,
+    "max_steps_hit": false,
+    "has_valid_answer": true,
+    "hallucinated_techniques": [
+      "dup2_stdio_redirect",
+      "execve_bin_sh",
+      "jit_shellcode",
+      "reverse_shell",
+      "rwx_mmap"
+    ],
+    "hallucination_count": 5,
+    "missing_techniques": [
+      "dup2_redirect",
+      "execve_shell",
+      "jit_compilation",
+      "mmap_exec",
+      "runtime_patching",
+      "self_modifying_code"
+    ],
+    "wall_time_seconds": 44.11,
+    "llm_seconds": 43.06,
+    "total_tokens": 284689,
+    "input_tokens": 282512,
+    "output_tokens": 2177,
+    "reasoning_tokens": 0
+  }
+}

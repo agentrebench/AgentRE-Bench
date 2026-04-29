@@ -9,6 +9,8 @@ ENV_KEY_MAP = {
     "openai": "OPENAI_API_KEY",
     "gemini": "GOOGLE_API_KEY",
     "deepseek": "DEEPSEEK_API_KEY",
+    "glm": "GLM_API_KEY",
+    "moonshot": "MOONSHOT_API_KEY",
 }
 
 DEFAULT_TOOLS = [
@@ -56,6 +58,10 @@ class BenchmarkConfig:
 
     docker_image: str = "agentre-bench-tools:latest"
     use_docker: bool = True
+
+    # Seconds to sleep between tasks. Useful for providers with strict
+    # per-minute token caps (e.g. Gemini free tier).
+    inter_task_sleep_seconds: float = 0.0
 
     allowed_tools: list[str] = field(default_factory=lambda: list(DEFAULT_TOOLS))
 

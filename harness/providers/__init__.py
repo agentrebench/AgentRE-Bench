@@ -3,12 +3,16 @@ from .anthropic import AnthropicProvider
 from .openai_provider import OpenAIProvider
 from .gemini import GeminiProvider
 from .deepseek import DeepSeekProvider
+from .glm import GLMProvider
+from .moonshot import MoonshotProvider
 
 PROVIDER_MAP = {
     "anthropic": AnthropicProvider,
     "openai": OpenAIProvider,
     "gemini": GeminiProvider,
     "deepseek": DeepSeekProvider,
+    "glm": GLMProvider,
+    "moonshot": MoonshotProvider,
 }
 
 

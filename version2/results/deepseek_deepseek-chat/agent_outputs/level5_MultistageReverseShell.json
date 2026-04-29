@@ -1,0 +1,21 @@
+{
+  "file_type": "ELF64",
+  "encoded_strings": true,
+  "decoded_c2": "192.168.1.100:4444",
+  "techniques": [
+    "socket_connect",
+    "xor_encoding",
+    "multistage_payload",
+    "shellcode_execution"
+  ],
+  "c2_protocol": "TCP",
+  "encryption_details": {
+    "algorithm": "XOR (single-byte key)",
+    "key": "Received as first byte from C2 during recv() call",
+    "key_storage": "Runtime variable (stack-based), not hardcoded"
+  },
+  "decoded_strings": {
+    "c2_ip": "192.168.1.100",
+    "c2_port": 4444
+  }
+}

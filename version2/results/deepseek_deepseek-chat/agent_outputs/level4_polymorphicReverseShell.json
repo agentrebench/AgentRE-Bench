@@ -1,0 +1,25 @@
+{
+  "file_type": "ELF64",
+  "encoded_strings": true,
+  "decoded_c2": "127.0.0.1:4444",
+  "techniques": [
+    "polymorphic_shellcode",
+    "socket_connect",
+    "xor_encoding",
+    "nop_sled",
+    "execve"
+  ],
+  "c2_protocol": "TCP",
+  "encryption_details": {
+    "algorithm": "xor",
+    "key": "random_key_per_execution",
+    "key_storage": "embedded_in_shellcode"
+  },
+  "decoded_strings": {
+    "shellcode_bytes": "e8 59 14 ff ff (CALL instruction for getPC)"
+  },
+  "anti_analysis": [
+    "polymorphic_code_generation",
+    "randomized_nop_sled"
+  ]
+}

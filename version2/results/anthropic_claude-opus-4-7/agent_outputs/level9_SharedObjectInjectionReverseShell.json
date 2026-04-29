@@ -1,0 +1,31 @@
+{
+  "file_type": "ELF64 shared object",
+  "encoded_strings": false,
+  "decoded_c2": "192.168.1.100:4444",
+  "c2_protocol": "TCP",
+  "techniques": [
+    "shared_object_injection",
+    "puts_hook",
+    "socket_connect",
+    "dup2_redirect",
+    "execve_shell",
+    "dlsym_RTLD_NEXT",
+    "ld_preload_check",
+    "ld_audit_check"
+  ],
+  "anti_analysis": [
+    "LD_PRELOAD environment check (skip reverse shell to avoid recursion)",
+    "LD_AUDIT environment check"
+  ],
+  "encryption_details": {
+    "algorithm": "none",
+    "key": "",
+    "key_storage": ""
+  },
+  "decoded_strings": {
+    "port_hex": "0x115c -> 4444",
+    "ip": "192.168.1.100",
+    "shell": "/bin/sh",
+    "hooked_function": "puts"
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "task_id": "level1_TCPServer",
+  "model": "gemini-3.1-pro-preview",
+  "provider": "gemini",
+  "difficulty": 1,
+  "score": {
+    "tier": "standard",
+    "field_scores": {
+      "decoded_c2": 0.0,
+      "techniques": 0.0,
+      "file_type": 0.0,
+      "encoded_strings": 0.0,
+      "c2_protocol": 0.0
+    },
+    "hallucinated_techniques": [],
+    "missing_techniques": [
+      "dup2_redirect",
+      "execve_shell",
+      "socket_connect"
+    ],
+    "hallucination_penalty": 0.0,
+    "weighted_score": 0.0,
+    "final_score": 0.0,
+    "sample": "level1_TCPServer"
+  },
+  "agent_result": {
+    "task_id": "level1_TCPServer",
+    "final_answer": null,
+    "tool_call_count": 2,
+    "tool_calls_by_type": {
+      "file": 1,
+      "strings": 1
+    },
+    "tool_calls_log": [
+      {
+        "call_number": 1,
+        "tool": "file",
+        "input": {
+          "path": "/workspace/level1_TCPServer"
+        },
+        "output_preview": "/workspace/level1_TCPServer: ELF 64-bit LSB executable, x86-64, version 1 (GNU/Linux), statically linked, for GNU/Linux 3.2.0, with debug_info, not stripped\n"
+      },
+      {
+        "call_number": 2,
+        "tool": "strings",
+        "input": {
+          "path": "/workspace/level1_TCPServer"
+        },
+        "output_preview": "u=E1\nD$HdH+\nD$8dH+\n[]A\\\nPTE1\nu+UH\nuHdH\nD$hdH\nD$pH\nD$ dH\nATUSM\nA\\A]A^A_\n$\tA\t\n[]A\\A]\nAVAUATUSH\n[]A\\A]A^A_\nAWAVAUATUSH\nP[]A\\A]A^A_\nAVAUATUSH\nGenuun\nnteluf\nineI\nHygo@\nuine\nnGenu^H\nL$hH\n|$`L\nAuth\ncAMD\nenti\nD$hH\nnD$dD\n\\$,u\nL$ H\nD$pH\nD$xL\nH=?@\nT$pH\nD$ H\nD$ L\nL9d$\n[]A\\A]A^A_\nCent\nauls\naurH\nt$dH\nD$dD\nnD$d\nD$pI\n\\$HH\nL$0H\nT$lH\nt$xH\n|$pH\nL$0H\nD$8L\nD$@L\n\\$HL\nT$PL\nt$dL\nL$hH\nT$`f\nnD$d\nD$hD\nD$pI\n\\$@H\nL$0H\nT$lH\nt$xH\n|$pI\nL$0L\nD$8H\n\\$@L\nT$HL\nD$pH\nD$8H\nt$0I\nt$0L\nD$8H\nL$@L\nL$HH\nL$pH\n  Sh@\nai  \nangh\nD$pI\nL$0I\nL$hL\nt"
+      }
+    ],
+    "redundant_tool_calls": 0,
+    "invalid_tool_calls": 0,
+    "invalid_json_attempts": 0,
+    "input_tokens": 1573,
+    "output_tokens": 44,
+    "reasoning_tokens": 0,
+    "total_tokens": 1617,
+    "wall_time_seconds": 220.79,
+    "llm_seconds": 220.45,
+    "max_steps_hit": false,
+    "has_valid_answer": false
+  },
+  "metrics": {
+    "task_id": "level1_TCPServer",
+    "score": 0.0,
+    "tier": "standard",
+    "field_scores": {
+      "decoded_c2": 0.0,
+      "techniques": 0.0,
+      "file_type": 0.0,
+      "encoded_strings": 0.0,
+      "c2_protocol": 0.0
+    },
+    "tool_calls_total": 2,
+    "tool_calls_by_type": {
+      "file": 1,
+      "strings": 1
+    },
+    "redundant_tool_calls": 0,
+    "invalid_tool_calls": 0,
+    "invalid_json_attempts": 0,
+    "steps_to_answer": 2,
+    "max_steps_hit": false,
+    "has_valid_answer": false,
+    "hallucinated_techniques": [],
+    "hallucination_count": 0,
+    "missing_techniques": [
+      "dup2_redirect",
+      "execve_shell",
+      "socket_connect"
+    ],
+    "wall_time_seconds": 220.79,
+    "llm_seconds": 220.45,
+    "total_tokens": 1617,
+    "input_tokens": 1573,
+    "output_tokens": 44,
+    "reasoning_tokens": 0
+  }
+}

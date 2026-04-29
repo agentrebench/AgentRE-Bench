@@ -1,6 +1,6 @@
 .env
-binaries/
-results/
+/binaries/
+/results/
 __pycache__/
 *.pyc
 .DS_Store

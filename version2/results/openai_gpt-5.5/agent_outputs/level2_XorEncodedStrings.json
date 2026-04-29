@@ -1,0 +1,20 @@
+{
+  "file_type": "ELF64",
+  "encoded_strings": true,
+  "decoded_c2": "192.168.1.100:4444",
+  "techniques": [
+    "xor_encoding",
+    "socket_connect",
+    "inet_pton_ipv4",
+    "dup2_stdio_redirection",
+    "execve_shell",
+    "reverse_shell"
+  ],
+  "c2_protocol": "TCP",
+  "encryption_details": {
+    "algorithm": "single-byte XOR",
+    "key": "0x22",
+    "key_storage": "immediate operand passed to xor_decrypt"
+  },
+  "anti_analysis": []
+}

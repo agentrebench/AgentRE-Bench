@@ -1,0 +1,210 @@
+{
+  "task_id": "level9_SharedObjectInjectionReverseShell",
+  "model": "kimi-k2.6",
+  "provider": "moonshot",
+  "difficulty": 9,
+  "score": {
+    "tier": "standard",
+    "field_scores": {
+      "decoded_c2": 1.0,
+      "techniques": 0.08333333333333333,
+      "file_type": 0.0,
+      "encoded_strings": 1.0,
+      "c2_protocol": 1.0
+    },
+    "hallucinated_techniques": [
+      "api_hooking",
+      "dup2_redirection",
+      "environment_check",
+      "execve",
+      "socket_connect"
+    ],
+    "missing_techniques": [
+      "constructor_attribute",
+      "dlsym_hijack",
+      "dup2_redirect",
+      "env_check",
+      "execve_shell",
+      "function_hooking"
+    ],
+    "hallucination_penalty": 0.25,
+    "weighted_score": 0.625,
+    "final_score": 0.375,
+    "sample": "level9_SharedObjectInjectionReverseShell"
+  },
+  "agent_result": {
+    "task_id": "level9_SharedObjectInjectionReverseShell",
+    "final_answer": {
+      "file_type": "ELF64",
+      "encoded_strings": false,
+      "decoded_c2": "192.168.1.100:4444",
+      "techniques": [
+        "shared_object_injection",
+        "api_hooking",
+        "socket_connect",
+        "dup2_redirection",
+        "execve",
+        "environment_check"
+      ],
+      "c2_protocol": "TCP",
+      "anti_analysis": [
+        "environment_check"
+      ]
+    },
+    "tool_call_count": 8,
+    "tool_calls_by_type": {
+      "file": 1,
+      "readelf": 2,
+      "strings": 1,
+      "objdump": 3,
+      "final_answer": 1
+    },
+    "tool_calls_log": [
+      {
+        "call_number": 1,
+        "tool": "file",
+        "input": {
+          "path": "/workspace/level9_SharedObjectInjectionReverseShell"
+        },
+        "output_preview": "/workspace/level9_SharedObjectInjectionReverseShell: ELF 64-bit LSB shared object, x86-64, version 1 (SYSV), dynamically linked, not stripped\n"
+      },
+      {
+        "call_number": 2,
+        "tool": "readelf",
+        "input": {
+          "path": "/workspace/level9_SharedObjectInjectionReverseShell",
+          "flags": "-a"
+        },
+        "output_preview": "ELF Header:\n  Magic:   7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00 \n  Class:                             ELF64\n  Data:                              2's complement, little endian\n  Version:                           1 (current)\n  OS/ABI:                            UNIX - System V\n  ABI Version:                       0\n  Type:                              DYN (Shared object file)\n  Machine:                           Advanced Micro Devices X86-64\n  Version:                           0x1\n  Entry"
+      },
+      {
+        "call_number": 3,
+        "tool": "strings",
+        "input": {
+          "path": "/workspace/level9_SharedObjectInjectionReverseShell",
+          "min_length": 4
+        },
+        "output_preview": "__gmon_start__\n_ITM_deregisterTMCloneTable\n_ITM_registerTMCloneTable\n__cxa_finalize\ngetenv\nsocket\nhtons\ninet_pton\nconnect\ndup2\nexecve\nputs\ndlsym\nlibm.so.6\nlibc.so.6\nGLIBC_2.34\nGLIBC_2.2.5\nu+UH\nLD_AUDIT\nLD_PRELOAD\n192.168.1.100\n/bin/sh\nputs\n;*3$\"\nGCC: (GNU) 15.2.0\ncrtstuff.c\nderegister_tm_clones\n__do_global_dtors_aux\ncompleted.0\n__do_global_dtors_aux_fini_array_entry\nframe_dummy\n__frame_dummy_init_array_entry\nlevel9_SharedObjectInjectionReverseShell.c\nreverse_shell\n__FRAME_END__\n_fini\n__dso_handl"
+      },
+      {
+        "call_number": 4,
+        "tool": "objdump",
+        "input": {
+          "path": "/workspace/level9_SharedObjectInjectionReverseShell",
+          "flags": "-d"
+        },
+        "output_preview": "\n/workspace/level9_SharedObjectInjectionReverseShell:     file format elf64-x86-64\n\n\nDisassembly of section .init:\n\n0000000000001000 <_init>:\n    1000:\t48 83 ec 08          \tsub    $0x8,%rsp\n    1004:\t48 8b 05 c5 2f 00 00 \tmov    0x2fc5(%rip),%rax        # 3fd0 <__gmon_start__@Base>\n    100b:\t48 85 c0             \ttest   %rax,%rax\n    100e:\t74 02                \tje     1012 <_init+0x12>\n    1010:\tff d0                \tcall   *%rax\n    1012:\t48 83 c4 08          \tadd    $0x8,%rsp\n    1016:\tc3    "
+      },
+      {
+        "call_number": 5,
+        "tool": "objdump",
+        "input": {
+          "path": "/workspace/level9_SharedObjectInjectionReverseShell",
+          "flags": "-s",
+          "section": ".rodata"
+        },
+        "output_preview": "\n/workspace/level9_SharedObjectInjectionReverseShell:     file format elf64-x86-64\n\nContents of section .rodata:\n 2000 4c445f41 55444954 004c445f 5052454c  LD_AUDIT.LD_PREL\n 2010 4f414400 3139322e 3136382e 312e3130  OAD.192.168.1.10\n 2020 30002f62 696e2f73 68007075 747300    0./bin/sh.puts. \n"
+      },
+      {
+        "call_number": 6,
+        "tool": "readelf",
+        "input": {
+          "path": "/workspace/level9_SharedObjectInjectionReverseShell",
+          "flags": "-S"
+        },
+        "output_preview": "There are 27 section headers, starting at offset 0x36a0:\n\nSection Headers:\n  [Nr] Name              Type             Address           Offset\n       Size              EntSize          Flags  Link  Info  Align\n  [ 0]                   NULL             0000000000000000  00000000\n       0000000000000000  0000000000000000           0     0     0\n  [ 1] .gnu.hash         GNU_HASH         0000000000000200  00000200\n       0000000000000024  0000000000000000   A       2     0     8\n  [ 2] .dynsym       "
+      },
+      {
+        "call_number": 7,
+        "tool": "objdump",
+        "input": {
+          "path": "/workspace/level9_SharedObjectInjectionReverseShell",
+          "flags": "-s",
+          "section": ".init_array"
+        },
+        "output_preview": "\n/workspace/level9_SharedObjectInjectionReverseShell:     file format elf64-x86-64\n\nContents of section .init_array:\n 3de0 70110000 00000000 79110000 00000000  p.......y.......\n"
+      },
+      {
+        "call_number": 8,
+        "tool": "final_answer",
+        "input": {
+          "file_type": "ELF64",
+          "encoded_strings": false,
+          "decoded_c2": "192.168.1.100:4444",
+          "techniques": [
+            "shared_object_injection",
+            "api_hooking",
+            "socket_connect",
+            "dup2_redirection",
+            "execve",
+            "environment_check"
+          ],
+          "c2_protocol": "TCP",
+          "anti_analysis": [
+            "environment_check"
+          ]
+        },
+        "is_final_answer": true
+      }
+    ],
+    "redundant_tool_calls": 0,
+    "invalid_tool_calls": 0,
+    "invalid_json_attempts": 0,
+    "input_tokens": 72013,
+    "output_tokens": 3356,
+    "reasoning_tokens": 0,
+    "total_tokens": 75369,
+    "wall_time_seconds": 138.29,
+    "llm_seconds": 137.07,
+    "max_steps_hit": false,
+    "has_valid_answer": true
+  },
+  "metrics": {
+    "task_id": "level9_SharedObjectInjectionReverseShell",
+    "score": 0.375,
+    "tier": "standard",
+    "field_scores": {
+      "decoded_c2": 1.0,
+      "techniques": 0.08333333333333333,
+      "file_type": 0.0,
+      "encoded_strings": 1.0,
+      "c2_protocol": 1.0
+    },
+    "tool_calls_total": 8,
+    "tool_calls_by_type": {
+      "file": 1,
+      "readelf": 2,
+      "strings": 1,
+      "objdump": 3,
+      "final_answer": 1
+    },
+    "redundant_tool_calls": 0,
+    "invalid_tool_calls": 0,
+    "invalid_json_attempts": 0,
+    "steps_to_answer": 8,
+    "max_steps_hit": false,
+    "has_valid_answer": true,
+    "hallucinated_techniques": [
+      "api_hooking",
+      "dup2_redirection",
+      "environment_check",
+      "execve",
+      "socket_connect"
+    ],
+    "hallucination_count": 5,
+    "missing_techniques": [
+      "constructor_attribute",
+      "dlsym_hijack",
+      "dup2_redirect",
+      "env_check",
+      "execve_shell",
+      "function_hooking"
+    ],
+    "wall_time_seconds": 138.29,
+    "llm_seconds": 137.07,
+    "total_tokens": 75369,
+    "input_tokens": 72013,
+    "output_tokens": 3356,
+    "reasoning_tokens": 0
+  }
+}
