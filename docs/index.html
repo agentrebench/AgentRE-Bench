@@ -704,25 +704,40 @@ footer a:hover { color: var(--accent); }
     <div class="section-tag">Results</div>
     <h2 class="section-title">How frontier models perform</h2>
     <p class="section-desc">
-      All 13 levels, 25 tool-call budget, static analysis only. Gemini results coming soon.
+      All 13 levels, 25 tool-call budget, Docker-sandboxed static analysis tools. Six frontier models evaluated end-to-end. <strong style="color: var(--text);">Headline finding:</strong> a small non-thinking model (Gemini 3.1 Flash Lite) leads the field, beating every frontier reasoning model on Main score. Hallucination calibration &mdash; not reasoning depth &mdash; is the dominant axis on this bench.
     </p>
 
     <!-- Leaderboard -->
     <div class="leaderboard">
       <div class="lb-row">
-        <div class="lb-model" style="color: var(--accent);">Claude Opus 4.6</div>
-        <div class="lb-bar-track"><div class="lb-bar" style="width: 48.7%; background: var(--accent);"></div></div>
-        <div class="lb-score" style="color: var(--accent);">0.487</div>
+        <div class="lb-model" style="color: var(--accent);">Gemini 3.1 Flash Lite</div>
+        <div class="lb-bar-track"><div class="lb-bar" style="width: 66.7%; background: var(--accent);"></div></div>
+        <div class="lb-score" style="color: var(--accent);">0.667</div>
       </div>
       <div class="lb-row">
-        <div class="lb-model" style="color: var(--yellow);">DeepSeek V3.2</div>
-        <div class="lb-bar-track"><div class="lb-bar" style="width: 47.6%; background: var(--yellow);"></div></div>
-        <div class="lb-score" style="color: var(--yellow);">0.476</div>
+        <div class="lb-model" style="color: var(--green);">DeepSeek V4 Pro</div>
+        <div class="lb-bar-track"><div class="lb-bar" style="width: 64.8%; background: var(--green);"></div></div>
+        <div class="lb-score" style="color: var(--green);">0.648</div>
       </div>
       <div class="lb-row">
-        <div class="lb-model" style="color: var(--indigo);">GPT-5.2</div>
-        <div class="lb-bar-track"><div class="lb-bar" style="width: 19.0%; background: var(--indigo);"></div></div>
-        <div class="lb-score" style="color: var(--indigo);">0.190</div>
+        <div class="lb-model" style="color: var(--orange);">Claude Opus 4.7</div>
+        <div class="lb-bar-track"><div class="lb-bar" style="width: 51.2%; background: var(--orange);"></div></div>
+        <div class="lb-score" style="color: var(--orange);">0.512</div>
+      </div>
+      <div class="lb-row">
+        <div class="lb-model" style="color: var(--cyan);">Kimi K2.6</div>
+        <div class="lb-bar-track"><div class="lb-bar" style="width: 49.7%; background: var(--cyan);"></div></div>
+        <div class="lb-score" style="color: var(--cyan);">0.497</div>
+      </div>
+      <div class="lb-row">
+        <div class="lb-model" style="color: var(--yellow);">DeepSeek V4 Flash</div>
+        <div class="lb-bar-track"><div class="lb-bar" style="width: 44.9%; background: var(--yellow);"></div></div>
+        <div class="lb-score" style="color: var(--yellow);">0.449</div>
+      </div>
+      <div class="lb-row">
+        <div class="lb-model" style="color: var(--indigo);">GPT-5.5</div>
+        <div class="lb-bar-track"><div class="lb-bar" style="width: 25.5%; background: var(--indigo);"></div></div>
+        <div class="lb-score" style="color: var(--indigo);">0.255</div>
       </div>
     </div>
 
@@ -730,80 +745,142 @@ footer a:hover { color: var(--accent); }
     <div class="results-grid">
       <div class="results-card">
         <h3>Aggregate Scores (out of 2.0)</h3>
-        <div class="stat-row"><span class="stat-label">Claude Opus 4.6</span><span class="stat-val" style="color:var(--accent);">0.487</span></div>
-        <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;Main (L1&ndash;12)</span><span class="stat-val">0.487</span></div>
+        <div class="stat-row"><span class="stat-label">Gemini 3.1 Flash Lite</span><span class="stat-val" style="color:var(--accent);">0.667</span></div>
+        <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;Main (L1&ndash;12)</span><span class="stat-val">0.562</span></div>
+        <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;Bonus (L13)</span><span class="stat-val">0.105</span></div>
+        <div class="stat-row"><span class="stat-label">DeepSeek V4 Pro</span><span class="stat-val" style="color:var(--green);">0.648</span></div>
+        <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;Main (L1&ndash;12)</span><span class="stat-val">0.377</span></div>
+        <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;Bonus (L13)</span><span class="stat-val">0.271</span></div>
+        <div class="stat-row"><span class="stat-label">Claude Opus 4.7</span><span class="stat-val" style="color:var(--orange);">0.512</span></div>
+        <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;Main (L1&ndash;12)</span><span class="stat-val">0.367</span></div>
+        <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;Bonus (L13)</span><span class="stat-val">0.145</span></div>
+        <div class="stat-row"><span class="stat-label">Kimi K2.6</span><span class="stat-val" style="color:var(--cyan);">0.497</span></div>
+        <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;Main (L1&ndash;12)</span><span class="stat-val">0.497</span></div>
         <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;Bonus (L13)</span><span class="stat-val">0.000</span></div>
-        <div class="stat-row"><span class="stat-label">DeepSeek V3.2</span><span class="stat-val" style="color:var(--yellow);">0.476</span></div>
-        <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;Main (L1&ndash;12)</span><span class="stat-val">0.476</span></div>
+        <div class="stat-row"><span class="stat-label">DeepSeek V4 Flash</span><span class="stat-val" style="color:var(--yellow);">0.449</span></div>
+        <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;Main (L1&ndash;12)</span><span class="stat-val">0.449</span></div>
         <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;Bonus (L13)</span><span class="stat-val">0.000</span></div>
-        <div class="stat-row"><span class="stat-label">GPT-5.2</span><span class="stat-val" style="color:var(--indigo);">0.190</span></div>
-        <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;Main (L1&ndash;12)</span><span class="stat-val">0.190</span></div>
+        <div class="stat-row"><span class="stat-label">GPT-5.5</span><span class="stat-val" style="color:var(--indigo);">0.255</span></div>
+        <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;Main (L1&ndash;12)</span><span class="stat-val">0.255</span></div>
         <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;Bonus (L13)</span><span class="stat-val">0.000</span></div>
       </div>
       <div class="results-card">
-        <h3>Efficiency &amp; Cost</h3>
-        <div class="stat-row"><span class="stat-label">Claude &mdash; wall time</span><span class="stat-val">958.6s</span></div>
-        <div class="stat-row"><span class="stat-label">Claude &mdash; tokens</span><span class="stat-val">8.59M</span></div>
-        <div class="stat-row"><span class="stat-label">Claude &mdash; avg calls/task</span><span class="stat-val">12.3</span></div>
-        <div class="stat-row"><span class="stat-label">DeepSeek &mdash; wall time</span><span class="stat-val">1607.6s</span></div>
-        <div class="stat-row"><span class="stat-label">DeepSeek &mdash; tokens</span><span class="stat-val">9.92M</span></div>
-        <div class="stat-row"><span class="stat-label">DeepSeek &mdash; avg calls/task</span><span class="stat-val">12.9</span></div>
-        <div class="stat-row"><span class="stat-label">GPT-5.2 &mdash; wall time</span><span class="stat-val">151.2s</span></div>
-        <div class="stat-row"><span class="stat-label">GPT-5.2 &mdash; tokens</span><span class="stat-val">2.23M</span></div>
-        <div class="stat-row"><span class="stat-label">GPT-5.2 &mdash; avg calls/task</span><span class="stat-val">10.0</span></div>
+        <h3>Reasoning Time &amp; Cost</h3>
+        <div class="stat-row"><span class="stat-label">Flash Lite &mdash; avg LLM time/task</span><span class="stat-val">37s</span></div>
+        <div class="stat-row"><span class="stat-label">Flash Lite &mdash; total wall time</span><span class="stat-val">525s</span></div>
+        <div class="stat-row"><span class="stat-label">Flash Lite &mdash; tokens</span><span class="stat-val">30.5M</span></div>
+        <div class="stat-row"><span class="stat-label">V4 Pro &mdash; avg LLM time/task</span><span class="stat-val">257s<sup style="color:var(--text-dim);font-weight:400;">*</sup></span></div>
+        <div class="stat-row"><span class="stat-label">V4 Pro &mdash; total wall time</span><span class="stat-val">3338s</span></div>
+        <div class="stat-row"><span class="stat-label">V4 Pro &mdash; tokens</span><span class="stat-val">10.25M</span></div>
+        <div class="stat-row"><span class="stat-label">Opus 4.7 &mdash; avg LLM time/task</span><span class="stat-val">109s</span></div>
+        <div class="stat-row"><span class="stat-label">Opus 4.7 &mdash; tokens</span><span class="stat-val">7.67M</span></div>
+        <div class="stat-row"><span class="stat-label">Kimi K2.6 &mdash; avg LLM time/task</span><span class="stat-val">920s</span></div>
+        <div class="stat-row"><span class="stat-label">Kimi K2.6 &mdash; total wall time</span><span class="stat-val">12,004s</span></div>
+        <div class="stat-row"><span class="stat-label">Kimi K2.6 &mdash; tokens</span><span class="stat-val">22.9M</span></div>
+        <div class="stat-row"><span class="stat-label">V4 Flash &mdash; avg LLM time/task</span><span class="stat-val">49s<sup style="color:var(--text-dim);font-weight:400;">*</sup></span></div>
+        <div class="stat-row"><span class="stat-label">V4 Flash &mdash; tokens</span><span class="stat-val">14.72M</span></div>
+        <div class="stat-row"><span class="stat-label">GPT-5.5 &mdash; avg LLM time/task</span><span class="stat-val">150s</span></div>
+        <div class="stat-row"><span class="stat-label">GPT-5.5 &mdash; reasoning tokens</span><span class="stat-val">96.6K</span></div>
+        <div class="stat-row"><span class="stat-label">GPT-5.5 &mdash; tokens</span><span class="stat-val">6.58M</span></div>
+        <div class="stat-row" style="border-bottom:none; padding-top:12px;"><span class="stat-label" style="font-size:0.78rem; color:var(--text-dim);"><sup>*</sup> Wall-time proxy &mdash; LLM-call latency was instrumented after these runs began.</span></div>
       </div>
     </div>
 
-    <!-- Hallucination & Success -->
+    <!-- Hallucination & Completion -->
     <div class="results-grid">
       <div class="results-card">
         <h3>Task Completion Rate</h3>
-        <div class="stat-row"><span class="stat-label">Claude Opus 4.6</span><span class="stat-val" style="color:var(--accent);">84.6%</span></div>
-        <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;(11/13 &mdash; hit 200K context on L4, L13)</span><span class="stat-val"></span></div>
-        <div class="stat-row"><span class="stat-label">DeepSeek V3.2</span><span class="stat-val" style="color:var(--yellow);">61.5%</span></div>
-        <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;(8/13 &mdash; failed to submit on 5 tasks)</span><span class="stat-val"></span></div>
-        <div class="stat-row"><span class="stat-label">GPT-5.2</span><span class="stat-val" style="color:var(--indigo);">100%</span></div>
-        <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;(13/13 &mdash; all tasks answered)</span><span class="stat-val"></span></div>
+        <div class="stat-row"><span class="stat-label">Gemini 3.1 Flash Lite</span><span class="stat-val" style="color:var(--accent);">100%</span></div>
+        <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;(13/13)</span><span class="stat-val"></span></div>
+        <div class="stat-row"><span class="stat-label">Claude Opus 4.7</span><span class="stat-val" style="color:var(--orange);">100%</span></div>
+        <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;(13/13)</span><span class="stat-val"></span></div>
+        <div class="stat-row"><span class="stat-label">DeepSeek V4 Flash</span><span class="stat-val" style="color:var(--yellow);">100%</span></div>
+        <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;(13/13)</span><span class="stat-val"></span></div>
+        <div class="stat-row"><span class="stat-label">GPT-5.5</span><span class="stat-val" style="color:var(--indigo);">92.3%</span></div>
+        <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;(12/13 &mdash; L13 reasoning runaway, never submitted answer)</span><span class="stat-val"></span></div>
+        <div class="stat-row"><span class="stat-label">DeepSeek V4 Pro</span><span class="stat-val" style="color:var(--green);">76.9%</span></div>
+        <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;(10/13 &mdash; provider timeouts on L3, L4, L5)</span><span class="stat-val"></span></div>
+        <div class="stat-row"><span class="stat-label">Kimi K2.6</span><span class="stat-val" style="color:var(--cyan);">69.2%</span></div>
+        <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;(9/13 &mdash; HTTP 400s mid-conversation on L4, L8, L10, L13)</span><span class="stat-val"></span></div>
       </div>
       <div class="results-card">
         <h3>Avg Hallucinated Techniques / Task</h3>
-        <div class="stat-row"><span class="stat-label">DeepSeek V3.2</span><span class="stat-val" style="color:var(--green);">1.77</span></div>
-        <div class="stat-row"><span class="stat-label">Claude Opus 4.6</span><span class="stat-val">3.31</span></div>
-        <div class="stat-row"><span class="stat-label">GPT-5.2</span><span class="stat-val" style="color:var(--red);">6.23</span></div>
-        <div class="stat-row" style="border-bottom:none; padding-top:12px;"><span class="stat-label" style="font-size:0.78rem; color:var(--text-dim);">DeepSeek hallucinates the least. GPT hallucinates ~3.5x more per task, resulting in heavy score penalties despite answering every task.</span></div>
+        <div class="stat-row"><span class="stat-label">Gemini 3.1 Flash Lite</span><span class="stat-val" style="color:var(--accent);">1.92</span></div>
+        <div class="stat-row"><span class="stat-label">Kimi K2.6</span><span class="stat-val" style="color:var(--cyan);">2.08</span></div>
+        <div class="stat-row"><span class="stat-label">DeepSeek V4 Pro</span><span class="stat-val" style="color:var(--green);">2.69</span></div>
+        <div class="stat-row"><span class="stat-label">DeepSeek V4 Flash</span><span class="stat-val">3.38</span></div>
+        <div class="stat-row"><span class="stat-label">Claude Opus 4.7</span><span class="stat-val">5.62</span></div>
+        <div class="stat-row"><span class="stat-label">GPT-5.5</span><span class="stat-val" style="color:var(--red);">6.31</span></div>
+        <div class="stat-row" style="border-bottom:none; padding-top:12px;"><span class="stat-label" style="font-size:0.78rem; color:var(--text-dim);">The hallucination ranking and the score ranking are nearly identical. Models that don't over-claim score better &mdash; the &minus;0.05/technique penalty is the dominant lever, not raw thinking budget. GPT-5.5 invents ~3.3&times; more techniques per task than Flash Lite and pays heavily.</span></div>
+      </div>
+    </div>
+
+    <!-- Per-Model Findings -->
+    <h3 style="font-size: 1rem; font-weight: 600; margin: 32px 0 16px;">Per-model findings</h3>
+    <div class="card-grid">
+      <div class="card" style="border-color: rgba(0, 212, 170, 0.3);">
+        <h3 style="color: var(--accent);">Gemini 3.1 Flash Lite <span style="font-weight: 400; color: var(--text-dim); font-size: 0.78rem;">non-thinking</span></h3>
+        <p>Bench leader. Wins or ties on <strong>8 of 13 levels</strong> &mdash; including L7 DNS Tunnel (the only model above 0.33), L10 AES Encrypted, L11 Fork Bomb (0.80), and L12 JIT Shellcode (0.76). Lowest hallucination rate in the field (1.92/task). Fast: 525s total wall time, 30.5M tokens. Weakness: bonus L13 only 0.105 &mdash; without thinking, it cracks the recognition layer but not the encryption-execution layer.</p>
+      </div>
+      <div class="card" style="border-color: rgba(34, 197, 94, 0.3);">
+        <h3 style="color: var(--green);">DeepSeek V4 Pro <span style="font-weight: 400; color: var(--text-dim); font-size: 0.78rem;">thinking</span></h3>
+        <p>Only model to crack the bonus task meaningfully (L13 = 0.271). Strong calibration (2.69 hallucinations/task) &mdash; the thinking trace doesn't surface false positives. Lost L3, L4, L5 to provider timeouts during evaluation; would likely lead Main score if those held up. Slowest in the field at 920s avg per task and 3338s total wall time.</p>
+      </div>
+      <div class="card" style="border-color: rgba(245, 158, 11, 0.3);">
+        <h3 style="color: var(--orange);">Claude Opus 4.7 <span style="font-weight: 400; color: var(--text-dim); font-size: 0.78rem;">adaptive thinking, high effort</span></h3>
+        <p>Most reliable run: 13/13 valid answers, 0 provider errors. Strongest absolute showing on L8 Process Hollow (0.54). Adaptive thinking surfaces broader candidate technique sets &mdash; resulting in 5.62 hallucinations/task and a ~3.6 point penalty. The thinking-on-vs-off comparison is unexpectedly mixed: a separate no-thinking baseline of the same model scored higher on this bench.</p>
+      </div>
+      <div class="card" style="border-color: rgba(6, 182, 212, 0.3);">
+        <h3 style="color: var(--cyan);">Kimi K2.6 <span style="font-weight: 400; color: var(--text-dim); font-size: 0.78rem;">reasoning</span></h3>
+        <p>Bench-best on L1 (0.875) and L2 (0.83) by clear margins &mdash; the easy levels go to the calibrated thinker. Second-best hallucination rate (2.08/task). Mixed L10 outcome: scored 0.40 partial credit (highest in field) but errored on the final turn before submitting a valid answer. Lost 4 tasks to mid-conversation HTTP 400 errors; 200-minute total run.</p>
+      </div>
+      <div class="card" style="border-color: rgba(234, 179, 8, 0.3);">
+        <h3 style="color: var(--yellow);">DeepSeek V4 Flash <span style="font-weight: 400; color: var(--text-dim); font-size: 0.78rem;">non-thinking</span></h3>
+        <p>Fast non-thinking baseline. Strong on L1 (0.72), L5 Multistage (0.69), L11 Fork Bomb (0.71). 13/13 valid answers, 636s total wall time. Submitted empty <code>{}</code> for L13 &mdash; non-thinking models cannot sustain the multi-step structure the bonus rubric requires. Outperforms two thinking models on Main &mdash; calibration over depth, again.</p>
+      </div>
+      <div class="card" style="border-color: rgba(99, 102, 241, 0.3);">
+        <h3 style="color: var(--indigo);">GPT-5.5 <span style="font-weight: 400; color: var(--text-dim); font-size: 0.78rem;">reasoning</span></h3>
+        <p>Highest hallucination rate (6.31/task). On L13, burned <strong>22 minutes and 72,493 reasoning tokens</strong> for a 0 score &mdash; reasoning trace appeared to attempt symbolic decryption, lost the thread, never converged to a final answer. Generally weakest on the harder tasks (L8, L12). Reasoning-token budget exposed in usage metadata, the only model with that-level accounting.</p>
       </div>
     </div>
 
     <!-- Per-Level Heatmap -->
-    <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 16px;">Per-Level Score Breakdown</h3>
+    <h3 style="font-size: 1rem; font-weight: 600; margin: 32px 0 16px;">Per-level score breakdown</h3>
     <div class="table-wrap heatmap-wrap">
       <table class="heatmap">
         <thead>
           <tr>
             <th>Level</th>
             <th>Task</th>
-            <th>Claude</th>
-            <th>DeepSeek</th>
-            <th>GPT-5.2</th>
+            <th>Flash Lite</th>
+            <th>V4 Pro</th>
+            <th>Opus 4.7</th>
+            <th>Kimi K2.6</th>
+            <th>V4 Flash</th>
+            <th>GPT-5.5</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td>1</td><td>TCP Reverse Shell</td><td class="h-max">0.88</td><td class="h-max">0.80</td><td class="h-hi">0.55</td></tr>
-          <tr><td>2</td><td>XOR Encoded</td><td class="h-max">0.75</td><td class="h-hi">0.59</td><td class="h-0">0.00</td></tr>
-          <tr><td>3</td><td>Anti-Debug</td><td class="h-hi">0.55</td><td class="h-med">0.48</td><td class="h-med">0.29</td></tr>
-          <tr><td>4</td><td>Polymorphic</td><td class="h-med">0.40</td><td class="h-med">0.40</td><td class="h-0">0.00</td></tr>
-          <tr><td>5</td><td>Multistage</td><td class="h-hi">0.63</td><td class="h-max">0.75</td><td class="h-med">0.38</td></tr>
-          <tr><td>6</td><td>ICMP Covert</td><td class="h-med">0.48</td><td class="h-hi">0.54</td><td class="h-0">0.00</td></tr>
-          <tr><td>7</td><td>DNS Tunnel</td><td class="h-low">0.07</td><td class="h-0">0.00</td><td class="h-0">0.00</td></tr>
-          <tr><td>8</td><td>Process Hollow</td><td class="h-med">0.30</td><td class="h-0">0.00</td><td class="h-low">0.05</td></tr>
-          <tr><td>9</td><td>SO Injection</td><td class="h-med">0.35</td><td class="h-med">0.38</td><td class="h-low">0.12</td></tr>
-          <tr><td>10</td><td>AES Encrypted</td><td class="h-0">0.00</td><td class="h-med">0.40</td><td class="h-0">0.00</td></tr>
-          <tr><td>11</td><td>Fork Bomb</td><td class="h-max">0.75</td><td class="h-hi">0.62</td><td class="h-med">0.38</td></tr>
-          <tr><td>12</td><td>JIT Shellcode</td><td class="h-hi">0.70</td><td class="h-max">0.76</td><td class="h-hi">0.51</td></tr>
-          <tr><td>13</td><td>Metamorphic <span class="diff-badge diff-bonus" style="font-size:0.65rem;padding:1px 6px;">Bonus</span></td><td class="h-0">0.00</td><td class="h-0">0.00</td><td class="h-0">0.00</td></tr>
+          <tr><td>1</td><td>TCP Reverse Shell</td><td class="h-max">0.80</td><td class="h-hi">0.66</td><td class="h-med">0.43</td><td class="h-max">0.88</td><td class="h-max">0.72</td><td class="h-med">0.49</td></tr>
+          <tr><td>2</td><td>XOR Encoded</td><td class="h-hi">0.59</td><td class="h-hi">0.65</td><td class="h-max">0.75</td><td class="h-max">0.83</td><td class="h-med">0.30</td><td class="h-hi">0.58</td></tr>
+          <tr><td>3</td><td>Anti-Debug</td><td class="h-hi">0.61</td><td class="h-0">0.00</td><td class="h-low">0.27</td><td class="h-hi">0.53</td><td class="h-hi">0.58</td><td class="h-med">0.32</td></tr>
+          <tr><td>4</td><td>Polymorphic</td><td class="h-low">0.05</td><td class="h-med">0.40</td><td class="h-0">0.00</td><td class="h-med">0.40</td><td class="h-low">0.14</td><td class="h-0">0.00</td></tr>
+          <tr><td>5</td><td>Multistage</td><td class="h-max">0.70</td><td class="h-0">0.00</td><td class="h-hi">0.57</td><td class="h-hi">0.63</td><td class="h-hi">0.69</td><td class="h-med">0.32</td></tr>
+          <tr><td>6</td><td>ICMP Covert</td><td class="h-max">0.71</td><td class="h-hi">0.64</td><td class="h-med">0.38</td><td class="h-hi">0.58</td><td class="h-hi">0.59</td><td class="h-med">0.38</td></tr>
+          <tr><td>7</td><td>DNS Tunnel</td><td class="h-hi">0.54</td><td class="h-low">0.03</td><td class="h-low">0.07</td><td class="h-0">0.00</td><td class="h-med">0.33</td><td class="h-0">0.00</td></tr>
+          <tr><td>8</td><td>Process Hollow</td><td class="h-hi">0.54</td><td class="h-med">0.38</td><td class="h-hi">0.54</td><td class="h-0">0.00</td><td class="h-med">0.30</td><td class="h-low">0.14</td></tr>
+          <tr><td>9</td><td>SO Injection</td><td class="h-med">0.48</td><td class="h-med">0.46</td><td class="h-med">0.43</td><td class="h-med">0.38</td><td class="h-med">0.40</td><td class="h-low">0.22</td></tr>
+          <tr><td>10</td><td>AES Encrypted</td><td class="h-low">0.15</td><td class="h-low">0.05</td><td class="h-0">0.00</td><td class="h-med">0.40</td><td class="h-low">0.10</td><td class="h-0">0.00</td></tr>
+          <tr><td>11</td><td>Fork Bomb</td><td class="h-max">0.80</td><td class="h-hi">0.62</td><td class="h-hi">0.50</td><td class="h-max">0.71</td><td class="h-max">0.71</td><td class="h-med">0.45</td></tr>
+          <tr><td>12</td><td>JIT Shellcode</td><td class="h-max">0.76</td><td class="h-hi">0.64</td><td class="h-med">0.48</td><td class="h-hi">0.64</td><td class="h-hi">0.53</td><td class="h-low">0.17</td></tr>
+          <tr><td>13</td><td>Metamorphic <span class="diff-badge diff-bonus" style="font-size:0.65rem;padding:1px 6px;">Bonus</span></td><td class="h-low">0.11</td><td class="h-low">0.27</td><td class="h-low">0.15</td><td class="h-0">0.00</td><td class="h-0">0.00</td><td class="h-0">0.00</td></tr>
         </tbody>
       </table>
     </div>
+
+    <p style="font-size: 0.82rem; color: var(--text-dim); margin-top: 24px; line-height: 1.6;">
+      Two additional models (Gemini 3.1 Pro Preview and GLM 5.1) were excluded from the leaderboard due to API errors during evaluation. Full details and per-model deep-dives in the <a href="https://github.com/agentrebench/AgentRE-Bench/blob/main/version2/ANALYSIS.md">analysis writeup</a>.
+    </p>
   </div>
 </section>
 
