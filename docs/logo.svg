@@ -55,16 +55,16 @@
   <circle cx="342" cy="415" r="2.5" fill="#6366f1" opacity="0.4"/>
 
   <!-- Binary decoration - left side -->
-  <text x="100" y="210" font-family="monospace" font-size="11" fill="#00d4aa" opacity="0.15">01101</text>
-  <text x="100" y="225" font-family="monospace" font-size="11" fill="#00d4aa" opacity="0.1">10010</text>
-  <text x="100" y="310" font-family="monospace" font-size="11" fill="#6366f1" opacity="0.15">11010</text>
-  <text x="100" y="325" font-family="monospace" font-size="11" fill="#6366f1" opacity="0.1">01101</text>
+  <text x="106" y="210" font-family="monospace" font-size="11" fill="#00d4aa" opacity="0.15">01101</text>
+  <text x="106" y="225" font-family="monospace" font-size="11" fill="#00d4aa" opacity="0.1">10010</text>
+  <text x="106" y="310" font-family="monospace" font-size="11" fill="#6366f1" opacity="0.15">11010</text>
+  <text x="106" y="325" font-family="monospace" font-size="11" fill="#6366f1" opacity="0.1">01101</text>
 
   <!-- Binary decoration - right side -->
-  <text x="370" y="210" font-family="monospace" font-size="11" fill="#00d4aa" opacity="0.15">10110</text>
-  <text x="370" y="225" font-family="monospace" font-size="11" fill="#00d4aa" opacity="0.1">01001</text>
-  <text x="370" y="310" font-family="monospace" font-size="11" fill="#6366f1" opacity="0.15">00101</text>
-  <text x="370" y="325" font-family="monospace" font-size="11" fill="#6366f1" opacity="0.1">11010</text>
+  <text x="370" y="210" font-family="monospace" font-size="11" fill="#00d4aa" opacity="0.15" text-anchor="end">10110</text>
+  <text x="370" y="225" font-family="monospace" font-size="11" fill="#00d4aa" opacity="0.1" text-anchor="end">01001</text>
+  <text x="370" y="310" font-family="monospace" font-size="11" fill="#6366f1" opacity="0.15" text-anchor="end">00101</text>
+  <text x="370" y="325" font-family="monospace" font-size="11" fill="#6366f1" opacity="0.1" text-anchor="end">11010</text>
 
   <!-- Scan line decoration -->
   <line x1="160" y1="195" x2="352" y2="195" stroke="url(#glow2)" stroke-width="1" opacity="0.3"/>
@@ -73,8 +73,8 @@
   <!-- Angle brackets -->
   <text x="142" y="282" font-family="'SF Mono', 'Cascadia Code', 'Fira Code', Consolas, monospace"
     font-size="72" font-weight="300" fill="#00d4aa" opacity="0.5" filter="url(#soft-glow)">&lt;</text>
-  <text x="340" y="282" font-family="'SF Mono', 'Cascadia Code', 'Fira Code', Consolas, monospace"
-    font-size="72" font-weight="300" fill="#00d4aa" opacity="0.5" filter="url(#soft-glow)">&gt;</text>
+  <text x="370" y="282" font-family="'SF Mono', 'Cascadia Code', 'Fira Code', Consolas, monospace"
+    font-size="72" font-weight="300" fill="#00d4aa" opacity="0.5" filter="url(#soft-glow)" text-anchor="end">&gt;</text>
 
   <!-- Main "RE" text -->
   <text x="256" y="285" text-anchor="middle"
