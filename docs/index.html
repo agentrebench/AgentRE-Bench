@@ -66,21 +66,22 @@ a:hover { opacity: 0.8; }
 .hero .container {
   display: flex;
   align-items: center;
-  gap: 48px;
+  gap: 40px;
 }
 .hero-text {
   flex: 1;
   text-align: center;
+  min-width: 0;
 }
 .hero-logo {
-  width: 200px;
-  height: 200px;
+  width: 180px;
+  height: 180px;
   flex-shrink: 0;
   filter: drop-shadow(0 0 40px rgba(0, 212, 170, 0.15));
 }
-@media (max-width: 720px) {
+@media (max-width: 520px) {
   .hero .container { flex-direction: column; gap: 24px; }
-  .hero-logo { width: 140px; height: 140px; }
+  .hero-logo { width: 130px; height: 130px; }
 }
 .hero-label {
   display: inline-block;
