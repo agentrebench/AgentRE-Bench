@@ -65,23 +65,32 @@ a:hover { opacity: 0.8; }
 }
 .hero .container {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 40px;
 }
 .hero-text {
   flex: 1;
   text-align: center;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
+.hero-text h1 { margin-bottom: 0; }
+.hero-text .subtitle { margin-bottom: 0; }
+.hero-text .pitch { margin: 0 auto; }
+.hero-text .hero-label { margin-top: 8px; }
 .hero-logo {
   width: 180px;
   height: 180px;
   flex-shrink: 0;
+  margin-top: -16px;
+  margin-left: -32px;
   filter: drop-shadow(0 0 40px rgba(0, 212, 170, 0.15));
 }
 @media (max-width: 520px) {
-  .hero .container { flex-direction: column; gap: 24px; }
-  .hero-logo { width: 130px; height: 130px; }
+  .hero .container { flex-direction: column; gap: 24px; align-items: center; }
+  .hero-logo { width: 130px; height: 130px; margin: 0; }
 }
 .hero-label {
   display: inline-block;
@@ -515,7 +524,6 @@ footer a:hover { color: var(--accent); }
   <div class="container">
     <img src="logo.svg" alt="AgentRE-Bench logo" class="hero-logo">
     <div class="hero-text">
-      <div class="hero-label">Linux/Unix Reverse Engineering Benchmark</div>
       <h1>Agent<span class="accent">RE</span>-Bench</h1>
       <p class="subtitle">Long-horizon reverse engineering tasks for LLM agents, scored deterministically.</p>
       <p class="pitch">
@@ -530,6 +538,7 @@ footer a:hover { color: var(--accent); }
         </a>
         <a href="#results" class="btn btn-outline">Results</a>
       </div>
+      <div class="hero-label">Linux/Unix Reverse Engineering Benchmark</div>
     </div>
   </div>
 </section>
