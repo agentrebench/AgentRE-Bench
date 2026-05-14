@@ -207,7 +207,7 @@ Plus `final_answer` — a structured submission tool the agent calls when done.
 ### 1. Clone and Configure
 
 ```bash
-git clone https://github.com/your-org/AgentRE-Bench.git
+git clone https://github.com/agentrebench/AgentRE-Bench.git
 cd AgentRE-Bench
 
 # Create .env with your API key(s)
