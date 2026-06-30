@@ -536,9 +536,10 @@ footer a:hover { color: var(--accent); }
       <h1>Agent<span class="accent">RE</span>-Bench</h1>
       <p class="subtitle">Long-horizon reverse engineering tasks for LLM agents, scored deterministically.</p>
       <p class="pitch">
-        Give an LLM agent a compiled ELF binary and a set of Linux static analysis tools.
-        Measure how well it identifies C2 infrastructure, encoding schemes, anti-analysis techniques, and communication protocols &mdash; all without human guidance.
-        Currently targeting Linux/Unix (ELF x86-64). Windows PE support planned.
+        Give an LLM agent a compiled binary and a disassembler. No source code. No hints.
+        Measure how well it identifies C2 infrastructure, encryption, anti-analysis techniques,
+        and communication protocols &mdash; all without human guidance.
+        Targets Linux/Unix (ELF x86-64) and Windows (PE32+ x86-64). 23 levels across two platforms.
       </p>
       <div class="hero-buttons">
         <a href="https://github.com/agentrebench/AgentRE-Bench" class="btn btn-primary">
@@ -547,7 +548,7 @@ footer a:hover { color: var(--accent); }
         </a>
         <a href="#results" class="btn btn-outline">Results</a>
       </div>
-      <div class="hero-label">Linux/Unix Reverse Engineering Benchmark</div>
+      <div class="hero-label">Cross-Platform Reverse Engineering Benchmark</div>
     </div>
   </div>
 </section>
@@ -565,7 +566,7 @@ footer a:hover { color: var(--accent); }
       <div class="card">
         <div class="card-icon" style="background: var(--accent-dim); color: var(--accent);">&#x2727;</div>
         <h3>Synthetic</h3>
-        <p>All 13 ELF x86-64 binaries are compiled from purpose-built C sources targeting Linux/Unix. Known ground truths, no licensing issues &mdash; anyone can compile identical binaries and verify scores.</p>
+        <p>All 23 binaries (13 ELF x86-64 + 10 PE32+ x86-64) are compiled from purpose-built C/C++ sources. Known ground truths, no licensing issues &mdash; anyone can compile identical binaries and verify scores.</p>
       </div>
       <div class="card">
         <div class="card-icon" style="background: var(--indigo-dim); color: var(--indigo);">&#x2263;</div>
@@ -590,10 +591,11 @@ footer a:hover { color: var(--accent); }
 <section id="tasks">
   <div class="container">
     <div class="section-tag">Task Progression</div>
-    <h2 class="section-title">13 levels of increasing difficulty</h2>
+    <h2 class="section-title">23 levels across Linux and Windows</h2>
     <p class="section-desc">
-      From plaintext TCP shells to metamorphic droppers with RC4 encryption, control-flow flattening, and triple anti-debug.
+      From plaintext TCP shells to WannaCry-style ransomware. 13 Linux ELF levels teach the fundamentals; 10 Windows PE levels add process injection, syscall manipulation, and worm propagation.
     </p>
+    <h3 style="font-size:1.1rem;font-weight:600;margin-bottom:16px;color:var(--accent);">Linux / Unix &mdash; ELF x86-64 (Levels 1&ndash;13)</h3>
     <div class="table-wrap">
       <table>
         <thead>
@@ -686,6 +688,82 @@ footer a:hover { color: var(--accent); }
         </tbody>
       </table>
     </div>
+
+    <h3 style="font-size:1.1rem;font-weight:600;margin:48px 0 16px;color:var(--indigo);">Windows &mdash; PE32+ x86-64 (Levels 14&ndash;23)</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Level</th>
+            <th>Task</th>
+            <th>Description</th>
+            <th>Difficulty</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="level-num">14</td>
+            <td class="task-name">DLL Injection</td>
+            <td class="task-desc">XOR-encrypted DLL path, manual GetProcAddress via PE export parsing, PEB anti-debug, CreateRemoteThread + LoadLibraryA injection.</td>
+            <td><span class="diff-badge diff-medium">Medium</span></td>
+          </tr>
+          <tr>
+            <td class="level-num">15</td>
+            <td class="task-name">APC Injection</td>
+            <td class="task-desc">RC4-encrypted shellcode, NtQueueApcThread injection, NtQueryInformationProcess anti-debug, direct ntdll syscalls.</td>
+            <td><span class="diff-badge diff-medium">Medium</span></td>
+          </tr>
+          <tr>
+            <td class="level-num">16</td>
+            <td class="task-name">Code Cave Injection</td>
+            <td class="task-desc">Code cave finder in .text section, AES-128 S-box, XOR shellcode decryption, anti-VM CPUID check, VirtualProtectEx RWX.</td>
+            <td><span class="diff-badge diff-hard">Hard</span></td>
+          </tr>
+          <tr>
+            <td class="level-num">17</td>
+            <td class="task-name">Process Hollowing</td>
+            <td class="task-desc">CreateProcess suspended, NtUnmapViewOfSection, replacement PE with RC4+XOR encryption, SetThreadContext entry point fixup.</td>
+            <td><span class="diff-badge diff-hard">Hard</span></td>
+          </tr>
+          <tr>
+            <td class="level-num">18</td>
+            <td class="task-name">Hell's Gate</td>
+            <td class="task-desc">Dynamic syscall number resolution from ntdll stubs (4C 8B D1 B8 pattern), RC4 payload, anti-hooking stub integrity check.</td>
+            <td><span class="diff-badge diff-hard">Hard</span></td>
+          </tr>
+          <tr>
+            <td class="level-num">19</td>
+            <td class="task-name">Reflective DLL Injection</td>
+            <td class="task-desc">Manual PE parsing, IAT walk, base relocation fixup, AES-128 encrypted DLL stub, DllMain invocation via export resolution.</td>
+            <td><span class="diff-badge diff-hard">Hard</span></td>
+          </tr>
+          <tr>
+            <td class="level-num">20</td>
+            <td class="task-name">Remote PE Execution</td>
+            <td class="task-desc">PE payload mapped into remote process, NtWriteVirtualMemory, remote relocation fixup, RC4 encryption, anti-sandbox DLL checks.</td>
+            <td><span class="diff-badge diff-hard">Hard</span></td>
+          </tr>
+          <tr>
+            <td class="level-num">21</td>
+            <td class="task-name">Ghost Process Hollowing</td>
+            <td class="task-desc">NtCreateProcess with no section object, manual PE mapping into empty process, NtCreateThreadEx, XOR-encrypted payload.</td>
+            <td><span class="diff-badge diff-hard">Hard</span></td>
+          </tr>
+          <tr>
+            <td class="level-num">22</td>
+            <td class="task-name">AES-256 Multi-Technique</td>
+            <td class="task-desc">C++ class hierarchy (CryptoProvider, ProcessInjector), AES-256 encrypted shellcode, TLS callback, PEB walk, 4 anti-debug checks, Hell's Gate.</td>
+            <td><span class="diff-badge diff-vhard">Very Hard</span></td>
+          </tr>
+          <tr>
+            <td class="level-num">23</td>
+            <td class="task-name">WannaCry Worm <span class="diff-badge diff-bonus" style="font-size:0.65rem;padding:1px 6px;">Bonus</span></td>
+            <td class="task-desc">AES-128 file encryption, embedded RSA-2048 key, kill-switch domain check, SMB worm propagation, service persistence, anti-VM, C2 beaconing&mdash;21 techniques.</td>
+            <td><span class="diff-badge diff-bonus">Bonus</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </section>
 
@@ -695,7 +773,7 @@ footer a:hover { color: var(--accent); }
     <div class="section-tag">Scoring Model</div>
     <h2 class="section-title">Deterministic, weighted scoring</h2>
     <p class="section-desc">
-      Each of the 12 standard levels is scored across 5 weighted fields. Level 13 is a bonus task with a deeper 10-field rubric. Maximum total score is 2.0.
+      Each of the 21 standard levels is scored across 5 weighted fields. Levels 13 (Metamorphic Dropper) and 23 (WannaCry Worm) are bonus tasks with a deeper 10-field rubric. Maximum total score is 3.0.
     </p>
     <div class="scoring-grid">
       <div class="scoring-card">
@@ -708,7 +786,7 @@ footer a:hover { color: var(--accent); }
         <div class="penalty-note">Hallucination penalty: &minus;0.05 per fabricated technique</div>
       </div>
       <div class="scoring-card">
-        <h3>Bonus Level (13)</h3>
+        <h3>Bonus Levels (13 &amp; 23)</h3>
         <div class="field-row"><span class="field-name">decoded_c2</span><span class="field-weight">15%</span></div>
         <div class="field-row"><span class="field-name">encryption_algorithm</span><span class="field-weight">10%</span></div>
         <div class="field-row"><span class="field-name">encryption_key</span><span class="field-weight">15%</span></div>
@@ -723,9 +801,9 @@ footer a:hover { color: var(--accent); }
     <div class="formula-box">
       <h3>Aggregate Score</h3>
       <div class="formula">
-        <span>Main</span>  = average(level_1 &hellip; level_12)&emsp;&rarr;&emsp;0.0 &ndash; 1.0<br>
-        <span>Bonus</span> = level_13_score&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&rarr;&emsp;0.0 &ndash; 1.0<br>
-        <span>Total</span> = Main + Bonus&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&rarr;&emsp;<span>0.0 &ndash; 2.0</span>
+        <span>Main</span>  = average(level_1 &hellip; level_12, level_14 &hellip; level_22)&emsp;&rarr;&emsp;0.0 &ndash; 1.0<br>
+        <span>Bonus</span> = level_13_score + level_23_score&emsp;&emsp;&emsp;&emsp;&emsp;&rarr;&emsp;0.0 &ndash; 2.0<br>
+        <span>Total</span> = Main + Bonus&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&rarr;&emsp;<span>0.0 &ndash; 3.0</span>
       </div>
     </div>
   </div>
@@ -735,9 +813,9 @@ footer a:hover { color: var(--accent); }
 <section id="results">
   <div class="container">
     <div class="section-tag">Results</div>
-    <h2 class="section-title">How frontier models perform</h2>
+    <h2 class="section-title">How frontier models perform (Linux levels)</h2>
     <p class="section-desc">
-      All 13 levels, 25 tool-call budget, Docker-sandboxed static analysis tools. Six frontier models evaluated end-to-end. <strong style="color: var(--text);">Headline finding:</strong> a small non-thinking model (Gemini 3.1 Flash Lite) leads the field, beating every frontier reasoning model on Main score. Hallucination calibration &mdash; not reasoning depth &mdash; is the dominant axis on this bench.
+      All 13 Linux ELF levels, 25 tool-call budget, Docker-sandboxed static analysis tools. Six frontier models evaluated end-to-end. <strong style="color: var(--text);">Headline finding:</strong> a small non-thinking model (Gemini 3.1 Flash Lite) leads the field, beating every frontier reasoning model on Main score. Hallucination calibration &mdash; not reasoning depth &mdash; is the dominant axis on this bench. Windows PE results coming soon.
     </p>
 
     <!-- Leaderboard -->
@@ -1016,7 +1094,7 @@ cp .env.example .env   # add your API key(s)</code>
       <div class="step">
         <div class="step-num">2</div>
         <div>
-          <h3>Build binaries</h3>
+          <h3>Build Linux binaries</h3>
           <p>Compile the 13 ELF64 Linux/Unix challenge binaries. Uses local gcc on Linux x86-64, Docker on macOS.</p>
           <code>chmod +x build_binaries.sh
 ./build_binaries.sh</code>
@@ -1024,6 +1102,15 @@ cp .env.example .env   # add your API key(s)</code>
       </div>
       <div class="step">
         <div class="step-num">3</div>
+        <div>
+          <h3>Build Windows binaries</h3>
+          <p>Cross-compile the 10 PE32+ Windows challenge binaries. Requires MinGW cross-compiler or falls back to Docker.</p>
+          <code>chmod +x build_windows_binaries.sh
+./build_windows_binaries.sh</code>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
         <div>
           <h3>Build tools image</h3>
           <p>Build the Docker image for sandboxed tool execution (network-isolated, read-only, memory-capped).</p>
@@ -1033,10 +1120,10 @@ cp .env.example .env   # add your API key(s)</code>
         </div>
       </div>
       <div class="step">
-        <div class="step-num">4</div>
+        <div class="step-num">5</div>
         <div>
           <h3>Run the benchmark</h3>
-          <p>Run a single task or the full 13-level suite. Supports Claude, GPT, Gemini, and DeepSeek.</p>
+          <p>Run a single task or the full 23-level suite. Supports Claude, GPT, Gemini, and DeepSeek.</p>
           <code>python run_benchmark.py --task level1_TCPServer -v
 python run_benchmark.py --all --provider anthropic</code>
         </div>

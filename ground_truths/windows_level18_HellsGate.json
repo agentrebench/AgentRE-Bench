@@ -1,0 +1,49 @@
+{
+  "sample": "windows_level18_HellsGate",
+  "file_type": "PE64",
+  "encoded_strings": true,
+  "decoded_c2": null,
+  "c2_ip": null,
+  "c2_port": null,
+  "c2_protocol": null,
+  "techniques": [
+    "hells_gate",
+    "dynamic_syscall_resolution",
+    "rc4_encryption",
+    "syscall_stub_parsing",
+    "anti_hooking",
+    "direct_syscall",
+    "ntallocatevirtualmemory",
+    "ntwritevirtualmemory",
+    "ntprotectvirtualmemory",
+    "ntcreatethreadex",
+    "createthread_execution"
+  ],
+  "encryption_details": {
+    "algorithm": "RC4",
+    "key": [72, 51, 108, 108, 115, 71, 64, 116, 51, 95, 83, 121, 115, 99, 64, 108],
+    "key_string": "H3llsG@t3_Sysc@ll",
+    "key_length": 16,
+    "encrypted_data": "synthetic payload (64 bytes)"
+  },
+  "hells_gate_details": {
+    "stub_signature": [76, 139, 209, 184],
+    "stub_description": "mov r10, rcx; mov eax, <syscall_number>",
+    "fallback_scan": "search for B8 XX XX 00 00 pattern in first 32 bytes",
+    "resolved_syscalls": [
+      "NtAllocateVirtualMemory",
+      "NtWriteVirtualMemory",
+      "NtProtectVirtualMemory",
+      "NtCreateThreadEx",
+      "NtClose",
+      "NtOpenProcess",
+      "NtQueueApcThread"
+    ]
+  },
+  "anti_analysis": [
+    "syscall_stub_integrity_check"
+  ],
+  "confidence": 0.90,
+  "difficulty": 18,
+  "description": "Hell's Gate technique for dynamic syscall number resolution. RC4-encrypted payload (key: 'H3llsG@t3_Sysc@ll'). Parses ntdll.dll syscall stubs looking for the 4C 8B D1 B8 signature (mov r10, rcx; mov eax, <ssn>) to extract syscall numbers, with fallback scanning for B8 XX XX 00 00 pattern. Anti-hooking integrity check verifies stubs haven't been hooked (checking for E9 JMP). Resolves 7 syscall numbers. Synthetic/safe — executes decrypted payload via CreateThread (real Hell's Gate would use direct syscall, but resolution is demonstrated)."
+}

@@ -1,0 +1,105 @@
+{
+  "sample": "windows_level23_WannaCryWorm",
+  "file_type": "PE64",
+  "encoded_strings": true,
+  "decoded_c2": "192.0.2.100:8443",
+  "c2_ip": "192.0.2.100",
+  "c2_port": 8443,
+  "c2_protocol": "TCP",
+  "techniques": [
+    "aes128_file_encryption",
+    "rsa2048_key_embedding",
+    "killswitch_domain_check",
+    "mutex_single_instance",
+    "smb_worm_propagation",
+    "service_persistence",
+    "ransom_note_drop",
+    "file_extension_targeting",
+    "hidden_file_attributes",
+    "directory_traversal_encryption",
+    "xor_string_obfuscation",
+    "c2_beacon",
+    "system_info_exfiltration",
+    "anti_debug_isdebuggerpresent",
+    "anti_debug_peb",
+    "anti_debug_ntqueryinformationprocess",
+    "antivm_driver_check",
+    "antivm_sandboxie",
+    "antivm_cpuid",
+    "port_445_scanning",
+    "recursive_file_encryption"
+  ],
+  "encryption_details": {
+    "file_encryption": {
+      "algorithm": "AES-128 (simplified S-box, 10 rounds)",
+      "key": [87, 64, 110, 67, 114, 121, 80, 116, 48, 75, 51, 121, 50, 48, 50, 52],
+      "key_string": "W@nCryPt0K3y2024",
+      "key_length": 16,
+      "block_size": 16,
+      "file_extension": ".WNCRY",
+      "max_file_size": "1MB (synthetic cap)"
+    },
+    "string_obfuscation": {
+      "algorithm": "XOR",
+      "key": [222, 173, 190, 239, 19, 55, 202, 254],
+      "key_hex": "DEADBEEF1337CAFE",
+      "key_length": 8,
+      "encrypted_strings": ["C2 IP address", "ransom note path"]
+    },
+    "rsa_key": {
+      "algorithm": "RSA-2048",
+      "format": "DER-encoded public key (synthetic)",
+      "purpose": "key wrapping (demonstrated via embedded blob)"
+    }
+  },
+  "decoded_strings": {
+    "c2_ip": "192.0.2.100",
+    "c2_port": 8443,
+    "killswitch_domain": "example.com",
+    "mutex_name": "Global\\MsWinZonesCacheCounterMutexA",
+    "ransom_note_filename": "@Please_Read_Me@.txt",
+    "service_name": "mssecsvc2.0",
+    "service_display": "Microsoft Security Center (2.0)",
+    "target_directory": "%PUBLIC%\\Documents\\synthetic_target",
+    "btc_address": "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa",
+    "ransom_amount": "$300",
+    "target_extensions": [
+      ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx",
+      ".pdf", ".txt", ".jpg", ".png", ".bmp", ".zip",
+      ".rar", ".7z", ".sql", ".mdb", ".cpp", ".c",
+      ".h", ".py", ".js", ".html", ".css", ".xml",
+      ".json", ".csv", ".mp3", ".mp4", ".avi", ".wav"
+    ]
+  },
+  "anti_analysis": [
+    "isdebuggerpresent",
+    "peb_beingdebugged",
+    "ntqueryinformationprocess_processdebugport",
+    "vmmouse_sys_check",
+    "vmhgfs_sys_check",
+    "sbiedll_sandboxie_check",
+    "dbghelp_detection",
+    "cpuid_hypervisor_bit"
+  ],
+  "behavior": {
+    "stage1": "Anti-debug + anti-VM checks — exit if analysis environment detected",
+    "stage2": "Kill-switch domain check (example.com) — exit if domain is live",
+    "stage3": "Single-instance mutex (Global\\MsWinZonesCacheCounterMutexA)",
+    "stage4": "Install persistence as Windows service 'mssecsvc2.0'",
+    "stage5": "Drop ransom note (@Please_Read_Me@.txt) on Desktop and Documents",
+    "stage6": "Encrypt target files in %PUBLIC%\\Documents\\synthetic_target with AES-128",
+    "stage7": "Rename encrypted files with .WNCRY extension, set hidden attribute",
+    "stage8": "SMB worm propagation — scan 192.0.2.0/24 for port 445",
+    "stage9": "C2 beacon to 192.0.2.100:8443 with system info",
+    "stage10": "Stay resident for 60 seconds"
+  },
+  "worm_propagation": {
+    "method": "SMB port 445 scan",
+    "target_range": "192.0.2.0/24 (TEST-NET, synthetic)",
+    "timeout": "2000ms per connection",
+    "rate_limit": "100ms between attempts"
+  },
+  "confidence": 0.88,
+  "difficulty": 23,
+  "description": "WannaCry-inspired ransomware worm (bonus level). Demonstrates AES-128 file encryption with embedded RSA-2048 key blob, kill-switch domain check (example.com), single-instance mutex (Global\\MsWinZonesCacheCounterMutexA), Windows service persistence as 'mssecsvc2.0', ransom note drop, recursive file encryption targeting 30+ extensions in a synthetic directory, SMB worm propagation scanning TEST-NET addresses on port 445, and C2 beaconing to 192.0.2.100:8443. Multi-layer anti-analysis: IsDebuggerPresent, PEB.BeingDebugged, NtQueryInformationProcess ProcessDebugPort, VM driver detection (vmmouse.sys, vmhgfs.sys), Sandboxie DLL check, and CPUID hypervisor bit. XOR-obfuscated C2 IP and ransom note path (8-byte key DEADBEEF1337CAFE). Synthetic/safe: targets only %PUBLIC%\\Documents\\synthetic_target, uses TEST-NET RFC 5737 addresses, kill-switch domain is example.com, BTC address is the real genesis address (no wallet)."
+}

@@ -63,7 +63,7 @@ BONUS_WEIGHTS = {
 HALLUCINATION_PENALTY = 0.05   # per extra technique claim
 BONUS_HALLUCINATION_PENALTY = 0.03   # lighter per-claim (more techniques)
 
-BONUS_SAMPLE_PATTERN = re.compile(r"level13", re.IGNORECASE)
+BONUS_SAMPLE_PATTERN = re.compile(r"level(?:13|23)", re.IGNORECASE)
 
 
 # ===================================================================
@@ -133,7 +133,7 @@ def score_fuzzy_string(gt_val, agent_val):
 
 
 def is_bonus(ground_truth, gt_path=""):
-    """Detect whether a sample is the level-13 bonus."""
+    """Detect whether a sample is a bonus level (13 or 23)."""
     name = ground_truth.get("sample", "") or Path(gt_path).stem
     return bool(BONUS_SAMPLE_PATTERN.search(name))
 
@@ -197,7 +197,7 @@ def score_standard(gt, agent):
 
 
 # ===================================================================
-# Bonus scoring (level 13) — 1.0 point rubric
+# Bonus scoring (levels 13, 23, etc.) — 1.0 point rubric
 # ===================================================================
 def _get_nested(d, *keys, default=None):
     """Safely traverse nested dicts."""
@@ -412,7 +412,7 @@ def print_summary(results):
     bonus_score = 0.0
     if bonus:
         print("\n" + "=" * 76)
-        print("  BONUS LEVEL (13)   granular rubric → 1.0 pt max")
+        print("  BONUS LEVEL          granular rubric → 1.0 pt max")
         print("=" * 76)
         for r in bonus:
             print(f"  Sample: {r['sample']}")

@@ -1,0 +1,52 @@
+{
+  "sample": "windows_level17_ProcessHollowing",
+  "file_type": "PE64",
+  "encoded_strings": true,
+  "decoded_c2": null,
+  "c2_ip": null,
+  "c2_port": null,
+  "c2_protocol": null,
+  "techniques": [
+    "process_hollowing",
+    "xor_encryption",
+    "rc4_encryption",
+    "ntunmapviewofsection",
+    "ntqueryinformationprocess_antidebug",
+    "suspended_process_creation",
+    "peb_parsing",
+    "virtualallocex",
+    "writeprocessmemory",
+    "setthreadcontext",
+    "resumethread",
+    "getthreadcontext"
+  ],
+  "encryption_details": {
+    "outer": {
+      "algorithm": "XOR",
+      "key": [222, 173, 190, 239, 19, 55, 202, 254, 186, 190],
+      "key_hex": "DEADBEEF1337CAFEBABE",
+      "key_length": 10
+    },
+    "inner": {
+      "algorithm": "RC4",
+      "key": [72, 111, 108, 108, 111, 119, 105, 110, 103, 95, 80, 69, 33, 33, 33, 33],
+      "key_string": "Hollowing_PE!!!!",
+      "key_length": 16
+    }
+  },
+  "anti_analysis": [
+    "ntqueryinformationprocess_processdebugport",
+    "ntqueryinformationprocess_processdebugflags"
+  ],
+  "hollowing_details": {
+    "target_process": "C:\\Windows\\System32\\svchost.exe",
+    "creation_flags": "CREATE_SUSPENDED",
+    "unmap_method": "NtUnmapViewOfSection",
+    "image_base_discovery": "NtQueryInformationProcess (ProcessBasicInformation) + PEB read",
+    "pe_stub_size": 64,
+    "entry_point_control": "SetThreadContext (Rcx for x64)"
+  },
+  "confidence": 0.95,
+  "difficulty": 17,
+  "description": "Process hollowing with dual-layer encryption (XOR outer + RC4 inner). Creates svchost.exe in suspended state, reads PEB for image base via NtQueryInformationProcess + NtReadVirtualMemory, unmaps original PE via NtUnmapViewOfSection, allocates replacement memory at image base via VirtualAllocEx (with fallback to any address), writes decrypted PE stub, sets thread context entry point via SetThreadContext, and resumes the hollowed process. Anti-debugging checks both ProcessDebugPort (class 7) and ProcessDebugFlags (class 31). Synthetic/safe — hollows svchost.exe with a harmless 64-byte PE stub."
+}

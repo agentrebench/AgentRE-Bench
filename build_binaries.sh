@@ -19,13 +19,36 @@ CFLAGS="-O0 -fno-stack-protector -no-pie -z execstack -static"
 
 mkdir -p "$BINARIES_DIR"
 
-# Detect build mode: local gcc or Docker
+# Detect build mode: local gcc, cross-compiler, or Docker
 USE_DOCKER=true
-if command -v gcc &>/dev/null && [[ "$(uname -s)" == "Linux" ]] && [[ "$(uname -m)" == "x86_64" ]]; then
-    USE_DOCKER=false
-elif ! command -v docker &>/dev/null; then
-    echo "Error: Neither local gcc (on Linux x86-64) nor docker found."
-    echo "Install gcc (apt install gcc) or Docker to build binaries."
+CROSS_CC=""
+HOST_ARCH="$(uname -m)"
+
+if [[ "$(uname -s)" == "Linux" ]]; then
+    if [[ "$HOST_ARCH" == "x86_64" ]] && command -v gcc &>/dev/null; then
+        # Native x86-64 Linux — use local gcc directly
+        USE_DOCKER=false
+        CROSS_CC="gcc"
+    elif [[ "$HOST_ARCH" == "aarch64" ]] && command -v x86_64-linux-gnu-gcc &>/dev/null; then
+        # ARM64 Linux with cross-compiler installed
+        USE_DOCKER=false
+        CROSS_CC="x86_64-linux-gnu-gcc"
+    fi
+fi
+
+if [ "$USE_DOCKER" = true ] && ! command -v docker &>/dev/null; then
+    echo "Error: No suitable compiler found for building x86-64 ELF binaries."
+    echo ""
+    echo "  Host architecture: $HOST_ARCH"
+    echo ""
+    echo "Options:"
+    if [[ "$HOST_ARCH" == "aarch64" ]]; then
+        echo "  1. Install cross-compiler:  sudo apt install gcc-x86-64-linux-gnu"
+        echo "  2. Install Docker and QEMU: sudo apt install docker.io qemu-user-static"
+    else
+        echo "  1. Install gcc:    apt install gcc"
+        echo "  2. Install Docker: apt install docker.io"
+    fi
     exit 1
 fi
 
@@ -34,9 +57,12 @@ echo "Samples dir:  $SAMPLES_DIR"
 echo "Output dir:   $BINARIES_DIR"
 if [ "$USE_DOCKER" = true ]; then
     echo "Build mode:   Docker ($DOCKER_IMAGE)"
+    echo "Host arch:    $HOST_ARCH"
     docker pull "$DOCKER_IMAGE" 2>/dev/null || true
 else
-    echo "Build mode:   Local gcc ($(gcc --version | head -1))"
+    echo "Build mode:   Local ($CROSS_CC)"
+    echo "Host arch:    $HOST_ARCH"
+    echo "Compiler:     $($CROSS_CC --version | head -1)"
 fi
 echo ""
 
@@ -80,8 +106,8 @@ for SRC in "$SAMPLES_DIR"/*.c; do
             FAIL=$((FAIL + 1))
         fi
     else
-        # Local gcc build (Linux x86-64)
-        if gcc $BUILD_CFLAGS $EXTRA_FLAGS -o "$BINARIES_DIR/$OUTNAME" "$SRC" -lm 2>&1; then
+        # Local build (native or cross-compiler)
+        if $CROSS_CC $BUILD_CFLAGS $EXTRA_FLAGS -o "$BINARIES_DIR/$OUTNAME" "$SRC" -lm 2>&1; then
             echo "OK"
             SUCCESS=$((SUCCESS + 1))
         else

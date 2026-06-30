@@ -1,0 +1,46 @@
+{
+  "sample": "windows_level19_ReflectiveDLLInjection",
+  "file_type": "PE64",
+  "encoded_strings": true,
+  "decoded_c2": null,
+  "c2_ip": null,
+  "c2_port": null,
+  "c2_protocol": null,
+  "techniques": [
+    "reflective_dll_injection",
+    "aes128_encryption",
+    "manual_pe_parsing",
+    "import_table_resolution",
+    "base_relocation_fixup",
+    "export_table_parsing",
+    "peb_antidebug",
+    "virtualalloc_rwx",
+    "dllmain_invocation",
+    "section_mapping"
+  ],
+  "encryption_details": {
+    "algorithm": "AES-128 (simplified S-box only, 10 rounds)",
+    "key": [82, 102, 108, 51, 99, 116, 33, 118, 51, 95, 68, 76, 76, 95, 107, 51],
+    "key_string": "Rfl3ct!v3_DLL_k3",
+    "key_length": 16,
+    "encrypted_data": "DLL stub (32 bytes)"
+  },
+  "reflective_loader_details": {
+    "steps": [
+      "parse DOS/NT headers via e_lfanew",
+      "allocate virtual memory (preferring ImageBase)",
+      "copy PE headers",
+      "map sections from raw data to virtual addresses",
+      "process base relocations (IMAGE_REL_BASED_DIR64)",
+      "walk IAT to resolve imports via LoadLibraryA + GetProcAddress",
+      "find DllMain in export table by name",
+      "invoke DllMain with DLL_PROCESS_ATTACH"
+    ]
+  },
+  "anti_analysis": [
+    "peb_beingdebugged_check"
+  ],
+  "confidence": 0.90,
+  "difficulty": 19,
+  "description": "Reflective DLL injection with manual PE loading. AES-128 encrypted DLL stub (key: 'Rfl3ct!v3_DLL_k3'). Parses PE headers manually (DOS signature, e_lfanew, NT signature), maps sections, fixes base relocations for IMAGE_REL_BASED_DIR64 entries, resolves imports by walking the IAT and calling LoadLibraryA/GetProcAddress for each module, locates DllMain in the export table, and invokes it with DLL_PROCESS_ATTACH. Anti-debug via direct PEB.BeingDebugged check. Synthetic/safe — loads a harmless 32-byte DLL stub."
+}

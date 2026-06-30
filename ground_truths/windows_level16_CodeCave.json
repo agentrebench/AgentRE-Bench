@@ -1,0 +1,53 @@
+{
+  "sample": "windows_level16_CodeCave",
+  "file_type": "PE64",
+  "encoded_strings": true,
+  "decoded_c2": null,
+  "c2_ip": null,
+  "c2_port": null,
+  "c2_protocol": null,
+  "techniques": [
+    "xor_encryption",
+    "aes128_encryption",
+    "code_cave_injection",
+    "pe_section_parsing",
+    "virtualprotect_rwx",
+    "createremotethread",
+    "ntcreatethreadex",
+    "antivm_cpuid",
+    "sbox_substitution",
+    "pe_header_parsing"
+  ],
+  "encryption_details": {
+    "primary": {
+      "algorithm": "XOR",
+      "key": [195, 122, 159, 46, 85, 139, 29, 108, 228, 49, 168, 79],
+      "key_hex": "C37A9F2E558B1D6CE431A84F",
+      "key_length": 12,
+      "encrypted_data": "shellcode (48 bytes)"
+    },
+    "secondary": {
+      "algorithm": "AES-128 (simplified S-box only)",
+      "key": [52, 120, 100, 109, 49, 110, 95, 83, 51, 99, 114, 51, 116, 33, 33, 33],
+      "key_string": "0x4dm1n_S3cr3t!!",
+      "key_length": 16,
+      "rounds": 10
+    }
+  },
+  "anti_analysis": [
+    "cpuid_hypervisor_bit"
+  ],
+  "anti_vm": {
+    "method": "CPUID leaf 0x1 ECX bit 31 (hypervisor present)",
+    "evasion_action": "Sleep(30000) to waste sandbox time"
+  },
+  "injection_details": {
+    "method": "Code cave in .text section",
+    "cave_discovery": "PE section parsing + scan for 0xCC/0x00 padding",
+    "memory_protection": "VirtualProtectEx to PAGE_EXECUTE_READWRITE then PAGE_EXECUTE_READ",
+    "execution": "CreateRemoteThread with NtCreateThreadEx fallback"
+  },
+  "confidence": 0.93,
+  "difficulty": 16,
+  "description": "Code cave injection with dual encryption (XOR shellcode + AES-128 block). Parses PE headers to locate executable sections, scans for code caves (consecutive 0xCC or 0x00 padding bytes). Uses VirtualProtectEx to make the cave RWX, writes shellcode, restores to RX. Executes via CreateRemoteThread with NtCreateThreadEx fallback. Anti-VM via CPUID hypervisor bit check — sleeps 30s if VM detected. Synthetic/safe — injects into self with harmless payload."
+}

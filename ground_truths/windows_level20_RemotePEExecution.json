@@ -1,0 +1,45 @@
+{
+  "sample": "windows_level20_RemotePEExecution",
+  "file_type": "PE64",
+  "encoded_strings": true,
+  "decoded_c2": null,
+  "c2_ip": null,
+  "c2_port": null,
+  "c2_protocol": null,
+  "techniques": [
+    "remote_pe_execution",
+    "rc4_encryption",
+    "ntwritevirtualmemory",
+    "pe_section_mapping",
+    "base_relocation_fixup_remote",
+    "pe_header_parsing",
+    "createremotethread",
+    "anti_sandbox_dll_check",
+    "process_enumeration",
+    "virtualallocex",
+    "readprocessmemory"
+  ],
+  "encryption_details": {
+    "algorithm": "RC4",
+    "key": [82, 51, 109, 48, 116, 51, 95, 80, 69, 95, 51, 120, 51, 99, 95, 75],
+    "key_string": "R3m0t3_PE_3x3c_K3y",
+    "key_length": 16,
+    "encrypted_data": "PE payload stub (64 bytes)"
+  },
+  "anti_analysis": [
+    "sbiedll_detection",
+    "dbghelp_detection"
+  ],
+  "injection_details": {
+    "method": "Remote PE mapping + CreateRemoteThread",
+    "target_process": "explorer.exe",
+    "target_discovery": "CreateToolhelp32Snapshot",
+    "pe_parsing": "DOS/NT header parsing for SizeOfImage and AddressOfEntryPoint",
+    "memory_write": "NtWriteVirtualMemory for headers and sections",
+    "relocation_method": "ReadProcessMemory + NtWriteVirtualMemory for remote DIR64 patches",
+    "execution": "CreateRemoteThread at entry point RVA"
+  },
+  "confidence": 0.88,
+  "difficulty": 20,
+  "description": "Remote PE execution mapping a PE payload into a remote process. RC4-encrypted PE (key: 'R3m0t3_PE_3x3c_K3y'). Parses PE headers to extract SizeOfImage and AddressOfEntryPoint. Opens target explorer.exe, allocates memory via VirtualAllocEx, writes PE headers and sections via NtWriteVirtualMemory. Fixes base relocations in the remote process using ReadProcessMemory to read original values and NtWriteVirtualMemory to apply delta patches for IMAGE_REL_BASED_DIR64. Creates remote thread at entry point. Anti-sandbox checks for sbiedll.dll (Sandboxie). Synthetic/safe — injects a harmless 64-byte PE stub."
+}

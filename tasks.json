@@ -90,6 +90,76 @@
       "binary_name": "level13_MetamorphicDropper",
       "ground_truth": "ground_truths/level13_MetamorphicDropper.json",
       "difficulty": 13
+    },
+    {
+      "task_id": "windows_level14_DLLInjection",
+      "source_file": "samples/windows_level14_DLLInjection.c",
+      "binary_name": "windows_level14_DLLInjection",
+      "ground_truth": "ground_truths/windows_level14_DLLInjection.json",
+      "difficulty": 14
+    },
+    {
+      "task_id": "windows_level15_APCInjection",
+      "source_file": "samples/windows_level15_APCInjection.c",
+      "binary_name": "windows_level15_APCInjection",
+      "ground_truth": "ground_truths/windows_level15_APCInjection.json",
+      "difficulty": 15
+    },
+    {
+      "task_id": "windows_level16_CodeCave",
+      "source_file": "samples/windows_level16_CodeCave.c",
+      "binary_name": "windows_level16_CodeCave",
+      "ground_truth": "ground_truths/windows_level16_CodeCave.json",
+      "difficulty": 16
+    },
+    {
+      "task_id": "windows_level17_ProcessHollowing",
+      "source_file": "samples/windows_level17_ProcessHollowing.c",
+      "binary_name": "windows_level17_ProcessHollowing",
+      "ground_truth": "ground_truths/windows_level17_ProcessHollowing.json",
+      "difficulty": 17
+    },
+    {
+      "task_id": "windows_level18_HellsGate",
+      "source_file": "samples/windows_level18_HellsGate.c",
+      "binary_name": "windows_level18_HellsGate",
+      "ground_truth": "ground_truths/windows_level18_HellsGate.json",
+      "difficulty": 18
+    },
+    {
+      "task_id": "windows_level19_ReflectiveDLLInjection",
+      "source_file": "samples/windows_level19_ReflectiveDLLInjection.c",
+      "binary_name": "windows_level19_ReflectiveDLLInjection",
+      "ground_truth": "ground_truths/windows_level19_ReflectiveDLLInjection.json",
+      "difficulty": 19
+    },
+    {
+      "task_id": "windows_level20_RemotePEExecution",
+      "source_file": "samples/windows_level20_RemotePEExecution.c",
+      "binary_name": "windows_level20_RemotePEExecution",
+      "ground_truth": "ground_truths/windows_level20_RemotePEExecution.json",
+      "difficulty": 20
+    },
+    {
+      "task_id": "windows_level21_GhostProcessHollowing",
+      "source_file": "samples/windows_level21_GhostProcessHollowing.c",
+      "binary_name": "windows_level21_GhostProcessHollowing",
+      "ground_truth": "ground_truths/windows_level21_GhostProcessHollowing.json",
+      "difficulty": 21
+    },
+    {
+      "task_id": "windows_level22_AESEncryptedMultiTechnique",
+      "source_file": "samples/windows_level22_AESEncryptedMultiTechnique.cpp",
+      "binary_name": "windows_level22_AESEncryptedMultiTechnique",
+      "ground_truth": "ground_truths/windows_level22_AESEncryptedMultiTechnique.json",
+      "difficulty": 22
+    },
+    {
+      "task_id": "windows_level23_WannaCryWorm",
+      "source_file": "samples/windows_level23_WannaCryWorm.c",
+      "binary_name": "windows_level23_WannaCryWorm",
+      "ground_truth": "ground_truths/windows_level23_WannaCryWorm.json",
+      "difficulty": 23
     }
   ]
 }

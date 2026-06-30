@@ -1,0 +1,43 @@
+{
+  "sample": "windows_level14_DLLInjection",
+  "file_type": "PE64",
+  "encoded_strings": true,
+  "decoded_c2": null,
+  "c2_ip": null,
+  "c2_port": null,
+  "c2_protocol": null,
+  "techniques": [
+    "xor_string_encryption",
+    "manual_getprocaddress",
+    "pe_export_parsing",
+    "peb_antidebug",
+    "dll_injection",
+    "createremotethread_injection",
+    "virtualallocex_write",
+    "writeprocessmemory",
+    "process_enumeration",
+    "loadlibrary_injection"
+  ],
+  "encryption_details": {
+    "algorithm": "XOR",
+    "key": [90, 60, 127, 225, 45, 148, 184, 106],
+    "key_hex": "5A3C7FE12D94B86A",
+    "key_length": 8,
+    "encrypted_data": "DLL path string"
+  },
+  "decoded_strings": {
+    "dll_path": "C:\\Windows\\Temp\\payload.dll"
+  },
+  "anti_analysis": [
+    "peb_beingdebugged_check"
+  ],
+  "injection_details": {
+    "method": "CreateRemoteThread + LoadLibraryA",
+    "target_process": "explorer.exe",
+    "target_discovery": "CreateToolhelp32Snapshot process enumeration",
+    "dll_path_allocation": "VirtualAllocEx + WriteProcessMemory"
+  },
+  "confidence": 0.95,
+  "difficulty": 14,
+  "description": "Classic DLL injection via CreateRemoteThread. XOR-encrypted DLL path (8-byte key) decrypts to C:\\Windows\\Temp\\payload.dll. Resolves WinAPI functions manually via PE export table parsing to avoid IAT entries. Anti-debugging via direct PEB.BeingDebugged check. Enumerates processes via CreateToolhelp32Snapshot, opens explorer.exe, allocates memory via VirtualAllocEx, writes DLL path, and creates remote thread pointing to LoadLibraryA. Synthetic/safe — targets explorer.exe with a non-existent payload DLL."
+}

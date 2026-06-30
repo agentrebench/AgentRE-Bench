@@ -1,0 +1,48 @@
+{
+  "sample": "windows_level21_GhostProcessHollowing",
+  "file_type": "PE64",
+  "encoded_strings": true,
+  "decoded_c2": null,
+  "c2_ip": null,
+  "c2_port": null,
+  "c2_protocol": null,
+  "techniques": [
+    "ghost_process_hollowing",
+    "xor_encryption",
+    "ntcreateprocess",
+    "manual_pe_mapping",
+    "setthreadcontext",
+    "ntcreatethreadex",
+    "ntqueryinformationprocess_antidebug",
+    "ntallocatevirtualmemory",
+    "ntwritevirtualmemory",
+    "ntresumethread",
+    "rtlcreateprocessparameters"
+  ],
+  "encryption_details": {
+    "algorithm": "XOR",
+    "key": [71, 104, 48, 115, 116, 80, 114, 48, 99, 51, 115, 115, 72, 48, 108, 108, 48, 119],
+    "key_string": "Gh0stPr0c3ssH0ll0w!",
+    "key_length": 18,
+    "encrypted_data": "synthetic payload (64 bytes)"
+  },
+  "ghost_process_details": {
+    "method": "NtCreateProcess without section object",
+    "nt_functions_used": [
+      "NtCreateProcess",
+      "NtAllocateVirtualMemory",
+      "NtWriteVirtualMemory",
+      "NtCreateThreadEx",
+      "NtQueryInformationProcess",
+      "NtResumeThread",
+      "RtlCreateProcessParameters"
+    ]
+  },
+  "anti_analysis": [
+    "ntqueryinformationprocess_processdebugport",
+    "ntqueryinformationprocess_processdebugflags"
+  ],
+  "confidence": 0.82,
+  "difficulty": 21,
+  "description": "Ghost process hollowing using NtCreateProcess without a section object. XOR-encrypted payload (key: 'Gh0stPr0c3ssH0ll0w!', 18 bytes). Creates an empty process via NtCreateProcess, manually maps a PE payload using NtAllocateVirtualMemory + NtWriteVirtualMemory, sets thread context entry point via SetThreadContext, and executes via NtCreateThreadEx. Includes NtResumeThread and RtlCreateProcessParameters for process initialization. Anti-debugging via NtQueryInformationProcess checking both ProcessDebugPort and ProcessDebugFlags. Synthetic/safe — uses a harmless 64-byte payload."
+}

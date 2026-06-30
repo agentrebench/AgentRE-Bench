@@ -22,8 +22,8 @@ import logging
 import sys
 from pathlib import Path
 
-from harness.config import BenchmarkConfig
-from harness.runner import run_benchmark
+from agentre_bench.harness.config import BenchmarkConfig
+from agentre_bench.harness.runner import run_benchmark
 
 
 def main():

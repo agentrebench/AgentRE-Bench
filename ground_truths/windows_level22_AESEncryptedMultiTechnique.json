@@ -1,0 +1,64 @@
+{
+  "sample": "windows_level22_AESEncryptedMultiTechnique",
+  "file_type": "PE64",
+  "encoded_strings": true,
+  "decoded_c2": null,
+  "c2_ip": null,
+  "c2_port": null,
+  "c2_protocol": null,
+  "techniques": [
+    "aes256_encryption",
+    "anti_debug_isdebuggerpresent",
+    "anti_debug_checkremotedebuggerpresent",
+    "anti_debug_ntqueryinformationprocess",
+    "anti_debug_threadhidefromdebugger",
+    "hells_gate_syscall_resolution",
+    "peb_walk_kernel32",
+    "tls_callback",
+    "createremotethread",
+    "virtualallocex",
+    "writeprocessmemory",
+    "cpp_class_obfuscation",
+    "virtual_method_dispatch"
+  ],
+  "encryption_details": {
+    "algorithm": "AES-256 (simplified S-box, 14 rounds)",
+    "key": [65, 69, 83, 45, 50, 53, 54, 45, 83, 51, 99, 117, 114, 51, 45, 75, 51, 121, 45, 70, 48, 114, 45, 77, 117, 108, 116, 49, 45, 84, 51, 99],
+    "key_string": "AES-256-S3cur3-K3y-F0r-Mult1-T3c",
+    "key_length": 32,
+    "rounds": 14,
+    "encrypted_data": "shellcode (96 bytes)"
+  },
+  "hells_gate_details": {
+    "stub_signature": [76, 139, 209, 184],
+    "resolved_syscalls": [
+      "NtAllocateVirtualMemory",
+      "NtWriteVirtualMemory",
+      "NtProtectVirtualMemory",
+      "NtCreateThreadEx"
+    ]
+  },
+  "anti_analysis": [
+    "isdebuggerpresent",
+    "checkremotedebuggerpresent",
+    "ntqueryinformationprocess_processdebugport",
+    "threadhidefromdebugger"
+  ],
+  "cpp_obfuscation": {
+    "classes": [
+      "CryptoProvider (abstract base)",
+      "AES256Provider (virtual encrypt/decrypt)",
+      "ProcessInjector (abstract base)",
+      "RemoteThreadInjector (virtual inject)"
+    ],
+    "technique": "virtual method dispatch through class hierarchy"
+  },
+  "tls_callback": {
+    "purpose": "early execution before WinMain",
+    "action": "ThreadHideFromDebugger via NtSetInformationThread",
+    "section": ".CRT$XLB"
+  },
+  "confidence": 0.85,
+  "difficulty": 22,
+  "description": "Multi-technique C++ sample combining AES-256 encryption, four anti-debug checks, Hell's Gate syscall resolution, PEB walk, and TLS callback. C++ class hierarchy: CryptoProvider/AES256Provider for crypto, ProcessInjector/RemoteThreadInjector for injection. Anti-debug: IsDebuggerPresent, CheckRemoteDebuggerPresent, NtQueryInformationProcess (ProcessDebugPort), and ThreadHideFromDebugger via NtSetInformationThread. TLS callback executes before WinMain to hide thread from debugger. PEB walk resolves kernel32.dll without GetModuleHandle. Hell's Gate resolves 4 syscalls from ntdll stubs. Synthetic/safe — injects decrypted shellcode into self."
+}

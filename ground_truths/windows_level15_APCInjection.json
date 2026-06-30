@@ -1,0 +1,42 @@
+{
+  "sample": "windows_level15_APCInjection",
+  "file_type": "PE64",
+  "encoded_strings": true,
+  "decoded_c2": null,
+  "c2_ip": null,
+  "c2_port": null,
+  "c2_protocol": null,
+  "techniques": [
+    "rc4_encryption",
+    "apc_injection",
+    "direct_nt_syscall",
+    "ntqueryinformationprocess_antidebug",
+    "thread_enumeration",
+    "ntallocatevirtualmemory",
+    "ntwritevirtualmemory",
+    "ntqueueapcthread",
+    "ntalertresumethread",
+    "suspended_thread_manipulation",
+    "rwx_memory_allocation"
+  ],
+  "encryption_details": {
+    "algorithm": "RC4",
+    "key": [74, 140, 31, 211, 103, 233, 43, 5, 202, 254, 119, 51, 157, 18, 94, 136],
+    "key_hex": "4A8C1FD367E92B05CAFE77339D125E88",
+    "key_length": 16,
+    "encrypted_data": "shellcode payload (48 bytes)"
+  },
+  "anti_analysis": [
+    "ntqueryinformationprocess_processdebugport"
+  ],
+  "injection_details": {
+    "method": "NtQueueApcThread + NtAlertResumeThread",
+    "target_process": "self (synthetic demo)",
+    "memory_allocation": "NtAllocateVirtualMemory (RWX)",
+    "shellcode_write": "NtWriteVirtualMemory",
+    "trigger": "NtAlertResumeThread after suspending thread"
+  },
+  "confidence": 0.95,
+  "difficulty": 15,
+  "description": "APC injection using direct NT syscalls from ntdll.dll. RC4-encrypted shellcode (16-byte key). Resolves NT functions via GetProcAddress on ntdll. Anti-debugging via NtQueryInformationProcess checking ProcessDebugPort (info class 7). Enumerates threads with CreateToolhelp32Snapshot, suspends a target thread, allocates RWX memory via NtAllocateVirtualMemory, writes decrypted shellcode via NtWriteVirtualMemory, queues APC via NtQueueApcThread, and triggers via NtAlertResumeThread. Synthetic/safe — targets self with harmless shellcode."
+}
