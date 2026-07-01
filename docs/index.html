@@ -572,7 +572,7 @@ footer a:hover { color: var(--primary); }
     <div class="section-label">Task Progression</div>
     <h2 class="section-headline">23 levels across Linux and Windows</h2>
     <p class="section-supporting">
-      From plaintext TCP shells to WannaCry-style ransomware. Click a platform tab, then use the number chips to jump straight to a level.
+      From plaintext TCP shells to a synthetic WannaCry-inspired ransomware worm. Click a platform tab, then use the number chips to jump straight to a level.
     </p>
 
     <!-- Platform Tabs -->
@@ -630,7 +630,7 @@ footer a:hover { color: var(--primary); }
     <!-- Windows Panel -->
     <div id="panel-windows" class="platform-panel hidden">
       <div class="banner">
-        <strong>10 Windows PE32+ levels</strong> &mdash; cross-compiled synthetic malware: DLL injection, process hollowing, Hell's Gate syscalls, reflective DLL loading, and a full WannaCry-style ransomware worm. <strong class="em">Source, ground truths, and binaries are ready. LLM evaluation coming soon.</strong>
+        <strong>10 Windows PE32+ levels</strong> &mdash; cross-compiled synthetic malware: DLL injection, process hollowing, Hell's Gate syscalls, reflective DLL loading, and a full synthetic WannaCry-inspired ransomware worm (reconstructed, not original code). <strong class="em">Source, ground truths, and binaries are ready. LLM evaluation coming soon.</strong>
       </div>
       <div class="chip-row">
         <span class="chip-label">Jump to level</span>
@@ -657,8 +657,8 @@ footer a:hover { color: var(--primary); }
             <tr id="win-level-19"><td class="level-num">19</td><td class="task-name">Reflective DLL Injection</td><td class="task-desc">Manual PE parsing, IAT walk, base relocation fixup, AES-128 encrypted DLL stub, DllMain via export resolution.</td><td><span class="badge badge-hard">Hard</span></td></tr>
             <tr id="win-level-20"><td class="level-num">20</td><td class="task-name">Remote PE Execution</td><td class="task-desc">PE payload mapped into remote process, NtWriteVirtualMemory, remote relocation, RC4, anti-sandbox DLL checks.</td><td><span class="badge badge-hard">Hard</span></td></tr>
             <tr id="win-level-21"><td class="level-num">21</td><td class="task-name">Ghost Process Hollowing</td><td class="task-desc">NtCreateProcess with no section object, manual PE mapping into empty process, NtCreateThreadEx, XOR payload.</td><td><span class="badge badge-hard">Hard</span></td></tr>
-            <tr id="win-level-22"><td class="level-num">22</td><td class="task-name">AES-256 Multi-Technique</td><td class="task-desc">C++ class hierarchy, AES-256 encrypted shellcode, TLS callback, PEB walk, 4 anti-debug checks, Hell's Gate.</td><td><span class="badge badge-vhard">Very Hard</span></td></tr>
-            <tr id="win-level-23"><td class="level-num">23</td><td class="task-name">WannaCry Worm <span class="badge badge-bonus" style="font-size:0.6rem;padding:2px 8px;">Bonus</span></td><td class="task-desc">AES-128 file encryption, embedded RSA-2048 key, kill-switch domain, SMB worm, service persistence, anti-VM, C2 beaconing &mdash; 21 techniques.</td><td><span class="badge badge-bonus">Bonus</span></td></tr>
+            <tr id="win-level-22"><td class="level-num">22</td><td class="task-name">Advanced Evasion Loader</td><td class="task-desc">C++ class hierarchy (CryptoProvider, ProcessInjector), AES-256 encrypted shellcode, TLS callback, PEB walk, 4 anti-debug checks, Hell's Gate syscalls, multi-stage implant.</td><td><span class="badge badge-vhard">Very Hard</span></td></tr>
+            <tr id="win-level-23"><td class="level-num">23</td><td class="task-name">WannaCry Worm <span class="badge badge-bonus" style="font-size:0.6rem;padding:2px 8px;">Synthetic</span></td><td class="task-desc">Synthetic reconstruction inspired by WannaCry. AES-128 file encryption, embedded RSA-2048 key, kill-switch domain, SMB worm propagation, service persistence, anti-VM, C2 beaconing &mdash; 21 techniques.</td><td><span class="badge badge-bonus">Bonus</span></td></tr>
           </tbody>
         </table>
       </div>
