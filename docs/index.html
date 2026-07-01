@@ -1,983 +1,855 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AgentRE-Bench — LLM Reverse Engineering Benchmark</title>
-<meta name="description" content="We gave frontier AI a stripped binary and a disassembler. No source code. No hints. 13 levels of malware to reverse engineer. Most models hallucinate more than they find.">
-
-<!-- Open Graph / Twitter Card -->
+<meta name="description" content="We gave frontier AI a stripped binary and a disassembler. No source code. No hints. 23 levels of malware to reverse engineer. Most models hallucinate more than they find.">
 <meta property="og:title" content="AgentRE-Bench">
-<meta property="og:description" content="We gave frontier AI a stripped binary and a disassembler. No source code. No hints. 13 levels of malware to reverse engineer. Most models hallucinate more than they find.">
+<meta property="og:description" content="We gave frontier AI a stripped binary and a disassembler. No source code. No hints. 23 levels to reverse engineer.">
 <meta property="og:image" content="https://www.agentre-bench.ai/logo.png">
 <meta property="og:url" content="https://www.agentre-bench.ai">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="AgentRE-Bench">
-<meta name="twitter:description" content="We gave frontier AI a stripped binary and a disassembler. No source code. No hints. 13 levels of malware to reverse engineer. Most models hallucinate more than they find.">
 <meta name="twitter:image" content="https://www.agentre-bench.ai/logo.png">
-
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <style>
+/* ══════════════════════════════════════════
+   Material Design 3 — AgentRE-Bench
+   Light + Dark via data-theme
+   ══════════════════════════════════════════ */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
+/* ── Theme Tokens ── */
 :root {
-  --bg: #0a0a12;
-  --surface: #111119;
-  --surface-alt: #16161f;
-  --border: #1e1e2a;
-  --text: #e0e0e8;
-  --text-dim: #8888a0;
-  --accent: #00d4aa;
-  --accent-dim: rgba(0, 212, 170, 0.12);
-  --indigo: #6366f1;
-  --indigo-dim: rgba(99, 102, 241, 0.12);
-  --red: #ef4444;
-  --orange: #f59e0b;
-  --yellow: #eab308;
-  --green: #22c55e;
-  --cyan: #06b6d4;
-  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --mono: "SF Mono", "Cascadia Code", "Fira Code", Consolas, monospace;
+  --md-sys-color-primary: #009688;
+  --md-sys-color-on-primary: #ffffff;
+  --md-sys-color-primary-container: #b2dfdb;
+  --md-sys-color-on-primary-container: #00332e;
+  --md-sys-color-secondary: #5c6bc0;
+  --md-sys-color-on-secondary: #ffffff;
+  --md-sys-color-secondary-container: #c5cae9;
+  --md-sys-color-on-secondary-container: #1a237e;
+  --md-sys-color-tertiary: #ef6c00;
+  --md-sys-color-error: #d32f2f;
+  --md-sys-color-error-container: #ffcdd2;
+  --md-ref-typeface-brand: "Google Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --md-ref-typeface-plain: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --md-ref-typeface-mono: "Roboto Mono", "SF Mono", "Cascadia Code", "Fira Code", Consolas, monospace;
 }
 
-html { scroll-behavior: smooth; }
+/* ── Dark Theme (default) ── */
+[data-theme="dark"] {
+  --bg: #121212;
+  --surface: #1e1e2e;
+  --surface-variant: #2a2a3c;
+  --surface-container: #252538;
+  --on-surface: #e6e1e5;
+  --on-surface-variant: #cac4d0;
+  --on-surface-dim: #9a94a0;
+  --outline: #49454f;
+  --outline-variant: #3b383e;
+  --primary: #4db6ac;
+  --on-primary: #00332e;
+  --primary-container: #005048;
+  --on-primary-container: #b2dfdb;
+  --secondary: #9fa8da;
+  --on-secondary: #1a237e;
+  --secondary-container: #3949ab;
+  --on-secondary-container: #c5cae9;
+  --tertiary: #ffab40;
+  --error: #ef5350;
+  --shadow-color: rgba(0,0,0,0.4);
+  --elevation-1: 0 1px 2px rgba(0,0,0,0.3), 0 1px 3px 1px rgba(0,0,0,0.15);
+  --elevation-2: 0 1px 2px rgba(0,0,0,0.3), 0 2px 6px 2px rgba(0,0,0,0.15);
+  --elevation-3: 0 1px 3px rgba(0,0,0,0.3), 0 4px 8px 3px rgba(0,0,0,0.15);
+  --diff-trivial-bg: rgba(129,199,132,0.15); --diff-trivial-fg: #81c784;
+  --diff-easy-bg:    rgba(77,208,225,0.15); --diff-easy-fg:    #4dd0e1;
+  --diff-medium-bg:  rgba(255,213,79,0.15); --diff-medium-fg:  #ffd54f;
+  --diff-hard-bg:    rgba(255,171,64,0.15); --diff-hard-fg:    #ffab40;
+  --diff-vhard-bg:   rgba(239,83,80,0.15); --diff-vhard-fg:   #ef5350;
+  --diff-bonus-bg:   rgba(159,168,218,0.15); --diff-bonus-fg:   #9fa8da;
+  --chip-bg: #2a2a3c;
+  --logo-filter: drop-shadow(0 4px 20px rgba(77,182,172,0.15));
+}
+
+/* ── Light Theme ── */
+[data-theme="light"] {
+  --bg: #fafafa;
+  --surface: #ffffff;
+  --surface-variant: #f5f5f5;
+  --surface-container: #f0f0f5;
+  --on-surface: #1c1b1f;
+  --on-surface-variant: #49454f;
+  --on-surface-dim: #787579;
+  --outline: #79747e;
+  --outline-variant: #cac4d0;
+  --primary: #00897b;
+  --on-primary: #ffffff;
+  --primary-container: #b2dfdb;
+  --on-primary-container: #00332e;
+  --secondary: #5c6bc0;
+  --on-secondary: #ffffff;
+  --secondary-container: #c5cae9;
+  --on-secondary-container: #1a237e;
+  --tertiary: #ef6c00;
+  --error: #c62828;
+  --shadow-color: rgba(0,0,0,0.08);
+  --elevation-1: 0 1px 2px rgba(0,0,0,0.08), 0 1px 3px 1px rgba(0,0,0,0.05);
+  --elevation-2: 0 1px 2px rgba(0,0,0,0.08), 0 2px 6px 2px rgba(0,0,0,0.05);
+  --elevation-3: 0 1px 3px rgba(0,0,0,0.08), 0 4px 8px 3px rgba(0,0,0,0.05);
+  --diff-trivial-bg: rgba(76,175,80,0.12);  --diff-trivial-fg: #2e7d32;
+  --diff-easy-bg:    rgba(0,188,212,0.12);  --diff-easy-fg:    #00838f;
+  --diff-medium-bg:  rgba(255,193,7,0.12);  --diff-medium-fg:  #f57f17;
+  --diff-hard-bg:    rgba(255,152,0,0.12);  --diff-hard-fg:    #e65100;
+  --diff-vhard-bg:   rgba(244,67,54,0.12);  --diff-vhard-fg:   #c62828;
+  --diff-bonus-bg:   rgba(92,107,192,0.12); --diff-bonus-fg:   #283593;
+  --chip-bg: #f0f0f5;
+  --logo-filter: drop-shadow(0 4px 16px rgba(0,137,123,0.2));
+}
+
+/* ── Base ── */
+html { scroll-behavior: smooth; scroll-padding-top: 64px; }
 body {
-  font-family: var(--font);
+  font-family: var(--md-ref-typeface-plain);
   background: var(--bg);
-  color: var(--text);
-  line-height: 1.6;
+  color: var(--on-surface);
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  transition: background 0.3s, color 0.3s;
 }
+.container { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
+a { color: var(--primary); text-decoration: none; transition: color 0.15s; }
+a:hover { color: var(--secondary); }
 
-.container {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 0 24px;
+/* ── Top App Bar ── */
+.top-bar {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--surface);
+  box-shadow: var(--elevation-1);
+  border-bottom: 1px solid var(--outline-variant);
+  transition: background 0.3s, box-shadow 0.3s;
 }
+.top-bar .container {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 56px; gap: 8px;
+}
+.top-bar-brand {
+  font-family: var(--md-ref-typeface-brand);
+  font-weight: 600; font-size: 1.05rem; color: var(--on-surface);
+  white-space: nowrap; letter-spacing: -0.01em;
+}
+.top-bar-brand .accent { color: var(--primary); }
+.top-bar-nav {
+  display: flex; align-items: center; gap: 2px; flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.top-bar-nav a {
+  font-size: 0.78rem; font-weight: 500; color: var(--on-surface-variant);
+  padding: 6px 12px; border-radius: 100px; transition: all 0.15s; white-space: nowrap;
+  font-family: var(--md-ref-typeface-brand);
+}
+.top-bar-nav a:hover { background: var(--surface-variant); color: var(--on-surface); }
+.top-bar-nav .nav-cta {
+  background: var(--primary); color: var(--on-primary); font-weight: 600;
+  padding: 6px 14px; border-radius: 100px; font-size: 0.78rem;
+}
+.top-bar-nav .nav-cta:hover { background: var(--primary-container); color: var(--on-primary-container); }
 
-a { color: var(--accent); text-decoration: none; transition: opacity 0.15s; }
-a:hover { opacity: 0.8; }
+/* Theme Toggle */
+.theme-toggle {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: none; background: transparent; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--on-surface-variant); font-size: 1.1rem;
+  transition: background 0.15s; flex-shrink: 0;
+}
+.theme-toggle:hover { background: var(--surface-variant); }
+
+@media (max-width: 700px) {
+  .top-bar-nav a { padding: 4px 8px; font-size: 0.7rem; }
+  .top-bar-nav .nav-cta { padding: 4px 10px; }
+}
 
 /* ── Hero ── */
-.hero {
-  padding: 80px 0 80px;
-}
-.hero .container {
-  display: flex;
-  align-items: flex-start;
-  gap: 40px;
-}
-.hero-text {
-  flex: 1;
-  text-align: center;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px;
-}
-.hero-text h1 { margin-bottom: 0; }
-.hero-text .subtitle { margin-bottom: 0; }
-.hero-text .pitch { margin: 0 auto; }
-.hero-text .hero-label { margin-top: 8px; }
-.hero-buttons {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-.hero-buttons .btn { margin: 0; }
+.hero { padding: 48px 0 40px; }
+.hero .container { display: flex; align-items: flex-start; gap: 28px; }
 .hero-logo {
-  width: 180px;
-  height: 180px;
-  flex-shrink: 0;
-  margin-top: -16px;
-  margin-left: -32px;
-  filter: drop-shadow(0 0 40px rgba(0, 212, 170, 0.15));
+  width: 120px; height: 120px; flex-shrink: 0;
+  filter: var(--logo-filter); transition: filter 0.3s;
 }
-@media (max-width: 520px) {
-  .hero .container { flex-direction: column; gap: 24px; align-items: center; }
-  .hero-logo { width: 130px; height: 130px; margin: 0; }
-}
-.hero-label {
+.hero-text { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px; }
+.hero-chip {
   display: inline-block;
-  font-family: var(--mono);
-  font-size: 13px;
-  letter-spacing: 0.08em;
-  color: var(--accent);
-  background: var(--accent-dim);
-  border: 1px solid rgba(0, 212, 170, 0.2);
-  border-radius: 100px;
-  padding: 6px 16px;
-  margin-bottom: 24px;
-  text-transform: uppercase;
+  font-family: var(--md-ref-typeface-mono);
+  font-size: 11px; font-weight: 500; letter-spacing: 0.06em;
+  color: var(--primary); background: var(--primary-container);
+  border-radius: 8px; padding: 5px 14px; text-transform: uppercase;
 }
 .hero h1 {
-  font-size: clamp(2.4rem, 6vw, 3.6rem);
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1.1;
-  margin-bottom: 12px;
+  font-family: var(--md-ref-typeface-brand);
+  font-size: clamp(2rem, 5vw, 2.8rem); font-weight: 700;
+  letter-spacing: -0.02em; line-height: 1.05;
 }
-.hero h1 .accent { color: var(--accent); }
+.hero h1 .accent { color: var(--primary); }
 .hero .subtitle {
-  font-size: clamp(1.1rem, 2.5vw, 1.35rem);
-  color: var(--text-dim);
-  font-weight: 400;
-  margin-bottom: 28px;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
+  font-size: clamp(0.9rem, 1.6vw, 1.05rem);
+  color: var(--on-surface-variant); max-width: 520px;
 }
-.hero .pitch {
-  font-size: 1rem;
-  color: var(--text-dim);
-  max-width: 640px;
-  margin: 0 auto 36px;
-  line-height: 1.7;
-}
+.hero .pitch { font-size: 0.88rem; color: var(--on-surface-dim); max-width: 560px; line-height: 1.55; }
+.hero-actions { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
+
+/* ── Buttons (Material) ── */
 .btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 28px;
-  border-radius: 8px;
-  font-size: 15px;
-  font-weight: 600;
-  transition: transform 0.15s, box-shadow 0.15s;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 10px 24px; border-radius: 100px;
+  font-family: var(--md-ref-typeface-brand);
+  font-size: 0.85rem; font-weight: 600; letter-spacing: 0.01em;
+  border: none; cursor: pointer;
+  transition: box-shadow 0.2s, background 0.2s, transform 0.12s;
+  text-transform: none;
 }
-.btn:hover { transform: translateY(-1px); opacity: 1; }
-.btn-primary {
-  background: var(--accent);
-  color: #0a0a12;
+.btn:hover { transform: translateY(-1px); }
+.btn-filled {
+  background: var(--primary); color: var(--on-primary);
+  box-shadow: var(--elevation-1);
 }
-.btn-primary:hover { box-shadow: 0 4px 20px rgba(0, 212, 170, 0.3); }
-.btn-outline {
-  border: 1px solid var(--border);
-  color: var(--text);
-  background: var(--surface);
-  margin-left: 12px;
+.btn-filled:hover { box-shadow: var(--elevation-2); }
+.btn-tonal {
+  background: var(--secondary-container); color: var(--on-secondary-container);
 }
-.btn-outline:hover { border-color: var(--accent); }
+.btn-tonal:hover { box-shadow: var(--elevation-1); }
+.btn-outlined {
+  background: transparent; color: var(--primary);
+  border: 1px solid var(--outline);
+}
+.btn-outlined:hover { background: var(--primary-container); border-color: var(--primary); }
+.gh-icon { width: 16px; height: 16px; fill: currentColor; }
 
-.gh-icon {
-  width: 18px;
-  height: 18px;
-  fill: currentColor;
+/* ── Section ── */
+section { padding: 48px 0; }
+.section-label {
+  font-family: var(--md-ref-typeface-mono);
+  font-size: 11px; font-weight: 500; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--primary); margin-bottom: 8px;
 }
-
-/* ── Section Shared ── */
-section { padding: 72px 0; }
-.section-tag {
-  font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--indigo);
-  margin-bottom: 12px;
+.section-headline {
+  font-family: var(--md-ref-typeface-brand);
+  font-size: clamp(1.25rem, 2.5vw, 1.55rem);
+  font-weight: 600; letter-spacing: -0.01em; margin-bottom: 8px;
+  color: var(--on-surface);
 }
-.section-title {
-  font-size: clamp(1.5rem, 3.5vw, 2rem);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  margin-bottom: 12px;
-}
-.section-desc {
-  color: var(--text-dim);
-  max-width: 640px;
-  margin-bottom: 40px;
-  font-size: 1rem;
-  line-height: 1.7;
+.section-supporting {
+  color: var(--on-surface-dim); max-width: 600px; margin-bottom: 28px;
+  font-size: 0.88rem; line-height: 1.55;
 }
 
-/* ── Why Cards ── */
-.card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 16px;
-}
+/* ── Cards ── */
+.card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
 .card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 28px 24px;
-  transition: border-color 0.2s;
+  background: var(--surface-container);
+  border-radius: 16px; padding: 24px 20px;
+  box-shadow: var(--elevation-1);
+  transition: box-shadow 0.2s, background 0.3s;
+  border: none;
 }
-.card:hover { border-color: var(--accent); }
+.card:hover { box-shadow: var(--elevation-2); }
 .card-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  margin-bottom: 16px;
+  width: 40px; height: 40px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; margin-bottom: 12px;
 }
 .card h3 {
-  font-size: 1rem;
-  font-weight: 600;
-  margin-bottom: 8px;
+  font-family: var(--md-ref-typeface-brand);
+  font-size: 0.9rem; font-weight: 600; margin-bottom: 4px;
+  color: var(--on-surface);
 }
-.card p {
-  font-size: 0.88rem;
-  color: var(--text-dim);
-  line-height: 1.6;
-}
+.card p { font-size: 0.8rem; color: var(--on-surface-dim); line-height: 1.5; }
 
-/* ── Task Table ── */
-.table-wrap {
-  overflow-x: auto;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background: var(--surface);
+/* ── Tabs ── */
+.tab-bar { display: flex; gap: 0; margin-bottom: 20px; border-bottom: 2px solid var(--outline-variant); }
+.tab-btn {
+  padding: 10px 24px; font-family: var(--md-ref-typeface-brand);
+  font-size: 0.84rem; font-weight: 600;
+  border: none; background: transparent; color: var(--on-surface-variant);
+  cursor: pointer; transition: all 0.15s; position: relative;
+  display: flex; align-items: center; gap: 8px;
+  border-bottom: 2px solid transparent; margin-bottom: -2px;
 }
-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.88rem;
-}
-thead th {
-  text-align: left;
-  padding: 14px 16px;
-  font-weight: 600;
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--text-dim);
-  border-bottom: 1px solid var(--border);
-  background: var(--surface-alt);
-  white-space: nowrap;
-}
-thead th:first-child { border-radius: 12px 0 0 0; }
-thead th:last-child { border-radius: 0 12px 0 0; }
-tbody td {
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--border);
-  vertical-align: top;
-}
-tbody tr:last-child td { border-bottom: none; }
-tbody tr:hover { background: var(--surface-alt); }
-.level-num {
-  font-family: var(--mono);
-  font-weight: 600;
-  color: var(--accent);
-}
-.diff-badge {
-  display: inline-block;
-  font-size: 0.75rem;
-  font-weight: 600;
-  padding: 2px 10px;
+.tab-btn:hover { color: var(--on-surface); background: rgba(128,128,128,0.06); }
+.tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
+.tab-badge {
+  font-family: var(--md-ref-typeface-mono);
+  font-size: 0.62rem; font-weight: 600; padding: 2px 8px;
   border-radius: 100px;
-  white-space: nowrap;
+  background: var(--secondary-container); color: var(--on-secondary-container);
 }
-.diff-trivial { background: rgba(34, 197, 94, 0.15); color: var(--green); }
-.diff-easy    { background: rgba(6, 182, 212, 0.15); color: var(--cyan); }
-.diff-medium  { background: rgba(234, 179, 8, 0.15); color: var(--yellow); }
-.diff-hard    { background: rgba(245, 158, 11, 0.15); color: var(--orange); }
-.diff-vhard   { background: rgba(239, 68, 68, 0.15); color: var(--red); }
-.diff-bonus   { background: rgba(99, 102, 241, 0.15); color: var(--indigo); }
+.tab-btn.active .tab-badge { background: var(--primary-container); color: var(--on-primary-container); }
+
+/* ── Chips (Level Jump) ── */
+.chip-row { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 16px; align-items: center; }
+.chip-label {
+  font-size: 0.72rem; font-weight: 500; color: var(--on-surface-dim);
+  margin-right: 6px; text-transform: uppercase; letter-spacing: 0.04em;
+  font-family: var(--md-ref-typeface-brand);
+}
+.chip {
+  height: 32px; min-width: 32px; display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 8px; font-family: var(--md-ref-typeface-mono);
+  font-size: 0.72rem; font-weight: 600; padding: 0 10px;
+  border: 1px solid var(--outline); background: var(--chip-bg);
+  color: var(--on-surface-variant); cursor: pointer;
+  transition: all 0.12s; user-select: none;
+}
+.chip:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-container); }
+.chip.active { border-color: var(--primary); color: var(--on-primary-container); background: var(--primary-container); }
+.chip.bonus { border-color: var(--secondary); color: var(--secondary); }
+.chip.bonus:hover { background: var(--secondary-container); color: var(--on-secondary-container); }
+.chip.bonus.active { background: var(--secondary-container); color: var(--on-secondary-container); }
+
+/* ── Data Table ── */
+.table-wrap {
+  overflow-x: auto; border-radius: 16px;
+  box-shadow: var(--elevation-1); background: var(--surface);
+}
+table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+thead th {
+  text-align: left; padding: 12px 16px;
+  font-family: var(--md-ref-typeface-brand);
+  font-weight: 600; font-size: 0.72rem; text-transform: uppercase;
+  letter-spacing: 0.05em; color: var(--on-surface-dim);
+  border-bottom: 1px solid var(--outline-variant);
+  background: var(--surface-variant); white-space: nowrap;
+}
+thead th:first-child { border-radius: 16px 0 0 0; }
+thead th:last-child  { border-radius: 0 16px 0 0; }
+tbody td { padding: 10px 16px; border-bottom: 1px solid var(--outline-variant); vertical-align: top; }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr { transition: background 0.12s; }
+tbody tr:hover { background: var(--surface-variant); }
+tbody tr.highlight { background: var(--primary-container); }
+.level-num { font-family: var(--md-ref-typeface-mono); font-weight: 600; color: var(--primary); }
 .task-name { font-weight: 500; }
-.task-desc {
-  color: var(--text-dim);
-  font-size: 0.82rem;
-  line-height: 1.5;
+.task-desc { color: var(--on-surface-dim); font-size: 0.76rem; line-height: 1.45; }
+
+/* Difficulty Badges */
+.badge {
+  display: inline-block; font-size: 0.68rem; font-weight: 600;
+  padding: 3px 12px; border-radius: 100px; white-space: nowrap;
+  font-family: var(--md-ref-typeface-brand); letter-spacing: 0.02em;
 }
+.badge-trivial { background: var(--diff-trivial-bg); color: var(--diff-trivial-fg); }
+.badge-easy    { background: var(--diff-easy-bg);    color: var(--diff-easy-fg); }
+.badge-medium  { background: var(--diff-medium-bg);  color: var(--diff-medium-fg); }
+.badge-hard    { background: var(--diff-hard-bg);    color: var(--diff-hard-fg); }
+.badge-vhard   { background: var(--diff-vhard-bg);   color: var(--diff-vhard-fg); }
+.badge-bonus   { background: var(--diff-bonus-bg);   color: var(--diff-bonus-fg); }
+
+/* ── Info Banner ── */
+.banner {
+  background: var(--surface-container); border-radius: 12px;
+  padding: 14px 20px; margin-bottom: 16px;
+  font-size: 0.81rem; color: var(--on-surface-dim); line-height: 1.5;
+  box-shadow: var(--elevation-1);
+}
+.banner strong { color: var(--secondary); }
+.banner strong.em { color: var(--on-surface); }
 
 /* ── Scoring ── */
-.scoring-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-}
+.scoring-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 @media (max-width: 640px) { .scoring-grid { grid-template-columns: 1fr; } }
 .scoring-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 28px 24px;
+  background: var(--surface-container); border-radius: 16px;
+  padding: 22px; box-shadow: var(--elevation-1);
 }
-.scoring-card h3 {
-  font-size: 1rem;
-  font-weight: 600;
-  margin-bottom: 16px;
-}
+.scoring-card h3 { font-family: var(--md-ref-typeface-brand); font-size: 0.9rem; font-weight: 600; margin-bottom: 12px; }
 .field-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 0;
-  border-bottom: 1px solid var(--border);
-  font-size: 0.88rem;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 6px 0; border-bottom: 1px solid var(--outline-variant); font-size: 0.82rem;
 }
 .field-row:last-child { border-bottom: none; }
-.field-name {
-  font-family: var(--mono);
-  font-size: 0.82rem;
+.field-name { font-family: var(--md-ref-typeface-mono); font-size: 0.76rem; }
+.field-val { font-weight: 600; color: var(--primary); font-family: var(--md-ref-typeface-mono); font-size: 0.76rem; }
+.penalty {
+  margin-top: 10px; padding: 10px 14px;
+  background: var(--diff-vhard-bg); border-radius: 8px;
+  font-size: 0.78rem; color: var(--diff-vhard-fg);
 }
-.field-weight {
-  font-weight: 600;
-  color: var(--accent);
-  font-family: var(--mono);
-  font-size: 0.82rem;
+.formula-card {
+  background: var(--surface-container); border-radius: 16px;
+  padding: 20px; margin-top: 16px; box-shadow: var(--elevation-1);
 }
-.penalty-note {
-  margin-top: 12px;
-  padding: 12px 16px;
-  background: rgba(239, 68, 68, 0.08);
-  border: 1px solid rgba(239, 68, 68, 0.15);
-  border-radius: 8px;
-  font-size: 0.84rem;
-  color: var(--red);
-}
-.formula-box {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 24px;
-  margin-top: 24px;
-}
-.formula-box h3 {
-  font-size: 1rem;
-  font-weight: 600;
-  margin-bottom: 12px;
-}
-.formula {
-  font-family: var(--mono);
-  font-size: 0.88rem;
-  line-height: 2;
-  color: var(--text-dim);
-}
-.formula span { color: var(--accent); }
+.formula-card h3 { font-family: var(--md-ref-typeface-brand); font-size: 0.9rem; font-weight: 600; margin-bottom: 10px; }
+.formula { font-family: var(--md-ref-typeface-mono); font-size: 0.8rem; line-height: 1.8; color: var(--on-surface-dim); }
+.formula b { color: var(--primary); }
 
-/* ── Results ── */
-.leaderboard { margin-bottom: 40px; }
+/* ── Leaderboard ── */
+.leaderboard { margin-bottom: 28px; }
 .lb-row {
-  display: grid;
-  grid-template-columns: 160px 1fr 60px;
-  align-items: center;
-  gap: 16px;
-  padding: 14px 0;
-  border-bottom: 1px solid var(--border);
+  display: grid; grid-template-columns: 140px 1fr 56px; align-items: center;
+  gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--outline-variant);
 }
 .lb-row:last-child { border-bottom: none; }
-.lb-model {
-  font-weight: 600;
-  font-size: 0.92rem;
-  white-space: nowrap;
-}
-.lb-bar-track {
-  height: 28px;
-  background: var(--surface-alt);
-  border-radius: 6px;
-  overflow: hidden;
-  position: relative;
-}
-.lb-bar {
-  height: 100%;
-  border-radius: 6px;
-  transition: width 0.6s ease;
-}
-.lb-score {
-  font-family: var(--mono);
-  font-weight: 700;
-  font-size: 0.92rem;
-  text-align: right;
-}
-.results-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  margin-bottom: 32px;
-}
+.lb-model { font-family: var(--md-ref-typeface-brand); font-weight: 600; font-size: 0.84rem; white-space: nowrap; }
+.lb-track { height: 22px; background: var(--surface-variant); border-radius: 4px; overflow: hidden; }
+.lb-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; min-width: 2px; }
+.lb-score { font-family: var(--md-ref-typeface-mono); font-weight: 700; font-size: 0.82rem; text-align: right; }
+
+/* ── Results ── */
+.results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
 @media (max-width: 700px) { .results-grid { grid-template-columns: 1fr; } }
 .results-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 24px;
+  background: var(--surface-container); border-radius: 16px;
+  padding: 20px; box-shadow: var(--elevation-1);
 }
-.results-card h3 {
-  font-size: 0.92rem;
-  font-weight: 600;
-  margin-bottom: 16px;
-}
-.stat-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 6px 0;
-  font-size: 0.84rem;
-  border-bottom: 1px solid var(--border);
-}
+.results-card h3 { font-family: var(--md-ref-typeface-brand); font-size: 0.86rem; font-weight: 600; margin-bottom: 10px; }
+.stat-row { display: flex; justify-content: space-between; padding: 4px 0; font-size: 0.78rem; border-bottom: 1px solid var(--outline-variant); }
 .stat-row:last-child { border-bottom: none; }
-.stat-label { color: var(--text-dim); }
-.stat-val { font-family: var(--mono); font-weight: 600; }
+.stat-label { color: var(--on-surface-dim); }
+.stat-val { font-family: var(--md-ref-typeface-mono); font-weight: 600; }
+
+/* ── Heatmap ── */
 .heatmap-wrap { overflow-x: auto; }
-.heatmap {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.8rem;
-}
+.heatmap { width: 100%; border-collapse: collapse; font-size: 0.74rem; }
 .heatmap th {
-  padding: 10px 8px;
-  font-weight: 600;
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--text-dim);
-  border-bottom: 1px solid var(--border);
-  text-align: center;
-  white-space: nowrap;
+  padding: 8px 6px; font-family: var(--md-ref-typeface-brand);
+  font-weight: 600; font-size: 0.66rem; text-transform: uppercase;
+  letter-spacing: 0.04em; color: var(--on-surface-dim);
+  border-bottom: 1px solid var(--outline-variant); text-align: center; white-space: nowrap;
 }
 .heatmap th:first-child { text-align: left; }
 .heatmap td {
-  padding: 8px;
-  text-align: center;
-  font-family: var(--mono);
-  font-size: 0.8rem;
-  font-weight: 600;
-  border-bottom: 1px solid var(--border);
+  padding: 6px; text-align: center;
+  font-family: var(--md-ref-typeface-mono); font-size: 0.74rem; font-weight: 600;
+  border-bottom: 1px solid var(--outline-variant);
 }
-.heatmap td:first-child {
-  text-align: left;
-  font-family: var(--font);
-  font-weight: 500;
-  white-space: nowrap;
-}
+.heatmap td:first-child { text-align: left; font-family: var(--md-ref-typeface-plain); font-weight: 500; white-space: nowrap; }
 .heatmap tbody tr:last-child td { border-bottom: none; }
-.heatmap tbody tr:hover { background: var(--surface-alt); }
-.h-0   { color: #666; }
-.h-low { color: var(--red); }
-.h-med { color: var(--yellow); }
-.h-hi  { color: var(--green); }
-.h-max { color: var(--accent); }
+.heatmap tbody tr:hover { background: var(--surface-variant); }
+.h-0   { color: var(--on-surface-dim); opacity: 0.4; }
+.h-low { color: var(--diff-vhard-fg); }
+.h-med { color: var(--diff-medium-fg); }
+.h-hi  { color: var(--diff-trivial-fg); }
+.h-max { color: var(--primary); font-weight: 700; }
 
-/* ── Getting Started ── */
-.steps {
-  display: grid;
-  gap: 16px;
+/* ── Collapsible ── */
+.col-toggle {
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--md-ref-typeface-brand);
+  font-size: 0.88rem; font-weight: 600;
+  cursor: pointer; border: none; background: none;
+  color: var(--on-surface); padding: 0; margin-bottom: 12px;
 }
+.col-toggle:hover { color: var(--primary); }
+.col-arrow { display: inline-block; transition: transform 0.2s; font-size: 0.65rem; color: var(--on-surface-dim); }
+.col-arrow.open { transform: rotate(90deg); }
+.col-body.collapsed { display: none; }
+
+/* ── Steps ── */
+.steps { display: grid; gap: 12px; }
 .step {
-  display: grid;
-  grid-template-columns: 48px 1fr;
-  gap: 20px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 24px;
+  display: grid; grid-template-columns: 44px 1fr; gap: 16px;
+  background: var(--surface-container); border-radius: 16px;
+  padding: 20px; box-shadow: var(--elevation-1);
+  transition: box-shadow 0.15s;
 }
+.step:hover { box-shadow: var(--elevation-2); }
 .step-num {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
-  background: var(--accent-dim);
-  border: 1px solid rgba(0, 212, 170, 0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--mono);
-  font-weight: 700;
-  font-size: 1.1rem;
-  color: var(--accent);
-  flex-shrink: 0;
+  width: 44px; height: 44px; border-radius: 12px;
+  background: var(--primary-container);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--md-ref-typeface-mono);
+  font-weight: 700; font-size: 0.95rem;
+  color: var(--on-primary-container); flex-shrink: 0;
 }
-.step h3 {
-  font-size: 1rem;
-  font-weight: 600;
-  margin-bottom: 8px;
-}
+.step h3 { font-family: var(--md-ref-typeface-brand); font-size: 0.88rem; font-weight: 600; margin-bottom: 4px; }
 .step code {
-  display: block;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 12px 16px;
-  font-family: var(--mono);
-  font-size: 0.82rem;
-  color: var(--text-dim);
-  overflow-x: auto;
-  line-height: 1.7;
-  margin-top: 8px;
-  white-space: pre;
+  display: block; background: var(--bg); border-radius: 8px;
+  padding: 10px 14px; font-family: var(--md-ref-typeface-mono);
+  font-size: 0.76rem; color: var(--on-surface-dim);
+  overflow-x: auto; line-height: 1.6; margin-top: 4px; white-space: pre;
+  border: 1px solid var(--outline-variant);
 }
-.step p {
-  font-size: 0.88rem;
-  color: var(--text-dim);
-  line-height: 1.6;
-}
+.step p { font-size: 0.81rem; color: var(--on-surface-dim); line-height: 1.5; }
 
 /* ── Footer ── */
 footer {
-  border-top: 1px solid var(--border);
-  padding: 40px 0;
-  text-align: center;
-  color: var(--text-dim);
-  font-size: 0.84rem;
+  border-top: 1px solid var(--outline-variant); padding: 28px 0;
+  text-align: center; color: var(--on-surface-dim); font-size: 0.78rem;
 }
-footer a { color: var(--text-dim); }
-footer a:hover { color: var(--accent); }
-.footer-links {
-  display: flex;
-  justify-content: center;
-  gap: 24px;
-  margin-bottom: 12px;
-}
+footer a { color: var(--on-surface-dim); }
+footer a:hover { color: var(--primary); }
+.footer-links { display: flex; justify-content: center; gap: 20px; margin-bottom: 6px; }
+
+/* ── Utility ── */
+.hidden { display: none !important; }
+.fade-in { animation: fadeIn 0.2s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 </style>
 </head>
 <body>
 
-<!-- ── Hero ── -->
+<!-- ═══════════ Top App Bar ═══════════ -->
+<header class="top-bar">
+  <div class="container">
+    <a href="#" class="top-bar-brand">Agent<span class="accent">RE</span>-Bench</a>
+    <nav class="top-bar-nav">
+      <a href="#why">Why</a>
+      <a href="#tasks">Tasks</a>
+      <a href="#scoring">Scoring</a>
+      <a href="#results">Results</a>
+      <a href="#findings">Findings</a>
+      <a href="#getting-started">Start</a>
+      <a href="https://github.com/agentrebench/AgentRE-Bench" class="nav-cta">GitHub</a>
+      <button class="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark" id="themeBtn">&#x1f31e;</button>
+    </nav>
+  </div>
+</header>
+
+<!-- ═══════════ Hero ═══════════ -->
 <section class="hero">
   <div class="container">
-    <img src="logo.svg" alt="AgentRE-Bench logo" class="hero-logo">
+    <img src="logo.svg" alt="Logo" class="hero-logo">
     <div class="hero-text">
+      <span class="hero-chip">Cross-Platform RE Benchmark</span>
       <h1>Agent<span class="accent">RE</span>-Bench</h1>
       <p class="subtitle">Long-horizon reverse engineering tasks for LLM agents, scored deterministically.</p>
       <p class="pitch">
         Give an LLM agent a compiled binary and a disassembler. No source code. No hints.
-        Measure how well it identifies C2 infrastructure, encryption, anti-analysis techniques,
-        and communication protocols &mdash; all without human guidance.
-        Targets Linux/Unix (ELF x86-64) and Windows (PE32+ x86-64). 23 levels across two platforms.
+        Measure how well it identifies C2 infrastructure, encryption, anti-analysis, and protocols.
+        23 levels across Linux (ELF x86-64) and Windows (PE32+ x86-64).
       </p>
-      <div class="hero-buttons">
-        <a href="https://github.com/agentrebench/AgentRE-Bench" class="btn btn-primary">
+      <div class="hero-actions">
+        <a href="https://github.com/agentrebench/AgentRE-Bench" class="btn btn-filled">
           <svg class="gh-icon" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
           View on GitHub
         </a>
-        <a href="#windows" class="btn btn-outline">Windows</a>
-        <a href="#results" class="btn btn-outline">Results</a>
+        <a href="#tasks" class="btn btn-tonal">Browse Tasks</a>
+        <a href="#results" class="btn btn-outlined">Results</a>
       </div>
-      <div class="hero-label">Cross-Platform Reverse Engineering Benchmark</div>
     </div>
   </div>
 </section>
 
-<!-- ── Why This Benchmark ── -->
+<!-- ═══════════ Why ═══════════ -->
 <section id="why">
   <div class="container">
-    <div class="section-tag">Why This Benchmark</div>
-    <h2 class="section-title">What makes AgentRE-Bench different</h2>
-    <p class="section-desc">
+    <div class="section-label">Why This Benchmark</div>
+    <h2 class="section-headline">What makes AgentRE-Bench different</h2>
+    <p class="section-supporting">
       Simple Q&amp;A benchmarks don't differentiate frontier models on real-world reasoning.
-      AgentRE-Bench tests chains of 10&ndash;25 tool calls where each call's output informs the next decision.
+      AgentRE-Bench tests chains of 10&ndash;25 tool calls where each output informs the next decision.
     </p>
     <div class="card-grid">
       <div class="card">
-        <div class="card-icon" style="background: var(--accent-dim); color: var(--accent);">&#x2727;</div>
+        <div class="card-icon" style="background:var(--primary-container);color:var(--on-primary-container);">&#x2726;</div>
         <h3>Synthetic</h3>
-        <p>All 23 binaries (13 ELF x86-64 + 10 PE32+ x86-64) are compiled from purpose-built C/C++ sources. Known ground truths, no licensing issues &mdash; anyone can compile identical binaries and verify scores.</p>
+        <p>All 23 binaries (13 ELF + 10 PE32+) compiled from C/C++ sources. Known ground truths, no licensing issues.</p>
       </div>
       <div class="card">
-        <div class="card-icon" style="background: var(--indigo-dim); color: var(--indigo);">&#x2263;</div>
+        <div class="card-icon" style="background:var(--secondary-container);color:var(--on-secondary-container);">&#x2261;</div>
         <h3>Deterministic</h3>
-        <p>Every answer is scored against a fixed ground truth with weighted fields and Jaccard overlap for sets. No LLM-as-judge. The same answer always produces the same score.</p>
+        <p>Every answer scored against fixed ground truth with weighted fields and Jaccard overlap. No LLM-as-judge.</p>
       </div>
       <div class="card">
-        <div class="card-icon" style="background: rgba(234,179,8,0.12); color: var(--yellow);">&#x2699;</div>
+        <div class="card-icon" style="background:rgba(255,171,64,0.15);color:var(--tertiary);">&#x2699;</div>
         <h3>Agentic</h3>
-        <p>Agents must plan which tools to use, interpret raw output (hex dumps, disassembly), and synthesize findings &mdash; all within a budget of 25 tool calls per task.</p>
+        <p>Agents plan tool use, interpret raw output (hex dumps, disassembly), synthesize within a 25-call budget.</p>
       </div>
       <div class="card">
-        <div class="card-icon" style="background: rgba(239,68,68,0.12); color: var(--red);">&#x21C6;</div>
+        <div class="card-icon" style="background:var(--diff-vhard-bg);color:var(--diff-vhard-fg);">&#x21C6;</div>
         <h3>Long-Horizon</h3>
-        <p>The hardest levels require entropy analysis, key extraction, decryption, and identifying 18+ techniques across anti-debugging, process injection, and network evasion.</p>
+        <p>Hardest levels: entropy analysis, key extraction, decryption, identifying 18+ anti-* techniques.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ── Task Progression ── -->
+<!-- ═══════════ Tasks ═══════════ -->
 <section id="tasks">
   <div class="container">
-    <div class="section-tag">Task Progression</div>
-    <h2 class="section-title">23 levels across Linux and Windows</h2>
-    <p class="section-desc">
-      From plaintext TCP shells to WannaCry-style ransomware. 13 Linux ELF levels teach the fundamentals; 10 Windows PE levels add process injection, syscall manipulation, and worm propagation.
+    <div class="section-label">Task Progression</div>
+    <h2 class="section-headline">23 levels across Linux and Windows</h2>
+    <p class="section-supporting">
+      From plaintext TCP shells to WannaCry-style ransomware. Click a platform tab, then use the number chips to jump straight to a level.
     </p>
-    <h3 style="font-size:1.1rem;font-weight:600;margin-bottom:16px;color:var(--accent);">Linux / Unix &mdash; ELF x86-64 (Levels 1&ndash;13)</h3>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Level</th>
-            <th>Task</th>
-            <th>Description</th>
-            <th>Difficulty</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="level-num">1</td>
-            <td class="task-name">TCP Reverse Shell</td>
-            <td class="task-desc">Plaintext C2 address, no obfuscation. Connects via socket, redirects I/O with dup2, executes /bin/sh.</td>
-            <td><span class="diff-badge diff-trivial">Trivial</span></td>
-          </tr>
-          <tr>
-            <td class="level-num">2</td>
-            <td class="task-name">XOR Encoded Strings</td>
-            <td class="task-desc">TCP reverse shell with XOR-encoded host, port, and shell path. Single-byte key 0x22, decoded at runtime.</td>
-            <td><span class="diff-badge diff-easy">Easy</span></td>
-          </tr>
-          <tr>
-            <td class="level-num">3</td>
-            <td class="task-name">Anti-Debugging Shell</td>
-            <td class="task-desc">Detects ptrace, checks LD_PRELOAD, delays execution 30&ndash;90s, forks to background before connecting.</td>
-            <td><span class="diff-badge diff-easy">Easy</span></td>
-          </tr>
-          <tr>
-            <td class="level-num">4</td>
-            <td class="task-name">Polymorphic Shell</td>
-            <td class="task-desc">Generates randomized NOP sled + x86-64 shellcode at runtime. Runtime variation defeats static signatures.</td>
-            <td><span class="diff-badge diff-medium">Medium</span></td>
-          </tr>
-          <tr>
-            <td class="level-num">5</td>
-            <td class="task-name">Multistage Shell</td>
-            <td class="task-desc">Stage 1 receives XOR key from C2. Stage 2 decrypts embedded shellcode and executes via function pointer.</td>
-            <td><span class="diff-badge diff-medium">Medium</span></td>
-          </tr>
-          <tr>
-            <td class="level-num">6</td>
-            <td class="task-name">ICMP Covert Channel</td>
-            <td class="task-desc">Raw socket ICMP echo requests with commands hidden in data section. Custom checksum, 5s beacon interval.</td>
-            <td><span class="diff-badge diff-medium">Medium</span></td>
-          </tr>
-          <tr>
-            <td class="level-num">7</td>
-            <td class="task-name">DNS Tunnel Shell</td>
-            <td class="task-desc">DNS beacons, TXT record commands, popen() execution, hex-encoded subdomain exfiltration.</td>
-            <td><span class="diff-badge diff-medium">Medium</span></td>
-          </tr>
-          <tr>
-            <td class="level-num">8</td>
-            <td class="task-name">Process Hollowing</td>
-            <td class="task-desc">Forks /bin/sleep, overwrites code via PTRACE_POKETEXT, modifies RIP to execute injected shellcode.</td>
-            <td><span class="diff-badge diff-hard">Hard</span></td>
-          </tr>
-          <tr>
-            <td class="level-num">9</td>
-            <td class="task-name">Shared Object Injection</td>
-            <td class="task-desc">Constructor-triggered .so with puts() hijacking via dlsym(RTLD_NEXT). Evades LD_AUDIT/LD_PRELOAD detection.</td>
-            <td><span class="diff-badge diff-hard">Hard</span></td>
-          </tr>
-          <tr>
-            <td class="level-num">10</td>
-            <td class="task-name">AES Encrypted Shell</td>
-            <td class="task-desc">Claims AES, actually 16-byte XOR key. Inline assembly syscalls. Decrypts shellcode into mmap'd RWX memory.</td>
-            <td><span class="diff-badge diff-hard">Hard</span></td>
-          </tr>
-          <tr>
-            <td class="level-num">11</td>
-            <td class="task-name">Fork Bomb Shell</td>
-            <td class="task-desc">Fork bomb as DoS distraction while child process connects reverse shell to C2 after 1s delay.</td>
-            <td><span class="diff-badge diff-hard">Hard</span></td>
-          </tr>
-          <tr>
-            <td class="level-num">12</td>
-            <td class="task-name">JIT Compiled Shellcode</td>
-            <td class="task-desc">Allocates RWX memory, copies template shellcode, patches IP/port offsets at runtime. Self-modifying code.</td>
-            <td><span class="diff-badge diff-vhard">Very Hard</span></td>
-          </tr>
-          <tr>
-            <td class="level-num">13</td>
-            <td class="task-name">Metamorphic Dropper</td>
-            <td class="task-desc">RC4-encrypted strings, control-flow flattening, triple anti-debug, self-modifying code, process hiding via /proc/self/mem. 18 techniques.</td>
-            <td><span class="diff-badge diff-bonus">Bonus</span></td>
-          </tr>
-        </tbody>
-      </table>
+
+    <!-- Platform Tabs -->
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="switchPlatform('linux')" id="tab-linux">
+        &#x1F427; Linux / Unix
+        <span class="tab-badge">ELF x86-64 &middot; 13 levels</span>
+      </button>
+      <button class="tab-btn" onclick="switchPlatform('windows')" id="tab-windows">
+        &#x1F5B0; Windows
+        <span class="tab-badge">PE32+ x86-64 &middot; 10 levels</span>
+      </button>
     </div>
 
-    <div id="windows" style="margin:48px 0 0;"></div>
-    <h3 style="font-size:1.1rem;font-weight:600;margin:0 0 16px;color:var(--indigo);">
-      Windows &mdash; PE32+ x86-64 (Levels 14&ndash;23)
-      <span class="diff-badge diff-bonus" style="font-size:0.65rem;padding:2px 8px;margin-left:8px;vertical-align:middle;">COMING SOON</span>
-    </h3>
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 20px;margin-bottom:16px;font-size:0.85rem;color:var(--text-dim);line-height:1.6;">
-      <strong style="color:var(--indigo);">10 Windows PE32+ levels</strong> &mdash; cross-compiled synthetic malware covering DLL injection, process hollowing, Hell's Gate syscalls, reflective DLL loading, and a full WannaCry-style ransomware worm. <strong style="color:var(--text);">Source code, ground truths, and binaries are ready. LLM agent evaluation results coming soon.</strong>
+    <!-- Linux Panel -->
+    <div id="panel-linux" class="platform-panel fade-in">
+      <div class="chip-row">
+        <span class="chip-label">Jump to level</span>
+        <span class="chip" onclick="highlightLevel('linux-level-1',this)">1</span>
+        <span class="chip" onclick="highlightLevel('linux-level-2',this)">2</span>
+        <span class="chip" onclick="highlightLevel('linux-level-3',this)">3</span>
+        <span class="chip" onclick="highlightLevel('linux-level-4',this)">4</span>
+        <span class="chip" onclick="highlightLevel('linux-level-5',this)">5</span>
+        <span class="chip" onclick="highlightLevel('linux-level-6',this)">6</span>
+        <span class="chip" onclick="highlightLevel('linux-level-7',this)">7</span>
+        <span class="chip" onclick="highlightLevel('linux-level-8',this)">8</span>
+        <span class="chip" onclick="highlightLevel('linux-level-9',this)">9</span>
+        <span class="chip" onclick="highlightLevel('linux-level-10',this)">10</span>
+        <span class="chip" onclick="highlightLevel('linux-level-11',this)">11</span>
+        <span class="chip" onclick="highlightLevel('linux-level-12',this)">12</span>
+        <span class="chip bonus" onclick="highlightLevel('linux-level-13',this)">13</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>#</th><th>Task</th><th>Description</th><th>Difficulty</th></tr></thead>
+          <tbody>
+            <tr id="linux-level-1"><td class="level-num">1</td><td class="task-name">TCP Reverse Shell</td><td class="task-desc">Plaintext C2 address, no obfuscation. Connects via socket, redirects I/O with dup2, executes /bin/sh.</td><td><span class="badge badge-trivial">Trivial</span></td></tr>
+            <tr id="linux-level-2"><td class="level-num">2</td><td class="task-name">XOR Encoded Strings</td><td class="task-desc">TCP reverse shell with XOR-encoded host, port, and shell path. Single-byte key 0x22, decoded at runtime.</td><td><span class="badge badge-easy">Easy</span></td></tr>
+            <tr id="linux-level-3"><td class="level-num">3</td><td class="task-name">Anti-Debugging Shell</td><td class="task-desc">Detects ptrace, checks LD_PRELOAD, delays 30&ndash;90s, forks to background before connecting.</td><td><span class="badge badge-easy">Easy</span></td></tr>
+            <tr id="linux-level-4"><td class="level-num">4</td><td class="task-name">Polymorphic Shell</td><td class="task-desc">Generates randomized NOP sled + x86-64 shellcode at runtime. Runtime variation defeats static signatures.</td><td><span class="badge badge-medium">Medium</span></td></tr>
+            <tr id="linux-level-5"><td class="level-num">5</td><td class="task-name">Multistage Shell</td><td class="task-desc">Stage 1 receives XOR key from C2. Stage 2 decrypts embedded shellcode, executes via function pointer.</td><td><span class="badge badge-medium">Medium</span></td></tr>
+            <tr id="linux-level-6"><td class="level-num">6</td><td class="task-name">ICMP Covert Channel</td><td class="task-desc">Raw socket ICMP echo requests with commands in data section. Custom checksum, 5s beacon interval.</td><td><span class="badge badge-medium">Medium</span></td></tr>
+            <tr id="linux-level-7"><td class="level-num">7</td><td class="task-name">DNS Tunnel Shell</td><td class="task-desc">DNS beacons, TXT record commands, popen() execution, hex-encoded subdomain exfiltration.</td><td><span class="badge badge-medium">Medium</span></td></tr>
+            <tr id="linux-level-8"><td class="level-num">8</td><td class="task-name">Process Hollowing</td><td class="task-desc">Forks /bin/sleep, overwrites code via PTRACE_POKETEXT, modifies RIP to execute injected shellcode.</td><td><span class="badge badge-hard">Hard</span></td></tr>
+            <tr id="linux-level-9"><td class="level-num">9</td><td class="task-name">Shared Object Injection</td><td class="task-desc">Constructor-triggered .so with puts() hijacking via dlsym(RTLD_NEXT). Evades LD_AUDIT/LD_PRELOAD detection.</td><td><span class="badge badge-hard">Hard</span></td></tr>
+            <tr id="linux-level-10"><td class="level-num">10</td><td class="task-name">AES Encrypted Shell</td><td class="task-desc">Claims AES, actually 16-byte XOR key. Inline assembly syscalls. Decrypts shellcode into mmap'd RWX.</td><td><span class="badge badge-hard">Hard</span></td></tr>
+            <tr id="linux-level-11"><td class="level-num">11</td><td class="task-name">Fork Bomb Shell</td><td class="task-desc">Fork bomb as DoS distraction while child process connects reverse shell to C2 after 1s delay.</td><td><span class="badge badge-hard">Hard</span></td></tr>
+            <tr id="linux-level-12"><td class="level-num">12</td><td class="task-name">JIT Compiled Shellcode</td><td class="task-desc">Allocates RWX memory, copies template shellcode, patches IP/port offsets at runtime. Self-modifying code.</td><td><span class="badge badge-vhard">Very Hard</span></td></tr>
+            <tr id="linux-level-13"><td class="level-num">13</td><td class="task-name">Metamorphic Dropper</td><td class="task-desc">RC4-encrypted strings, control-flow flattening, triple anti-debug, self-modifying code, /proc/self/mem hiding. 18 techniques.</td><td><span class="badge badge-bonus">Bonus</span></td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Level</th>
-            <th>Task</th>
-            <th>Description</th>
-            <th>Difficulty</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="level-num">14</td>
-            <td class="task-name">DLL Injection</td>
-            <td class="task-desc">XOR-encrypted DLL path, manual GetProcAddress via PE export parsing, PEB anti-debug, CreateRemoteThread + LoadLibraryA injection.</td>
-            <td><span class="diff-badge diff-medium">Medium</span></td>
-          </tr>
-          <tr>
-            <td class="level-num">15</td>
-            <td class="task-name">APC Injection</td>
-            <td class="task-desc">RC4-encrypted shellcode, NtQueueApcThread injection, NtQueryInformationProcess anti-debug, direct ntdll syscalls.</td>
-            <td><span class="diff-badge diff-medium">Medium</span></td>
-          </tr>
-          <tr>
-            <td class="level-num">16</td>
-            <td class="task-name">Code Cave Injection</td>
-            <td class="task-desc">Code cave finder in .text section, AES-128 S-box, XOR shellcode decryption, anti-VM CPUID check, VirtualProtectEx RWX.</td>
-            <td><span class="diff-badge diff-hard">Hard</span></td>
-          </tr>
-          <tr>
-            <td class="level-num">17</td>
-            <td class="task-name">Process Hollowing</td>
-            <td class="task-desc">CreateProcess suspended, NtUnmapViewOfSection, replacement PE with RC4+XOR encryption, SetThreadContext entry point fixup.</td>
-            <td><span class="diff-badge diff-hard">Hard</span></td>
-          </tr>
-          <tr>
-            <td class="level-num">18</td>
-            <td class="task-name">Hell's Gate</td>
-            <td class="task-desc">Dynamic syscall number resolution from ntdll stubs (4C 8B D1 B8 pattern), RC4 payload, anti-hooking stub integrity check.</td>
-            <td><span class="diff-badge diff-hard">Hard</span></td>
-          </tr>
-          <tr>
-            <td class="level-num">19</td>
-            <td class="task-name">Reflective DLL Injection</td>
-            <td class="task-desc">Manual PE parsing, IAT walk, base relocation fixup, AES-128 encrypted DLL stub, DllMain invocation via export resolution.</td>
-            <td><span class="diff-badge diff-hard">Hard</span></td>
-          </tr>
-          <tr>
-            <td class="level-num">20</td>
-            <td class="task-name">Remote PE Execution</td>
-            <td class="task-desc">PE payload mapped into remote process, NtWriteVirtualMemory, remote relocation fixup, RC4 encryption, anti-sandbox DLL checks.</td>
-            <td><span class="diff-badge diff-hard">Hard</span></td>
-          </tr>
-          <tr>
-            <td class="level-num">21</td>
-            <td class="task-name">Ghost Process Hollowing</td>
-            <td class="task-desc">NtCreateProcess with no section object, manual PE mapping into empty process, NtCreateThreadEx, XOR-encrypted payload.</td>
-            <td><span class="diff-badge diff-hard">Hard</span></td>
-          </tr>
-          <tr>
-            <td class="level-num">22</td>
-            <td class="task-name">AES-256 Multi-Technique</td>
-            <td class="task-desc">C++ class hierarchy (CryptoProvider, ProcessInjector), AES-256 encrypted shellcode, TLS callback, PEB walk, 4 anti-debug checks, Hell's Gate.</td>
-            <td><span class="diff-badge diff-vhard">Very Hard</span></td>
-          </tr>
-          <tr>
-            <td class="level-num">23</td>
-            <td class="task-name">WannaCry Worm <span class="diff-badge diff-bonus" style="font-size:0.65rem;padding:1px 6px;">Bonus</span></td>
-            <td class="task-desc">AES-128 file encryption, embedded RSA-2048 key, kill-switch domain check, SMB worm propagation, service persistence, anti-VM, C2 beaconing&mdash;21 techniques.</td>
-            <td><span class="diff-badge diff-bonus">Bonus</span></td>
-          </tr>
-        </tbody>
-      </table>
+
+    <!-- Windows Panel -->
+    <div id="panel-windows" class="platform-panel hidden">
+      <div class="banner">
+        <strong>10 Windows PE32+ levels</strong> &mdash; cross-compiled synthetic malware: DLL injection, process hollowing, Hell's Gate syscalls, reflective DLL loading, and a full WannaCry-style ransomware worm. <strong class="em">Source, ground truths, and binaries are ready. LLM evaluation coming soon.</strong>
+      </div>
+      <div class="chip-row">
+        <span class="chip-label">Jump to level</span>
+        <span class="chip" onclick="highlightLevel('win-level-14',this)">14</span>
+        <span class="chip" onclick="highlightLevel('win-level-15',this)">15</span>
+        <span class="chip" onclick="highlightLevel('win-level-16',this)">16</span>
+        <span class="chip" onclick="highlightLevel('win-level-17',this)">17</span>
+        <span class="chip" onclick="highlightLevel('win-level-18',this)">18</span>
+        <span class="chip" onclick="highlightLevel('win-level-19',this)">19</span>
+        <span class="chip" onclick="highlightLevel('win-level-20',this)">20</span>
+        <span class="chip" onclick="highlightLevel('win-level-21',this)">21</span>
+        <span class="chip" onclick="highlightLevel('win-level-22',this)">22</span>
+        <span class="chip bonus" onclick="highlightLevel('win-level-23',this)">23</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>#</th><th>Task</th><th>Description</th><th>Difficulty</th></tr></thead>
+          <tbody>
+            <tr id="win-level-14"><td class="level-num">14</td><td class="task-name">DLL Injection</td><td class="task-desc">XOR-encrypted DLL path, manual GetProcAddress via PE export parsing, PEB anti-debug, CreateRemoteThread + LoadLibraryA.</td><td><span class="badge badge-medium">Medium</span></td></tr>
+            <tr id="win-level-15"><td class="level-num">15</td><td class="task-name">APC Injection</td><td class="task-desc">RC4-encrypted shellcode, NtQueueApcThread injection, NtQueryInformationProcess anti-debug, direct ntdll syscalls.</td><td><span class="badge badge-medium">Medium</span></td></tr>
+            <tr id="win-level-16"><td class="level-num">16</td><td class="task-name">Code Cave Injection</td><td class="task-desc">Code cave finder in .text, AES-128 S-box, XOR shellcode decryption, anti-VM CPUID, VirtualProtectEx RWX.</td><td><span class="badge badge-hard">Hard</span></td></tr>
+            <tr id="win-level-17"><td class="level-num">17</td><td class="task-name">Process Hollowing</td><td class="task-desc">CreateProcess suspended, NtUnmapViewOfSection, replacement PE with RC4+XOR, SetThreadContext entry point fixup.</td><td><span class="badge badge-hard">Hard</span></td></tr>
+            <tr id="win-level-18"><td class="level-num">18</td><td class="task-name">Hell's Gate</td><td class="task-desc">Dynamic syscall number resolution from ntdll stubs (4C 8B D1 B8 pattern), RC4 payload, anti-hooking integrity check.</td><td><span class="badge badge-hard">Hard</span></td></tr>
+            <tr id="win-level-19"><td class="level-num">19</td><td class="task-name">Reflective DLL Injection</td><td class="task-desc">Manual PE parsing, IAT walk, base relocation fixup, AES-128 encrypted DLL stub, DllMain via export resolution.</td><td><span class="badge badge-hard">Hard</span></td></tr>
+            <tr id="win-level-20"><td class="level-num">20</td><td class="task-name">Remote PE Execution</td><td class="task-desc">PE payload mapped into remote process, NtWriteVirtualMemory, remote relocation, RC4, anti-sandbox DLL checks.</td><td><span class="badge badge-hard">Hard</span></td></tr>
+            <tr id="win-level-21"><td class="level-num">21</td><td class="task-name">Ghost Process Hollowing</td><td class="task-desc">NtCreateProcess with no section object, manual PE mapping into empty process, NtCreateThreadEx, XOR payload.</td><td><span class="badge badge-hard">Hard</span></td></tr>
+            <tr id="win-level-22"><td class="level-num">22</td><td class="task-name">AES-256 Multi-Technique</td><td class="task-desc">C++ class hierarchy, AES-256 encrypted shellcode, TLS callback, PEB walk, 4 anti-debug checks, Hell's Gate.</td><td><span class="badge badge-vhard">Very Hard</span></td></tr>
+            <tr id="win-level-23"><td class="level-num">23</td><td class="task-name">WannaCry Worm <span class="badge badge-bonus" style="font-size:0.6rem;padding:2px 8px;">Bonus</span></td><td class="task-desc">AES-128 file encryption, embedded RSA-2048 key, kill-switch domain, SMB worm, service persistence, anti-VM, C2 beaconing &mdash; 21 techniques.</td><td><span class="badge badge-bonus">Bonus</span></td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ── Scoring Model ── -->
+<!-- ═══════════ Scoring ═══════════ -->
 <section id="scoring">
   <div class="container">
-    <div class="section-tag">Scoring Model</div>
-    <h2 class="section-title">Deterministic, weighted scoring</h2>
-    <p class="section-desc">
-      Each of the 21 standard levels is scored across 5 weighted fields. Levels 13 (Metamorphic Dropper) and 23 (WannaCry Worm) are bonus tasks with a deeper 10-field rubric. Maximum total score is 3.0.
+    <div class="section-label">Scoring Model</div>
+    <h2 class="section-headline">Deterministic, weighted scoring</h2>
+    <p class="section-supporting">
+      Each of the 21 standard levels is scored across 5 weighted fields. Levels 13 and 23 are bonus tasks with a 10-field rubric. Maximum total score is 3.0.
     </p>
     <div class="scoring-grid">
       <div class="scoring-card">
-        <h3>Standard Levels (1&ndash;12)</h3>
-        <div class="field-row"><span class="field-name">decoded_c2</span><span class="field-weight">40%</span></div>
-        <div class="field-row"><span class="field-name">techniques</span><span class="field-weight">30%</span></div>
-        <div class="field-row"><span class="field-name">file_type</span><span class="field-weight">10%</span></div>
-        <div class="field-row"><span class="field-name">encoded_strings</span><span class="field-weight">10%</span></div>
-        <div class="field-row"><span class="field-name">c2_protocol</span><span class="field-weight">10%</span></div>
-        <div class="penalty-note">Hallucination penalty: &minus;0.05 per fabricated technique</div>
+        <h3>Standard Levels (1&ndash;12, 14&ndash;22)</h3>
+        <div class="field-row"><span class="field-name">decoded_c2</span><span class="field-val">40%</span></div>
+        <div class="field-row"><span class="field-name">techniques</span><span class="field-val">30%</span></div>
+        <div class="field-row"><span class="field-name">file_type</span><span class="field-val">10%</span></div>
+        <div class="field-row"><span class="field-name">encoded_strings</span><span class="field-val">10%</span></div>
+        <div class="field-row"><span class="field-name">c2_protocol</span><span class="field-val">10%</span></div>
+        <div class="penalty">&minus;0.05 per fabricated technique</div>
       </div>
       <div class="scoring-card">
         <h3>Bonus Levels (13 &amp; 23)</h3>
-        <div class="field-row"><span class="field-name">decoded_c2</span><span class="field-weight">15%</span></div>
-        <div class="field-row"><span class="field-name">encryption_algorithm</span><span class="field-weight">10%</span></div>
-        <div class="field-row"><span class="field-name">encryption_key</span><span class="field-weight">15%</span></div>
-        <div class="field-row"><span class="field-name">encryption_key_storage</span><span class="field-weight">5%</span></div>
-        <div class="field-row"><span class="field-name">techniques</span><span class="field-weight">15%</span></div>
-        <div class="field-row"><span class="field-name">decoded_strings</span><span class="field-weight">15%</span></div>
-        <div class="field-row"><span class="field-name">anti_analysis</span><span class="field-weight">10%</span></div>
-        <div class="field-row"><span class="field-name">file_type / encoded_strings / c2_protocol</span><span class="field-weight">10%</span></div>
-        <div class="penalty-note">Hallucination penalty: &minus;0.03 per fabricated technique</div>
+        <div class="field-row"><span class="field-name">decoded_c2</span><span class="field-val">15%</span></div>
+        <div class="field-row"><span class="field-name">encryption_algorithm</span><span class="field-val">10%</span></div>
+        <div class="field-row"><span class="field-name">encryption_key</span><span class="field-val">15%</span></div>
+        <div class="field-row"><span class="field-name">encryption_key_storage</span><span class="field-val">5%</span></div>
+        <div class="field-row"><span class="field-name">techniques</span><span class="field-val">15%</span></div>
+        <div class="field-row"><span class="field-name">decoded_strings</span><span class="field-val">15%</span></div>
+        <div class="field-row"><span class="field-name">anti_analysis</span><span class="field-val">10%</span></div>
+        <div class="field-row"><span class="field-name">file_type / strings / protocol</span><span class="field-val">10%</span></div>
+        <div class="penalty">&minus;0.03 per fabricated technique</div>
       </div>
     </div>
-    <div class="formula-box">
+    <div class="formula-card">
       <h3>Aggregate Score</h3>
       <div class="formula">
-        <span>Main</span>  = average(level_1 &hellip; level_12, level_14 &hellip; level_22)&emsp;&rarr;&emsp;0.0 &ndash; 1.0<br>
-        <span>Bonus</span> = level_13_score + level_23_score&emsp;&emsp;&emsp;&emsp;&emsp;&rarr;&emsp;0.0 &ndash; 2.0<br>
-        <span>Total</span> = Main + Bonus&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&rarr;&emsp;<span>0.0 &ndash; 3.0</span>
+        <b>Main</b>  = average(level_1 &hellip; level_12, level_14 &hellip; level_22)&emsp;&rarr;&emsp;0.0 &ndash; 1.0<br>
+        <b>Bonus</b> = level_13_score + level_23_score&emsp;&emsp;&emsp;&emsp;&emsp;&rarr;&emsp;0.0 &ndash; 2.0<br>
+        <b>Total</b> = Main + Bonus&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&rarr;&emsp;<b>0.0 &ndash; 3.0</b>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ── Results ── -->
+<!-- ═══════════ Results ═══════════ -->
 <section id="results">
   <div class="container">
-    <div class="section-tag">Results</div>
-    <h2 class="section-title">How frontier models perform (Linux levels)</h2>
-    <p class="section-desc">
-      All 13 Linux ELF levels, 25 tool-call budget, Docker-sandboxed static analysis tools. Six frontier models evaluated end-to-end. <strong style="color: var(--text);">Headline finding:</strong> a small non-thinking model (Gemini 3.1 Flash Lite) leads the field, beating every frontier reasoning model on Main score. Hallucination calibration &mdash; not reasoning depth &mdash; is the dominant axis on this bench. Windows PE results coming soon.
+    <div class="section-label">Results</div>
+    <h2 class="section-headline">How frontier models perform (Linux)</h2>
+    <p class="section-supporting">
+      All 13 Linux ELF levels, 25-call budget, Docker-sandboxed static analysis tools. <strong style="color:var(--on-surface);">Headline:</strong> a small non-thinking model (Gemini 3.1 Flash Lite) leads the field. Hallucination calibration &mdash; not reasoning depth &mdash; is the dominant axis. Windows results coming soon.
     </p>
 
     <!-- Leaderboard -->
     <div class="leaderboard">
       <div class="lb-row">
-        <div class="lb-model" style="color: var(--accent);">Gemini 3.1 Flash Lite</div>
-        <div class="lb-bar-track"><div class="lb-bar" style="width: 66.7%; background: var(--accent);"></div></div>
-        <div class="lb-score" style="color: var(--accent);">0.667</div>
+        <div class="lb-model" style="color:var(--primary);">Gemini 3.1 Flash Lite</div>
+        <div class="lb-track"><div class="lb-fill" style="width:66.7%;background:var(--primary);"></div></div>
+        <div class="lb-score" style="color:var(--primary);">0.667</div>
       </div>
       <div class="lb-row">
-        <div class="lb-model" style="color: var(--green);">DeepSeek V4 Pro</div>
-        <div class="lb-bar-track"><div class="lb-bar" style="width: 64.8%; background: var(--green);"></div></div>
-        <div class="lb-score" style="color: var(--green);">0.648</div>
+        <div class="lb-model" style="color:var(--diff-trivial-fg);">DeepSeek V4 Pro</div>
+        <div class="lb-track"><div class="lb-fill" style="width:64.8%;background:var(--diff-trivial-fg);"></div></div>
+        <div class="lb-score" style="color:var(--diff-trivial-fg);">0.648</div>
       </div>
       <div class="lb-row">
-        <div class="lb-model" style="color: var(--orange);">Claude Opus 4.7</div>
-        <div class="lb-bar-track"><div class="lb-bar" style="width: 51.2%; background: var(--orange);"></div></div>
-        <div class="lb-score" style="color: var(--orange);">0.512</div>
+        <div class="lb-model" style="color:var(--tertiary);">Claude Opus 4.7</div>
+        <div class="lb-track"><div class="lb-fill" style="width:51.2%;background:var(--tertiary);"></div></div>
+        <div class="lb-score" style="color:var(--tertiary);">0.512</div>
       </div>
       <div class="lb-row">
-        <div class="lb-model" style="color: var(--cyan);">Kimi K2.6</div>
-        <div class="lb-bar-track"><div class="lb-bar" style="width: 49.7%; background: var(--cyan);"></div></div>
-        <div class="lb-score" style="color: var(--cyan);">0.497</div>
+        <div class="lb-model" style="color:var(--diff-easy-fg);">Kimi K2.6</div>
+        <div class="lb-track"><div class="lb-fill" style="width:49.7%;background:var(--diff-easy-fg);"></div></div>
+        <div class="lb-score" style="color:var(--diff-easy-fg);">0.497</div>
       </div>
       <div class="lb-row">
-        <div class="lb-model" style="color: var(--yellow);">DeepSeek V4 Flash</div>
-        <div class="lb-bar-track"><div class="lb-bar" style="width: 44.9%; background: var(--yellow);"></div></div>
-        <div class="lb-score" style="color: var(--yellow);">0.449</div>
+        <div class="lb-model" style="color:var(--diff-medium-fg);">DeepSeek V4 Flash</div>
+        <div class="lb-track"><div class="lb-fill" style="width:44.9%;background:var(--diff-medium-fg);"></div></div>
+        <div class="lb-score" style="color:var(--diff-medium-fg);">0.449</div>
       </div>
       <div class="lb-row">
-        <div class="lb-model" style="color: var(--indigo);">GPT-5.5</div>
-        <div class="lb-bar-track"><div class="lb-bar" style="width: 25.5%; background: var(--indigo);"></div></div>
-        <div class="lb-score" style="color: var(--indigo);">0.255</div>
+        <div class="lb-model" style="color:var(--secondary);">GPT-5.5</div>
+        <div class="lb-track"><div class="lb-fill" style="width:25.5%;background:var(--secondary);"></div></div>
+        <div class="lb-score" style="color:var(--secondary);">0.255</div>
       </div>
     </div>
 
-    <!-- Summary Stats -->
-    <div class="results-grid">
-      <div class="results-card">
-        <h3>Aggregate Scores (out of 2.0)</h3>
-        <div class="stat-row"><span class="stat-label">Gemini 3.1 Flash Lite</span><span class="stat-val" style="color:var(--accent);">0.667</span></div>
-        <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;Main (L1&ndash;12)</span><span class="stat-val">0.562</span></div>
-        <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;Bonus (L13)</span><span class="stat-val">0.105</span></div>
-        <div class="stat-row"><span class="stat-label">DeepSeek V4 Pro</span><span class="stat-val" style="color:var(--green);">0.648</span></div>
-        <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;Main (L1&ndash;12)</span><span class="stat-val">0.377</span></div>
-        <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;Bonus (L13)</span><span class="stat-val">0.271</span></div>
-        <div class="stat-row"><span class="stat-label">Claude Opus 4.7</span><span class="stat-val" style="color:var(--orange);">0.512</span></div>
-        <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;Main (L1&ndash;12)</span><span class="stat-val">0.367</span></div>
-        <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;Bonus (L13)</span><span class="stat-val">0.145</span></div>
-        <div class="stat-row"><span class="stat-label">Kimi K2.6</span><span class="stat-val" style="color:var(--cyan);">0.497</span></div>
-        <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;Main (L1&ndash;12)</span><span class="stat-val">0.497</span></div>
-        <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;Bonus (L13)</span><span class="stat-val">0.000</span></div>
-        <div class="stat-row"><span class="stat-label">DeepSeek V4 Flash</span><span class="stat-val" style="color:var(--yellow);">0.449</span></div>
-        <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;Main (L1&ndash;12)</span><span class="stat-val">0.449</span></div>
-        <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;Bonus (L13)</span><span class="stat-val">0.000</span></div>
-        <div class="stat-row"><span class="stat-label">GPT-5.5</span><span class="stat-val" style="color:var(--indigo);">0.255</span></div>
-        <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;Main (L1&ndash;12)</span><span class="stat-val">0.255</span></div>
-        <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;Bonus (L13)</span><span class="stat-val">0.000</span></div>
-      </div>
-      <div class="results-card">
-        <h3>Reasoning Time &amp; Cost</h3>
-        <div class="stat-row"><span class="stat-label">Flash Lite &mdash; avg LLM time/task</span><span class="stat-val">37s</span></div>
-        <div class="stat-row"><span class="stat-label">Flash Lite &mdash; total wall time</span><span class="stat-val">525s</span></div>
-        <div class="stat-row"><span class="stat-label">Flash Lite &mdash; tokens</span><span class="stat-val">30.5M</span></div>
-        <div class="stat-row"><span class="stat-label">V4 Pro &mdash; avg LLM time/task</span><span class="stat-val">257s<sup style="color:var(--text-dim);font-weight:400;">*</sup></span></div>
-        <div class="stat-row"><span class="stat-label">V4 Pro &mdash; total wall time</span><span class="stat-val">3338s</span></div>
-        <div class="stat-row"><span class="stat-label">V4 Pro &mdash; tokens</span><span class="stat-val">10.25M</span></div>
-        <div class="stat-row"><span class="stat-label">Opus 4.7 &mdash; avg LLM time/task</span><span class="stat-val">109s</span></div>
-        <div class="stat-row"><span class="stat-label">Opus 4.7 &mdash; tokens</span><span class="stat-val">7.67M</span></div>
-        <div class="stat-row"><span class="stat-label">Kimi K2.6 &mdash; avg LLM time/task</span><span class="stat-val">920s</span></div>
-        <div class="stat-row"><span class="stat-label">Kimi K2.6 &mdash; total wall time</span><span class="stat-val">12,004s</span></div>
-        <div class="stat-row"><span class="stat-label">Kimi K2.6 &mdash; tokens</span><span class="stat-val">22.9M</span></div>
-        <div class="stat-row"><span class="stat-label">V4 Flash &mdash; avg LLM time/task</span><span class="stat-val">49s<sup style="color:var(--text-dim);font-weight:400;">*</sup></span></div>
-        <div class="stat-row"><span class="stat-label">V4 Flash &mdash; tokens</span><span class="stat-val">14.72M</span></div>
-        <div class="stat-row"><span class="stat-label">GPT-5.5 &mdash; avg LLM time/task</span><span class="stat-val">150s</span></div>
-        <div class="stat-row"><span class="stat-label">GPT-5.5 &mdash; reasoning tokens</span><span class="stat-val">96.6K</span></div>
-        <div class="stat-row"><span class="stat-label">GPT-5.5 &mdash; tokens</span><span class="stat-val">6.58M</span></div>
-        <div class="stat-row" style="border-bottom:none; padding-top:12px;"><span class="stat-label" style="font-size:0.78rem; color:var(--text-dim);"><sup>*</sup> Wall-time proxy &mdash; LLM-call latency was instrumented after these runs began.</span></div>
+    <!-- Collapsible: Summary Stats -->
+    <button class="col-toggle" onclick="toggleCollapse('summary-stats')">
+      <span class="col-arrow" id="arrow-summary-stats">&#9654;</span> Detailed Summary Stats
+    </button>
+    <div id="summary-stats" class="col-body collapsed">
+      <div class="results-grid">
+        <div class="results-card">
+          <h3>Aggregate Scores (out of 2.0)</h3>
+          <div class="stat-row"><span class="stat-label">Gemini 3.1 Flash Lite</span><span class="stat-val" style="color:var(--primary);">0.667</span></div>
+          <div class="stat-row"><span class="stat-label">  Main (L1&ndash;12)</span><span class="stat-val">0.562</span></div>
+          <div class="stat-row"><span class="stat-label">  Bonus (L13)</span><span class="stat-val">0.105</span></div>
+          <div class="stat-row"><span class="stat-label">DeepSeek V4 Pro</span><span class="stat-val" style="color:var(--diff-trivial-fg);">0.648</span></div>
+          <div class="stat-row"><span class="stat-label">  Main / Bonus</span><span class="stat-val">0.377 / 0.271</span></div>
+          <div class="stat-row"><span class="stat-label">Claude Opus 4.7</span><span class="stat-val" style="color:var(--tertiary);">0.512</span></div>
+          <div class="stat-row"><span class="stat-label">  Main / Bonus</span><span class="stat-val">0.367 / 0.145</span></div>
+          <div class="stat-row"><span class="stat-label">Kimi K2.6</span><span class="stat-val" style="color:var(--diff-easy-fg);">0.497</span></div>
+          <div class="stat-row"><span class="stat-label">  Main / Bonus</span><span class="stat-val">0.497 / 0.000</span></div>
+          <div class="stat-row"><span class="stat-label">DeepSeek V4 Flash</span><span class="stat-val" style="color:var(--diff-medium-fg);">0.449</span></div>
+          <div class="stat-row"><span class="stat-label">  Main / Bonus</span><span class="stat-val">0.449 / 0.000</span></div>
+          <div class="stat-row"><span class="stat-label">GPT-5.5</span><span class="stat-val" style="color:var(--secondary);">0.255</span></div>
+          <div class="stat-row"><span class="stat-label">  Main / Bonus</span><span class="stat-val">0.255 / 0.000</span></div>
+        </div>
+        <div class="results-card">
+          <h3>Reasoning Time &amp; Cost</h3>
+          <div class="stat-row"><span class="stat-label">Flash Lite &mdash; avg LLM time/task</span><span class="stat-val">37s</span></div>
+          <div class="stat-row"><span class="stat-label">Flash Lite &mdash; tokens</span><span class="stat-val">30.5M</span></div>
+          <div class="stat-row"><span class="stat-label">V4 Pro &mdash; avg LLM time/task</span><span class="stat-val">257s</span></div>
+          <div class="stat-row"><span class="stat-label">V4 Pro &mdash; tokens</span><span class="stat-val">10.25M</span></div>
+          <div class="stat-row"><span class="stat-label">Opus 4.7 &mdash; avg LLM time/task</span><span class="stat-val">109s</span></div>
+          <div class="stat-row"><span class="stat-label">Kimi K2.6 &mdash; avg LLM time/task</span><span class="stat-val">920s</span></div>
+          <div class="stat-row"><span class="stat-label">V4 Flash &mdash; avg LLM time/task</span><span class="stat-val">49s</span></div>
+          <div class="stat-row"><span class="stat-label">GPT-5.5 &mdash; reasoning tokens</span><span class="stat-val">96.6K</span></div>
+        </div>
       </div>
     </div>
 
-    <!-- Hallucination & Completion -->
-    <div class="results-grid">
-      <div class="results-card">
-        <h3>Task Completion Rate</h3>
-        <div class="stat-row"><span class="stat-label">Gemini 3.1 Flash Lite</span><span class="stat-val" style="color:var(--accent);">100%</span></div>
-        <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;(13/13)</span><span class="stat-val"></span></div>
-        <div class="stat-row"><span class="stat-label">Claude Opus 4.7</span><span class="stat-val" style="color:var(--orange);">100%</span></div>
-        <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;(13/13)</span><span class="stat-val"></span></div>
-        <div class="stat-row"><span class="stat-label">DeepSeek V4 Flash</span><span class="stat-val" style="color:var(--yellow);">100%</span></div>
-        <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;(13/13)</span><span class="stat-val"></span></div>
-        <div class="stat-row"><span class="stat-label">GPT-5.5</span><span class="stat-val" style="color:var(--indigo);">92.3%</span></div>
-        <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;(12/13 &mdash; L13 reasoning runaway, never submitted answer)</span><span class="stat-val"></span></div>
-        <div class="stat-row"><span class="stat-label">DeepSeek V4 Pro</span><span class="stat-val" style="color:var(--green);">76.9%</span></div>
-        <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;(10/13 &mdash; provider timeouts on L3, L4, L5)</span><span class="stat-val"></span></div>
-        <div class="stat-row"><span class="stat-label">Kimi K2.6</span><span class="stat-val" style="color:var(--cyan);">69.2%</span></div>
-        <div class="stat-row"><span class="stat-label">&nbsp;&nbsp;(9/13 &mdash; HTTP 400s mid-conversation on L4, L8, L10, L13)</span><span class="stat-val"></span></div>
-      </div>
-      <div class="results-card">
-        <h3>Avg Hallucinated Techniques / Task</h3>
-        <div class="stat-row"><span class="stat-label">Gemini 3.1 Flash Lite</span><span class="stat-val" style="color:var(--accent);">1.92</span></div>
-        <div class="stat-row"><span class="stat-label">Kimi K2.6</span><span class="stat-val" style="color:var(--cyan);">2.08</span></div>
-        <div class="stat-row"><span class="stat-label">DeepSeek V4 Pro</span><span class="stat-val" style="color:var(--green);">2.69</span></div>
-        <div class="stat-row"><span class="stat-label">DeepSeek V4 Flash</span><span class="stat-val">3.38</span></div>
-        <div class="stat-row"><span class="stat-label">Claude Opus 4.7</span><span class="stat-val">5.62</span></div>
-        <div class="stat-row"><span class="stat-label">GPT-5.5</span><span class="stat-val" style="color:var(--red);">6.31</span></div>
-        <div class="stat-row" style="border-bottom:none; padding-top:12px;"><span class="stat-label" style="font-size:0.78rem; color:var(--text-dim);">The hallucination ranking and the score ranking are nearly identical. Models that don't over-claim score better &mdash; the &minus;0.05/technique penalty is the dominant lever, not raw thinking budget. GPT-5.5 invents ~3.3&times; more techniques per task than Flash Lite and pays heavily.</span></div>
+    <!-- Collapsible: Completion & Hallucination -->
+    <button class="col-toggle" onclick="toggleCollapse('completion-halluc')">
+      <span class="col-arrow" id="arrow-completion-halluc">&#9654;</span> Task Completion &amp; Hallucination Rates
+    </button>
+    <div id="completion-halluc" class="col-body collapsed">
+      <div class="results-grid">
+        <div class="results-card">
+          <h3>Task Completion Rate</h3>
+          <div class="stat-row"><span class="stat-label">Gemini 3.1 Flash Lite</span><span class="stat-val">100% (13/13)</span></div>
+          <div class="stat-row"><span class="stat-label">Claude Opus 4.7</span><span class="stat-val">100% (13/13)</span></div>
+          <div class="stat-row"><span class="stat-label">DeepSeek V4 Flash</span><span class="stat-val">100% (13/13)</span></div>
+          <div class="stat-row"><span class="stat-label">GPT-5.5</span><span class="stat-val">92.3% (L13 runaway)</span></div>
+          <div class="stat-row"><span class="stat-label">DeepSeek V4 Pro</span><span class="stat-val">76.9% (timeouts L3,4,5)</span></div>
+          <div class="stat-row"><span class="stat-label">Kimi K2.6</span><span class="stat-val">69.2% (HTTP 400s)</span></div>
+        </div>
+        <div class="results-card">
+          <h3>Avg Hallucinated Techniques / Task</h3>
+          <div class="stat-row"><span class="stat-label">Gemini 3.1 Flash Lite</span><span class="stat-val" style="color:var(--primary);">1.92</span></div>
+          <div class="stat-row"><span class="stat-label">Kimi K2.6</span><span class="stat-val">2.08</span></div>
+          <div class="stat-row"><span class="stat-label">DeepSeek V4 Pro</span><span class="stat-val">2.69</span></div>
+          <div class="stat-row"><span class="stat-label">DeepSeek V4 Flash</span><span class="stat-val">3.38</span></div>
+          <div class="stat-row"><span class="stat-label">Claude Opus 4.7</span><span class="stat-val">5.62</span></div>
+          <div class="stat-row"><span class="stat-label">GPT-5.5</span><span class="stat-val" style="color:var(--diff-vhard-fg);">6.31</span></div>
+          <div class="stat-row" style="border-bottom:none;padding-top:10px;"><span class="stat-label" style="font-size:0.72rem;">Hallucination ranking and score ranking are nearly identical.</span></div>
+        </div>
       </div>
     </div>
 
     <!-- Per-Model Findings -->
-    <h3 style="font-size: 1rem; font-weight: 600; margin: 32px 0 16px;">Per-model findings</h3>
+    <h3 style="font-family:var(--md-ref-typeface-brand);font-size:0.9rem;font-weight:600;margin:24px 0 12px;color:var(--on-surface);">Per-model findings</h3>
     <div class="card-grid">
-      <div class="card" style="border-color: rgba(0, 212, 170, 0.3);">
-        <h3 style="color: var(--accent);">Gemini 3.1 Flash Lite <span style="font-weight: 400; color: var(--text-dim); font-size: 0.78rem;">non-thinking</span></h3>
-        <p>Bench leader. Wins or ties on <strong>8 of 13 levels</strong> &mdash; including L7 DNS Tunnel (the only model above 0.33), L10 AES Encrypted, L11 Fork Bomb (0.80), and L12 JIT Shellcode (0.76). Lowest hallucination rate in the field (1.92/task). Fast: 525s total wall time, 30.5M tokens. Weakness: bonus L13 only 0.105 &mdash; without thinking, it cracks the recognition layer but not the encryption-execution layer.</p>
+      <div class="card">
+        <h3 style="color:var(--primary);">Gemini 3.1 Flash Lite <span style="font-weight:400;color:var(--on-surface-dim);font-size:0.72rem;">non-thinking</span></h3>
+        <p>Bench leader. Wins or ties on <strong>8 of 13 levels</strong> including L7 DNS Tunnel (only model above 0.33), L11 Fork Bomb (0.80), L12 JIT Shellcode (0.76). Lowest hallucination rate (1.92/task). 525s total, 30.5M tokens.</p>
       </div>
-      <div class="card" style="border-color: rgba(34, 197, 94, 0.3);">
-        <h3 style="color: var(--green);">DeepSeek V4 Pro <span style="font-weight: 400; color: var(--text-dim); font-size: 0.78rem;">thinking</span></h3>
-        <p>Only model to crack the bonus task meaningfully (L13 = 0.271). Strong calibration (2.69 hallucinations/task) &mdash; the thinking trace doesn't surface false positives. Lost L3, L4, L5 to provider timeouts during evaluation; would likely lead Main score if those held up. Slowest in the field at 920s avg per task and 3338s total wall time.</p>
+      <div class="card">
+        <h3 style="color:var(--diff-trivial-fg);">DeepSeek V4 Pro <span style="font-weight:400;color:var(--on-surface-dim);font-size:0.72rem;">thinking</span></h3>
+        <p>Only model to crack the bonus meaningfully (L13 = 0.271). Strong calibration (2.69/task). Lost L3,4,5 to timeouts; would likely lead Main if those held. Slowest: 920s avg, 3338s total.</p>
       </div>
-      <div class="card" style="border-color: rgba(245, 158, 11, 0.3);">
-        <h3 style="color: var(--orange);">Claude Opus 4.7 <span style="font-weight: 400; color: var(--text-dim); font-size: 0.78rem;">adaptive thinking, high effort</span></h3>
-        <p>Most reliable run: 13/13 valid answers, 0 provider errors. Strongest absolute showing on L8 Process Hollow (0.54). Adaptive thinking surfaces broader candidate technique sets &mdash; resulting in 5.62 hallucinations/task and a ~3.6 point penalty. The thinking-on-vs-off comparison is unexpectedly mixed: a separate no-thinking baseline of the same model scored higher on this bench.</p>
+      <div class="card">
+        <h3 style="color:var(--tertiary);">Claude Opus 4.7 <span style="font-weight:400;color:var(--on-surface-dim);font-size:0.72rem;">adaptive thinking</span></h3>
+        <p>Most reliable: 13/13 valid answers, 0 errors. Strongest on L8 Process Hollow (0.54). Adaptive thinking surfaces broader candidates &mdash; 5.62/task, ~3.6pt penalty.</p>
       </div>
-      <div class="card" style="border-color: rgba(6, 182, 212, 0.3);">
-        <h3 style="color: var(--cyan);">Kimi K2.6 <span style="font-weight: 400; color: var(--text-dim); font-size: 0.78rem;">reasoning</span></h3>
-        <p>Bench-best on L1 (0.875) and L2 (0.83) by clear margins &mdash; the easy levels go to the calibrated thinker. Second-best hallucination rate (2.08/task). Mixed L10 outcome: scored 0.40 partial credit (highest in field) but errored on the final turn before submitting a valid answer. Lost 4 tasks to mid-conversation HTTP 400 errors; 200-minute total run.</p>
+      <div class="card">
+        <h3 style="color:var(--diff-easy-fg);">Kimi K2.6 <span style="font-weight:400;color:var(--on-surface-dim);font-size:0.72rem;">reasoning</span></h3>
+        <p>Best on L1 (0.875) and L2 (0.83) by clear margins. Second-lowest hallucination (2.08/task). Lost 4 tasks to mid-conversation HTTP 400s.</p>
       </div>
-      <div class="card" style="border-color: rgba(234, 179, 8, 0.3);">
-        <h3 style="color: var(--yellow);">DeepSeek V4 Flash <span style="font-weight: 400; color: var(--text-dim); font-size: 0.78rem;">non-thinking</span></h3>
-        <p>Fast non-thinking baseline. Strong on L1 (0.72), L5 Multistage (0.69), L11 Fork Bomb (0.71). 13/13 valid answers, 636s total wall time. Submitted empty <code>{}</code> for L13 &mdash; non-thinking models cannot sustain the multi-step structure the bonus rubric requires. Outperforms two thinking models on Main &mdash; calibration over depth, again.</p>
+      <div class="card">
+        <h3 style="color:var(--diff-medium-fg);">DeepSeek V4 Flash <span style="font-weight:400;color:var(--on-surface-dim);font-size:0.72rem;">non-thinking</span></h3>
+        <p>Strong on L1 (0.72), L5 (0.69), L11 (0.71). 13/13 answers, 636s total. Outperforms two thinking models on Main. Submitted empty for L13.</p>
       </div>
-      <div class="card" style="border-color: rgba(99, 102, 241, 0.3);">
-        <h3 style="color: var(--indigo);">GPT-5.5 <span style="font-weight: 400; color: var(--text-dim); font-size: 0.78rem;">reasoning</span></h3>
-        <p>Highest hallucination rate (6.31/task). On L13, burned <strong>22 minutes and 72,493 reasoning tokens</strong> for a 0 score &mdash; reasoning trace appeared to attempt symbolic decryption, lost the thread, never converged to a final answer. Generally weakest on the harder tasks (L8, L12). Reasoning-token budget exposed in usage metadata, the only model with that-level accounting.</p>
+      <div class="card">
+        <h3 style="color:var(--secondary);">GPT-5.5 <span style="font-weight:400;color:var(--on-surface-dim);font-size:0.72rem;">reasoning</span></h3>
+        <p>Highest hallucination (6.31/task). L13 burned <strong>22 min, 72,493 reasoning tokens</strong> for 0 score. Only model with reasoning-token accounting.</p>
       </div>
     </div>
 
-    <!-- Per-Level Heatmap -->
-    <h3 style="font-size: 1rem; font-weight: 600; margin: 32px 0 16px;">Per-level score breakdown</h3>
+    <!-- Heatmap -->
+    <h3 style="font-family:var(--md-ref-typeface-brand);font-size:0.9rem;font-weight:600;margin:24px 0 12px;color:var(--on-surface);">Per-level score breakdown</h3>
     <div class="table-wrap heatmap-wrap">
       <table class="heatmap">
         <thead>
-          <tr>
-            <th>Level</th>
-            <th>Task</th>
-            <th>Flash Lite</th>
-            <th>V4 Pro</th>
-            <th>Opus 4.7</th>
-            <th>Kimi K2.6</th>
-            <th>V4 Flash</th>
-            <th>GPT-5.5</th>
-          </tr>
+          <tr><th>Lv</th><th>Task</th><th>Flash Lite</th><th>V4 Pro</th><th>Opus 4.7</th><th>Kimi</th><th>V4 Flash</th><th>GPT-5.5</th></tr>
         </thead>
         <tbody>
           <tr><td>1</td><td>TCP Reverse Shell</td><td class="h-max">0.80</td><td class="h-hi">0.66</td><td class="h-med">0.43</td><td class="h-max">0.88</td><td class="h-max">0.72</td><td class="h-med">0.49</td></tr>
@@ -992,100 +864,65 @@ footer a:hover { color: var(--accent); }
           <tr><td>10</td><td>AES Encrypted</td><td class="h-low">0.15</td><td class="h-low">0.05</td><td class="h-0">0.00</td><td class="h-med">0.40</td><td class="h-low">0.10</td><td class="h-0">0.00</td></tr>
           <tr><td>11</td><td>Fork Bomb</td><td class="h-max">0.80</td><td class="h-hi">0.62</td><td class="h-hi">0.50</td><td class="h-max">0.71</td><td class="h-max">0.71</td><td class="h-med">0.45</td></tr>
           <tr><td>12</td><td>JIT Shellcode</td><td class="h-max">0.76</td><td class="h-hi">0.64</td><td class="h-med">0.48</td><td class="h-hi">0.64</td><td class="h-hi">0.53</td><td class="h-low">0.17</td></tr>
-          <tr><td>13</td><td>Metamorphic <span class="diff-badge diff-bonus" style="font-size:0.65rem;padding:1px 6px;">Bonus</span></td><td class="h-low">0.11</td><td class="h-low">0.27</td><td class="h-low">0.15</td><td class="h-0">0.00</td><td class="h-0">0.00</td><td class="h-0">0.00</td></tr>
+          <tr><td>13</td><td>Metamorphic <span class="badge badge-bonus" style="font-size:0.58rem;">Bonus</span></td><td class="h-low">0.11</td><td class="h-low">0.27</td><td class="h-low">0.15</td><td class="h-0">0.00</td><td class="h-0">0.00</td><td class="h-0">0.00</td></tr>
         </tbody>
       </table>
     </div>
-
-    <p style="font-size: 0.82rem; color: var(--text-dim); margin-top: 24px; line-height: 1.6;">
-      Two additional models (Gemini 3.1 Pro Preview and GLM 5.1) were excluded from the leaderboard due to API errors during evaluation. Full details and per-model deep-dives in the <a href="https://github.com/agentrebench/AgentRE-Bench/blob/main/version2/ANALYSIS.md">analysis writeup</a>.
+    <p style="font-size:0.78rem;color:var(--on-surface-dim);margin-top:16px;">
+      Full per-model deep-dives in the <a href="https://github.com/agentrebench/AgentRE-Bench/blob/main/version2/ANALYSIS.md">analysis writeup</a>.
     </p>
   </div>
 </section>
 
-<!-- ── Where Models Break ── -->
+<!-- ═══════════ Findings ═══════════ -->
 <section id="findings">
   <div class="container">
-    <div class="section-tag">Findings</div>
-    <h2 class="section-title">Where models break</h2>
-    <p class="section-desc">
-      Across 7 frontier models and 13 RE tasks, the failures cluster into recognizable patterns. None of these are about model size or thinking budget. They're about specific cognitive moves that current LLMs cannot reliably execute on a binary, even when every byte of evidence is statically visible.
+    <div class="section-label">Findings</div>
+    <h2 class="section-headline">Where models break</h2>
+    <p class="section-supporting">
+      Across 7 frontier models and 13 RE tasks, the failures cluster into recognizable patterns. None are about model size or thinking budget &mdash; they're about specific cognitive moves current LLMs cannot reliably execute on a binary.
     </p>
-
     <div class="card-grid">
       <div class="card">
-        <div class="card-icon" style="background: rgba(239, 68, 68, 0.12); color: var(--red);">&#x26A0;</div>
-        <h3>Nested misdirection &mdash; "the binary lies"</h3>
-        <p><strong>L10 AES Encrypted Shell &mdash; max 0.15 valid score across all models.</strong> The binary's strings advertise AES and the symbol table mentions key schedules, but the actual implementation is 16-byte XOR. Every model identifies the surface narrative ("this uses AES") and stops. Nobody disproves the lie by tracing the actual control flow to the encryption routine. Models trust the labels.</p>
+        <div class="card-icon" style="background:var(--diff-vhard-bg);color:var(--diff-vhard-fg);">&#9888;</div>
+        <h3>Nested misdirection</h3>
+        <p><strong>L10 AES Encrypted Shell &mdash; max 0.15.</strong> Binary advertises AES, actually 16-byte XOR. Every model trusts the labels. Nobody traces control flow to disprove the lie.</p>
       </div>
-
       <div class="card">
-        <div class="card-icon" style="background: rgba(99, 102, 241, 0.12); color: var(--indigo);">&#x2261;</div>
+        <div class="card-icon" style="background:var(--secondary-container);color:var(--on-secondary-container);">&#8801;</div>
         <h3>Symbolic execution at scale</h3>
-        <p><strong>L13 Metamorphic Dropper &mdash; thinking models hit 1.0 on every metadata field, 0.0 on every execution field.</strong> V4 Pro and Opus 4.7 both perfectly identify "this is RC4 with key X stored at offset Y" but cannot mentally run RC4 across the 4 KB ciphertext to produce the decoded C2 URL or plaintext string table. The recognition layer is solved; the in-head computation layer is the wall.</p>
+        <p><strong>L13 &mdash; metadata 1.0, execution 0.0.</strong> Models identify "RC4 with key X" but can't mentally run RC4 across 4 KB. Recognition layer solved; in-head computation is the wall.</p>
       </div>
-
       <div class="card">
-        <div class="card-icon" style="background: rgba(245, 158, 11, 0.12); color: var(--orange);">&#x21BB;</div>
-        <h3>Polymorphism &amp; runtime-generated code</h3>
-        <p><strong>L4 Polymorphic Shell &mdash; max valid 0.05.</strong> The binary contains a NOP-sled generator that randomizes shellcode at runtime. The C2 IP/port live in a static template that <em>doesn't</em> mutate. Every model reads "polymorphic generator" and concludes the answer is unknowable, instead of recognizing that randomization decorates noise while signal stays static. Models conflate "generates random output" with "answer is random."</p>
+        <div class="card-icon" style="background:rgba(255,171,64,0.12);color:var(--tertiary);">&#8635;</div>
+        <h3>Polymorphism confusion</h3>
+        <p><strong>L4 Polymorphic Shell &mdash; max 0.05.</strong> Random NOP sled, but C2 IP/port are static. Every model reads "polymorphic" and concludes "unknowable."</p>
       </div>
-
       <div class="card">
-        <div class="card-icon" style="background: rgba(0, 212, 170, 0.12); color: var(--accent);">&#x21C6;</div>
-        <h3>Stateful protocol reverse-engineering</h3>
-        <p><strong>L7 DNS Tunnel &mdash; 5 of 6 models score below 0.10; only Gemini Flash Lite breaks through at 0.54.</strong> The C2 protocol uses TXT-record commands across multiple beacon/response pairs, with hex-encoded subdomain exfiltration. Reconstructing framing from static disassembly requires sustained reasoning across many control-flow paths. Most models get lost; the ones that succeed are fast and focused, not deep thinkers.</p>
+        <div class="card-icon" style="background:var(--primary-container);color:var(--on-primary-container);">&#8660;</div>
+        <h3>Stateful protocol RE</h3>
+        <p><strong>L7 DNS Tunnel &mdash; 5 of 6 models below 0.10.</strong> TXT-record commands across multiple beacon/response pairs. Reconstructing framing requires sustained control-flow reasoning.</p>
       </div>
-
       <div class="card">
-        <div class="card-icon" style="background: rgba(34, 197, 94, 0.12); color: var(--green);">&#x270E;</div>
-        <h3>Over-claiming techniques (calibration failure)</h3>
-        <p><strong>The hallucination ranking and the score ranking are nearly identical.</strong> GPT-5.5 invents 6.31 fabricated techniques per task and pays a ~4.1 point penalty. Opus 4.7 with thinking surfaces broader candidate lists, hits 5.62 hallucinations, pays ~3.6 points. Gemini Flash Lite (1.92) and Kimi (2.08) lead the bench because they don't claim techniques they can't defend. Calibration eats reasoning depth on this bench.</p>
+        <div class="card-icon" style="background:var(--diff-trivial-bg);color:var(--diff-trivial-fg);">&#9998;</div>
+        <h3>Over-claiming</h3>
+        <p><strong>Hallucination rank &asymp; score rank.</strong> GPT-5.5: 6.31/task (~4.1pt penalty). Opus: 5.62/task (~3.6pt). Flash Lite (1.92) and Kimi (2.08) lead by not claiming what they can't defend.</p>
       </div>
-
       <div class="card">
-        <div class="card-icon" style="background: rgba(6, 182, 212, 0.12); color: var(--cyan);">&#x21BB;</div>
-        <h3>Reasoning runaway on hard tasks</h3>
-        <p><strong>GPT-5.5 on L13: 22 minutes, 72,493 reasoning tokens, never submitted an answer.</strong> The reasoning trace appears to attempt symbolic decryption, gets lost, and never converges to a final tool call. Kimi's L4/L8/L10/L13 also fail this way (HTTP 400s on payload reconstruction mid-thinking). Long thinking budgets without grounding in tool output produce expensive zeros.</p>
+        <div class="card-icon" style="background:var(--diff-easy-bg);color:var(--diff-easy-fg);">&#8635;</div>
+        <h3>Reasoning runaway</h3>
+        <p><strong>GPT-5.5 L13: 22 min, 72K tokens, 0 score.</strong> Reasoning trace attempted symbolic decryption, got lost, never converged. Expensive zeros.</p>
       </div>
-
-      <div class="card">
-        <div class="card-icon" style="background: rgba(234, 179, 8, 0.12); color: var(--yellow);">&#x29C9;</div>
-        <h3>Multi-step inference under noise</h3>
-        <p><strong>L8 Process Hollowing, L9 SO Injection &mdash; consistent mid-pack scores (0.30&ndash;0.54), no model dominates.</strong> Both tasks require tracking many evidential threads (PTRACE_POKETEXT call, RIP modification, dlsym hijacking, RTLD_NEXT lookup) and synthesizing them into a coherent attack chain. Models recover individual techniques but miss the synthesis; partial credit is the norm.</p>
-      </div>
-
-      <div class="card">
-        <div class="card-icon" style="background: rgba(139, 92, 246, 0.12); color: #a78bfa;">&#x231B;</div>
-        <h3>Cumulative complexity (the bonus tax)</h3>
-        <p><strong>L13 Metamorphic Dropper &mdash; 18 ground-truth techniques, max bench score 0.27.</strong> RC4-encrypted strings + control-flow flattening + triple anti-debug + self-modifying code + process hiding via /proc/self/mem. Even thinking models get only 25-30% of the technique set on Jaccard. Failure compounds: every missed technique reduces overlap, every fabricated technique reduces score by 0.03. The bench's hardest task isn't unsolvable in principle &mdash; it's unsolvable in practice without a compute aid like a Python sandbox.</p>
-      </div>
-    </div>
-
-    <div style="margin-top: 32px; padding: 24px 28px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px;">
-      <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 12px;">What kinds of malware are still hard?</h3>
-      <p style="font-size: 0.92rem; color: var(--text-dim); line-height: 1.7; margin-bottom: 12px;">
-        Frontier reasoning models in V2 reliably handle <strong style="color: var(--text);">plaintext C2, single-byte XOR, named anti-debug syscalls, fork bombs, and ICMP covert channels</strong> &mdash; anything that maps cleanly to a well-known training-data pattern with literal artifacts in <code>strings</code> or <code>objdump</code>.
-      </p>
-      <p style="font-size: 0.92rem; color: var(--text-dim); line-height: 1.7; margin-bottom: 0;">
-        They <strong style="color: var(--text);">struggle reliably</strong> when the malware:
-        (1) lies about what it's doing (claimed AES, actual XOR);
-        (2) requires symbolic execution beyond a few hundred bytes (RC4 on a 4 KB ciphertext);
-        (3) generates code at runtime that defeats static signatures (polymorphic shellcode);
-        (4) uses stateful protocols that span multiple control-flow paths (DNS tunneling);
-        (5) layers many techniques cumulatively (the metamorphic dropper).
-        These five failure modes are the design lever for V3 &mdash; samples that exercise them are where the leaderboard will spread.
-      </p>
     </div>
   </div>
 </section>
 
-<!-- ── Getting Started ── -->
+<!-- ═══════════ Getting Started ═══════════ -->
 <section id="getting-started">
   <div class="container">
-    <div class="section-tag">Getting Started</div>
-    <h2 class="section-title">Up and running in 4 steps</h2>
-    <p class="section-desc">
+    <div class="section-label">Getting Started</div>
+    <h2 class="section-headline">Up and running in 5 steps</h2>
+    <p class="section-supporting">
       Zero Python dependencies. All LLM provider calls use Python's built-in urllib. Just bring an API key.
     </p>
     <div class="steps">
@@ -1103,7 +940,7 @@ cp .env.example .env   # add your API key(s)</code>
         <div class="step-num">2</div>
         <div>
           <h3>Build Linux binaries</h3>
-          <p>Compile the 13 ELF64 Linux/Unix challenge binaries. Uses local gcc on Linux x86-64, Docker on macOS.</p>
+          <p>Compile the 13 ELF64 challenge binaries. Uses local gcc on Linux, Docker on macOS.</p>
           <code>chmod +x build_binaries.sh
 ./build_binaries.sh</code>
         </div>
@@ -1112,7 +949,7 @@ cp .env.example .env   # add your API key(s)</code>
         <div class="step-num">3</div>
         <div>
           <h3>Build Windows binaries</h3>
-          <p>Cross-compile the 10 PE32+ Windows challenge binaries. Requires MinGW cross-compiler or falls back to Docker.</p>
+          <p>Cross-compile 10 PE32+ challenge binaries. MinGW or Docker fallback.</p>
           <code>chmod +x build_windows_binaries.sh
 ./build_windows_binaries.sh</code>
         </div>
@@ -1121,7 +958,7 @@ cp .env.example .env   # add your API key(s)</code>
         <div class="step-num">4</div>
         <div>
           <h3>Build tools image</h3>
-          <p>Build the Docker image for sandboxed tool execution (network-isolated, read-only, memory-capped).</p>
+          <p>Build the Docker image for sandboxed tool execution.</p>
           <code>docker build --platform linux/amd64 \
   -t agentre-bench-tools:latest \
   -f Dockerfile.tools .</code>
@@ -1131,7 +968,7 @@ cp .env.example .env   # add your API key(s)</code>
         <div class="step-num">5</div>
         <div>
           <h3>Run the benchmark</h3>
-          <p>Run a single task or the full 23-level suite. Supports Claude, GPT, Gemini, and DeepSeek.</p>
+          <p>Run a single task or the full 23-level suite.</p>
           <code>python run_benchmark.py --task level1_TCPServer -v
 python run_benchmark.py --all --provider anthropic</code>
         </div>
@@ -1140,7 +977,7 @@ python run_benchmark.py --all --provider anthropic</code>
   </div>
 </section>
 
-<!-- ── Footer ── -->
+<!-- ═══════════ Footer ═══════════ -->
 <footer>
   <div class="container">
     <div class="footer-links">
@@ -1151,6 +988,73 @@ python run_benchmark.py --all --provider anthropic</code>
     <p>AgentRE-Bench &mdash; LLM reverse engineering benchmark with deterministic scoring.</p>
   </div>
 </footer>
+
+<!-- ═══════════ JavaScript ═══════════ -->
+<script>
+function switchPlatform(platform) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + platform).classList.add('active');
+  var linux = document.getElementById('panel-linux');
+  var win = document.getElementById('panel-windows');
+  if (platform === 'linux') {
+    linux.classList.remove('hidden'); linux.classList.add('fade-in');
+    win.classList.add('hidden');
+  } else {
+    win.classList.remove('hidden'); win.classList.add('fade-in');
+    linux.classList.add('hidden');
+  }
+}
+
+function highlightLevel(rowId, chipEl) {
+  var panel = document.getElementById('panel-linux');
+  if (panel.classList.contains('hidden')) panel = document.getElementById('panel-windows');
+  panel.querySelectorAll('tr.highlight').forEach(tr => tr.classList.remove('highlight'));
+  panel.querySelectorAll('.chip.active').forEach(c => c.classList.remove('active'));
+  var row = document.getElementById(rowId);
+  if (row) { row.classList.add('highlight'); row.scrollIntoView({behavior:'smooth',block:'center'}); }
+  if (chipEl) chipEl.classList.add('active');
+}
+
+function toggleCollapse(id) {
+  var body = document.getElementById(id);
+  var arrow = document.getElementById('arrow-' + id);
+  if (body.classList.contains('collapsed')) {
+    body.classList.remove('collapsed');
+    if (arrow) arrow.classList.add('open');
+  } else {
+    body.classList.add('collapsed');
+    if (arrow) arrow.classList.remove('open');
+  }
+}
+
+function toggleTheme() {
+  var html = document.documentElement;
+  var btn = document.getElementById('themeBtn');
+  if (html.getAttribute('data-theme') === 'dark') {
+    html.setAttribute('data-theme', 'light');
+    btn.innerHTML = '&#x1f31a;';
+    localStorage.setItem('theme', 'light');
+  } else {
+    html.setAttribute('data-theme', 'dark');
+    btn.innerHTML = '&#x1f31e;';
+    localStorage.setItem('theme', 'dark');
+  }
+}
+
+// On load: respect saved preference or system preference
+(function() {
+  var saved = localStorage.getItem('theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+  } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
+  var btn = document.getElementById('themeBtn');
+  if (btn) {
+    btn.innerHTML = document.documentElement.getAttribute('data-theme') === 'dark' ? '&#x1f31e;' : '&#x1f31a;';
+  }
+})();
+</script>
 
 </body>
 </html>
