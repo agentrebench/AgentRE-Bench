@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgentRE Challenge Submission Instructions</title>
+<meta name="description" content="Private GitHub submission workflow and required repository structure for AgentRE Challenge Season 1.">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/challenge/challenge.css">
+<script defer src="/challenge/challenge-config.js"></script>
+<script defer src="/challenge/challenge-data.js"></script>
+<script defer src="/challenge/challenge-render.js"></script>
+</head>
+<body>
+<nav class="site-nav">
+  <div class="container nav-inner">
+    <a class="brand" href="/">
+      <img src="/logo.svg" alt="AgentRE-Bench logo">
+      <span>AgentRE-Bench</span>
+    </a>
+    <div class="nav-links">
+      <div class="nav-menu">
+        <a class="nav-menu-trigger" href="/challenge/">Challenge</a>
+        <div class="nav-dropdown" aria-label="Challenge pages">
+          <a href="/challenge/rules/">Rules</a>
+          <a href="/challenge/submit/" aria-current="page">Submit</a>
+          <a href="/challenge/leaderboard/">Leaderboard</a>
+        </div>
+      </div>
+      <a href="/#leaderboard">Benchmark</a>
+      <a href="https://github.com/agentrebench/AgentRE-Bench">GitHub</a>
+      <a class="nav-cta" data-config-href="registrationPageUrl" href="#">Register</a>
+    </div>
+    <button class="theme-toggle" type="button" aria-label="Switch color theme">Light</button>
+  </div>
+</nav>
+
+<main>
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="hero-label"><span data-config="competitionName">AgentRE Challenge</span>&nbsp;/ Submit</div>
+        <h1>Private GitHub Submission Workflow</h1>
+        <p class="subtitle">
+          Keep the full submission private, register only safe metadata publicly, and let AgentRE evaluate exactly the frozen commit resolved from your final tag.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" data-config-href="registrationPageUrl" href="#">Register by PR</a>
+          <a class="btn btn-secondary" href="/challenge/rules/">Read Rules</a>
+          <a class="btn btn-secondary" href="/challenge/leaderboard/">Leaderboard</a>
+        </div>
+      </div>
+      <aside class="hero-panel" aria-label="Submission requirements">
+        <div class="panel-top">
+          <div class="panel-title">Required Before Deadline</div>
+          <span class="status-pill" data-status-label>Upcoming</span>
+        </div>
+        <div class="fact-grid">
+          <div class="fact-card"><strong>Private</strong><span>Entrant-owned GitHub repository</span></div>
+          <div class="fact-card"><strong data-organizer-username>agentrebench</strong><span>Organizer collaborator</span></div>
+          <div class="fact-card"><strong>Tag</strong><span data-config="finalSubmissionTag">agentre-season-1-final</span></div>
+          <div class="fact-card"><strong>SHA-256</strong><span>Binary checksum</span></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section id="steps">
+    <div class="container">
+      <div class="section-tag">Participant Steps</div>
+      <h2 class="section-title">Prepare the private repository, then register with a public-safe PR.</h2>
+      <ol class="numbered-steps">
+        <li>Create a new private GitHub repository named <code data-config="privateRepositoryName">agentre-challenge-entry</code>.</li>
+        <li>Add the configured AgentRE organizer <code data-organizer-username>agentrebench</code> as a collaborator.</li>
+        <li>Add the required files.</li>
+        <li>Commit all submission material.</li>
+        <li>Verify the binary checksum.</li>
+        <li>Create and push the final tag <code data-config="finalSubmissionTag">agentre-season-1-final</code>.</li>
+        <li>Copy the resolved full 40-character commit SHA from that tag.</li>
+        <li>Open a public-safe AgentRE registration pull request.</li>
+        <li>Add one public-safe registration JSON file and add it to the registration manifest.</li>
+        <li>Keep the private repository available through the end of judging.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="collaborator">
+    <div class="container">
+      <div class="section-tag">Collaborator Access</div>
+      <h2 class="section-title">Invite the organizer before registering.</h2>
+      <div class="grid-2">
+        <article class="callout">
+          <h3>GitHub path</h3>
+          <p>Repository &rarr; Settings &rarr; Collaborators &rarr; Add people</p>
+          <p>Add <code data-organizer-username>agentrebench</code> and keep access available through the end of judging.</p>
+        </article>
+        <article class="callout warning">
+          <h3>Access is private review only</h3>
+          <p>Do not place private repository URLs anywhere public. AgentRE infers the private repository from your GitHub handle and the required repository name, then uses collaborator access to clone the frozen commit privately.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="structure">
+    <div class="container">
+      <div class="section-tag">Required Repository Structure</div>
+      <h2 class="section-title">Keep all private artifacts in the entrant repository.</h2>
+      <div class="code-panel" aria-label="Required repository structure">
+<pre>agentre-challenge-entry/
+├── README.md
+├── submission.json
+├── challenge.elf
+├── SHA256SUMS
+├── build.sh
+├── src/
+└── ground_truth.md</pre>
+      </div>
+      <div class="grid-2" style="margin-top: 22px;">
+        <article class="card">
+          <h3>README.md</h3>
+          <ul>
+            <li>Challenge title</li>
+            <li>Required toolchain</li>
+            <li>Compiler and version where relevant</li>
+            <li>Supported environment</li>
+            <li>Build command</li>
+            <li>Reproduction instructions</li>
+            <li>Any required non-networked runtime dependencies</li>
+            <li>Ownership or licensing statement</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>submission.json</h3>
+          <p>Public-safe metadata plus the final tag, resolved commit SHA, and binary checksum. Use the template below and keep it in the private repository.</p>
+        </article>
+        <article class="card">
+          <h3>challenge.elf</h3>
+          <p>The exact <span data-config="architecture">Linux x86-64 ELF</span> binary AgentRE evaluates. It must remain under <span data-config="maximumBinarySize">10 MB</span>.</p>
+        </article>
+        <article class="card">
+          <h3>SHA256SUMS</h3>
+          <p>SHA-256 digest for the submitted binary and any other critical artifacts needed for verification.</p>
+        </article>
+        <article class="card">
+          <h3>build.sh</h3>
+          <p>A non-networked build script that reproduces the submitted binary from the included source.</p>
+        </article>
+        <article class="card">
+          <h3>src/</h3>
+          <p>Complete source code required to rebuild the binary. Do not omit generated files needed for reproduction.</p>
+        </article>
+        <article class="card">
+          <h3>ground_truth.md</h3>
+          <p>Private answer key and scoring guide. This file must not be pasted into the public registration PR or copied into AgentRE-Bench.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="submission-json">
+    <div class="container">
+      <div class="section-tag">submission.json Template</div>
+      <h2 class="section-title">Use this exact shape unless AgentRE announces an update.</h2>
+      <div class="code-panel">
+<pre data-render="submission-json-template">{
+  "github_handle": "example-user",
+  "challenge_title": "Example Challenge",
+  "architecture": "linux-x86_64",
+  "binary_path": "challenge.elf",
+  "final_tag": "agentre-season-1-final",
+  "final_commit_sha": "RESOLVED_FULL_40_CHARACTER_COMMIT_SHA",
+  "binary_sha256": "SHA256_OF_BINARY",
+  "public_handle": true,
+  "public_title": true
+}</pre>
+      </div>
+    </div>
+  </section>
+
+  <section id="ground-truth">
+    <div class="container">
+      <div class="section-tag">Private Ground Truth</div>
+      <h2 class="section-title">Make the answer key useful for scoring.</h2>
+      <div class="grid-2">
+        <article class="card">
+          <h3>ground_truth.md must include</h3>
+          <ul>
+            <li>What the binary actually does</li>
+            <li>Important functions</li>
+            <li>Important algorithms</li>
+            <li>Key behaviors</li>
+            <li>Required facts for a correct model answer</li>
+            <li>Partially correct findings</li>
+            <li>Suggested scoring rubric</li>
+            <li>Deliberate reverse-engineering traps</li>
+            <li>Disclosure of packing, obfuscation, or unusual compiler techniques</li>
+          </ul>
+        </article>
+        <article class="callout warning">
+          <h3>Keep this file private</h3>
+          <p>Do not paste ground truth into the public registration PR. Do not copy it into the AgentRE-Bench website repository. AgentRE will review it privately through collaborator access.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="commands">
+    <div class="container">
+      <div class="section-tag">Verification Commands</div>
+      <h2 class="section-title">Record the exact commit and verify checksums.</h2>
+      <div class="grid-3">
+        <article class="code-panel"><pre>git tag <span data-config="finalSubmissionTag">agentre-season-1-final</span>
+git push origin <span data-config="finalSubmissionTag">agentre-season-1-final</span></pre></article>
+        <article class="code-panel"><pre>git rev-parse <span data-config="finalSubmissionTag">agentre-season-1-final</span>^{commit}</pre></article>
+        <article class="code-panel"><pre>sha256sum challenge.elf</pre></article>
+        <article class="code-panel"><pre>sha256sum -c SHA256SUMS</pre></article>
+      </div>
+      <p class="section-kicker" style="margin-top: 22px;">
+        AgentRE evaluates only the commit resolved from the registered final tag before the deadline. Later branch changes do not affect the submitted entry, and moving or deleting the final tag may disqualify the entry.
+      </p>
+    </div>
+  </section>
+
+  <section id="website-registration">
+    <div class="container">
+      <div class="section-tag">Pull Request Registration</div>
+      <h2 class="section-title">The registration PR stores only public-safe metadata and lets the static leaderboard update after merge.</h2>
+      <div class="grid-2">
+        <article class="callout">
+          <h3>Public registration data</h3>
+          <ul>
+            <li>GitHub handle</li>
+            <li>Required private repository name, not a URL</li>
+            <li>Public challenge title or "Withheld until judging"</li>
+            <li>Final tag name and resolved full 40-character commit SHA</li>
+            <li>Binary SHA-256</li>
+            <li>Required confirmations and display permissions</li>
+          </ul>
+        </article>
+        <article class="callout danger">
+          <h3>Never publish</h3>
+          <ul>
+            <li>Private repository URLs</li>
+            <li>Binary attachments or downloads</li>
+            <li>Source code</li>
+            <li>Ground truth</li>
+            <li>Secrets, tokens, credentials, or private keys</li>
+            <li>Personal information or third-party proprietary code</li>
+            <li>Private download links</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="automation-warning">
+    <div class="container">
+      <div class="section-tag">Automation Warning</div>
+      <h2 class="section-title">Do not rely on GitHub Actions or auto-executing workflows.</h2>
+      <article class="callout warning">
+        <ul>
+          <li>Do not rely on GitHub Actions.</li>
+          <li>Do not configure automatic workflows intended to execute when the organizer accesses the repository.</li>
+          <li>Do not require network access for build or evaluation.</li>
+          <li>Do not commit credentials, API tokens, private keys, personal information, or third-party proprietary code.</li>
+          <li>AgentRE evaluates only the frozen commit resolved from the registered final tag.</li>
+        </ul>
+      </article>
+      <div class="button-row" style="margin-top: 22px;">
+        <a class="btn btn-primary" data-config-href="registrationPageUrl" href="#">Register by PR</a>
+        <a class="btn btn-secondary" href="/challenge/rules/">Read Rules</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-links">
+      <a href="/challenge/">Challenge</a>
+      <a href="/challenge/rules/">Rules</a>
+      <a href="/challenge/submit/">Submit</a>
+      <a href="/challenge/leaderboard/">Leaderboard</a>
+      <a href="https://github.com/agentrebench/AgentRE-Bench">GitHub</a>
+    </div>
+    <p>AgentRE-Bench - LLM reverse engineering benchmark with deterministic scoring.</p>
+  </div>
+</footer>
+</body>
+</html>

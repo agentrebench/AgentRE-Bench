@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register AgentRE Challenge Entry</title>
+<meta name="description" content="Register an AgentRE Challenge Season 1 submission with a public-safe pull request.">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/challenge/challenge.css">
+<script defer src="/challenge/challenge-config.js"></script>
+<script defer src="/challenge/challenge-data.js"></script>
+<script defer src="/challenge/challenge-render.js"></script>
+</head>
+<body>
+<nav class="site-nav">
+  <div class="container nav-inner">
+    <a class="brand" href="/">
+      <img src="/logo.svg" alt="AgentRE-Bench logo">
+      <span>AgentRE-Bench</span>
+    </a>
+    <div class="nav-links">
+      <div class="nav-menu">
+        <a class="nav-menu-trigger" href="/challenge/">Challenge</a>
+        <div class="nav-dropdown" aria-label="Challenge pages">
+          <a href="/challenge/rules/">Rules</a>
+          <a href="/challenge/submit/">Submit</a>
+          <a href="/challenge/leaderboard/">Leaderboard</a>
+        </div>
+      </div>
+      <a href="/#leaderboard">Benchmark</a>
+      <a href="https://github.com/agentrebench/AgentRE-Bench">GitHub</a>
+      <a class="nav-cta" href="/challenge/register/" aria-current="page">Register</a>
+    </div>
+    <button class="theme-toggle" type="button" aria-label="Switch color theme">Light</button>
+  </div>
+</nav>
+
+<main>
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="hero-label"><span data-config="competitionName">AgentRE Challenge</span>&nbsp;/ Register</div>
+        <h1>Register With a Public-Safe Pull Request</h1>
+        <p class="subtitle">
+          Your actual submission stays in your private GitHub repository. The pull request only registers public-safe metadata so AgentRE can track status on the leaderboard.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" data-config-href="registrationPullRequestUrl" href="https://github.com/agentrebench/AgentRE-Bench/compare?quick_pull=1&amp;template=challenge-registration.md">Open Pull Request</a>
+          <a class="btn btn-secondary" href="https://github.com/agentrebench/AgentRE-Bench/fork">Fork Repository</a>
+          <a class="btn btn-secondary" href="/challenge/submit/">Submission Instructions</a>
+        </div>
+      </div>
+      <aside class="hero-panel" aria-label="Registration model">
+        <div class="panel-top">
+          <div class="panel-title">PR Registration</div>
+          <span class="status-pill" data-status-label>Open</span>
+        </div>
+        <div class="fact-grid">
+          <div class="fact-card"><strong>Public</strong><span>One safe JSON registration file</span></div>
+          <div class="fact-card"><strong>Private</strong><span>Binary, source, and ground truth stay out</span></div>
+          <div class="fact-card"><strong data-config="privateRepositoryName">agentre-challenge-entry</strong><span>Required private repo name</span></div>
+          <div class="fact-card"><strong>Static</strong><span>Leaderboard updates after merge</span></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section id="steps">
+    <div class="container">
+      <div class="section-tag">Registration Steps</div>
+      <h2 class="section-title">Open a PR that adds only public-safe metadata.</h2>
+      <ol class="numbered-steps">
+        <li>Create your private submission repository named <code data-config="privateRepositoryName">agentre-challenge-entry</code>.</li>
+        <li>Add <code data-organizer-username>agentrebench</code> as a collaborator.</li>
+        <li>Prepare the required private files, binary, source, checksums, build script, and ground truth in that private repository.</li>
+        <li>Fork the public <code>AgentRE-Bench</code> repository.</li>
+        <li>Copy <code data-config="registrationTemplatePath">docs/challenge/registrations/template.json</code> to a new filename in <code>docs/challenge/registrations/</code>.</li>
+        <li>Fill in the public-safe registration metadata, including the final tag, resolved commit SHA, checksum, and eligibility confirmations.</li>
+        <li>Add your filename to <code>docs/challenge/registrations/index.json</code>.</li>
+        <li>Open a pull request using the challenge registration template.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="json-template">
+    <div class="container">
+      <div class="section-tag">Registration JSON</div>
+      <h2 class="section-title">Use this shape in the public PR.</h2>
+      <p class="section-kicker">
+        The file is public. It intentionally does not include a private repository URL. AgentRE infers the private repository from your GitHub handle and the required repository name <code data-config="privateRepositoryName">agentre-challenge-entry</code>.
+      </p>
+      <div class="code-panel" aria-label="Registration JSON template">
+<pre data-render="registration-json-template">{
+  "entry_id": "PENDING",
+  "github_handle": "@example-user",
+  "challenge_title": "Withheld until judging",
+  "public_handle": true,
+  "public_title": false,
+  "private_repository_name": "agentre-challenge-entry",
+  "entrant_submission_number": 1,
+  "final_tag": "agentre-season-1-final",
+  "final_commit_sha": "RESOLVED_FULL_40_CHARACTER_COMMIT_SHA",
+  "binary_sha256": "SHA256_OF_BINARY",
+  "registration_status": "Registered",
+  "validation_status": "Pending",
+  "evaluation_status": "Pending",
+  "repo_private_confirmed": true,
+  "organizer_invited": true,
+  "required_files_confirmed": true,
+  "rules_read": true,
+  "age_18_or_older_confirmed": true,
+  "us_eligibility_confirmed": true,
+  "free_entry_confirmed": true,
+  "designated_prize_recipient_confirmed": true,
+  "original_work_or_rights_confirmed": true,
+  "no_private_urls_or_artifacts_in_pr": true
+}</pre>
+      </div>
+    </div>
+  </section>
+
+  <section id="manifest">
+    <div class="container">
+      <div class="section-tag">Manifest</div>
+      <h2 class="section-title">Add your registration file to the static manifest.</h2>
+      <p class="section-kicker">
+        The leaderboard loads every file listed in <code>docs/challenge/registrations/index.json</code>. Add only your filename, not a private URL.
+      </p>
+      <div class="code-panel" aria-label="Registration manifest example">
+<pre>{
+  "files": [
+    "example-user-example-challenge.json"
+  ]
+}</pre>
+      </div>
+    </div>
+  </section>
+
+  <section id="public-safety">
+    <div class="container">
+      <div class="section-tag">Public Safety</div>
+      <h2 class="section-title">The registration PR is public. Keep private material out.</h2>
+      <div class="grid-2">
+        <article class="callout">
+          <h3>Allowed in the PR</h3>
+          <ul>
+            <li>GitHub handle</li>
+            <li>Public challenge title or "Withheld until judging"</li>
+            <li>Final tag and resolved full 40-character commit SHA</li>
+            <li>Binary SHA-256</li>
+            <li>Display permissions, ownership confirmation, and eligibility confirmations</li>
+          </ul>
+        </article>
+        <article class="callout danger">
+          <h3>Never include in the PR</h3>
+          <ul>
+            <li>Private repository URL</li>
+            <li>Binary attachments or downloads</li>
+            <li>Source code</li>
+            <li>Ground truth</li>
+            <li>Secrets, tokens, credentials, or private keys</li>
+            <li>Private evaluation notes or model transcripts</li>
+          </ul>
+        </article>
+      </div>
+      <div class="button-row" style="margin-top: 22px;">
+        <a class="btn btn-primary" data-config-href="registrationPullRequestUrl" href="https://github.com/agentrebench/AgentRE-Bench/compare?quick_pull=1&amp;template=challenge-registration.md">Open Pull Request</a>
+        <a class="btn btn-secondary" href="/challenge/leaderboard/">View Leaderboard</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-links">
+      <a href="/challenge/">Challenge</a>
+      <a href="/challenge/rules/">Rules</a>
+      <a href="/challenge/submit/">Submit</a>
+      <a href="/challenge/leaderboard/">Leaderboard</a>
+      <a href="https://github.com/agentrebench/AgentRE-Bench">GitHub</a>
+    </div>
+    <p>AgentRE-Bench - LLM reverse engineering benchmark with deterministic scoring.</p>
+  </div>
+</footer>
+</body>
+</html>

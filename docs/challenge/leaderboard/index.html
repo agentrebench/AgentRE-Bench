@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgentRE Challenge Leaderboard</title>
+<meta name="description" content="Public-safe registration and results leaderboard for AgentRE Challenge Season 1.">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/challenge/challenge.css">
+<script defer src="/challenge/challenge-config.js"></script>
+<script defer src="/challenge/challenge-data.js"></script>
+<script defer src="/challenge/challenge-render.js"></script>
+</head>
+<body>
+<nav class="site-nav">
+  <div class="container nav-inner">
+    <a class="brand" href="/">
+      <img src="/logo.svg" alt="AgentRE-Bench logo">
+      <span>AgentRE-Bench</span>
+    </a>
+    <div class="nav-links">
+      <div class="nav-menu">
+        <a class="nav-menu-trigger" href="/challenge/">Challenge</a>
+        <div class="nav-dropdown" aria-label="Challenge pages">
+          <a href="/challenge/rules/">Rules</a>
+          <a href="/challenge/submit/">Submit</a>
+          <a href="/challenge/leaderboard/" aria-current="page">Leaderboard</a>
+        </div>
+      </div>
+      <a href="/#leaderboard">Benchmark</a>
+      <a href="https://github.com/agentrebench/AgentRE-Bench">GitHub</a>
+      <a class="nav-cta" data-config-href="registrationPageUrl" href="#">Register</a>
+    </div>
+    <button class="theme-toggle" type="button" aria-label="Switch color theme">Light</button>
+  </div>
+</nav>
+
+<main>
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="hero-label"><span data-config="competitionName">AgentRE Challenge</span>&nbsp;/ Leaderboard</div>
+        <h1>Season 1 Public Leaderboard</h1>
+        <p class="subtitle">
+          Public status only during submissions. Private repository URLs, binaries, source code, ground truth, detailed techniques, interim scores, and full model transcripts are not displayed.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" data-config-href="registrationPageUrl" href="#">Register Entry</a>
+          <a class="btn btn-secondary" href="/challenge/rules/">Read Rules</a>
+          <a class="btn btn-secondary" href="/challenge/submit/">Submission Instructions</a>
+        </div>
+      </div>
+      <aside class="hero-panel" aria-label="Leaderboard summary">
+        <div class="panel-top">
+          <div class="panel-title">Public Summary</div>
+          <span class="status-pill" data-status-label>Upcoming</span>
+        </div>
+        <div class="summary-grid">
+          <div class="summary-card"><strong data-summary="registered">0</strong><span>Registered</span></div>
+          <div class="summary-card"><strong data-summary="validated">0</strong><span>Validated</span></div>
+          <div class="summary-card"><strong data-summary="evaluated">0</strong><span>Evaluated</span></div>
+          <div class="summary-card"><strong data-config="minimumAcceptedSubmissions">1</strong><span>Prize threshold</span></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section id="leaderboard">
+    <div class="container">
+      <div class="section-tag">Entries</div>
+      <h2 class="section-title">Registration status before judging, final difficulty scores after review.</h2>
+      <p class="section-kicker">
+        During submissions, the public leaderboard may show entry ID, GitHub handle when permitted, challenge title when permitted, registration status, validation status, and evaluation status. Average correctness, difficulty score, and model outcomes are published only after judging and sanitization.
+      </p>
+
+      <div class="locked-state warning" data-locked-state hidden>
+        <h3>Results are locked during judging.</h3>
+        <p>Validation and evaluation status may change while AgentRE reviews entries, but interim scores, model results, and full transcripts remain private until final publication.</p>
+      </div>
+
+      <div class="empty-state" data-empty-state>
+        <h3>No public entries yet.</h3>
+        <p>Registered entries will appear here after public-safe registration PRs are merged. Private repositories, binaries, source code, ground truth, and repository URLs are never added to this page during submissions.</p>
+      </div>
+
+      <div class="table-wrap desktop-table" aria-describedby="leaderboard-description">
+        <table data-render="leaderboard-table">
+          <thead>
+            <tr>
+              <th>Entry ID</th>
+              <th>Creator</th>
+              <th>Challenge Title</th>
+              <th>Registration</th>
+              <th>Validation</th>
+              <th>Evaluation</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="leaderboard-cards" data-render="leaderboard-cards" aria-label="Challenge leaderboard cards"></div>
+      <p id="leaderboard-description" class="section-kicker" style="margin-top: 20px;">
+        Optional public repository links may be added after Season 1 only when explicitly approved by the participant.
+      </p>
+    </div>
+  </section>
+
+  <section id="publication-model">
+    <div class="container">
+      <div class="section-tag">Publication Model</div>
+      <h2 class="section-title">What appears here changes by competition phase.</h2>
+      <div class="grid-2">
+        <article class="card">
+          <h3>Before judging</h3>
+          <ul>
+            <li>Entry ID</li>
+            <li>GitHub handle when permission is granted</li>
+            <li>Public challenge title or "Withheld until judging"</li>
+            <li>Registration status</li>
+            <li>Validation status</li>
+            <li>Evaluation status</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>After judging</h3>
+          <ul>
+            <li>Rank</li>
+            <li>Creator</li>
+            <li>Challenge title</li>
+            <li>Models tested</li>
+            <li>Average official model correctness</li>
+            <li>Median official model correctness</li>
+            <li>Official model panel wins</li>
+            <li>Models below the passing threshold</li>
+            <li>Complete failures</li>
+            <li>Entry difficulty score</li>
+            <li>Award or badge</li>
+            <li>Sanitized challenge summary</li>
+            <li>Optional public repository link after participant approval</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-links">
+      <a href="/challenge/">Challenge</a>
+      <a href="/challenge/rules/">Rules</a>
+      <a href="/challenge/submit/">Submit</a>
+      <a href="/challenge/leaderboard/">Leaderboard</a>
+      <a href="https://github.com/agentrebench/AgentRE-Bench">GitHub</a>
+    </div>
+    <p>AgentRE-Bench - LLM reverse engineering benchmark with deterministic scoring.</p>
+  </div>
+</footer>
+</body>
+</html>

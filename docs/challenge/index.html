@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgentRE Challenge: Stump the Frontier Models</title>
+<meta name="description" content="AgentRE Challenge Season 1 invites original reverse-engineering challenges for frontier AI agents performing static analysis.">
+<meta property="og:title" content="AgentRE Challenge: Stump the Frontier Models">
+<meta property="og:description" content="Build an original reverse-engineering challenge. Private GitHub submissions, public-safe PR registration, public-safe registration, public-safe results.">
+<meta property="og:image" content="https://www.agentre-bench.ai/logo.png">
+<meta property="og:url" content="https://www.agentre-bench.ai/challenge/">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/challenge/challenge.css">
+<script defer src="/challenge/challenge-config.js"></script>
+<script defer src="/challenge/challenge-data.js"></script>
+<script defer src="/challenge/challenge-render.js"></script>
+</head>
+<body>
+<nav class="site-nav">
+  <div class="container nav-inner">
+    <a class="brand" href="/">
+      <img src="/logo.svg" alt="AgentRE-Bench logo">
+      <span>AgentRE-Bench</span>
+    </a>
+    <div class="nav-links">
+      <div class="nav-menu">
+        <a class="nav-menu-trigger" href="/challenge/" aria-current="page">Challenge</a>
+        <div class="nav-dropdown" aria-label="Challenge pages">
+          <a href="/challenge/rules/">Rules</a>
+          <a href="/challenge/submit/">Submit</a>
+          <a href="/challenge/leaderboard/">Leaderboard</a>
+        </div>
+      </div>
+      <a href="/#leaderboard">Benchmark</a>
+      <a href="https://github.com/agentrebench/AgentRE-Bench">GitHub</a>
+      <a class="nav-cta" data-config-href="registrationPageUrl" href="#">Register</a>
+    </div>
+    <button class="theme-toggle" type="button" aria-label="Switch color theme">Light</button>
+  </div>
+</nav>
+
+<main>
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="hero-label"><span data-config="competitionName">AgentRE Challenge</span>&nbsp;/&nbsp;<span data-config="seasonName">Season 1</span></div>
+        <h1>Can You Build a Binary That Frontier AI Cannot Reverse Engineer?</h1>
+        <p class="subtitle">
+          A simple <span data-config="duration">20 days</span> competition for original <span data-config="architecture">Linux x86-64 ELF</span> binaries that meaningfully challenge frontier AI agents using <span data-config="analysisMode">static analysis</span>.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" data-config-href="registrationPageUrl" href="#">Register Entry</a>
+          <a class="btn btn-secondary" href="/challenge/submit/">Submission Instructions</a>
+          <a class="btn btn-secondary" href="/challenge/rules/">Read Rules</a>
+          <a class="btn btn-secondary" href="/challenge/leaderboard/">View Leaderboard</a>
+        </div>
+      </div>
+      <aside class="hero-panel" aria-label="Challenge facts">
+        <div class="panel-top">
+          <div class="panel-title" data-config="tagline">Stump the Frontier Models</div>
+          <span class="status-pill" data-status-label>Upcoming</span>
+        </div>
+        <div class="fact-grid">
+          <div class="fact-card"><strong data-config="prizeAmount">$500</strong><span>Grand Prize</span></div>
+          <div class="fact-card"><strong data-config="duration">20 days</strong><span>Competition window</span></div>
+          <div class="fact-card"><strong>ELF</strong><span data-config="architecture">Linux x86-64 ELF</span></div>
+          <div class="fact-card"><strong>Static</strong><span data-config="analysisMode">Static analysis</span></div>
+          <div class="fact-card"><strong>Private</strong><span>GitHub submissions</span></div>
+          <div class="fact-card"><strong data-config="maximumBinarySize">10 MB</strong><span>Maximum binary size</span></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section id="overview">
+    <div class="container">
+      <div class="section-tag">Competition Overview</div>
+      <h2 class="section-title">Build a challenge, keep artifacts private, register with a public-safe PR.</h2>
+      <p class="section-kicker">
+        Season 1 is intentionally simple to manage: entrants keep all binaries, source, build instructions, checksums, metadata, and private ground truth in their own private GitHub repositories. The public AgentRE-Bench website only shows safe registration status and final sanitized results.
+      </p>
+      <div class="grid-3">
+        <article class="card">
+          <h3>Prize</h3>
+          <p>The grand prize is <span data-config="prizeAmount">$500</span>, awarded to the eligible submission with the lowest average official model correctness, provided at least <span data-config="minimumAcceptedSubmissions">1</span> entry passes validation, evaluation produces a reliable result, and the submission is lowest-scoring on at least <span data-config="minimumModelPanelWinsForPrize">4</span> of 6 official models.</p>
+        </article>
+        <article class="card">
+          <h3>Target</h3>
+          <p>Submissions must target <span data-config="architecture">Linux x86-64 ELF</span>, remain under <span data-config="maximumBinarySize">10 MB</span>, and be suitable for static reverse engineering.</p>
+        </article>
+        <article class="card">
+          <h3>Privacy</h3>
+          <p>Source code, binaries, repository URLs, private ground truth, evaluation notes, and full model transcripts are not published during the competition.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="timeline">
+    <div class="container">
+      <div class="section-tag">Timeline</div>
+      <h2 class="section-title"><span data-config="duration">20 days</span> from launch to winner announcement.</h2>
+      <p class="section-kicker">
+        Calendar dates are set in the central challenge configuration. The Season 1 operating model is fixed around submission, validation, evaluation, and announcement windows.
+      </p>
+      <div class="timeline-list" data-render="timeline" aria-label="Competition timeline"></div>
+    </div>
+  </section>
+
+  <section id="workflow">
+    <div class="container">
+      <div class="section-tag">Submission Workflow</div>
+      <h2 class="section-title">Eight steps from private repo to evaluation.</h2>
+      <ol class="numbered-steps">
+        <li>Build an original reverse-engineering challenge.</li>
+        <li>Store it in your own private GitHub repository.</li>
+        <li>Invite the AgentRE organizer <code data-organizer-username>agentrebench</code> as a collaborator.</li>
+        <li>Register with a public-safe pull request.</li>
+        <li>Push the final tag <code data-config="finalSubmissionTag">agentre-season-1-final</code> and register the resolved 40-character commit SHA.</li>
+        <li>AgentRE validates and evaluates the binary.</li>
+        <li>Frontier AI agents attempt to reverse engineer it.</li>
+        <li>The valid submission with the lowest average correctness and at least <span data-config="minimumModelPanelWinsForPrize">4</span> of 6 official model wins receives the prize.</li>
+      </ol>
+      <div class="button-row" style="margin-top: 22px;">
+        <a class="btn btn-primary" data-config-href="registrationPageUrl" href="#">Register Entry</a>
+        <a class="btn btn-secondary" href="/challenge/submit/">Submission Instructions</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="eligibility">
+    <div class="container">
+      <div class="section-tag">Eligibility</div>
+      <h2 class="section-title">Valid entries are original, reproducible, safe, and privately reviewable.</h2>
+      <div class="grid-2">
+        <article class="card">
+          <h3>Required</h3>
+          <ul>
+            <li>Original work or work the entrant has the right to submit</li>
+            <li>Complete private source code and reproducible build instructions</li>
+            <li>A verifiable intended behavior and private ground truth</li>
+            <li>Matching binary SHA-256 and final tag before the deadline</li>
+            <li>Organizer collaborator access through the end of judging</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Not a win condition</h3>
+          <ul>
+            <li>Broken files, unsupported formats, or tool crashes</li>
+            <li>Intentional timeouts or resource exhaustion</li>
+            <li>Undocumented runtime dependencies or missing files</li>
+            <li>Infrastructure abuse or unsafe payloads</li>
+            <li>Winning by hiding behavior outside the submitted commit</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="strong-challenge">
+    <div class="container">
+      <div class="section-tag">Strong Challenge Design</div>
+      <h2 class="section-title">Reward real static reverse-engineering skill.</h2>
+      <p class="section-kicker">
+        Season 1 focuses on meaningful static analysis difficulty rather than aggressive anti-analysis. A strong entry makes the model recover intent through evidence, not through guessing or infrastructure failure.
+      </p>
+      <div class="grid-3">
+        <article class="card"><h3>Reasoning depth</h3><p>Indirect data flow, cross-function reasoning, state-machine reconstruction, and meaningful control-flow analysis.</p></article>
+        <article class="card"><h3>Recoverable semantics</h3><p>Sparse but recoverable clues, custom protocol recovery, algorithm identification, and compiler optimization effects.</p></article>
+        <article class="card"><h3>Clear answer key</h3><p>Private ground truth should explain important functions, key behaviors, traps, partially correct findings, and scoring expectations.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="judging">
+    <div class="container">
+      <div class="section-tag">Judging</div>
+      <h2 class="section-title">The hardest binary is the one the official panel understands least.</h2>
+      <p class="section-kicker">AgentRE scores how much required behavior each model correctly recovers. The primary ranking is lowest average official model correctness, reported as entry difficulty score: <strong>100 - average official model correctness</strong>. The prize winner must also be lowest-scoring on at least <span data-config="minimumModelPanelWinsForPrize">4</span> of 6 official models.</p>
+      <div class="score-grid" data-render="scoring" aria-label="Scoring method"></div>
+      <div class="grid-2" style="margin-top: 22px;">
+        <article class="callout">
+          <h3>Official panel</h3>
+          <p>Season 1 uses the same six frontier-model runs represented on the public AgentRE leaderboard at competition opening. Only AgentRE-verified runs count toward the prize.</p>
+        </article>
+        <article class="callout warning">
+          <h3>Invalid failures do not count</h3>
+          <p>Tool crashes, API errors, malformed inputs, missing dependencies, resource exhaustion, and unrelated safety refusals are invalid runs, not zero-score model failures.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="official-panel">
+    <div class="container">
+      <div class="section-tag">Official Model Panel</div>
+      <h2 class="section-title">Six frontier models, one standardized evaluation.</h2>
+      <div class="grid-3" data-render="model-panel" aria-label="Official model panel"></div>
+    </div>
+  </section>
+
+  <section id="privacy">
+    <div class="container">
+      <div class="section-tag">Private Submissions</div>
+      <h2 class="section-title">Registration keeps sensitive artifacts private.</h2>
+      <div class="grid-2">
+        <article class="callout">
+          <h3>Public during submissions</h3>
+          <ul>
+            <li>Entry ID after assignment</li>
+            <li>GitHub handle when permission is granted</li>
+            <li>Challenge title when permission is granted</li>
+            <li>Registration, validation, and evaluation status</li>
+          </ul>
+        </article>
+        <article class="callout warning">
+          <h3>Never public during submissions</h3>
+          <ul>
+            <li>Private repository URL</li>
+            <li>Binary, source code, or ground truth</li>
+            <li>Detailed challenge technique</li>
+            <li>Interim scores, interim model results, or full transcripts</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="safety">
+    <div class="container">
+      <div class="section-tag">Safety Requirements</div>
+      <h2 class="section-title">Controlled, inert simulation only.</h2>
+      <p class="section-kicker">
+        AgentRE may reject unsafe, copied, trivial, broken, unverifiable, or low-quality submissions. Security-relevant behavior must be inert, isolated, safe, clearly disclosed in private ground truth, and useful for reverse-engineering evaluation.
+      </p>
+      <article class="callout danger">
+        <h3>Do not submit real malware or unsafe automation.</h3>
+        <p>Entries must not perform credential theft, credential collection, persistence intended for deployment, propagation, destructive payloads, ransomware behavior, external downloads, real command-and-control, exploitation of third-party systems, personal-data collection, or build scripts/workflows intended to compromise infrastructure.</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="registration-summary">
+    <div class="container">
+      <div class="section-tag">Live Registration Summary</div>
+      <h2 class="section-title">Public status, private artifacts.</h2>
+      <p class="section-kicker">
+        This summary is loaded from public-safe registration JSON files merged through pull requests. No private repository URLs, binaries, source code, ground truth, private evaluation notes, or full model transcripts are stored in this public website repository.
+      </p>
+      <div class="summary-grid">
+        <div class="summary-card"><strong data-summary="registered">0</strong><span>Registered entries</span></div>
+        <div class="summary-card"><strong data-summary="validated">0</strong><span>Validated entries</span></div>
+        <div class="summary-card"><strong data-summary="evaluated">0</strong><span>Evaluated entries</span></div>
+        <div class="summary-card"><strong data-config="minimumAcceptedSubmissions">1</strong><span>Minimum accepted entry for prize</span></div>
+      </div>
+      <div class="button-row" style="margin-top: 22px;">
+        <a class="btn btn-secondary" href="/challenge/leaderboard/">View Leaderboard</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="container">
+      <div class="section-tag">FAQ</div>
+      <h2 class="section-title">Season 1 operating details.</h2>
+      <div class="faq-list">
+        <details class="faq-item"><summary>Why are repositories private?</summary><p>Private repositories prevent competitors and future models from seeing binaries, source code, challenge techniques, and ground truth during judging.</p></details>
+        <details class="faq-item"><summary>Will other competitors see my code?</summary><p>No. AgentRE reviews submissions privately. Public releases require separate participant approval.</p></details>
+        <details class="faq-item"><summary>Will AgentRE publish my binary?</summary><p>No automatic publication occurs. Public release of source or binaries requires separate participant permission.</p></details>
+        <details class="faq-item"><summary>Can I submit more than one entry?</summary><p>Yes. One entrant or team may submit up to <span data-config="maximumEntriesPerEntrant">3</span> entries and may win only one prize.</p></details>
+        <details class="faq-item"><summary>Can I update my repository?</summary><p>Yes before the final deadline. AgentRE evaluates only the commit resolved from the final tag before the deadline.</p></details>
+        <details class="faq-item"><summary>Which commit will be evaluated?</summary><p>The commit resolved from <code data-config="finalSubmissionTag">agentre-season-1-final</code>, recorded as a full 40-character SHA in the public-safe registration PR.</p></details>
+        <details class="faq-item"><summary>Why is source code required?</summary><p>Source code lets AgentRE verify ownership claims, safety, reproducibility, intended behavior, and ground-truth accuracy.</p></details>
+        <details class="faq-item"><summary>Can I use obfuscation?</summary><p>Yes, when it supports meaningful static reverse-engineering difficulty and is disclosed in the private ground truth.</p></details>
+        <details class="faq-item"><summary>Can I submit malware?</summary><p>No real malware. Controlled simulation may be accepted only when inert, isolated, safe, clearly disclosed, and useful for evaluation.</p></details>
+        <details class="faq-item"><summary>What happens if no entry qualifies?</summary><p>If no entry passes validation, evaluation cannot produce a reliable result, or no entry satisfies the <span data-config="minimumModelPanelWinsForPrize">4</span>-of-6 model-win requirement, AgentRE may decline to award the prize.</p></details>
+        <details class="faq-item"><summary>Can AgentRE use my work commercially?</summary><p>Submission grants only the limited permission needed to inspect, clone, rebuild, evaluate, store an internal evaluation copy, score, and announce results. Commercial use, training use, benchmark inclusion, dataset resale, or redistribution requires a separate explicit agreement.</p></details>
+        <details class="faq-item"><summary>Can my GitHub handle be hidden?</summary><p>Yes. The registration JSON includes display flags for the public leaderboard. The pull request itself is public.</p></details>
+        <details class="faq-item"><summary>When are scores published?</summary><p>Scores are published after judging and review, with the winner announcement on <span data-config="dates.winnerAnnouncement">August 21, 2026</span>.</p></details>
+        <details class="faq-item"><summary>What happens after Season 1?</summary><p>Season 1 can be archived. Sanitized summaries and optional public repository links may be added only after participant approval.</p></details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-links">
+      <a href="/challenge/">Challenge</a>
+      <a href="/challenge/rules/">Rules</a>
+      <a href="/challenge/submit/">Submit</a>
+      <a href="/challenge/leaderboard/">Leaderboard</a>
+      <a href="https://github.com/agentrebench/AgentRE-Bench">GitHub</a>
+    </div>
+    <p>AgentRE-Bench - LLM reverse engineering benchmark with deterministic scoring.</p>
+  </div>
+</footer>
+</body>
+</html>
