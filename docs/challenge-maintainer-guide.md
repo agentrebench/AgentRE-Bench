@@ -126,6 +126,8 @@ Update registration paths:
 Update the prize:
 
 - `prizeAmount`
+- `firstPlaceSubscriptionPrize`
+- `secondPlaceSubscriptionPrize`
 
 Update entry and prize limits:
 
@@ -233,20 +235,21 @@ Add final scores:
 "models_below_passing_threshold": 4,
 "complete_failures": 1,
 "difficulty_score": 73.0,
-"award": "$500 Grand Prize",
+"award": "$1,000 + one month of ChatGPT Pro or Claude Max 20x",
 "public_summary": "Sanitized public result summary.",
 "evaluation_status": "Complete"
 ```
 
-Publish a winner:
+Publish award recipients:
 
 1. Confirm at least the configured minimum accepted submissions qualified.
 2. Confirm the evaluation produced reliable valid scores.
-3. Confirm the provisional winner is the lowest-scoring entry on at least `minimumModelPanelWinsForPrize` official models.
+3. Confirm the provisional first-place entry is the lowest-scoring entry on at least `minimumModelPanelWinsForPrize` official models.
 4. Rank qualifying entries by lowest average official model correctness, equivalently highest difficulty score.
-5. Update the winning public entry with rank, model-panel wins, difficulty score, award, and sanitized summary.
-6. Set `competitionStatus: "complete"` in `docs/challenge/challenge-config.js`.
-7. Do not publish private ground truth, raw transcripts, private notes, or private repository URLs.
+5. Update the first-place public entry with rank, model-panel wins, difficulty score, award, and sanitized summary.
+6. If a distinct second eligible entry exists, update it with rank, difficulty score, the second-place subscription award, and a sanitized summary.
+7. Set `competitionStatus: "complete"` in `docs/challenge/challenge-config.js`.
+8. Do not publish private ground truth, raw transcripts, private notes, or private repository URLs.
 
 Add a public repository URL after participant approval:
 
@@ -278,7 +281,7 @@ Safety rules:
 - Do not run GitHub Actions from contestant repositories.
 - Do not trust build scripts.
 - Treat all contestant code as hostile.
-- Inspect source before building.
+- When verification materials are requested, inspect source before building.
 - Build and evaluate in isolated disposable environments.
 - Disable networking during build and evaluation.
 - Do not expose private repository names or URLs.
@@ -314,7 +317,6 @@ Official AgentRE tools exposed to models:
 - `hexdump`
 - `xxd`
 - `entropy`
-- `pe_info` is present in the standard harness but is PE-only and out of scope for Linux ELF entries.
 - `final_answer` is the structured answer submission tool.
 
 Default limits from the harness are 25 tool calls, 30 seconds per tool call, and 50,000 output characters per tool result. If these values change, update `docs/challenge/challenge-config.js` and publish the new rule before entries open.
@@ -322,8 +324,11 @@ Default limits from the harness are 25 tool calls, 30 seconds per tool call, and
 Not allowed in official scoring unless a public rules update says otherwise:
 
 - Dynamic execution, debugging, `strace`, `ltrace`, or runtime sandboxing.
-- Ghidra, IDA, Binary Ninja, radare2, decompilers, package installs, custom scripts, or internet access.
+- Model-generated or arbitrary Python or code in any other programming language.
+- Ghidra, IDA, Binary Ninja, radare2, decompilers, custom parsers, symbolic executors, deobfuscators, package installs, or internet access.
 - Participant-supplied helper tools or undocumented analysis dependencies.
+
+The fixed tool surface is required for fair, reproducible comparisons. Do not let a model create or execute new analysis tools during evaluation.
 
 ## Official Scoring Operations
 
@@ -338,7 +343,7 @@ Use the official model panel configured in `docs/challenge/challenge-config.js`:
 - Gemini 3.1 Flash Lite
 - DeepSeek V4 Pro
 - Claude Opus 4.8
-- Kimi K2.6
+- Kimi K3
 - DeepSeek V4 Flash
 - GPT-5.5
 
@@ -346,7 +351,7 @@ For every accepted binary, use the same harness commit, system prompt, static-an
 
 A model-panel win means the entry has the lowest valid correctness score for that official model among eligible entries. If entries tie for the lowest valid score on a model, each tied entry may count that model as a panel win for qualification.
 
-Invalid runs are not scored as zero. Do not count safety refusals unrelated to technical difficulty, infrastructure failures, API errors, tool crashes, resource-exhaustion timeouts, malformed or unsupported binaries, missing files, or undocumented dependencies as model failures.
+Invalid runs are not scored as zero. Do not count safety refusals unrelated to technical difficulty, infrastructure failures, API errors, tool crashes, challenge-unrelated resource abuse, malformed or unsupported binaries, missing files, or undocumented dependencies as model failures. A model's failure to solve a valid, difficult binary within the standard budget is a valid outcome.
 
 Tie-break order is configured in `challenge-config.js`:
 
@@ -357,7 +362,7 @@ Tie-break order is configured in `challenge-config.js`:
 5. Higher reproducibility score.
 6. Earlier frozen submission timestamp.
 
-If entries remain exactly tied after all tie-breakers, divide the $500 prize equally.
+If entries remain exactly tied after all tie-breakers, divide the $1,000 prize equally.
 
 ## Local Preview
 

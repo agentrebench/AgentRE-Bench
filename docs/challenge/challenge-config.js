@@ -3,8 +3,10 @@
     competitionName: "AgentRE Challenge",
     seasonName: "Season 1",
     tagline: "Stump the Frontier Models",
-    prizeAmount: "$500",
-    duration: "20 days",
+    prizeAmount: "$1,000",
+    firstPlaceSubscriptionPrize: "one month of the recipient's choice of ChatGPT Pro or Claude Max 20x",
+    secondPlaceSubscriptionPrize: "one month of the recipient's choice of ChatGPT Pro or Claude Max 5x",
+    duration: "33 days",
     architecture: "Linux x86-64 ELF",
     analysisMode: "Static analysis",
     maximumBinarySize: "10 MB",
@@ -34,13 +36,12 @@
         { name: "hexdump", description: "View hex and ASCII bytes at selected offsets." },
         { name: "xxd", description: "Produce hex dumps in an alternate format." },
         { name: "entropy", description: "Compute Shannon entropy to find packed, encrypted, or compressed regions." },
-        { name: "pe_info", description: "PE-only helper present in the standard harness; out of scope for Linux ELF entries." },
         { name: "final_answer", description: "Structured answer submission tool used when the model finishes analysis." }
       ],
       disallowedTools: [
         "No dynamic execution, debugging, strace, ltrace, or runtime sandboxing during official scoring.",
-        "No Ghidra, IDA, Binary Ninja, radare2, decompilers, custom scripts, package installs, or internet access unless AgentRE publishes a rules update.",
-        "No participant-supplied helper tools or undocumented analysis dependencies."
+        "Models may invoke only the fixed tools listed above; they may not generate and execute arbitrary Python or code in any other programming language.",
+        "No Ghidra, IDA, Binary Ninja, radare2, decompilers, custom parsers, symbolic executors, deobfuscators, package installs, internet access, participant-supplied tools, or undocumented analysis dependencies."
       ]
     },
     competitionStatus: "open",
@@ -59,7 +60,7 @@
       finalCommitDeadline: "August 15, 2026, 11:59 PM UTC",
       validationDates: "August 16-18, 2026",
       evaluationDates: "August 19-20, 2026",
-      winnerAnnouncement: "August 21, 2026"
+      winnerAnnouncement: "September 3, 2026"
     },
     timeline: [
       {
@@ -74,7 +75,7 @@
         title: "Validation and rebuilding",
         dateKey: "validationDates",
         dateKeys: ["validationDates"],
-        description: "AgentRE checks eligibility, source availability, reproducibility, checksums, and safety requirements."
+        description: "AgentRE checks eligibility, reproducibility, checksums, safety requirements, and any privately requested verification materials."
       },
       {
         label: "Days 18-19",
@@ -84,7 +85,7 @@
         description: "Frontier AI agents perform static reverse engineering against accepted binaries and are scored against private ground truth."
       },
       {
-        label: "Day 20",
+        label: "Day 33",
         title: "Winner announced",
         dateKey: "winnerAnnouncement",
         dateKeys: ["winnerAnnouncement"],
@@ -95,7 +96,7 @@
       "Gemini 3.1 Flash Lite",
       "DeepSeek V4 Pro",
       "Claude Opus 4.8",
-      "Kimi K2.6",
+      "Kimi K3",
       "DeepSeek V4 Flash",
       "GPT-5.5"
     ],

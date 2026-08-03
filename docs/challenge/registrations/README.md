@@ -29,4 +29,4 @@ Invite the organizer account as a collaborator before opening the pull request. 
 3. Add the new filename to the `files` array in `index.json`.
 4. Open a pull request using the challenge registration pull request template.
 
-The leaderboard loads these files as static public data after the pull request is merged. Personal payment, tax, and identity details are collected only from a provisional winner through private verification, never in a public PR.
+The leaderboard loads these files as static public data after the pull request is merged. Personal payment, tax, and identity details are collected only from provisional award recipients through private verification, never in a public PR.

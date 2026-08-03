@@ -10,7 +10,8 @@
 
 - [ ] I created a private repository named `agentre-challenge-entry`.
 - [ ] I invited `agentrebench` as a collaborator.
-- [ ] The private repository contains `README.md`, `submission.json`, `challenge.elf`, `SHA256SUMS`, `build.sh`, `src/`, and `ground_truth.md`.
+- [ ] The private repository contains `README.md`, `submission.json`, `challenge.elf`, `SHA256SUMS`, and `ground_truth.md`.
+- [ ] I understand that a finalist or prize-eligible entry may be asked to provide complete source code and build instructions privately for verification.
 - [ ] I created and pushed the `agentre-season-1-final` tag before the deadline.
 - [ ] The submitted final commit SHA is the resolved full 40-character SHA for that tag.
 - [ ] The submitted binary SHA-256 is a full 64-character digest.
@@ -21,7 +22,7 @@
 - [ ] Entry is free and I did not pay money to enter.
 - [ ] I am at least 18 years old.
 - [ ] I am eligible under the Season 1 U.S. eligibility rules.
-- [ ] If this is a team entry, one designated prize recipient is responsible for winner verification.
+- [ ] If this is a team entry, one designated award recipient is responsible for recipient verification.
 - [ ] I understand each entrant or team may submit up to three entries and may win only one prize.
 - [ ] I own this submission or have the right to submit it.
 - [ ] I did not include credentials, API tokens, private keys, personal information, unsafe payloads, or unauthorized third-party proprietary code.

@@ -7,9 +7,11 @@
 <meta name="description" content="Rules, eligibility, safety requirements, scoring methodology, ownership terms, and prize terms for AgentRE Challenge Season 1.">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="stylesheet" href="/challenge/challenge.css">
+<link rel="stylesheet" href="/handbook-theme.css">
 <script defer src="/challenge/challenge-config.js"></script>
 <script defer src="/challenge/challenge-data.js"></script>
 <script defer src="/challenge/challenge-render.js"></script>
+<script defer src="/handbook-theme.js"></script>
 </head>
 <body>
 <nav class="site-nav">
@@ -42,7 +44,7 @@
         <div class="hero-label"><span data-config="competitionName">AgentRE Challenge</span>&nbsp;/ Rules</div>
         <h1>AgentRE Challenge Official Rules</h1>
         <p class="subtitle">
-          Official Rules v1.0, effective August 2, 2026. Season 1 rewards original, safe, reproducible <span data-config="architecture">Linux x86-64 ELF</span> challenges that create meaningful <span data-config="analysisMode">static analysis</span> difficulty for frontier AI agents.
+          Official Rules v1.1, effective August 3, 2026. Season 1 rewards original, safe, reproducible <span data-config="architecture">Linux x86-64 ELF</span> challenges that create meaningful <span data-config="analysisMode">static analysis</span> difficulty for frontier AI agents.
         </p>
         <div class="hero-actions">
           <a class="btn btn-primary" data-config-href="registrationPageUrl" href="#">Register Entry</a>
@@ -56,7 +58,7 @@
           <span class="status-pill" data-status-label>Upcoming</span>
         </div>
         <div class="fact-grid">
-          <div class="fact-card"><strong data-config="prizeAmount">$500</strong><span>Grand prize</span></div>
+          <div class="fact-card"><strong data-config="prizeAmount">$1,000</strong><span>First-place cash</span></div>
           <div class="fact-card"><strong data-config="minimumAcceptedSubmissions">1</strong><span>Minimum accepted entry</span></div>
           <div class="fact-card"><strong data-config="maximumBinarySize">10 MB</strong><span>Maximum binary size</span></div>
           <div class="fact-card"><strong data-config="maximumEntriesPerEntrant">3</strong><span>Max entries per entrant</span></div>
@@ -88,7 +90,9 @@
             <li>Original work or work the entrant has the right to submit.</li>
             <li>Target <span data-config="architecture">Linux x86-64 ELF</span> and support <span data-config="analysisMode">static analysis</span>.</li>
             <li>Remain under <span data-config="maximumBinarySize">10 MB</span>.</li>
-            <li>Include complete private source, reproducible build instructions, checksums, and private ground truth.</li>
+            <li>Include checksums and private ground truth.</li>
+            <li>Public source release is not required. Finalist or prize-eligible entries may be asked to provide complete source code and build instructions privately for verification.</li>
+            <li>Privately provided source and build materials remain confidential unless the entrant chooses to publish them.</li>
             <li>Have clear, verifiable intended behavior and a matching binary SHA-256.</li>
             <li>Give the organizer account access before the deadline and keep access available until results are final.</li>
           </ul>
@@ -142,7 +146,7 @@ git push origin <span data-config="finalSubmissionTag">agentre-season-1-final</s
           <ul>
             <li>Third-party proprietary code without authorization</li>
             <li>Malformed files whose primary purpose is crashing tools</li>
-            <li>Resource-exhaustion attacks</li>
+            <li>Pathological or intentionally excessive resource consumption whose primary purpose is to abuse evaluation infrastructure rather than create a reverse-engineering challenge</li>
             <li>Build scripts intended to damage or compromise infrastructure</li>
             <li>Repository workflows intended to execute automatically</li>
             <li>Dependencies on inaccessible external services or files</li>
@@ -150,7 +154,7 @@ git push origin <span data-config="finalSubmissionTag">agentre-season-1-final</s
           </ul>
         </article>
       </div>
-      <p class="section-kicker" style="margin-top: 22px;">Controlled simulation of security-relevant behavior may be accepted only when inert, isolated, safe, clearly disclosed, and useful for reverse-engineering evaluation.</p>
+      <p class="section-kicker" style="margin-top: 22px;">Legitimately difficult binaries are valid even when frontier models cannot solve them. Difficulty alone is never grounds for rejection. Controlled simulation of security-relevant behavior may be accepted only when inert, isolated, safe, clearly disclosed, and useful for reverse-engineering evaluation.</p>
     </div>
   </section>
 
@@ -168,7 +172,7 @@ git push origin <span data-config="finalSubmissionTag">agentre-season-1-final</s
             <li>Credential theft or collection</li>
             <li>Persistence, propagation, ransomware, or destructive behavior</li>
             <li>Attempts to attack the harness or evaluation infrastructure</li>
-            <li>Deliberate resource exhaustion</li>
+            <li>Deliberate, challenge-unrelated resource exhaustion intended to abuse evaluation infrastructure</li>
             <li>Automatic GitHub workflows targeting reviewers</li>
             <li>Undisclosed packing, obfuscation, or unusual compiler techniques</li>
           </ul>
@@ -196,8 +200,8 @@ git push origin <span data-config="finalSubmissionTag">agentre-season-1-final</s
           <h3>Validation</h3>
           <ul>
             <li>Reject unsafe, copied, trivial, broken, unverifiable, or low-quality submissions</li>
-            <li>Inspect source privately</li>
-            <li>Rebuild binaries</li>
+            <li>Request source and build instructions privately from finalist or prize-eligible entrants when needed</li>
+            <li>Inspect privately provided source and rebuild binaries for verification</li>
             <li>Compare rebuilt binaries against submitted artifacts</li>
             <li>Test different compilation environments when necessary</li>
           </ul>
@@ -219,7 +223,7 @@ git push origin <span data-config="finalSubmissionTag">agentre-season-1-final</s
             <li>Publish approved challenge titles</li>
             <li>Publish rankings and aggregate scores</li>
             <li>Publish sanitized summaries</li>
-            <li>Keep private ground truth and private notes out of the public repository</li>
+            <li>Keep private source, build materials, ground truth, and notes confidential</li>
           </ul>
         </article>
       </div>
@@ -247,43 +251,46 @@ git push origin <span data-config="finalSubmissionTag">agentre-season-1-final</s
           </ul>
         </article>
       </div>
+      <p class="section-kicker" style="margin-top: 22px;">Verification is for reproducibility, safety, and result integrity. It does not require entrants to open-source or publicly disclose their research.</p>
     </div>
   </section>
 
   <section id="prize">
     <div class="container">
       <div class="section-tag">Prize Terms</div>
-      <h2 class="section-title">One <span data-config="prizeAmount">$500</span> grand prize for the hardest valid binary.</h2>
+      <h2 class="section-title">First- and second-place awards for the hardest valid binaries.</h2>
       <div class="grid-2">
         <article class="card">
-          <h3>Core prize clause</h3>
-          <p>The <span data-config="prizeAmount">$500</span> USD grand prize will be awarded to the eligible submission that produces the lowest aggregate correctness score across the official AgentRE Season 1 model panel, provided at least <span data-config="minimumAcceptedSubmissions">1</span> entry passes validation, the evaluation produces a reliable result, and the submission is the lowest-scoring entry on at least <span data-config="minimumModelPanelWinsForPrize">4</span> of the 6 official model evaluations.</p>
-          <p>All rankings are based solely on AgentRE-verified evaluations performed against the frozen submission commit under the published harness, model panel, budgets, and scoring methodology. Participant-reported results are informational and do not determine the winner.</p>
+          <h3>Core award clauses</h3>
+          <p><strong>First place:</strong> The eligible submission with the lowest aggregate correctness score receives <span data-config="prizeAmount">$1,000</span> USD plus <span data-config="firstPlaceSubscriptionPrize">one month of the recipient's choice of ChatGPT Pro or Claude Max 20x</span>. At least <span data-config="minimumAcceptedSubmissions">1</span> entry must pass validation, the evaluation must produce a reliable result, and the submission must be lowest-scoring on at least <span data-config="minimumModelPanelWinsForPrize">4</span> of the 6 official model evaluations.</p>
+          <p><strong>Second place:</strong> The next-highest-ranked distinct eligible submission after tie-breaks receives <span data-config="secondPlaceSubscriptionPrize">one month of the recipient's choice of ChatGPT Pro or Claude Max 5x</span>.</p>
+          <p>All rankings are based solely on AgentRE-verified evaluations performed against the frozen submission commit under the published harness, model panel, budgets, and scoring methodology. Participant-reported results are informational and do not determine award recipients.</p>
         </article>
         <article class="card">
-          <h3>Prize conditions</h3>
+          <h3>Award conditions</h3>
           <ul>
-            <li>No purchase or payment is required to enter or claim the prize.</li>
-            <li>Do not split the prize unless an exact tie survives all published tie-breakers.</li>
-            <li>If entries remain exactly tied, divide the <span data-config="prizeAmount">$500</span> equally.</li>
-            <li>If no entry satisfies the minimum requirements, including the <span data-config="minimumModelPanelWinsForPrize">4</span>-of-6 model-win requirement, AgentRE may decline to award the prize.</li>
+            <li>No purchase or payment is required to enter or claim an award.</li>
+            <li>First and second place are determined after all published tie-breakers.</li>
+            <li>If an exact first-place tie remains, tied entries divide the <span data-config="prizeAmount">$1,000</span> equally and each receives the first-place subscription award. No separate second-place award is issued.</li>
+            <li>If an exact second-place tie remains, each tied entry receives the second-place subscription award.</li>
+            <li>If no entry satisfies the minimum requirements, including the <span data-config="minimumModelPanelWinsForPrize">4</span>-of-6 first-place requirement, AgentRE may decline to issue either award.</li>
             <li>The competition is not sponsored, endorsed, or administered by GitHub.</li>
           </ul>
         </article>
       </div>
       <div class="grid-2" style="margin-top: 22px;">
         <article class="callout">
-          <h3>Winner verification and payment</h3>
+          <h3>Recipient verification and fulfillment</h3>
           <ul>
-            <li>The provisional winner has seven calendar days to provide legal name, mailing address, payment information, age and eligibility confirmation, any reasonably necessary U.S. tax documentation, and a signed eligibility and rights confirmation.</li>
-            <li>Payment method will be arranged directly with the winner.</li>
-            <li>AgentRE will pay within 14 business days after verification.</li>
-            <li>Failure to respond or verify eligibility may result in the prize passing to the next-ranked eligible entry.</li>
+            <li>Each provisional recipient has seven calendar days to provide legal name, mailing address, payment information if applicable, age and eligibility confirmation, any reasonably necessary U.S. tax documentation, and a signed eligibility and rights confirmation.</li>
+            <li>Cash payment and subscription choice will be arranged privately with each recipient.</li>
+            <li>AgentRE will provide each award within 14 business days after verification.</li>
+            <li>Failure to respond or verify eligibility may result in the award passing to the next-ranked eligible entry.</li>
           </ul>
         </article>
         <article class="callout warning">
           <h3>Taxes</h3>
-          <p>The winner is responsible for applicable taxes. Prizes are generally taxable income in the United States, even when no reporting form is issued.</p>
+          <p>Recipients are responsible for applicable taxes. Awards are generally taxable income in the United States, even when no reporting form is issued.</p>
         </article>
       </div>
     </div>
@@ -293,7 +300,7 @@ git push origin <span data-config="finalSubmissionTag">agentre-season-1-final</s
     <div class="container">
       <div class="section-tag">Scoring Methodology</div>
       <h2 class="section-title">The winning binary is the one the official panel understands least.</h2>
-      <p class="section-kicker">Official model score measures how much of the required binary behavior the model correctly recovered. Entry difficulty score is <strong>100 - average official model correctness</strong>. Higher difficulty score wins among entries that also satisfy the <span data-config="minimumModelPanelWinsForPrize">4</span>-of-6 model-win prize requirement.</p>
+      <p class="section-kicker">Official model score measures how much of the required binary behavior the model correctly recovered. Entry difficulty score is <strong>100 - average official model correctness</strong>. Higher difficulty score ranks higher. First place must also satisfy the <span data-config="minimumModelPanelWinsForPrize">4</span>-of-6 model-win requirement.</p>
       <div class="score-grid" data-render="scoring" aria-label="Scoring method"></div>
       <div class="grid-2" style="margin-top: 22px;">
         <article class="callout">
@@ -311,12 +318,13 @@ git push origin <span data-config="finalSubmissionTag">agentre-season-1-final</s
           <ul>
             <li>Safety refusals unrelated to technical difficulty</li>
             <li>Infrastructure failures, API errors, or tool crashes</li>
-            <li>Resource-exhaustion timeouts</li>
+            <li>Infrastructure failures caused by challenge-unrelated resource abuse</li>
             <li>Malformed or unsupported binaries</li>
             <li>Missing files or undocumented dependencies</li>
           </ul>
         </article>
       </div>
+      <p class="section-kicker" style="margin-top: 22px;">A model's failure to solve a valid, difficult binary within the standard evaluation budget is a valid outcome, not an infrastructure failure.</p>
       <div class="grid-2" style="margin-top: 22px;">
         <article class="card">
           <h3>Reported result metrics</h3>
@@ -324,7 +332,7 @@ git push origin <span data-config="finalSubmissionTag">agentre-season-1-final</s
         </article>
         <article class="card">
           <h3>Panel-win requirement</h3>
-          <p>For prize eligibility, the winning entry must have the lowest correctness score on at least <span data-config="minimumModelPanelWinsForPrize">4</span> of the 6 official models when compared with the other eligible entries. If multiple entries tie for the lowest valid score on a model, each tied entry may count that model as a panel win.</p>
+          <p>For first-place eligibility, the winning entry must have the lowest correctness score on at least <span data-config="minimumModelPanelWinsForPrize">4</span> of the 6 official models when compared with the other eligible entries. If multiple entries tie for the lowest valid score on a model, each tied entry may count that model as a panel win.</p>
         </article>
         <article class="card">
           <h3>Ground truth is a validation requirement</h3>
@@ -339,7 +347,7 @@ git push origin <span data-config="finalSubmissionTag">agentre-season-1-final</s
     <div class="container">
       <div class="section-tag">Allowed Tools</div>
       <h2 class="section-title">Official evaluations use the standard AgentRE static-analysis tool set.</h2>
-      <p class="section-kicker">Season 1 models receive the same tools exposed by the AgentRE harness, running from the official <code data-config="officialToolEnvironment.dockerImage">agentre-bench-tools:latest</code> image built from <code data-config="officialToolEnvironment.dockerfilePath">Dockerfile.tools</code>. The tool-call budget is <span data-config="officialToolEnvironment.maxToolCalls">25</span> calls, with a <span data-config="officialToolEnvironment.toolTimeoutSeconds">30</span>-second per-tool timeout.</p>
+      <p class="section-kicker">Season 1 models receive the same fixed tools exposed by the AgentRE harness, running from the official <code data-config="officialToolEnvironment.dockerImage">agentre-bench-tools:latest</code> image built from <code data-config="officialToolEnvironment.dockerfilePath">Dockerfile.tools</code>. Models may not generate and execute arbitrary Python or code in any other programming language. Otherwise, a model could build custom parsers, symbolic executors, deobfuscators, or entirely new analysis tools during evaluation, making model comparisons unfair and difficult to reproduce. The tool-call budget is <span data-config="officialToolEnvironment.maxToolCalls">25</span> calls, with a <span data-config="officialToolEnvironment.toolTimeoutSeconds">30</span>-second per-tool timeout.</p>
       <div class="grid-3" data-render="allowed-tools" aria-label="Allowed AgentRE tools"></div>
       <div class="grid-2" style="margin-top: 22px;">
         <article class="callout">
@@ -359,7 +367,7 @@ git push origin <span data-config="finalSubmissionTag">agentre-season-1-final</s
     <div class="container">
       <div class="section-tag">Official Model Panel</div>
       <h2 class="section-title">Season 1 uses the public AgentRE frontier-model panel.</h2>
-      <p class="section-kicker">Only AgentRE runs against the official panel count toward the <span data-config="prizeAmount">$500</span> prize. Participant tests against other models may be mentioned, but they do not determine rankings.</p>
+      <p class="section-kicker">Only AgentRE runs against the official panel count toward rankings and awards. Participant tests against other models may be mentioned, but they do not determine rankings.</p>
       <div class="grid-3" data-render="model-panel" aria-label="Official model panel"></div>
       <p class="section-kicker" style="margin-top: 22px;">If a model becomes unavailable, materially changes, cannot complete valid harness runs, or is blocked from participating, AgentRE may replace it with a reasonably comparable model. Any substitution will be publicly documented before final results are announced. Exact model identifiers, harness commit, prompt version, budgets, attempt policy, and test date should be recorded when submissions open.</p>
     </div>
@@ -395,7 +403,7 @@ git push origin <span data-config="finalSubmissionTag">agentre-season-1-final</s
       <div class="section-tag">Changes And Cancellation</div>
       <h2 class="section-title">Rule changes are limited after entries freeze.</h2>
       <p class="section-kicker">AgentRE may modify, suspend, or cancel the competition only when fraud, a security incident, a material technical failure, a legal restriction, or another circumstance outside AgentRE control prevents fair operation. Material rule or scoring changes will not be applied retroactively to already-frozen submissions unless necessary to address a security or integrity issue.</p>
-      <p class="section-kicker">AgentRE may decline to award the prize when no entry qualifies, no entry receives a reliable valid evaluation, or the evaluation cannot produce a reliable result.</p>
+      <p class="section-kicker">AgentRE may decline to issue awards when no entry qualifies, no entry receives a reliable valid evaluation, or the evaluation cannot produce a reliable result.</p>
     </div>
   </section>
 
@@ -424,7 +432,7 @@ git push origin <span data-config="finalSubmissionTag">agentre-season-1-final</s
             <li>Broken files</li>
             <li>Tool crashes</li>
             <li>Excessive file size</li>
-            <li>Resource exhaustion</li>
+            <li>Challenge-unrelated resource abuse targeting evaluation infrastructure</li>
             <li>Undocumented runtime dependencies</li>
             <li>Unsafe payloads</li>
             <li>Infrastructure abuse</li>

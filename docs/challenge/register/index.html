@@ -7,9 +7,11 @@
 <meta name="description" content="Register an AgentRE Challenge Season 1 submission with a public-safe pull request.">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="stylesheet" href="/challenge/challenge.css">
+<link rel="stylesheet" href="/handbook-theme.css">
 <script defer src="/challenge/challenge-config.js"></script>
 <script defer src="/challenge/challenge-data.js"></script>
 <script defer src="/challenge/challenge-render.js"></script>
+<script defer src="/handbook-theme.js"></script>
 </head>
 <body>
 <nav class="site-nav">
@@ -57,7 +59,7 @@
         </div>
         <div class="fact-grid">
           <div class="fact-card"><strong>Public</strong><span>One safe JSON registration file</span></div>
-          <div class="fact-card"><strong>Private</strong><span>Binary, source, and ground truth stay out</span></div>
+          <div class="fact-card"><strong>Private</strong><span>Binary, ground truth, and verification materials stay out</span></div>
           <div class="fact-card"><strong data-config="privateRepositoryName">agentre-challenge-entry</strong><span>Required private repo name</span></div>
           <div class="fact-card"><strong>Static</strong><span>Leaderboard updates after merge</span></div>
         </div>
@@ -72,7 +74,7 @@
       <ol class="numbered-steps">
         <li>Create your private submission repository named <code data-config="privateRepositoryName">agentre-challenge-entry</code>.</li>
         <li>Add <code data-organizer-username>agentrebench</code> as a collaborator.</li>
-        <li>Prepare the required private files, binary, source, checksums, build script, and ground truth in that private repository.</li>
+        <li>Prepare the required private binary, checksums, metadata, and ground truth. If AgentRE requests source code and build instructions for finalist or prize verification, provide them only through the private repository.</li>
         <li>Fork the public <code>AgentRE-Bench</code> repository.</li>
         <li>Copy <code data-config="registrationTemplatePath">docs/challenge/registrations/template.json</code> to a new filename in <code>docs/challenge/registrations/</code>.</li>
         <li>Fill in the public-safe registration metadata, including the final tag, resolved commit SHA, checksum, and eligibility confirmations.</li>
