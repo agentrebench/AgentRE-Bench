@@ -334,6 +334,27 @@ git push origin <span data-config="finalSubmissionTag">agentre-season-1-final</s
     </div>
   </section>
 
+
+  <section id="allowed-tools">
+    <div class="container">
+      <div class="section-tag">Allowed Tools</div>
+      <h2 class="section-title">Official evaluations use the standard AgentRE static-analysis tool set.</h2>
+      <p class="section-kicker">Season 1 models receive the same tools exposed by the AgentRE harness, running from the official <code data-config="officialToolEnvironment.dockerImage">agentre-bench-tools:latest</code> image built from <code data-config="officialToolEnvironment.dockerfilePath">Dockerfile.tools</code>. The tool-call budget is <span data-config="officialToolEnvironment.maxToolCalls">25</span> calls, with a <span data-config="officialToolEnvironment.toolTimeoutSeconds">30</span>-second per-tool timeout.</p>
+      <div class="grid-3" data-render="allowed-tools" aria-label="Allowed AgentRE tools"></div>
+      <div class="grid-2" style="margin-top: 22px;">
+        <article class="callout">
+          <h3>Docker image</h3>
+          <p>AgentRE should build and pin the official image for the harness commit used at contest opening:</p>
+          <div class="code-panel"><pre data-config="officialToolEnvironment.dockerBuildCommand">docker build --platform linux/amd64 -t agentre-bench-tools:latest -f Dockerfile.tools .</pre></div>
+        </article>
+        <article class="callout warning">
+          <h3>Not allowed in official scoring</h3>
+          <ul data-render="disallowed-tools"></ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
   <section id="official-panel">
     <div class="container">
       <div class="section-tag">Official Model Panel</div>

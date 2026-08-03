@@ -254,6 +254,17 @@ git push origin <span data-config="finalSubmissionTag">agentre-season-1-final</s
     </div>
   </section>
 
+
+  <section id="official-tools">
+    <div class="container">
+      <div class="section-tag">Official Tool Environment</div>
+      <h2 class="section-title">Design for the standard AgentRE static-analysis harness.</h2>
+      <p class="section-kicker">AgentRE evaluates entries with the tools exposed by the public harness and the official <code data-config="officialToolEnvironment.dockerImage">agentre-bench-tools:latest</code> Docker image. Do not assume models will have decompilers, debuggers, dynamic execution, internet access, package installation, or participant-provided helper scripts.</p>
+      <div class="grid-3" data-render="allowed-tools" aria-label="Allowed AgentRE tools"></div>
+      <div class="code-panel" style="margin-top: 22px;" aria-label="Official tools image build command"><pre data-config="officialToolEnvironment.dockerBuildCommand">docker build --platform linux/amd64 -t agentre-bench-tools:latest -f Dockerfile.tools .</pre></div>
+    </div>
+  </section>
+
   <section id="automation-warning">
     <div class="container">
       <div class="section-tag">Automation Warning</div>

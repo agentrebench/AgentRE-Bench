@@ -17,6 +17,32 @@
     registrationTemplatePath: "docs/challenge/registrations/template.json",
     privateRepositoryName: "agentre-challenge-entry",
     finalSubmissionTag: "agentre-season-1-final",
+    officialToolEnvironment: {
+      dockerImage: "agentre-bench-tools:latest",
+      dockerfilePath: "Dockerfile.tools",
+      dockerBuildCommand: "docker build --platform linux/amd64 -t agentre-bench-tools:latest -f Dockerfile.tools .",
+      dockerRunSummary: "--network=none --read-only --memory=512m --cpus=1 -v binaries:/workspace:ro",
+      maxToolCalls: 25,
+      toolTimeoutSeconds: 30,
+      maxOutputChars: 50000,
+      allowedTools: [
+        { name: "file", description: "Identify file type and architecture." },
+        { name: "strings", description: "Extract printable strings with configurable length and encoding." },
+        { name: "readelf", description: "Inspect ELF headers, sections, symbols, segments, and dynamic metadata." },
+        { name: "objdump", description: "Disassemble code and inspect symbols, headers, and section contents." },
+        { name: "nm", description: "List symbols from object files and binaries." },
+        { name: "hexdump", description: "View hex and ASCII bytes at selected offsets." },
+        { name: "xxd", description: "Produce hex dumps in an alternate format." },
+        { name: "entropy", description: "Compute Shannon entropy to find packed, encrypted, or compressed regions." },
+        { name: "pe_info", description: "PE-only helper present in the standard harness; out of scope for Linux ELF entries." },
+        { name: "final_answer", description: "Structured answer submission tool used when the model finishes analysis." }
+      ],
+      disallowedTools: [
+        "No dynamic execution, debugging, strace, ltrace, or runtime sandboxing during official scoring.",
+        "No Ghidra, IDA, Binary Ninja, radare2, decompilers, custom scripts, package installs, or internet access unless AgentRE publishes a rules update.",
+        "No participant-supplied helper tools or undocumented analysis dependencies."
+      ]
+    },
     competitionStatus: "open",
     allowedStatuses: ["upcoming", "open", "validation", "judging", "complete", "archived"],
     statusLabels: {

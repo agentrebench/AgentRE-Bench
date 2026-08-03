@@ -200,6 +200,16 @@
     </div>
   </section>
 
+
+  <section id="tools">
+    <div class="container">
+      <div class="section-tag">Allowed Tools</div>
+      <h2 class="section-title">Models get the standard AgentRE static-analysis tools.</h2>
+      <p class="section-kicker">Official scoring uses the AgentRE harness tool surface from <code data-config="officialToolEnvironment.dockerImage">agentre-bench-tools:latest</code>: file identification, strings, ELF metadata, disassembly, symbols, hex dumps, entropy analysis, and the structured final-answer tool. No dynamic execution, decompilers, package installs, internet access, or participant-supplied helper tools are allowed unless AgentRE publishes a rules update.</p>
+      <div class="grid-3" data-render="allowed-tools" aria-label="Allowed AgentRE tools"></div>
+    </div>
+  </section>
+
   <section id="privacy">
     <div class="container">
       <div class="section-tag">Private Submissions</div>

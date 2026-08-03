@@ -286,6 +286,45 @@ Safety rules:
 - Sanitize transcripts before publication.
 - Record private acceptance, rejection, and scoring notes outside the website repository.
 
+## Official Tool Environment
+
+Season 1 uses the standard AgentRE static-analysis tool surface from the harness. Do not create a separate challenge-only tool environment unless the public rules are updated before entries open.
+
+Official image:
+
+```text
+agentre-bench-tools:latest
+```
+
+Build from the repository root:
+
+```bash
+docker build --platform linux/amd64 -t agentre-bench-tools:latest -f Dockerfile.tools .
+```
+
+The official tool image should be pinned to the same harness commit recorded for the competition opening. Record the image digest privately with the evaluation notes.
+
+Official AgentRE tools exposed to models:
+
+- `file`
+- `strings`
+- `readelf`
+- `objdump`
+- `nm`
+- `hexdump`
+- `xxd`
+- `entropy`
+- `pe_info` is present in the standard harness but is PE-only and out of scope for Linux ELF entries.
+- `final_answer` is the structured answer submission tool.
+
+Default limits from the harness are 25 tool calls, 30 seconds per tool call, and 50,000 output characters per tool result. If these values change, update `docs/challenge/challenge-config.js` and publish the new rule before entries open.
+
+Not allowed in official scoring unless a public rules update says otherwise:
+
+- Dynamic execution, debugging, `strace`, `ltrace`, or runtime sandboxing.
+- Ghidra, IDA, Binary Ninja, radare2, decompilers, package installs, custom scripts, or internet access.
+- Participant-supplied helper tools or undocumented analysis dependencies.
+
 ## Official Scoring Operations
 
 Season 1 ranks eligible entries by lowest average official model correctness, but the prize winner must also be the lowest-scoring entry on at least `minimumModelPanelWinsForPrize` official models. The public difficulty score is:

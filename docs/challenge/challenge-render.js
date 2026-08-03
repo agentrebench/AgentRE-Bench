@@ -94,6 +94,35 @@
     `).join("");
   }
 
+  function renderAllowedTools() {
+    const toolLists = document.querySelectorAll("[data-render=\"allowed-tools\"]");
+    const tools = config.officialToolEnvironment && Array.isArray(config.officialToolEnvironment.allowedTools)
+      ? config.officialToolEnvironment.allowedTools
+      : [];
+    if (!toolLists.length || !tools.length) return;
+
+    toolLists.forEach((toolList) => {
+      toolList.innerHTML = tools.map((tool) => `
+        <article class="card compact-card">
+          <h3><code>${escapeHtml(tool.name)}</code></h3>
+          <p>${escapeHtml(tool.description)}</p>
+        </article>
+      `).join("");
+    });
+  }
+
+  function renderDisallowedTools() {
+    const lists = document.querySelectorAll("[data-render=\"disallowed-tools\"]");
+    const items = config.officialToolEnvironment && Array.isArray(config.officialToolEnvironment.disallowedTools)
+      ? config.officialToolEnvironment.disallowedTools
+      : [];
+    if (!lists.length || !items.length) return;
+
+    lists.forEach((list) => {
+      list.innerHTML = items.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
+    });
+  }
+
   function renderModelPanel() {
     const panel = document.querySelector("[data-render=\"model-panel\"]");
     if (!panel || !Array.isArray(config.officialModelPanel)) return;
@@ -401,6 +430,8 @@
     populateConfigValues();
     renderTimeline();
     renderScoring();
+    renderAllowedTools();
+    renderDisallowedTools();
     renderModelPanel();
     renderScoreMetrics();
     renderTieBreakers();
