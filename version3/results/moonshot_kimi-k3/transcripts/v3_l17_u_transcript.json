@@ -1,0 +1,338 @@
+{
+  "task_id": "v3_l17_u",
+  "model": "kimi-k3",
+  "provider": "moonshot",
+  "difficulty": 17,
+  "score": {
+    "tier": "pe_injection",
+    "field_scores": {
+      "techniques": 0.7857142857142857,
+      "encryption_key": 1.0,
+      "anti_analysis": 0.0,
+      "encryption_algorithm": 1.0,
+      "file_type": 1.0,
+      "encoded_strings": 1.0
+    },
+    "hallucinated_techniques": [],
+    "missing_techniques": [
+      "peb_parsing"
+    ],
+    "unmatched_techniques": [
+      "ntqueryinformationprocess_PEB (ProcessBasicInformation)",
+      "peb_image_base_read via NtReadVirtualMemory (PEB+0x10)",
+      "runtime_api_resolution (GetModuleHandleA/GetProcAddress for ntdll natives)",
+      "stack_string (svchost.exe path built from immediates)",
+      "terminateprocess_cleanup_on_failure"
+    ],
+    "spurious_fields": [
+      "injection_details",
+      "decoded_strings"
+    ],
+    "hallucination_penalty": 0.0,
+    "spurious_penalty": 0.1,
+    "weighted_score": 0.7208,
+    "final_score": 0.6208,
+    "sample": "v3_l17_u"
+  },
+  "agent_result": {
+    "task_id": "v3_l17_u",
+    "final_answer": {
+      "anti_analysis": [
+        "anti_debug_ntqueryinformationprocess_debugport (class 7 == 0xFFFFFFFF)",
+        "anti_debug_ntqueryinformationprocess_debugflags (class 0x1F == 0)",
+        "silent_exit_on_debugger (WinMain returns 0 with no payload decryption if checks trip)",
+        "stack_string_obfuscation (svchost.exe target path built from immediates)",
+        "runtime_resolution_of_ntdll_natives (keeps Nt* APIs out of the import table)",
+        "unstripped_DWARF_debug_info_present (not anti-analysis per se, but binary ships full symbols)"
+      ],
+      "c2_protocol": null,
+      "decoded_c2": null,
+      "decoded_strings": {
+        "api_names_resolved_at_runtime_(plaintext_rdata_0x140005020-0x14000506c)": [
+          "ntdll.dll",
+          "NtQueryInformationProcess",
+          "NtUnmapViewOfSection",
+          "NtReadVirtualMemory"
+        ],
+        "decryption_recipe": "plaintext = RC4( XOR(ciphertext, repeating deadbeef1337cafebabe) ) with RC4 key 'Hollowing_PE!!!!'; both layers are involutions applied exactly as in WinMain",
+        "g_encrypted_pe_stub_ciphertext_hex": "8bdccb9a7652ab8efdd96c314a27e35f187489bdd0462e6a1b97fc833d51ae127709c4b8e5916f330c58dfa385297b1e46ba92e75c308814f34d21b6da6e0f9c",
+        "g_rc4_key": "Hollowing_PE!!!!",
+        "g_xor_key_hex": "deadbeef1337cafebabe",
+        "hollowing_target_path(stack string)": "C:\\Windows\\System32\\svchost.exe",
+        "source_filename_in_debug_info": "windows_level17_ProcessHollowing.c"
+      },
+      "encoded_strings": true,
+      "encryption_details": {
+        "algorithm": "Two-layer symmetric encryption of the embedded payload: (1) repeating-key XOR with a 10-byte key, then (2) RC4 (KSA+PRGA, 256-byte state) with a 16-byte key. Decryption in WinMain: xor_decrypt(buf,64,g_xor_key,10) followed by rc4_init/rc4_crypt with g_rc4_key.",
+        "key": "XOR key: de ad be ef 13 37 ca fe ba be ('deadbeef1337cafebabe', 10 bytes used of a 16-byte zero-padded array). RC4 key: 'Hollowing_PE!!!!' (16 bytes).",
+        "key_storage": "Both keys are hardcoded global constants in .rdata: g_xor_key @ VA 0x140005000, g_rc4_key @ VA 0x140005010 (immediately followed by plaintext ntdll API-name strings). The 64-byte ciphertext is g_encrypted_pe_stub in .data @ VA 0x140004000."
+      },
+      "file_type": "PE32+ (x86-64) console executable, MinGW-w64 GCC 13, unstripped with DWARF debug symbols",
+      "injection_details": {
+        "entry_point_redirect": "GetThreadContext/SetThreadContext with ContextFlags=0x10000B; sets RCX (CONTEXT+0x80) = payload base, so RtlUserThreadStart transfers control to the injected stub on ResumeThread",
+        "method": "Process hollowing: CreateProcessA with CREATE_SUSPENDED (4) -> NtQueryInformationProcess(ProcessBasicInformation) to get PEB -> NtReadVirtualMemory(PEB+0x10) to read victim image base -> NtUnmapViewOfSection(image base) -> VirtualAllocEx (MEM_COMMIT|MEM_RESERVE 0x3000, PAGE_EXECUTE_READWRITE 0x40; fallback base=NULL) -> WriteProcessMemory -> SetThreadContext -> ResumeThread; Sleep(2000) after injection",
+        "payload": "64-byte stub stored encrypted as g_encrypted_pe_stub in .data (0x140004000); decrypted at runtime (XOR key deadbeef1337cafebabe, then RC4 'Hollowing_PE!!!!') and written raw at the allocated base (not a section-mapped PE)",
+        "payload_write": "Single WriteProcessMemory of 0x40 (64) bytes to the remotely allocated RWX region",
+        "target_discovery": "Hardcoded path assembled on the stack via mov imm64 immediates (stack string): 'C:\\Windows\\System32\\svchost.exe'",
+        "target_process": "C:\\Windows\\System32\\svchost.exe"
+      },
+      "techniques": [
+        "process_hollowing",
+        "create_process_suspended (CreateProcessA, dwCreationFlags=4)",
+        "ntqueryinformationprocess_PEB (ProcessBasicInformation)",
+        "peb_image_base_read via NtReadVirtualMemory (PEB+0x10)",
+        "ntunmapviewofsection",
+        "virtualallocex_writeprocessmemory (PAGE_EXECUTE_READWRITE)",
+        "getthreadcontext_setthreadcontext (RCX = payload base)",
+        "resumethread",
+        "xor_encryption (repeating 10-byte key)",
+        "rc4_encryption (16-byte key)",
+        "stack_string (svchost.exe path built from immediates)",
+        "runtime_api_resolution (GetModuleHandleA/GetProcAddress for ntdll natives)",
+        "anti_debug_ntqueryinformationprocess (ProcessDebugPort=7 and ProcessDebugFlags=0x1F)",
+        "terminateprocess_cleanup_on_failure"
+      ]
+    },
+    "tool_call_count": 13,
+    "tool_calls_by_type": {
+      "pe_info": 1,
+      "file": 1,
+      "strings": 1,
+      "nm": 1,
+      "objdump": 2,
+      "hexdump": 6,
+      "final_answer": 1
+    },
+    "tool_calls_log": [
+      {
+        "call_number": 1,
+        "tool": "pe_info",
+        "input": {
+          "path": "sample_409a1c.bin"
+        },
+        "output_preview": "Format:      PE32+ (x86-64)\nEntry point: 0x00001410\nImage base:  0x140000000\nSubsystem:   3\nSections:    19\nTimestamp:   1785204241\n\nSECTIONS:\n  .text      vsize=0x0002258 raw=0x0002400 entropy= 5.78 chars=0x60000060\n  .data      vsize=0x00000d0 raw=0x0000200 entropy= 1.91 chars=0xc0000040\n  .rdata     vsize=0x0000950 raw=0x0000a00 entropy= 4.13 chars=0x40000040\n  .pdata     vsize=0x0000270 raw=0x0000400 entropy= 2.65 chars=0x40000040\n  .xdata     vsize=0x0000244 raw=0x0000400 entropy= 2.94 char"
+      },
+      {
+        "call_number": 2,
+        "tool": "file",
+        "input": {
+          "path": "sample_409a1c.bin"
+        },
+        "output_preview": "/home/marq/Projects/AgentRE-Bench/.workspaces/moonshot_kimi-k3/v3_l17_u/sample_409a1c.bin: PE32+ executable (console) x86-64, for MS Windows, 19 sections\n"
+      },
+      {
+        "call_number": 3,
+        "tool": "strings",
+        "input": {
+          "path": "sample_409a1c.bin"
+        },
+        "output_preview": "!This program cannot be run in DOS mode.\n.text\n`.data\n.rdata\n@.pdata\n@.xdata\n@.bss\n.idata\n.CRT\n.tls\n.reloc\nB/19\nB/31\nB/45\nB/57\nB/70\nB/81\nB/97\nB/113\n8MZu\nHcP<H\nUAUATWVSH\nl$ H\n([^_A\\A]]\n([^_A\\A]]\nT$ L\nT$ L\nT$HH\nT$@H\nT$ L\nL$ L\nD$ @\nD$ @\nL$ H\nC:\\WindoH\nws\\SysteH\nm32\\svchH\nost.exe\nUVSH\nl$ H\n [^]\nUVSH\nl$ H\n [^]\n [^]\n [^]\nUVSH\nD$0I\n|$(H\np[^]\nUVSH\nl$0H\nUWVSH\nl$PHc5\nX[^_]\nUAWAVAUATWVSH\nl$@D\n[^_A\\A]A^A_]\nD$0H\n(D;%F[\nl$ H\nCCG \n([]H\nUAUATWVSH\nl$ L\n([^_A\\A]]H\nUWVSH\n([^_]\nUVSH\n [^]\n [^]\n9MZu\nHcQ<H\nHcA<H\nUWVSH"
+      },
+      {
+        "call_number": 4,
+        "tool": "nm",
+        "input": {
+          "path": "sample_409a1c.bin"
+        },
+        "output_preview": "000000014000a000 d .CRT$XCA\n000000014000a008 d .CRT$XCAA\n000000014000a010 d .CRT$XCZ\n000000014000a050 d .CRT$XDA\n000000014000a058 d .CRT$XDZ\n000000014000a018 d .CRT$XIA\n000000014000a020 d .CRT$XIAA\n000000014000a028 d .CRT$XIZ\n000000014000a030 d .CRT$XLA\n000000014000a038 d .CRT$XLC\n000000014000a040 d .CRT$XLD\n000000014000a048 d .CRT$XLZ\n0000000140008000 b .bss\n0000000140008030 b .bss\n0000000140008030 b .bss\n0000000140008030 b .bss\n0000000140008030 b .bss\n0000000140008040 b .bss\n0000000140008050 b"
+      },
+      {
+        "call_number": 5,
+        "tool": "objdump",
+        "input": {
+          "flags": "-d",
+          "path": "sample_409a1c.bin"
+        },
+        "output_preview": "\n/home/marq/Projects/AgentRE-Bench/.workspaces/moonshot_kimi-k3/v3_l17_u/sample_409a1c.bin:     file format pei-x86-64\n\n\nDisassembly of section .text:\n\n0000000140001000 <__mingw_invalidParameterHandler>:\n   140001000:\tc3                   \tret\n   140001001:\t66 66 2e 0f 1f 84 00 \tdata16 cs nopw 0x0(%rax,%rax,1)\n   140001008:\t00 00 00 00 \n   14000100c:\t0f 1f 40 00          \tnopl   0x0(%rax)\n\n0000000140001010 <pre_c_init>:\n   140001010:\t55                   \tpush   %rbp\n   140001011:\t48 89 e5      "
+      },
+      {
+        "call_number": 6,
+        "tool": "hexdump",
+        "input": {
+          "length": 352,
+          "offset": 4336,
+          "path": "sample_409a1c.bin"
+        },
+        "output_preview": "000010f0  05 00 00 c7 44 24 20 40  00 00 00 41 b9 00 30 00  |....D$ @...A..0.|\n00001100  00 49 89 d0 ba 00 00 00  00 48 89 c1 48 8b 05 5d  |.I.......H..H..]|\n00001110  77 00 00 ff d0 48 89 85  98 05 00 00 48 83 bd 98  |w....H......H...|\n00001120  05 00 00 00 75 48 48 8b  85 f0 04 00 00 ba 00 00  |....uHH.........|\n00001130  00 00 48 89 c1 48 8b 05  24 77 00 00 ff d0 48 8b  |..H..H..$w....H.|\n00001140  85 f8 04 00 00 48 89 c1  48 8b 05 91 76 00 00 ff  |.....H..H...v...|\n00001150  d0 48 8b 85 f0 0"
+      },
+      {
+        "call_number": 7,
+        "tool": "hexdump",
+        "input": {
+          "length": 256,
+          "offset": 10752,
+          "path": "sample_409a1c.bin"
+        },
+        "output_preview": "00002a00  8b dc cb 9a 76 52 ab 8e  fd d9 6c 31 4a 27 e3 5f  |....vR....l1J'._|\n00002a10  18 74 89 bd d0 46 2e 6a  1b 97 fc 83 3d 51 ae 12  |.t...F.j....=Q..|\n00002a20  77 09 c4 b8 e5 91 6f 33  0c 58 df a3 85 29 7b 1e  |w.....o3.X...){.|\n00002a30  46 ba 92 e7 5c 30 88 14  f3 4d 21 b6 da 6e 0f 9c  |F...\\0...M!..n..|\n00002a40  50 32 00 40 01 00 00 00  00 00 00 00 00 00 00 00  |P2.@............|\n00002a50  ff ff ff ff ff ff ff ff  00 00 00 00 00 00 00 00  |................|\n00002a60  02 00 00 00 00 0"
+      },
+      {
+        "call_number": 8,
+        "tool": "hexdump",
+        "input": {
+          "length": 160,
+          "offset": 10752,
+          "path": "sample_409a1c.bin"
+        },
+        "output_preview": "00002a00  8b dc cb 9a 76 52 ab 8e  fd d9 6c 31 4a 27 e3 5f  |....vR....l1J'._|\n00002a10  18 74 89 bd d0 46 2e 6a  1b 97 fc 83 3d 51 ae 12  |.t...F.j....=Q..|\n00002a20  77 09 c4 b8 e5 91 6f 33  0c 58 df a3 85 29 7b 1e  |w.....o3.X...){.|\n00002a30  46 ba 92 e7 5c 30 88 14  f3 4d 21 b6 da 6e 0f 9c  |F...\\0...M!..n..|\n00002a40  50 32 00 40 01 00 00 00  00 00 00 00 00 00 00 00  |P2.@............|\n00002a50  ff ff ff ff ff ff ff ff  00 00 00 00 00 00 00 00  |................|\n00002a60  02 00 00 00 00 0"
+      },
+      {
+        "call_number": 9,
+        "tool": "objdump",
+        "input": {
+          "flags": "-x",
+          "path": "sample_409a1c.bin"
+        },
+        "output_preview": "\n/home/marq/Projects/AgentRE-Bench/.workspaces/moonshot_kimi-k3/v3_l17_u/sample_409a1c.bin:     file format pei-x86-64\n/home/marq/Projects/AgentRE-Bench/.workspaces/moonshot_kimi-k3/v3_l17_u/sample_409a1c.bin\narchitecture: i386:x86-64, flags 0x0000013b:\nHAS_RELOC, EXEC_P, HAS_DEBUG, HAS_SYMS, HAS_LOCALS, D_PAGED\nstart address 0x0000000140001410\n\nCharacteristics 0x26\n\texecutable\n\tline numbers stripped\n\tlarge address aware\n\nTime/Date\t\tTue Jul 28 02:04:01 2026\nMagic\t\t\t020b\t(PE32+)\nMajorLinkerVersio"
+      },
+      {
+        "call_number": 10,
+        "tool": "hexdump",
+        "input": {
+          "length": 176,
+          "offset": 11264,
+          "path": "sample_409a1c.bin"
+        },
+        "output_preview": "00002c00  de ad be ef 13 37 ca fe  ba be 00 00 00 00 00 00  |.....7..........|\n00002c10  48 6f 6c 6c 6f 77 69 6e  67 5f 50 45 21 21 21 21  |Hollowing_PE!!!!|\n00002c20  6e 74 64 6c 6c 2e 64 6c  6c 00 4e 74 51 75 65 72  |ntdll.dll.NtQuer|\n00002c30  79 49 6e 66 6f 72 6d 61  74 69 6f 6e 50 72 6f 63  |yInformationProc|\n00002c40  65 73 73 00 4e 74 55 6e  6d 61 70 56 69 65 77 4f  |ess.NtUnmapViewO|\n00002c50  66 53 65 63 74 69 6f 6e  00 4e 74 52 65 61 64 56  |fSection.NtReadV|\n00002c60  69 72 74 75 61 6"
+      },
+      {
+        "call_number": 11,
+        "tool": "hexdump",
+        "input": {
+          "length": 336,
+          "offset": 4848,
+          "path": "sample_409a1c.bin"
+        },
+        "output_preview": "000012f0  c0 01 00 00 48 89 95 c8  01 00 00 48 8b 05 0e 23  |....H......H...#|\n00001300  00 00 48 8b 15 0f 23 00  00 48 89 85 d0 01 00 00  |..H...#..H......|\n00001310  48 89 95 d8 01 00 00 48  8b 05 02 23 00 00 48 8b  |H......H...#..H.|\n00001320  15 03 23 00 00 48 89 85  e0 01 00 00 48 89 95 e8  |..#..H......H...|\n00001330  01 00 00 48 8b 05 f6 22  00 00 48 8b 15 f7 22 00  |...H...\"..H...\".|\n00001340  00 48 89 85 f0 01 00 00  48 89 95 f8 01 00 00 48  |.H......H......H|\n00001350  8d 85 c0 01 00 0"
+      },
+      {
+        "call_number": 12,
+        "tool": "hexdump",
+        "input": {
+          "length": 208,
+          "offset": 10064,
+          "path": "sample_409a1c.bin"
+        },
+        "output_preview": "00002750  55 57 56 53 48 81 ec 98  00 00 00 48 8d ac 24 90  |UWVSH......H..$.|\n00002760  00 00 00 31 f6 e8 a6 ed  ff ff e8 01 fe ff ff 48  |...1...........H|\n00002770  8b 18 48 85 db 75 2c e9  9b 00 00 00 0f 1f 40 00  |..H..u,.......@.|\n00002780  84 c9 74 4c 83 e6 01 74  2f be 01 00 00 00 e8 7d  |..tL...t/......}|\n00002790  fe ff ff 85 c0 74 08 80  7b 01 01 48 83 db ff 48  |.....t..{..H...H|\n000027a0  83 c3 01 0f be 0b 80 f9  20 7e d5 89 f0 83 f0 01  |........ ~......|\n000027b0  80 f9 22 0f 44 f"
+      },
+      {
+        "call_number": 13,
+        "tool": "final_answer",
+        "input": {
+          "anti_analysis": [
+            "anti_debug_ntqueryinformationprocess_debugport (class 7 == 0xFFFFFFFF)",
+            "anti_debug_ntqueryinformationprocess_debugflags (class 0x1F == 0)",
+            "silent_exit_on_debugger (WinMain returns 0 with no payload decryption if checks trip)",
+            "stack_string_obfuscation (svchost.exe target path built from immediates)",
+            "runtime_resolution_of_ntdll_natives (keeps Nt* APIs out of the import table)",
+            "unstripped_DWARF_debug_info_present (not anti-analysis per se, but binary ships full symbols)"
+          ],
+          "c2_protocol": null,
+          "decoded_c2": null,
+          "decoded_strings": {
+            "api_names_resolved_at_runtime_(plaintext_rdata_0x140005020-0x14000506c)": [
+              "ntdll.dll",
+              "NtQueryInformationProcess",
+              "NtUnmapViewOfSection",
+              "NtReadVirtualMemory"
+            ],
+            "decryption_recipe": "plaintext = RC4( XOR(ciphertext, repeating deadbeef1337cafebabe) ) with RC4 key 'Hollowing_PE!!!!'; both layers are involutions applied exactly as in WinMain",
+            "g_encrypted_pe_stub_ciphertext_hex": "8bdccb9a7652ab8efdd96c314a27e35f187489bdd0462e6a1b97fc833d51ae127709c4b8e5916f330c58dfa385297b1e46ba92e75c308814f34d21b6da6e0f9c",
+            "g_rc4_key": "Hollowing_PE!!!!",
+            "g_xor_key_hex": "deadbeef1337cafebabe",
+            "hollowing_target_path(stack string)": "C:\\Windows\\System32\\svchost.exe",
+            "source_filename_in_debug_info": "windows_level17_ProcessHollowing.c"
+          },
+          "encoded_strings": true,
+          "encryption_details": {
+            "algorithm": "Two-layer symmetric encryption of the embedded payload: (1) repeating-key XOR with a 10-byte key, then (2) RC4 (KSA+PRGA, 256-byte state) with a 16-byte key. Decryption in WinMain: xor_decrypt(buf,64,g_xor_key,10) followed by rc4_init/rc4_crypt with g_rc4_key.",
+            "key": "XOR key: de ad be ef 13 37 ca fe ba be ('deadbeef1337cafebabe', 10 bytes used of a 16-byte zero-padded array). RC4 key: 'Hollowing_PE!!!!' (16 bytes).",
+            "key_storage": "Both keys are hardcoded global constants in .rdata: g_xor_key @ VA 0x140005000, g_rc4_key @ VA 0x140005010 (immediately followed by plaintext ntdll API-name strings). The 64-byte ciphertext is g_encrypted_pe_stub in .data @ VA 0x140004000."
+          },
+          "file_type": "PE32+ (x86-64) console executable, MinGW-w64 GCC 13, unstripped with DWARF debug symbols",
+          "injection_details": {
+            "entry_point_redirect": "GetThreadContext/SetThreadContext with ContextFlags=0x10000B; sets RCX (CONTEXT+0x80) = payload base, so RtlUserThreadStart transfers control to the injected stub on ResumeThread",
+            "method": "Process hollowing: CreateProcessA with CREATE_SUSPENDED (4) -> NtQueryInformationProcess(ProcessBasicInformation) to get PEB -> NtReadVirtualMemory(PEB+0x10) to read victim image base -> NtUnmapViewOfSection(image base) -> VirtualAllocEx (MEM_COMMIT|MEM_RESERVE 0x3000, PAGE_EXECUTE_READWRITE 0x40; fallback base=NULL) -> WriteProcessMemory -> SetThreadContext -> ResumeThread; Sleep(2000) after injection",
+            "payload": "64-byte stub stored encrypted as g_encrypted_pe_stub in .data (0x140004000); decrypted at runtime (XOR key deadbeef1337cafebabe, then RC4 'Hollowing_PE!!!!') and written raw at the allocated base (not a section-mapped PE)",
+            "payload_write": "Single WriteProcessMemory of 0x40 (64) bytes to the remotely allocated RWX region",
+            "target_discovery": "Hardcoded path assembled on the stack via mov imm64 immediates (stack string): 'C:\\Windows\\System32\\svchost.exe'",
+            "target_process": "C:\\Windows\\System32\\svchost.exe"
+          },
+          "techniques": [
+            "process_hollowing",
+            "create_process_suspended (CreateProcessA, dwCreationFlags=4)",
+            "ntqueryinformationprocess_PEB (ProcessBasicInformation)",
+            "peb_image_base_read via NtReadVirtualMemory (PEB+0x10)",
+            "ntunmapviewofsection",
+            "virtualallocex_writeprocessmemory (PAGE_EXECUTE_READWRITE)",
+            "getthreadcontext_setthreadcontext (RCX = payload base)",
+            "resumethread",
+            "xor_encryption (repeating 10-byte key)",
+            "rc4_encryption (16-byte key)",
+            "stack_string (svchost.exe path built from immediates)",
+            "runtime_api_resolution (GetModuleHandleA/GetProcAddress for ntdll natives)",
+            "anti_debug_ntqueryinformationprocess (ProcessDebugPort=7 and ProcessDebugFlags=0x1F)",
+            "terminateprocess_cleanup_on_failure"
+          ]
+        },
+        "is_final_answer": true
+      }
+    ],
+    "redundant_tool_calls": 0,
+    "invalid_tool_calls": 0,
+    "invalid_json_attempts": 0,
+    "input_tokens": 559242,
+    "output_tokens": 46241,
+    "reasoning_tokens": 43705,
+    "total_tokens": 605483,
+    "wall_time_seconds": 915.87,
+    "llm_seconds": 915.81,
+    "max_steps_hit": false,
+    "has_valid_answer": true,
+    "last_error": null
+  },
+  "metrics": {
+    "task_id": "v3_l17_u",
+    "score": 0.6208,
+    "tier": "pe_injection",
+    "field_scores": {
+      "techniques": 0.7857142857142857,
+      "encryption_key": 1.0,
+      "anti_analysis": 0.0,
+      "encryption_algorithm": 1.0,
+      "file_type": 1.0,
+      "encoded_strings": 1.0
+    },
+    "tool_calls_total": 13,
+    "tool_calls_by_type": {
+      "pe_info": 1,
+      "file": 1,
+      "strings": 1,
+      "nm": 1,
+      "objdump": 2,
+      "hexdump": 6,
+      "final_answer": 1
+    },
+    "redundant_tool_calls": 0,
+    "invalid_tool_calls": 0,
+    "invalid_json_attempts": 0,
+    "steps_to_answer": 13,
+    "max_steps_hit": false,
+    "has_valid_answer": true,
+    "hallucinated_techniques": [],
+    "hallucination_count": 0,
+    "missing_techniques": [
+      "peb_parsing"
+    ],
+    "spurious_fields": [
+      "injection_details",
+      "decoded_strings"
+    ],
+    "spurious_count": 2,
+    "wall_time_seconds": 915.87,
+    "llm_seconds": 915.81,
+    "total_tokens": 605483,
+    "input_tokens": 559242,
+    "output_tokens": 46241,
+    "reasoning_tokens": 43705
+  }
+}

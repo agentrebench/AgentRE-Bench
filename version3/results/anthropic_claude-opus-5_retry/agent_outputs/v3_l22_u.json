@@ -1,0 +1,59 @@
+{
+  "file_type": "PE32+ (x86-64) console executable, built with llvm-mingw/clang 23 (C++, libc++abi/libunwind statically linked; DWARF debug sections /4,/58,... present, symbols not stripped)",
+  "encoded_strings": true,
+  "techniques": [
+    "tls_callback_anti_debug",
+    "peb_walk_module_resolution (gs:0x60 -> PEB->Ldr->InMemoryOrderModuleList, kernel32 identified by wide-char name check 'K'/'k' + '3')",
+    "manual_getprocaddress (GetModuleHandleA(\"ntdll.dll\") + GetProcAddress for Nt* APIs)",
+    "hells_gate_syscall_number_extraction (validates ntdll stub 4C 8B D1 B8 and reads SSN at stub+4 for NtAllocateVirtualMemory/NtWriteVirtualMemory/NtProtectVirtualMemory/NtCreateThreadEx)",
+    "embedded_encrypted_shellcode (0x60 bytes in .data, decrypted in place at runtime)",
+    "custom_aes_like_sbox_xor_cipher (AES S-box + 32-byte key XOR + round constant 0x1b, 14 rounds)",
+    "self_injection / shellcode_execution via CreateRemoteThread",
+    "VirtualAllocEx + WriteProcessMemory + CreateRemoteThread (RWX PAGE_EXECUTE_READWRITE, MEM_COMMIT|MEM_RESERVE)",
+    "cpp_virtual_dispatch_indirection (CryptoProvider/AES256Provider, ProcessInjector/RemoteThreadInjector vtables)",
+    "anti_debug_ntqueryinformationprocess_debugport",
+    "anti_debug_threadhidefromdebugger",
+    "anti_debug_isdebuggerpresent",
+    "anti_debug_checkremotedebuggerpresent"
+  ],
+  "injection_details": {
+    "method": "Self-injection: VirtualAllocEx + WriteProcessMemory + CreateRemoteThread (RemoteThreadInjector::inject, 0x140001a80)",
+    "target_process": "The binary's OWN process \u2014 the handle passed to inject() comes from GetCurrentProcess() in WinMain (0x1400015c3). No remote/foreign process is targeted (no CreateToolhelp32Snapshot / OpenProcess imports).",
+    "target_discovery": "None \u2014 GetCurrentProcess() pseudo-handle (-1); kernel32 base is additionally located by walking the PEB loader list (peb_find_kernel32, 0x1400017a0) and ntdll syscall numbers are harvested (hells_gate_resolve, 0x140001920), but those results are not used by the injection path.",
+    "payload_write": "VirtualAllocEx(hProc, NULL, 0x60, MEM_COMMIT|MEM_RESERVE=0x3000, PAGE_EXECUTE_READWRITE=0x40) then WriteProcessMemory(hProc, remoteBase, g_encrypted_sc(decrypted in place), 0x60, &written)",
+    "execution": "CreateRemoteThread(hProc, NULL, 0, remoteBase, NULL, 0, NULL) followed by WaitForSingleObject(hThread, 5000) and CloseHandle",
+    "payload_location": "_ZL14g_encrypted_sc at VA 0x14003e000 (.data, file offset 0x3c200), 0x60 = 96 bytes",
+    "payload_size": "96 bytes",
+    "notes": "Payload buffer is decrypted in place by AES256Provider::decrypt before being written. Note the vtable of AES256Provider (VA 0x14002f250) makes decrypt() dispatch to the same routine as encrypt() (0x140001c00), so the same forward transform is used for both directions."
+  },
+  "encryption_details": {
+    "algorithm": "Custom 'AES-256'-branded byte cipher (NOT real AES): for each 16-byte block, 14 rounds; per byte j: b = AES_Sbox[b] XOR key[j % 32] XOR ((round * 0x1B) & 0xFF). Uses the genuine AES S-box table (_ZL10g_aes_sbox @ 0x14002f150) and 14 rounds/32-byte key to mimic AES-256. No key schedule, no MixColumns/ShiftRows. Implemented in AES256Provider::encrypt @ 0x140001c00; AES256Provider::decrypt @ 0x140001a10 virtual-dispatches to the same routine.",
+    "key": "AES-256-S3cur3-K3y-F0r-Mult1-T3c (32 ASCII bytes: 41 45 53 2D 32 35 36 2D 53 33 63 75 72 33 2D 4B 33 79 2D 46 30 72 2D 4D 75 6C 74 31 2D 54 33 63)",
+    "key_storage": "Hard-coded plaintext ASCII byte array _ZL9g_aes_key in .rdata at VA 0x14002f0f0 (file offset 0x2e4f0); passed as 4th argument (r9) to decrypt() in WinMain"
+  },
+  "decoded_strings": {
+    "_ZL9g_aes_key (0x14002f0f0)": "AES-256-S3cur3-K3y-F0r-Mult1-T3c",
+    "0x14002f110": "ntdll.dll (GetModuleHandleA target in tls_callback, anti_debug_checks and hells_gate_resolve)",
+    "0x14002f11a": "NtSetInformationThread (called with GetCurrentThread() and class 0x11 = ThreadHideFromDebugger)",
+    "0x14002f131": "NtQueryInformationProcess (called with class 7 = ProcessDebugPort, flags debugger if result == -1)",
+    "0x14002f098": "NtAllocateVirtualMemory (SSN harvested via Hell's Gate)",
+    "0x14002f0b0": "NtWriteVirtualMemory (SSN harvested)",
+    "0x14002f0c5": "NtProtectVirtualMemory (SSN harvested)",
+    "0x14002f0dc": "NtCreateThreadEx (SSN harvested)",
+    "g_encrypted_sc ciphertext (0x14003e000, 96 bytes, still encrypted on disk)": "8f2a1b7ce35d44960abf3168d755821e c43b996f12ad48d07623e58c17a15af3 2d804ec9631fb837910cd56af43ea752 198bdd40c6782f9e05b34de17a16ac58 f23c871db9640ea05fcb339728dd7014 be49e68a21f54c903ac76e10b55902df",
+    "NOTE": "All API/module name strings are stored in cleartext; the only encrypted artifact is the 96-byte shellcode blob. The blob is transformed in place by the 14-round S-box/XOR routine before being injected; the resulting bytes do not match any recognizable shellcode prologue (e.g. first byte maps to 0x76 forward / 0x8e inverse), consistent with a placeholder payload."
+  },
+  "anti_analysis": [
+    "IsDebuggerPresent() check (anti_debug_checks @ 0x140001670) \u2014 bails out of WinMain if true",
+    "CheckRemoteDebuggerPresent(GetCurrentProcess(), &flag) check",
+    "NtQueryInformationProcess(GetCurrentProcess(), ProcessDebugPort=7, &port, 4, &len) \u2014 treats port == 0xFFFFFFFF as debugger present",
+    "NtSetInformationThread(GetCurrentThread(), ThreadHideFromDebugger=0x11, NULL, 0) \u2014 hides thread from debugger; executed both in anti_debug_checks and in the TLS callback",
+    "TLS callback (_ZL12tls_callbackPvmS_ @ 0x140001490, callback array VA 0x140038aa0) runs the ThreadHideFromDebugger trick on DLL_PROCESS_ATTACH, i.e. before main/WinMain, defeating naive breakpoint-on-entrypoint analysis",
+    "PEB walk (gs:[0x60] -> PEB->Ldr(+0x18) -> InMemoryOrderModuleList(+0x20)) to resolve kernel32 base without imports/strings",
+    "Hell's Gate style syscall-number harvesting: reads ntdll export stubs, validates 4C 8B D1 B8 (mov r10,rcx; mov eax,SSN) and extracts the SSN dword \u2014 used to detect/bypass userland hooks",
+    "Payload kept encrypted on disk (custom S-box/XOR cipher) to defeat static signature/string scanning",
+    "Sleep(1000) delay after injection; Sleep-based spin in CRT startup lock"
+  ],
+  "c2_protocol": null,
+  "decoded_c2": null
+}

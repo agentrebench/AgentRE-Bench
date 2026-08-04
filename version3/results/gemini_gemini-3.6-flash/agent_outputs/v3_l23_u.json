@@ -1,0 +1,45 @@
+{
+  "decoded_strings": {
+    "user_agent": "Microsoft Internet Explorer",
+    "killswitch_url": "http://example.com",
+    "mutex_name": "Global\\MsWinZonesCacheCounterMutexA",
+    "aes_file_key": "W@nCryPt0K3y2024",
+    "killswitch_domain": "example.com",
+    "service_display_name": "Microsoft Security Center (2.0)",
+    "encrypted_extension": ".WNCRY",
+    "bitcoin_address": "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa",
+    "ransom_note_file": "%s\\@Please_Read_Me@.txt",
+    "service_name": "mssecsvc2.0"
+  },
+  "anti_analysis": [
+    "IsDebuggerPresent check",
+    "PEB BeingDebugged flag check",
+    "NtQueryInformationProcess ProcessDebugPort check",
+    "CPUID hypervisor check",
+    "VM driver file attribute check (vmmouse.sys, vmhgfs.sys, sbiedll.dll)",
+    "Killswitch check (HTTP GET request to example.com)",
+    "Mutex single-instance check (Global\\MsWinZonesCacheCounterMutexA)"
+  ],
+  "encryption_details": {
+    "key_storage": "Hardcoded in .rdata section (g_aes_file_key at 0x14000a100, g_str_key at 0x14000a220)",
+    "algorithm": "AES-128 / XOR",
+    "key": "W@nCryPt0K3y2024 (AES) / 0xdeadbeef1337cafe (XOR)"
+  },
+  "decoded_c2": "http://example.com",
+  "encoded_strings": true,
+  "techniques": [
+    "aes_encryption",
+    "xor_encoding",
+    "anti_debug_isdebuggerpresent",
+    "peb_antidebug",
+    "anti_debug_ntqueryinformationprocess",
+    "anti_vm_cpuid",
+    "killswitch_check",
+    "mutex_check",
+    "service_installation",
+    "socket_connect",
+    "ransomware"
+  ],
+  "file_type": "PE32+ (x86-64)",
+  "c2_protocol": "TCP"
+}

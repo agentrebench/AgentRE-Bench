@@ -1,0 +1,43 @@
+{
+  "c2_protocol": null,
+  "encoded_strings": true,
+  "decoded_strings": {
+    "nt_unmap_view_of_section": "NtUnmapViewOfSection",
+    "xor_key": "DE AD BE EF 13 37 CA FE BA BE",
+    "rc4_key": "Hollowing_PE!!!!",
+    "ntdll_dll": "ntdll.dll",
+    "nt_read_virtual_memory": "NtReadVirtualMemory",
+    "nt_query_information_process": "NtQueryInformationProcess",
+    "target_process": "C:\\Windows\\System32\\svchost.exe"
+  },
+  "file_type": "PE32+",
+  "injection_details": {
+    "payload_writing": "Allocated via VirtualAllocEx in target process memory space and written via WriteProcessMemory",
+    "target_process": "C:\\Windows\\System32\\svchost.exe",
+    "method": "Process Hollowing (CreateProcessA suspended -> NtQueryInformationProcess/NtReadVirtualMemory to locate PEB -> NtUnmapViewOfSection -> VirtualAllocEx -> WriteProcessMemory -> GetThreadContext/SetThreadContext -> ResumeThread)",
+    "target_discovery": "Hardcoded path C:\\Windows\\System32\\svchost.exe constructed on stack",
+    "execution": "SetThreadContext modifying RCX register to point to injected payload buffer, followed by ResumeThread"
+  },
+  "encryption_details": {
+    "key_storage": "Hardcoded in .rdata section (g_xor_key at 0x140005000, g_rc4_key at 0x140005010)",
+    "key": "XOR Key: DEADBEEF1337CAFEBABE (10 bytes), RC4 Key: Hollowing_PE!!!! (16 bytes)",
+    "algorithm": "XOR + RC4 (Multi-byte XOR followed by RC4 decryption)"
+  },
+  "anti_analysis": [
+    "NtQueryInformationProcess with ProcessDebugPort (Class 7) anti-debugging check",
+    "NtQueryInformationProcess with ProcessDebugFlags (Class 31 / 0x1f) anti-debugging check",
+    "Dynamic API resolution via GetModuleHandleA and GetProcAddress for ntdll.dll functions",
+    "Stack string construction for target executable path (C:\\Windows\\System32\\svchost.exe)"
+  ],
+  "decoded_c2": null,
+  "techniques": [
+    "process_hollowing",
+    "process_injection",
+    "anti_debug_ntqueryinformationprocess",
+    "dynamic_api_resolution",
+    "stack_strings",
+    "xor_encoding",
+    "rc4_encryption",
+    "thread_execution_hijacking"
+  ]
+}

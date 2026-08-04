@@ -1,0 +1,60 @@
+{
+  "anti_analysis": [
+    "IsDebuggerPresent check",
+    "CheckRemoteDebuggerPresent check on own process",
+    "NtQueryInformationProcess(ProcessDebugPort=7) - treats debug port 0xFFFFFFFF as debugger present",
+    "NtSetInformationThread(ThreadHideFromDebugger=0x11) called on current thread inside anti_debug_checks",
+    "tls_callback function performs ThreadHideFromDebugger on DLL_PROCESS_ATTACH (referenced by tls_callback_ptr global; note: actual TLS callback array only contains the two CRT callbacks 0x1400047b0/0x140004830, so this author's callback appears inert at runtime)",
+    "Hell's Gate SSN extraction (anti-hooking/EDR-evasion primitive)",
+    "PEB walking for module resolution to avoid IAT scrutiny",
+    "encrypted shellcode payload (no plaintext payload in binary)"
+  ],
+  "c2_protocol": null,
+  "decoded_c2": null,
+  "decoded_strings": {
+    "aes_256_key_plaintext_in_rdata_0x14002f0f0": "AES-256-S3cur3-K3y-F0r-Mult1-T3cn",
+    "decryption_note": "Running the encrypt() transform over g_encrypted_sc with the above key yields the 96-byte payload that is executed; decrypt() literally calls encrypt(), so the stored blob was pre-processed with the inverse of this transform by the author.",
+    "dynamically_resolved_apis_plaintext": [
+      "ntdll.dll",
+      "NtSetInformationThread",
+      "NtQueryInformationProcess",
+      "NtAllocateVirtualMemory",
+      "NtWriteVirtualMemory",
+      "NtProtectVirtualMemory",
+      "NtCreateThreadEx"
+    ],
+    "g_encrypted_sc_encrypted_shellcode_96_bytes_at_.data_0x14003e000": "8f2a1b7ce35d44960abf3168d755821ec43b996f12ad48d07623e58c17a15af32d804ec9631fb837910cd56af43ea752198bdd40c6782f9e05b34de17a16ac58f23c871db9640ea05fcb339728dd7014be49e68a21f54c903ac76e10b55902df"
+  },
+  "encoded_strings": true,
+  "encryption_details": {
+    "algorithm": "Custom toy cipher branded 'AES-256' (class AES256Provider). NOT real AES: per 16-byte block, 14 rounds; each byte: b = AES_SBOX[b] XOR key[i % 32] XOR ((round * 0x1b) & 0xFF). Uses the standard AES S-box (stored at 0x14002F150) plus XOR key schedule and round constants. decrypt() is a thunk that simply invokes encrypt() (vtable 0x14002F250: slot+0x20 = encrypt), i.e. the transform is applied as-is to produce the payload.",
+    "key": "AES-256-S3cur3-K3y-F0r-Mult1-T3cn (32 ASCII bytes = 256-bit key)",
+    "key_storage": "Hardcoded in plaintext in .rdata at 0x14002F0F0; encrypted 96-byte shellcode blob g_encrypted_sc in .data at 0x14003E000"
+  },
+  "file_type": "PE32+ (x86-64) console executable, built with llvm-mingw / clang 23 (LLD linker, .buildid section, libc++/libc++abi + libunwind statically linked)",
+  "injection_details": {
+    "allocation": "VirtualAllocEx(hProcess, NULL, 0x60, MEM_COMMIT|MEM_RESERVE=0x3000, PAGE_EXECUTE_READWRITE=0x40) - RWX memory",
+    "extra": "Waits up to 5000 ms for the injected thread (WaitForSingleObject), closes the handle, caller then Sleeps 1000 ms. Hell's Gate SSNs for NtAllocateVirtualMemory/NtWriteVirtualMemory/NtProtectVirtualMemory/NtCreateThreadEx are resolved but unused; actual injection uses Win32 APIs.",
+    "method": "VirtualAllocEx + WriteProcessMemory + CreateRemoteThread (classic remote-thread injection) via RemoteThreadInjector::inject",
+    "payload_write": "WriteProcessMemory(hProcess, remoteBase, g_encrypted_sc, 0x60) after in-place decryption of the 96-byte shellcode in .data",
+    "target_discovery": "None needed - injects into itself (no process enumeration, no external target)",
+    "target_process": "Self-injection: target handle = GetCurrentProcess()"
+  },
+  "techniques": [
+    "self_process_injection",
+    "createremotethread_injection",
+    "virtualallocex_rwx",
+    "writeprocessmemory",
+    "shellcode_encryption_custom_aes_like_cipher",
+    "hardcoded_aes_key",
+    "peb_walk_kernel32",
+    "hells_gate_ssn_extraction",
+    "dynamic_api_resolution_getprocaddress",
+    "manual_ntdll_resolution",
+    "anti_debug_isdebuggerpresent",
+    "anti_debug_checkremotedebuggerpresent",
+    "anti_debug_processdebugport_ntqueryinformationprocess",
+    "anti_debug_threadhidefromdebugger_ntsetinformationthread",
+    "tls_callback_antidebug"
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "file_type": "PE32+ (x86-64) Windows console executable",
+  "encoded_strings": true,
+  "decoded_c2": null,
+  "techniques": [
+    "self_process_injection",
+    "manual_pe_header_and_section_parsing",
+    "executable_section_code_cave_search",
+    "VirtualProtectEx",
+    "WriteProcessMemory",
+    "CreateRemoteThread",
+    "dynamic_api_resolution_via_GetModuleHandleA_and_GetProcAddress",
+    "NtCreateThreadEx_fallback",
+    "repeating_key_xor_payload_decryption",
+    "custom_aes_sbox_xor_transform",
+    "cpuid_hypervisor_detection",
+    "sleep_delay_evasion"
+  ],
+  "c2_protocol": null,
+  "encryption_details": {
+    "algorithm": "A 48-byte injected blob is decoded with repeating-key XOR. A separate 16-byte block is processed by a custom 10-round bytewise transform: state[i] = AES_SBOX[state[i]] XOR key[i] XOR (0x1B * round). This second transform uses the standard AES S-box but is not standard AES because it has no AES key expansion, ShiftRows, or MixColumns.",
+    "key": "XOR key: c37a9f2e558b1d6ce431a84f (12 bytes). Custom S-box-transform key: \"4xdm1n_S3cr3t!!!\" (16 bytes).",
+    "key_storage": "Both keys are statically embedded without protection in .rdata: the binary XOR key at RVA 0x4000, the ASCII S-box-transform key at RVA 0x4120, and the standard AES S-box table at RVA 0x4020."
+  },
+  "decoded_strings": {
+    "xor_decrypted_48_byte_payload_hex": "4c676b62606564666763636656148e69e3b4c56085cbe57d24621a75c5adb111f779757ea98d917aea0904aade94d9a7",
+    "xor_decrypted_payload_ascii_prefix": "Lgkb`edfgccf",
+    "custom_sbox_transform_runtime_result_hex": "054b587f0db3fccc7016aeb32a5d3001",
+    "human_readable_encrypted_strings": "No complete human-readable string is produced by either runtime transform. The dynamically resolved names \"ntdll.dll\" and \"NtCreateThreadEx\" are stored in plaintext."
+  },
+  "anti_analysis": [
+    "CPUID leaf 1 ECX bit 31 hypervisor-present check",
+    "If the hypervisor bit is set, Sleep(30000) is called and execution returns before payload injection"
+  ],
+  "injection_details": {
+    "method": "Self-injection using VirtualProtectEx + WriteProcessMemory followed by CreateRemoteThread; dynamically resolved NtCreateThreadEx is used if CreateRemoteThread fails.",
+    "target_process": "The sample's own current process, not an external process.",
+    "target_discovery": "GetCurrentProcess supplies the current-process pseudohandle. GetModuleHandleA(NULL) supplies the base of the sample's own executable image. There is no process enumeration or target-process-name lookup.",
+    "payload": "A 48-byte blob copied from .data RVA 0x3000 and decoded in memory with a 12-byte repeating XOR key.",
+    "destination_discovery": "The sample validates MZ/PE headers and scans executable sections. It first looks for zero-filled virtual tail slack where VirtualSize - SizeOfRawData is at least 48 bytes; otherwise it searches for a run of 48 bytes consisting of 0x00 or 0xCC.",
+    "payload_write": "The selected code cave is changed to PAGE_EXECUTE_READWRITE with VirtualProtectEx, populated with WriteProcessMemory, then changed to PAGE_EXECUTE_READ.",
+    "thread_execution": "CreateRemoteThread starts at the code-cave address with a NULL parameter. On failure, GetModuleHandleA(\"ntdll.dll\") and GetProcAddress(\"NtCreateThreadEx\") resolve NtCreateThreadEx, which is called with desired access 0x1FFFFF. The sample waits up to 5000 ms and closes the thread handle."
+  }
+}

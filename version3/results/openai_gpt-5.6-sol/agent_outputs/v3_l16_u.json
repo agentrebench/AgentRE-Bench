@@ -1,0 +1,44 @@
+{
+  "file_type": "PE32+ (x86-64) Windows console executable",
+  "encoded_strings": true,
+  "decoded_c2": null,
+  "techniques": [
+    "self_process_code_cave_injection",
+    "in_memory_pe_header_parsing",
+    "executable_section_slack_and_0x00_0xCC_cave_scanning",
+    "VirtualProtectEx_and_WriteProcessMemory",
+    "CreateRemoteThread_execution",
+    "NtCreateThreadEx_fallback",
+    "dynamic_api_resolution_via_GetModuleHandleA_and_GetProcAddress",
+    "repeating_key_XOR_payload_decryption",
+    "custom_10_round_AES_S-box_XOR_block_transform",
+    "CPUID_hypervisor_bit_anti_vm",
+    "sleep_delay_and_early_exit"
+  ],
+  "c2_protocol": null,
+  "encryption_details": {
+    "algorithm": "Two transforms are present: (1) repeating-key XOR over the 48-byte injected payload; (2) a function named aes128_decrypt_block that is not standard AES-128\u2014it performs 10 independent byte-substitution rounds of state[i] = AES_SBOX[state[i]] XOR key[i] XOR ((27 * round) & 0xff), with no AES key schedule, ShiftRows, MixColumns, IV, or mode.",
+    "key": "XOR key (12 bytes): c3 7a 9f 2e 55 8b 1d 6c e4 31 a8 4f. AES-like block key (16-byte ASCII): 4xdm1n_S3cr3t!!! (hex 34 78 64 6d 31 6e 5f 53 33 63 72 33 74 21 21 21).",
+    "key_storage": "Both keys are embedded in plaintext global arrays in .rdata: g_xor_key at VA 0x140004000 and g_aes_key at VA 0x140004120. The standard AES forward S-box is also stored in .rdata as g_aes_sbox."
+  },
+  "decoded_strings": {
+    "xor_decrypted_48_byte_payload_hex": "4c676b62606564666763636656148e69e3b4c56085cbe57d24621a75c5adb111f779757ea98d917aea0904aade94d9a7",
+    "aes_like_decrypted_16_byte_block_hex": "054b587f0db3fccc7016aeb32a5d3001",
+    "recovered_encrypted_text_strings": [],
+    "note": "Both recovered values are binary rather than complete text strings. The AES-like block is decrypted on the stack but its result is not used by the injection path. The strings ntdll.dll and NtCreateThreadEx are stored directly in plaintext, not encrypted."
+  },
+  "anti_analysis": [
+    "CPUID leaf 1 ECX bit 31 hypervisor-present test",
+    "If the hypervisor bit is set, Sleep(30000) is called and execution returns before payload injection"
+  ],
+  "injection_details": {
+    "method": "Self-injection into an existing image location using VirtualProtectEx + WriteProcessMemory, followed by CreateRemoteThread; dynamically resolved NtCreateThreadEx is used as a fallback if CreateRemoteThread fails.",
+    "target_process": "The sample's own current process, obtained with GetCurrentProcess; it does not locate or open an external process.",
+    "target_discovery": "GetCurrentProcess supplies the process pseudo-handle and GetModuleHandleA(NULL) supplies the base of the current executable image.",
+    "code_cave_discovery": "find_code_cave parses the in-memory DOS header, NT headers, and section table. It examines sections with IMAGE_SCN_MEM_EXECUTE, first checks space between SizeOfRawData and VirtualSize, and otherwise scans for a run of 0x00 or 0xCC bytes at least as large as the payload.",
+    "actual_destination_in_this_image": "The first executable section is .text. Its VirtualSize (0x1f38) is smaller than SizeOfRawData (0x2000); the routine's unsigned subtraction underflows, so it accepts module_base + .text.VirtualAddress + .text.SizeOfRawData = module_base + 0x3000 (preferred VA 0x140003000), overlapping the start of .data/g_encrypted_shellcode rather than a true cave.",
+    "payload_write": "WinMain copies g_encrypted_shellcode to a 48-byte stack buffer, decrypts it in place with the 12-byte repeating XOR key, changes the destination to PAGE_EXECUTE_READWRITE (0x40), and writes all 48 bytes with WriteProcessMemory. It then changes protection to PAGE_EXECUTE_READ (0x20).",
+    "thread_creation": "CreateRemoteThread starts directly at the destination with a NULL argument. On failure, GetModuleHandleA(\"ntdll.dll\") and GetProcAddress(\"NtCreateThreadEx\") resolve NtCreateThreadEx, which is called with desired access 0x1fffff and the same start address.",
+    "synchronization": "The created thread is waited on for 5000 ms and its handle is closed."
+  }
+}

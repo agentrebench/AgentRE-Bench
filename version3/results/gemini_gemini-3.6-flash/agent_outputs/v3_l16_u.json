@@ -1,0 +1,34 @@
+{
+  "decoded_strings": {
+    "ntdll": "ntdll.dll",
+    "nt_func": "NtCreateThreadEx",
+    "g_aes_key": "4xdm1n_S3cr3t!!!"
+  },
+  "decoded_c2": null,
+  "encoded_strings": true,
+  "c2_protocol": null,
+  "injection_details": {
+    "target_discovery": "GetModuleHandleA(NULL) to inspect PE section headers for executable section (.text) containing code cave padding (0xCC / 0x00)",
+    "target_process": "Self / Current Process (GetCurrentProcess)",
+    "method": "VirtualProtectEx + WriteProcessMemory + CreateRemoteThread (fallback to NtCreateThreadEx) into Code Cave",
+    "payload_written": "XOR-decrypted 48-byte shellcode payload"
+  },
+  "file_type": "PE32+",
+  "techniques": [
+    "code_cave_injection",
+    "process_injection",
+    "xor_encoding",
+    "aes_encryption",
+    "cpuid_anti_vm",
+    "dynamic_api_resolution"
+  ],
+  "encryption_details": {
+    "algorithm": "XOR (for shellcode payload) / AES-128 (for block)",
+    "key": "4xdm1n_S3cr3t!!! (AES key) / c37a9f2e558b1d6ce431a84f (XOR key)",
+    "key_storage": "Hardcoded in .rdata section (g_aes_key at RVA 0x4120, g_xor_key at RVA 0x4000)"
+  },
+  "anti_analysis": [
+    "CPUID hypervisor present bit check (EAX=1, checking ECX bit 31)",
+    "Sleep delay (30 seconds) on VM detection"
+  ]
+}

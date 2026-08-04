@@ -1,0 +1,47 @@
+{
+  "file_type": "PE32+ (x86-64) console executable, MinGW-w64/GCC 13 built, 19 sections, DWARF debug info + COFF symbols present (unstripped)",
+  "encoded_strings": true,
+  "techniques": [
+    "dll_injection",
+    "createremotethread_loadlibrarya",
+    "manual_getprocaddress",
+    "pe_export_table_walking",
+    "dynamic_api_resolution_no_iat",
+    "toolhelp32_process_enumeration",
+    "target_process_name_matching",
+    "virtualallocex_writeprocessmemory",
+    "xor_string_encryption",
+    "peb_antidebug",
+    "gs_segment_peb_access",
+    "runtime_string_decryption_on_stack"
+  ],
+  "injection_details": {
+    "method": "Classic remote DLL injection: OpenProcess -> VirtualAllocEx -> WriteProcessMemory -> CreateRemoteThread(LoadLibraryA, remote_path) -> WaitForSingleObject(INFINITE) -> CloseHandle",
+    "target_process": "explorer.exe",
+    "target_discovery": "CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS=0x2) + Process32First/Process32Next, strcmp() of PROCESSENTRY32.szExeFile (dwSize=0x130, szExeFile at offset 0x2c) against the plaintext string \"explorer.exe\" (.rdata 0x1400040ac)",
+    "payload_written": "The XOR-decrypted DLL path string (strlen+1 bytes) is written into the remote process with WriteProcessMemory; the buffer is allocated with VirtualAllocEx(NULL, len+1, MEM_COMMIT|MEM_RESERVE = 0x3000, PAGE_READWRITE = 0x4)",
+    "remote_thread_start_routine": "kernel32!LoadLibraryA, resolved via manual export-table parsing (manual_get_proc), parameter = remote buffer containing the DLL path",
+    "openprocess_access_mask": "0x42A = PROCESS_QUERY_INFORMATION(0x400) | PROCESS_VM_WRITE(0x20) | PROCESS_VM_OPERATION(0x8) | PROCESS_CREATE_THREAD(0x2)",
+    "api_resolution": "GetModuleHandleA(\"kernel32.dll\") (only IAT-visible call) then custom manual_get_proc() at 0x1400014ef which parses IMAGE_DOS_HEADER/IMAGE_NT_HEADERS, the export directory (DataDirectory[0] at NT+0x88), AddressOfNames / AddressOfNameOrdinals / AddressOfFunctions and strcmp's the exported names. Injection APIs (CreateToolhelp32Snapshot, Process32First/Next, OpenProcess, VirtualAllocEx, WriteProcessMemory, CreateRemoteThread, WaitForSingleObject, CloseHandle, LoadLibraryA) are therefore absent from the import table.",
+    "injection_function": "inject_dll @ 0x14000167f, called from WinMain @ 0x140001ae9 only if anti_debug_check() returns 0"
+  },
+  "encryption_details": {
+    "algorithm": "Repeating-key XOR (byte-wise, key index = i % key_len), implemented in xor_decrypt() @ 0x140001480; called as xor_decrypt(stack_copy, len=0x20, g_xor_key, key_len=8) from WinMain @ 0x140001b56",
+    "key": "5A 3C 7F E1 2D 94 B8 6A (8 bytes)",
+    "key_storage": "Hard-coded plaintext array g_xor_key in .rdata at VA 0x140004000 (file offset 0x2800), immediately followed by the plaintext API/DLL name strings; ciphertext g_encrypted_dll_path is a 32-byte array in .data at VA 0x140003000 (file offset 0x2600) and is copied to the stack and decrypted in place at runtime (NUL appended at index 32)"
+  },
+  "decoded_strings": {
+    "g_encrypted_dll_path (ciphertext)": "13 6F 55 89 4D A0 9D 41 67 0D 52 A0 45 9C E0 0A 37 0E 52 A0 59 FC EF 05 37 7E 47 89 43 F5 D5 00",
+    "g_encrypted_dll_path (XOR-decrypted with 5A3C7FE12D94B86A)": "49 53 2A 68 60 34 25 2B 3D 31 2D 41 68 08 58 60 6D 32 2D 41 74 68 57 6F 6D 42 38 68 6E 61 6D 6A  ->  \"IS*h`4%+=1-Ah\\x08X`m2-AthWomB8hnamj\" (this 32-byte buffer is the DLL path passed to inject_dll/LoadLibraryA; it decrypts to non-path-looking filler in this sample, i.e. a randomized/placeholder payload path)",
+    "plaintext strings in .rdata (not encrypted)": "kernel32.dll, CreateToolhelp32Snapshot, Process32First, Process32Next, OpenProcess, VirtualAllocEx, WriteProcessMemory, CreateRemoteThread, CloseHandle, WaitForSingleObject, explorer.exe, LoadLibraryA"
+  },
+  "anti_analysis": [
+    "PEB BeingDebugged check without API calls: anti_debug_check() @ 0x14000163f reads the TEB at %gs:0x60 to obtain the PEB, then tests the byte at PEB+0x02 (BeingDebugged); on non-zero WinMain silently returns 0 and skips injection (no error output, evasive bail-out)",
+    "Dynamic API resolution via hand-written export-table parser (manual_get_proc) so injection APIs never appear in the import table / IAT (static-analysis and IAT-hook evasion)",
+    "XOR-obfuscated payload DLL path stored as a byte array in .data, decrypted only on the stack at runtime",
+    "Only benign-looking imports present (KERNEL32: GetModuleHandleA, Sleep, VirtualProtect/VirtualQuery, CRT helpers; msvcrt) - no networking, injection, or debugger-detection API imports",
+    "Sleep(1000) delay after injection"
+  ],
+  "c2_protocol": null,
+  "decoded_c2": null
+}

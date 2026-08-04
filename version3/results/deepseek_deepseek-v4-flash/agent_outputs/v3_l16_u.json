@@ -1,0 +1,48 @@
+{
+  "file_type": "PE32+ (x86-64) console executable, MS Windows",
+  "encoded_strings": true,
+  "techniques": [
+    "xor_encoding",
+    "custom_aes_sbox_transform",
+    "code_cave_injection",
+    "create_remote_thread",
+    "ntcreatethreadex_fallback",
+    "manual_getprocaddress",
+    "write_process_memory",
+    "virtual_protect_ex",
+    "anti_vm_cpuid",
+    "sleep_delay_evasion",
+    "self_injection"
+  ],
+  "injection_details": {
+    "method": "Code cave injection: VirtualProtectEx(PAGE_EXECUTE_READWRITE=0x40) -> WriteProcessMemory(payload) -> VirtualProtectEx(PAGE_EXECUTE_READ=0x20) -> CreateRemoteThread(cave_addr) with fallback to NtCreateThreadEx (resolved at runtime via GetModuleHandleA(\"ntdll.dll\")+GetProcAddress, DesiredAccess=THREAD_ALL_ACCESS 0x1fffff) -> WaitForSingleObject(5000ms) -> CloseHandle",
+    "target_process": "Current process (self-injection via GetCurrentProcess())",
+    "target_discovery": "No process enumeration; target handle obtained directly from GetCurrentProcess(), and the module image base for code-cave scanning from GetModuleHandleA(NULL)",
+    "cave_location": "Executable section (IMAGE_SCN_MEM_EXECUTE) of the module's own PE image; scans for a run of >=0x30 0x00/0xCC padding bytes or the section VirtualSize/SizeOfRawData slack",
+    "payload": "48-byte XOR-decrypted stub (see decoded_strings)",
+    "thread_wait": "WaitForSingleObject(hThread, 0x1388 = 5000 ms)"
+  },
+  "encryption_details": {
+    "algorithm": "1) Repeating-key XOR over the 48-byte injected payload; 2) Custom 'AES-128-like' byte transform using the standard AES S-box (10 rounds: state[i] = SBOX[state[i]] ^ key[i] ^ (27*round)) applied to a 16-byte block - NOT textbook AES (no MixColumns/ShiftRows/key schedule)",
+    "key": "XOR key (12 bytes): c3 7a 9f 2e 55 8b 1d 6c e4 31 a8 4f ; AES key (16 bytes, ASCII): 4xdm1n_S3cr3t!!!",
+    "key_storage": "Hardcoded in .rdata: g_xor_key at RVA 0x140004000, g_aes_key at RVA 0x140004120, AES S-box g_aes_sbox at RVA 0x140004020; encrypted payload (g_encrypted_shellcode, 48 bytes) at RVA 0x140003000 and encrypted 16-byte block (g_encrypted_block) at RVA 0x140003030 in .data"
+  },
+  "decoded_strings": {
+    "xor_decoded_48_byte_payload": "4c 67 6b 62 60 65 64 66 67 63 63 66 56 14 8e 69 e3 b4 c5 60 85 cb e5 7d 24 62 1a 75 c5 ad b1 11 f7 79 75 7e a9 8d 91 7a ea 09 04 aa de 94 d9 a7 (binary stub, not ASCII; leading bytes 'Lgkb`edfgccf...')",
+    "aes_decoded_16_byte_block": "2e 72 58 7f bb b3 fc cc 70 16 bb b3 2a 67 17 d4 (binary, non-ASCII; computed result of the custom S-box transform)",
+    "plaintext_strings": [
+      "4xdm1n_S3cr3t!!!",
+      "ntdll.dll",
+      "NtCreateThreadEx"
+    ]
+  },
+  "anti_analysis": [
+    "anti_vm_check: CPUID leaf 1 (hypervisor-present bit, CPUID.1:ECX[31]) - returns VM-detected if set",
+    "On VM detection: Sleep(30000 ms) delay then exit (evasion/delayed execution)",
+    "Runtime API resolution of NtCreateThreadEx via GetModuleHandleA/GetProcAddress (kept out of the import table)",
+    "Encrypted payload/block storage (XOR + custom AES S-box transform) to hide embedded code",
+    "TLS callback present (standard MinGW CRT __dyn_tls_init, not malicious)"
+  ],
+  "decoded_c2": null,
+  "c2_protocol": null
+}

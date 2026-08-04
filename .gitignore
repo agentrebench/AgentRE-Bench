@@ -1,7 +1,11 @@
 .env
+.env.challenge
+/api
 /binaries/
 /results/
 __pycache__/
 *.pyc
 .DS_Store
 .claude/
+/.workspaces/
+/cla/

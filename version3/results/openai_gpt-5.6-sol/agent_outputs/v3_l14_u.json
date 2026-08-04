@@ -1,0 +1,41 @@
+{
+  "file_type": "PE32+ (x86-64) Windows console executable",
+  "encoded_strings": true,
+  "decoded_c2": null,
+  "techniques": [
+    "dll_injection_CreateRemoteThread_LoadLibraryA",
+    "toolhelp_process_enumeration",
+    "VirtualAllocEx_WriteProcessMemory",
+    "manual_getprocaddress_PE_export_table_walking",
+    "dynamic_kernel32_API_resolution",
+    "repeating_key_XOR_string_obfuscation",
+    "PEB_BeingDebugged_antidebug"
+  ],
+  "c2_protocol": null,
+  "encryption_details": {
+    "algorithm": "Repeating-key XOR: data[i] ^= key[i % 8], applied to 32 bytes of g_encrypted_dll_path",
+    "key": "5a 3c 7f e1 2d 94 b8 6a",
+    "key_storage": "Static 8-byte plaintext global g_xor_key in read-only .rdata at VA 0x140004000; ciphertext is the 32-byte g_encrypted_dll_path global in .data at VA 0x140003000"
+  },
+  "decoded_strings": {
+    "g_encrypted_dll_path": "IS*h`4%+=1-Ah\\x08X`m2-AthWomB8hnamj",
+    "g_encrypted_dll_path_decoded_hex": "49 53 2a 68 60 34 25 2b 3d 31 2d 41 68 08 58 60 6d 32 2d 41 74 68 57 6f 6d 42 38 68 6e 61 6d 6a",
+    "note": "This is the exact output produced by the binary's XOR routine and embedded key. It is not a syntactically valid DLL path, so the embedded payload path appears malformed or intentionally nonfunctional."
+  },
+  "anti_analysis": [
+    "Direct x64 PEB BeingDebugged check: reads PEB from GS:[0x60], tests byte at PEB+0x2, and exits WinMain early when set",
+    "Manual parsing of kernel32.dll's PE export directory to resolve injection APIs, keeping CreateToolhelp32Snapshot/OpenProcess/VirtualAllocEx/WriteProcessMemory/CreateRemoteThread out of the static import table",
+    "XOR-obfuscation of the prospective DLL path"
+  ],
+  "injection_details": {
+    "method": "Classic remote-thread DLL injection: CreateRemoteThread with LoadLibraryA as the start routine",
+    "target_process": "explorer.exe",
+    "target_discovery": "Dynamically resolves CreateToolhelp32Snapshot, Process32First, and Process32Next from kernel32.dll; creates a TH32CS_SNAPPROCESS (0x2) snapshot and performs a case-sensitive strcmp against PROCESSENTRY32A.szExeFile for explorer.exe",
+    "process_open": "OpenProcess access mask 0x42A (PROCESS_QUERY_INFORMATION | PROCESS_VM_OPERATION | PROCESS_VM_WRITE | PROCESS_CREATE_THREAD), handle inheritance disabled",
+    "payload": "The 32-byte g_encrypted_dll_path buffer is copied to the stack, XOR-decrypted with the static 8-byte key, and explicitly NUL-terminated. The resulting bytes are treated as an ANSI DLL path.",
+    "payload_write": "Computes strlen(path)+1, allocates that size in explorer.exe with VirtualAllocEx(NULL, size, MEM_COMMIT|MEM_RESERVE/0x3000, PAGE_READWRITE/0x4), then copies the path including its NUL terminator with WriteProcessMemory",
+    "remote_execution": "Manually resolves LoadLibraryA from kernel32.dll and calls CreateRemoteThread(hProcess, NULL, 0, LoadLibraryA, remote_path, 0, NULL), then WaitForSingleObject(thread, INFINITE) and closes the thread/process handles",
+    "api_resolution": "GetModuleHandleA(\"kernel32.dll\") followed by custom MZ/PE validation and IMAGE_EXPORT_DIRECTORY name/ordinal/function-table walking; API-name strings themselves are plaintext",
+    "cleanup": "Closes the Toolhelp snapshot, remote-thread handle, and target-process handle; does not call VirtualFreeEx"
+  }
+}

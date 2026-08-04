@@ -1,0 +1,51 @@
+{
+  "file_type": "PE32+ (x86-64) console executable, MinGW-w64 GCC 13, unstripped with full DWARF debug info",
+  "encoded_strings": true,
+  "techniques": [
+    "process_hollowing_ghost_ntcreateprocess",
+    "xor_encoding",
+    "dynamic_api_resolution_getprocaddress",
+    "anti_debug_ntqueryinformationprocess_processdebugport",
+    "anti_debug_ntqueryinformationprocess_processdebugflags",
+    "rwx_memory_allocation",
+    "sleep_delay",
+    "silent_exit_on_debugger"
+  ],
+  "injection_details": {
+    "method": "Ghost Process Hollowing: NtCreateProcess (with NULL SectionHandle -> sectionless process with no image on disk) + NtAllocateVirtualMemory (MEM_COMMIT|MEM_RESERVE, PAGE_EXECUTE_READWRITE 0x40) + NtWriteVirtualMemory + NtCreateThreadEx (StartRoutine = allocated base) + NtResumeThread",
+    "target_process": "A brand-new child process created by the malware itself via NtCreateProcess (no existing system process is targeted)",
+    "target_discovery": "No discovery/enumeration: it opens a handle to itself with OpenProcess(PROCESS_CREATE_PROCESS=0x80, FALSE, GetCurrentProcessId()) and passes it as the ParentProcess argument to NtCreateProcess",
+    "payload_write": "64-byte payload decrypted in-memory by xor_crypt (stack buffer), then written into the remote RWX region with NtWriteVirtualMemory; thread entry point set to the allocation base; waits via WaitForSingleObject(thread, 5000 ms) and closes handles with NtClose"
+  },
+  "encryption_details": {
+    "algorithm": "XOR (repeating multi-byte key): buf[i] ^= key[i % keylen], keylen=0x12 (18)",
+    "key": "Gh0stPr0c3ssH0ll0w",
+    "key_storage": "Plaintext in .rdata at VA 0x140004000 (global g_xor_key), immediately followed by plaintext \"ntdll.dll\" and the NT API name strings; encrypted payload at .data VA 0x140003000 (g_encrypted_payload, 0x40 bytes)"
+  },
+  "decoded_strings": {
+    "xor_key": "Gh0stPr0c3ssH0ll0w",
+    "decrypted_payload_hex": "6d64656d736e696c6c710e42505a4b210b6d2f61615d0b44315d5b6d52793d7f7a341d144c14036a303f5a6a720e017d1c1b0e644e4258215c4923707b41282e",
+    "decrypted_payload_ascii_prefix": "mdemsnillq (remainder non-printable filler; appears to be a dummy placeholder payload, not valid x86-64 code)",
+    "dll_resolved": "ntdll.dll",
+    "api_names_plaintext": [
+      "NtQueryInformationProcess",
+      "NtCreateProcess",
+      "NtAllocateVirtualMemory",
+      "NtWriteVirtualMemory",
+      "NtCreateThreadEx",
+      "NtResumeThread",
+      "NtClose"
+    ],
+    "debug_artifacts": "Source file windows_level21_GhostProcessHollowing.c; symbols xor_crypt, g_xor_key, g_encrypted_payload, resolve_nt, anti_debug_nt, ghost_hollow"
+  },
+  "anti_analysis": [
+    "NtQueryInformationProcess ProcessDebugPort (class 7): debugger detected if returned port == -1 (0xFFFFFFFF)",
+    "NtQueryInformationProcess ProcessDebugFlags (class 0x1F/31): debugger detected if flags == 0",
+    "Silent exit (return 0 from WinMain) when a debugger is detected",
+    "Runtime resolution of all native NT APIs via GetModuleHandleA(\"ntdll.dll\") + GetProcAddress so the import table hides the injection primitives",
+    "Use of undocumented native NT API (NtCreateProcess/NtCreateThreadEx) instead of Win32 equivalents",
+    "Sleep(2000) delay after injection"
+  ],
+  "c2_protocol": null,
+  "decoded_c2": null
+}

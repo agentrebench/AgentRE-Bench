@@ -1,0 +1,58 @@
+{
+  "anti_analysis": [
+    "IsDebuggerPresent()",
+    "PEB->BeingDebugged check via gs:[0x60]+2",
+    "NtQueryInformationProcess(ProcessDebugPort=7) resolved manually via GetModuleHandleA(\"ntdll.dll\") + GetProcAddress; returns debugger if port == -1",
+    "VMware driver file checks: GetFileAttributesA(\"C:\\Windows\\System32\\drivers\\vmmouse.sys\") and \"...\\vmhgfs.sys\"",
+    "Sandboxie detection: GetModuleHandleA(\"sbiedll.dll\")",
+    "GetModuleHandleA(\"dbghelp.dll\") (debugging-tools indicator)",
+    "CPUID leaf 1 hypervisor-present bit check (ECX bit 31)",
+    "killswitch domain check: exits if http://example.com is reachable (sandbox/evasion)",
+    "single-instance mutex \"Global\\MsWinZonesCacheCounterMutexA\"",
+    "silent exit(0) with no payload execution when any debug/VM check trips"
+  ],
+  "c2_protocol": "TCP",
+  "decoded_c2": "XOR-decrypted C2 IP bytes \"MnpB3hA$\\x03'mv!\" (13 bytes decrypted with key de ad be ef 13 37 ca fe; not a valid IPv4 string - synthetic filler, inet_addr would fail), beacon targets TCP port 8443 and sends \"SYSTEM:<computername>:WIN:<version>\". Worm module separately scans 192.0.2.1-192.0.2.4 on TCP/445.",
+  "decoded_strings": {
+    "g_encrypted_c2_ip (0x140009128, 13 bytes, XOR key de ad be ef 13 37 ca fe)": "MnpB3hA$\\x03'mv! (garbage/non-IP - synthetic filler)",
+    "g_encrypted_note_path (0x140009100, 40 bytes, XOR key de ad be ef 13 37 ca fe)": "OxiLef/l\\x08Pi\"tg$8\\x16erHtg\"l\\x08]iHep<l\\x16jrHa1c8 (garbage - synthetic filler)",
+    "killswitch_url": "http://example.com (plaintext)",
+    "user_agent": "Microsoft Internet Explorer (plaintext)",
+    "mutex": "Global\\MsWinZonesCacheCounterMutexA (plaintext)",
+    "service_name/display": "mssecsvc2.0 / Microsoft Security Center (2.0) (plaintext)",
+    "aes_file_key": "W@nCryPt0K3y2024 (plaintext)",
+    "worm_scan_format": "192.0.2.%d (plaintext)",
+    "ransom_note_file": "%s\\@Please_Read_Me@.txt (plaintext)",
+    "beacon_format": "SYSTEM:%s:WIN:%ld (plaintext)"
+  },
+  "encoded_strings": true,
+  "encryption_details": {
+    "algorithm": "String/config obfuscation: repeating-key XOR (function xor_decrypt, buf[i]^=key[i%8]). File encryption: toy AES-128 - per-16-byte-block: SubBytes via the standard AES S-box (g_aes_sbox at 0x14000a120) then XOR with key byte then XOR with round*24, iterated 10 rounds; no ShiftRows/MixColumns. A DER RSA-2048 public key (30 82 01 0a 02 82 01 01 00 c3 7a 9f 2e 55 8b 1d 02 03 01 00 01, exponent 65537) is embedded at g_rsa_pubkey 0x14000a000 but is unreferenced (decoy).",
+    "key": "String XOR key: de ad be ef 13 37 ca fe (\"deadbeef1337cafe\", 8 bytes). File encryption key: \"W@nCryPt0K3y2024\" (16 bytes).",
+    "key_storage": "XOR key stored in .rdata as g_str_key (VA 0x14000a220); AES file key stored in .rdata as g_aes_file_key (VA 0x14000a100); both plaintext."
+  },
+  "file_type": "PE32+ (x86-64) console executable, MinGW-w64 GCC 13, not stripped (symbols + DWARF debug info present)",
+  "techniques": [
+    "file_encryption_toy_aes128 (first 1 MiB of each file, in-place via CreateFileA/ReadFile/SetFilePointer/WriteFile)",
+    "rename_encrypted_files_to_.WNCRY_and_set_FILE_ATTRIBUTE_HIDDEN (MoveFileA + SetFileAttributesA)",
+    "recursive_directory_traversal (FindFirstFileA/FindNextFileA, skips . and ..)",
+    "target_extension_whitelist (.doc .docx .xls .xlsx .ppt .pptx .pdf .txt .jpg .png .bmp .zip .rar .7z .sql .mdb .cpp .c .h .py .js .html .css .xml .json .csv .mp3 .mp4 .avi .wav)",
+    "ransom_note_drop (%USERPROFILE%\\Desktop and %USERPROFILE%\\Documents @Please_Read_Me@.txt, WannaCry-style note, $300 BTC to genesis address)",
+    "targets %PUBLIC%\\Documents\\synthetic_target for encryption",
+    "killswitch_domain_check (InternetOpenA/InternetOpenUrlA to http://example.com, UA \"Microsoft Internet Explorer\"; exit if reachable)",
+    "mutex_single_instance (CreateMutexA Global\\MsWinZonesCacheCounterMutexA, ERROR_ALREADY_EXISTS check)",
+    "service_persistence (OpenSCManagerA/CreateServiceA \"mssecsvc2.0\" \"Microsoft Security Center (2.0)\", SERVICE_WIN32_OWN_PROCESS, SERVICE_AUTO_START, binary path = own image; falls back to OpenServiceA/StartServiceA)",
+    "worm_propagation_smb_scan (sprintf \"192.0.2.%d\" for 1-4, socket/connect to TCP 445 with 2000ms SO_RCVTIMEO, Sleep(100) between hosts)",
+    "c2_beacon (decrypts 13-byte IP, socket/connect TCP 8443 with 3000ms timeout, sends \"SYSTEM:<hostname>:WIN:<GetVersion>\")",
+    "xor_string_obfuscation (xor_decrypt, 8-byte key deadbeef1337cafe)",
+    "manual_getprocaddress (GetModuleHandleA+GetProcAddress to resolve NtQueryInformationProcess)",
+    "anti_debug_isdebuggerpresent",
+    "anti_debug_peb_beingdebugged (gs:[0x60]+2)",
+    "anti_debug_ntqueryinformationprocess_debugport",
+    "anti_vm_driver_file_checks (vmmouse.sys, vmhgfs.sys)",
+    "anti_sandboxie (sbiedll.dll module check)",
+    "anti_vm_cpuid_hypervisor_bit",
+    "stack_string_construction (\"\\Documents\\synthetic_target\" built via mov immediates)",
+    "Sleep(60000) at end of execution"
+  ]
+}

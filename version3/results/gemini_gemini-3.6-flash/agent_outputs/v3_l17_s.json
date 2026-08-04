@@ -1,0 +1,39 @@
+{
+  "decoded_c2": null,
+  "injection_details": {
+    "method": "Process Hollowing (CreateProcessA + NtQueryInformationProcess + NtReadVirtualMemory + NtUnmapViewOfSection + VirtualAllocEx + WriteProcessMemory + SetThreadContext + ResumeThread)",
+    "target_discovery": "Hardcoded process path launched directly in CREATE_SUSPENDED state",
+    "target_process": "C:\\Windows\\System32\\svchost.exe",
+    "payload_writing": "VirtualAllocEx + WriteProcessMemory"
+  },
+  "anti_analysis": [
+    "NtQueryInformationProcess with ProcessDebugPort (0x7)",
+    "NtQueryInformationProcess with ProcessDebugFlags (0x1F)",
+    "TLS Callback execution prior to main entry point"
+  ],
+  "file_type": "PE32+",
+  "encoded_strings": true,
+  "decoded_strings": {
+    "target_process": "C:\\Windows\\System32\\svchost.exe",
+    "ntdll_NtQueryInformationProcess": "NtQueryInformationProcess",
+    "ntdll_NtReadVirtualMemory": "NtReadVirtualMemory",
+    "ntdll_NtUnmapViewOfSection": "NtUnmapViewOfSection",
+    "xor_key": "DEADBEEF1337CAFEBABE",
+    "ntdll_dll": "ntdll.dll",
+    "rc4_key": "Hollowing_PE!!!!"
+  },
+  "encryption_details": {
+    "algorithm": "Two-layer: Repeating XOR followed by RC4",
+    "key": "XOR Key: DEADBEEF1337CAFEBABE (10 bytes), RC4 Key: 'Hollowing_PE!!!!' (16 bytes)",
+    "key_storage": "Hardcoded in .rdata section at VA 0x140005000 (XOR key) and VA 0x140005010 (RC4 key)"
+  },
+  "techniques": [
+    "process_hollowing",
+    "rc4_encryption",
+    "xor_encoding",
+    "anti_debugging",
+    "tls_callbacks",
+    "dynamic_api_resolution"
+  ],
+  "c2_protocol": null
+}

@@ -1,0 +1,48 @@
+{
+  "file_type": "PE32+ (x86-64) console executable, MinGW-w64/GCC 13 built, symbols stripped (external PDB), 10 sections, ImageBase 0x140000000",
+  "encoded_strings": true,
+  "techniques": [
+    "dll_injection",
+    "createremotethread_loadlibrary",
+    "manual_getprocaddress",
+    "pe_export_table_parsing",
+    "getmodulehandle_kernel32_base",
+    "process_enumeration_toolhelp32",
+    "xor_encoding",
+    "peb_antidebug",
+    "runtime_api_resolution",
+    "virtualallocex_writeprocessmemory",
+    "wait_for_remote_thread"
+  ],
+  "injection_details": {
+    "method": "Classic DLL injection: CreateRemoteThread with LoadLibraryA as the thread start routine",
+    "injector_function": "0x14000167f (called from main at 0x140001ae9)",
+    "target_process": "explorer.exe (name string at 0x1400040ac, compared with strcmp against PROCESSENTRY32.szExeFile at offset +0x2c)",
+    "target_discovery": "CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS=2,0) -> Process32First/Process32Next loop, strcmp of szExeFile with \"explorer.exe\", PID taken from PROCESSENTRY32.th32ProcessID",
+    "open_process": "OpenProcess(0x42A = PROCESS_CREATE_THREAD|PROCESS_VM_OPERATION|PROCESS_VM_WRITE|PROCESS_QUERY_INFORMATION, FALSE, pid)",
+    "payload_write": "VirtualAllocEx(hProc, NULL, strlen(path)+1, MEM_COMMIT|MEM_RESERVE (0x3000), PAGE_READWRITE (4)) then WriteProcessMemory of the XOR-decrypted DLL path string",
+    "thread_creation": "CreateRemoteThread(hProc, NULL, 0, LoadLibraryA (resolved manually from kernel32 exports, name at 0x1400040b9), remoteBuffer, 0, NULL)",
+    "post_actions": "WaitForSingleObject(hThread, INFINITE), CloseHandle(hThread), CloseHandle(hProcess), then Sleep(1000) in main",
+    "api_resolution": "GetModuleHandleA(\"kernel32.dll\") (only import used) + custom export-directory walker at 0x1400014ef that parses DOS/NT headers, IMAGE_EXPORT_DIRECTORY, AddressOfNames/AddressOfNameOrdinals/AddressOfFunctions and strcmp's the target name. Resolved: CreateToolhelp32Snapshot, Process32First, Process32Next, OpenProcess, VirtualAllocEx, WriteProcessMemory, CreateRemoteThread, CloseHandle, WaitForSingleObject, LoadLibraryA. No GetProcAddress/LoadLibrary imports in the import table.",
+    "payload_type": "On-disk DLL path passed to LoadLibraryA in the remote process (path is XOR-encrypted in .data)"
+  },
+  "encryption_details": {
+    "algorithm": "Repeating-key XOR (custom routine at 0x140001480: data[i] ^= key[i % keylen])",
+    "key": "8 bytes: 5A 3C 7F E1 2D 94 B8 6A",
+    "key_storage": "Hardcoded in plaintext at the very start of .rdata (VA 0x140004000, file offset 0x2600), immediately followed by the plaintext API-name string pool; passed as (buf, 0x20, 0x140004000, 8) by main at 0x140001b3d"
+  },
+  "decoded_strings": {
+    "ciphertext_blob@0x140003000 (32 bytes)": "13 6F 55 89 4D A0 9D 41 67 0D 52 A0 45 9C E0 0A 37 0E 52 A0 59 FC EF 05 37 7E 47 89 43 F5 D5 00",
+    "xor_result (key 5A3C7FE12D94B86A, used as the injected DLL path passed to LoadLibraryA)": "IS*h`4%+=1-Ah\\x08X`m2-AthWomB8hnamj (31 of 32 bytes decode to printable ASCII; buffer is NUL-terminated at offset 0x20 and passed to the injector as the DLL path)",
+    "plaintext_strings_in_.rdata (not encrypted)": "kernel32.dll, CreateToolhelp32Snapshot, Process32First, Process32Next, OpenProcess, VirtualAllocEx, WriteProcessMemory, CreateRemoteThread, CloseHandle, WaitForSingleObject, explorer.exe, LoadLibraryA"
+  },
+  "anti_analysis": [
+    "PEB BeingDebugged check (function 0x14000163f: mov %gs:0x60 -> PEB, test byte [PEB+2]); main aborts silently (returns 0) without injecting if a debugger is detected",
+    "Runtime API resolution via manual parsing of kernel32's export directory instead of imports (only GetModuleHandleA is imported), hiding malicious API usage from static import analysis",
+    "XOR-encrypted payload/DLL-path string in .data so the target path is not visible in strings output",
+    "Binary stripped of symbols (debug info removed, external PDB reference), minimal MinGW import set that looks benign (Sleep, VirtualProtect, VirtualQuery only)",
+    "Silent failure paths: every error branch just returns -1 with no output, no logging"
+  ],
+  "c2_protocol": null,
+  "decoded_c2": null
+}

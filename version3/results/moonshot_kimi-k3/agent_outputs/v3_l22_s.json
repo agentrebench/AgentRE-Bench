@@ -1,0 +1,49 @@
+{
+  "anti_analysis": [
+    "IsDebuggerPresent() checked first in anti-debug routine (0x140001670)",
+    "CheckRemoteDebuggerPresent() via KERNEL32 import",
+    "NtQueryInformationProcess(GetCurrentProcess(), ProcessDebugPort=7, &port, 4, &len) \u2014 debugger detected when returned port == -1 (0xFFFFFFFF); ntdll resolved manually via GetModuleHandleA/GetProcAddress",
+    "NtSetInformationThread(GetCurrentThread(), ThreadHideFromDebugger=0x11, NULL, 0) \u2014 hides thread from debugger; executed in the anti-debug routine and again in a separate TLS-callback-shaped function at 0x140001490 (reason==DLL_PROCESS_ATTACH check)",
+    "On any debugger detection, WinMain silently returns 0 without performing injection (no crash/no alert)"
+  ],
+  "c2_protocol": null,
+  "decoded_c2": null,
+  "decoded_strings": {
+    "AES-256-S3cur3-K3y-F0r-Mult1-T3c": "Hardcoded 32-byte key (ASCII) for the custom cipher, .rdata 0x14002f0f0",
+    "NtAllocateVirtualMemory / NtWriteVirtualMemory / NtProtectVirtualMemory / NtCreateThreadEx": "Plaintext names used to resolve the 4 syscall stubs (.rdata 0x14002f098-0x14002f0f0)",
+    "RTTI class names": "14AES256Provider, 14CryptoProvider, 20RemoteThreadInjector, 15ProcessInjector (C++ class hierarchy revealed via typeinfo)",
+    "encrypted_payload_first_block_decrypted_hex": "76dc69b5c74d741a942ed363dfdb6e15 (first 16 of 96 bytes after applying the in-binary decryption routine; non-printable, likely placeholder/decoy shellcode)",
+    "ntdll.dll": "Module name manually resolved via GetModuleHandleA (.rdata 0x14002f110)",
+    "ntdll_apis_resolved": "NtSetInformationThread (.rdata 0x14002f11a), NtQueryInformationProcess (.rdata 0x14002f131)"
+  },
+  "encoded_strings": true,
+  "encryption_details": {
+    "algorithm": "Custom AES-256-inspired substitution-XOR cipher (NOT genuine AES). For each 16-byte block, 14 rounds (mirroring AES-256 round count); per byte: b = AES_Sbox[b] XOR key[k mod 32] XOR ((round_index * 0x1b) & 0xFF). Uses the standard AES/Rijndael S-box stored at 0x14002f150. Routine at 0x140001c00 (AES256Provider virtual method).",
+    "key": "AES-256-S3cur3-K3y-F0r-Mult1-T3c (exactly 32 bytes, AES-256 sized)",
+    "key_storage": "Hardcoded as plaintext ASCII in .rdata at VA 0x14002f0f0, immediately followed by the string 'ntdll.dll'"
+  },
+  "file_type": "PE32+ (x86-64) console executable (llvm-mingw, stripped, statically linked libc++/libunwind)",
+  "injection_details": {
+    "allocation": "VirtualAllocEx(hProcess, NULL, 0x60, MEM_COMMIT|MEM_RESERVE=0x3000, PAGE_EXECUTE_READWRITE=0x40)",
+    "class_hierarchy": "C++ vtable-based design: CryptoProvider (base) -> AES256Provider (decrypt, vfn[2]=0x140001c00); ProcessInjector (base) -> RemoteThreadInjector (inject, vfn[2]=0x140001a80)",
+    "entry_point": "WinMain (0x140001510) \u2014 anti-debug gate, then decrypt, then inject, then Sleep(1000)",
+    "method": "VirtualAllocEx + WriteProcessMemory + CreateRemoteThread (classic remote-thread injection), inject fn at 0x140001a80",
+    "payload": "96-byte (0x60) buffer at .data 0x14003e000, decrypted in place by AES256Provider custom cipher before writing",
+    "post_injection": "WaitForSingleObject(hThread, 5000ms), CloseHandle(hThread), then Sleep(1000) in WinMain",
+    "syscall_scaffolding": "SSNs for NtAllocateVirtualMemory/NtWriteVirtualMemory/NtProtectVirtualMemory/NtCreateThreadEx extracted from ntdll stubs (mov r10,rcx; mov eax,SSN = 4C 8B D1 B8 pattern) and kernel32 base located via PEB walk, but both results are UNUSED in this build (direct-syscall scaffolding left dormant)",
+    "target_discovery": "No enumeration \u2014 GetCurrentProcess() pseudo-handle is used directly",
+    "target_process": "Self-injection: target is the malware's own process via GetCurrentProcess()",
+    "thread_start": "CreateRemoteThread(hProcess, NULL, 0, remoteBuffer, NULL, 0, NULL) \u2014 thread starts at the written payload"
+  },
+  "techniques": [
+    "self_process_injection",
+    "virtualallocex_writeprocessmemory_createremotethread",
+    "peb_walk_kernel32_base",
+    "manual_getprocaddress_ntdll",
+    "syscall_number_extraction_from_ntdll_stubs",
+    "custom_aes_sbox_xor_encryption",
+    "hardcoded_crypto_key",
+    "cpp_vtable_polymorphism_injector_family",
+    "rwx_memory_allocation"
+  ]
+}

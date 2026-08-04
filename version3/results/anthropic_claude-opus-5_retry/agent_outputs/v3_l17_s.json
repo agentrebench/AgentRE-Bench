@@ -1,0 +1,58 @@
+{
+  "file_type": "PE32+ (x86-64) console executable, MinGW/GCC 13-win32 built, symbols stripped (external PDB), 10 sections, ImageBase 0x140000000, entry 0x140001410",
+  "encoded_strings": true,
+  "techniques": [
+    "process_hollowing",
+    "runpe_createprocess_suspended",
+    "manual_getprocaddress",
+    "dynamic_ntdll_api_resolution",
+    "direct_ntdll_native_api_calls",
+    "remote_peb_read_for_image_base",
+    "ntunmapviewofsection_unmapping",
+    "virtualallocex_writeprocessmemory",
+    "setthreadcontext_rcx_hijack",
+    "resumethread_execution",
+    "stack_strings",
+    "layered_encryption_xor_then_rc4",
+    "rc4_encryption",
+    "xor_encoding",
+    "anti_debug_ntqueryinformationprocess",
+    "sleep_delay"
+  ],
+  "injection_details": {
+    "method": "Process hollowing / RunPE: CreateProcessA(lpApplicationName=NULL, lpCommandLine=stack-built path, dwCreationFlags=0x4 CREATE_SUSPENDED) -> NtQueryInformationProcess(hProcess, ProcessBasicInformation=0, size 0x30) to obtain PEB base -> NtReadVirtualMemory(PEB+0x10, 8 bytes) to read the remote ImageBaseAddress -> NtUnmapViewOfSection(hProcess, imageBase) -> VirtualAllocEx(hProcess, imageBase, size, MEM_COMMIT|MEM_RESERVE=0x3000, PAGE_EXECUTE_READWRITE=0x40) with a fallback to lpAddress=NULL if the preferred base fails -> WriteProcessMemory(hProcess, remoteBase, payload, 0x40) -> GetThreadContext(hThread, ctx with ContextFlags=0x10000B CONTEXT_FULL) -> ctx.Rcx = remoteBase (CONTEXT+0x80) -> SetThreadContext -> ResumeThread",
+    "target_process": "C:\\Windows\\System32\\svchost.exe",
+    "target_discovery": "Hard-coded path, NOT present as a contiguous literal: assembled at runtime on the stack from four 8-byte movabs immediates (0x6f646e69575c3a43 'C:\\Windo', 0x65747379535c7377 'ws\\Syste', 0x686376735c32336d 'm32\\svch', 0x006578652e74736f 'ost.exe\\0') - classic stack-string obfuscation. No process enumeration (no CreateToolhelp32Snapshot/OpenProcess).",
+    "payload": "64-byte (0x40) shellcode blob embedded in the .data section at VA 0x140004000; decrypted in-memory on the stack before being written to the remote process",
+    "payload_write": "WriteProcessMemory into RWX memory allocated by VirtualAllocEx in the suspended svchost.exe",
+    "execution_trigger": "Thread context hijack - entry argument register RCX set to the allocated remote base, then ResumeThread",
+    "cleanup_on_failure": "VirtualFreeEx(MEM_RELEASE=0x8000), TerminateProcess(hProcess, 0), CloseHandle(hThread/hProcess) on every error path (fails silently, returns -1)"
+  },
+  "encryption_details": {
+    "algorithm": "Two-layer symmetric decryption of the injected payload: (1) repeating-key XOR with a 10-byte key, then (2) RC4 (standard 256-byte KSA/PRGA implemented inline at 0x1400014ef and 0x1400015e2) with a 16-byte key. Encryption order was therefore RC4-then-XOR.",
+    "key": "XOR layer key (10 bytes, .rdata:0x140005000): DE AD BE EF 13 37 CA FE BA BE ; RC4 layer key (16 bytes, .rdata:0x140005010): 'Hollowing_PE!!!!' (48 6F 6C 6C 6F 77 69 6E 67 5F 50 45 21 21 21 21)",
+    "key_storage": "Both keys are stored in plaintext as hard-coded constants in the read-only .rdata section (0x140005000 and 0x140005010) and passed by pointer to the decryption routines; no key derivation, no runtime key generation."
+  },
+  "decoded_strings": {
+    "stack_string_target_path": "C:\\Windows\\System32\\svchost.exe (built from movabs immediates at 0x140001da8-0x140001ddc)",
+    "rc4_key_plaintext": "Hollowing_PE!!!!",
+    "xor_key_hex": "deadbeef1337cafebabe",
+    "dynamically_resolved_module": "ntdll.dll",
+    "dynamically_resolved_apis": "NtQueryInformationProcess, NtUnmapViewOfSection, NtReadVirtualMemory (resolved via GetModuleHandleA+GetProcAddress, not imported)",
+    "encrypted_payload_ciphertext_at_0x140004000": "8bdccb9a7652ab8efdd96c314a27e35f187489bdd0462e6a1b97fc833d51ae127709c4b8e5916f330c58dfa385297b1e46ba92e75c308814f34d21b6da6e0f9c",
+    "payload_after_xor_layer_before_rc4": "5571757565617047 67b29cf4c8f068d2 8a33030eeb908508 a0367d87ef70bfc9 e6d78f2f6fd58dd2 f5614c961eb1e0fc 044c4ae2df9b2339 b39b0804c3b173 (64 bytes; second RC4 layer with key 'Hollowing_PE!!!!' yields the final 64-byte shellcode, which is non-ASCII binary)",
+    "note_on_final_payload": "Final plaintext is a 64-byte binary shellcode stub; it contains no readable strings and no network indicators."
+  },
+  "anti_analysis": [
+    "Anti-debug via ntdll!NtQueryInformationProcess with ProcessInformationClass 7 (ProcessDebugPort) - execution aborts if the returned port != 0xFFFFFFFF",
+    "Anti-debug via ntdll!NtQueryInformationProcess with ProcessInformationClass 0x1F (ProcessDebugFlags) - execution aborts if the flag != 0",
+    "Debug check is executed first in main; on detection the program silently returns 0 without decrypting the payload or touching the target process (no error message, no crash)",
+    "Dynamic API resolution (GetModuleHandleA(\"ntdll.dll\") + GetProcAddress) so the native APIs used for hollowing do not appear in the import table",
+    "Stack-constructed strings (movabs 8-byte immediates) hide the 'C:\\Windows\\System32\\svchost.exe' target path from static string extraction",
+    "Layered payload obfuscation (repeating-key XOR followed by RC4) keeps the injected shellcode opaque on disk",
+    "Sleep(2000) delay after injection (timing/sandbox-timeout friendly stall)",
+    "Binary is compiled stripped (symbols/line numbers removed, debug info pointed at an external PDB)"
+  ],
+  "c2_protocol": null,
+  "decoded_c2": null
+}

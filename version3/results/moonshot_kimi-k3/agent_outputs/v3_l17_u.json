@@ -1,0 +1,57 @@
+{
+  "anti_analysis": [
+    "anti_debug_ntqueryinformationprocess_debugport (class 7 == 0xFFFFFFFF)",
+    "anti_debug_ntqueryinformationprocess_debugflags (class 0x1F == 0)",
+    "silent_exit_on_debugger (WinMain returns 0 with no payload decryption if checks trip)",
+    "stack_string_obfuscation (svchost.exe target path built from immediates)",
+    "runtime_resolution_of_ntdll_natives (keeps Nt* APIs out of the import table)",
+    "unstripped_DWARF_debug_info_present (not anti-analysis per se, but binary ships full symbols)"
+  ],
+  "c2_protocol": null,
+  "decoded_c2": null,
+  "decoded_strings": {
+    "api_names_resolved_at_runtime_(plaintext_rdata_0x140005020-0x14000506c)": [
+      "ntdll.dll",
+      "NtQueryInformationProcess",
+      "NtUnmapViewOfSection",
+      "NtReadVirtualMemory"
+    ],
+    "decryption_recipe": "plaintext = RC4( XOR(ciphertext, repeating deadbeef1337cafebabe) ) with RC4 key 'Hollowing_PE!!!!'; both layers are involutions applied exactly as in WinMain",
+    "g_encrypted_pe_stub_ciphertext_hex": "8bdccb9a7652ab8efdd96c314a27e35f187489bdd0462e6a1b97fc833d51ae127709c4b8e5916f330c58dfa385297b1e46ba92e75c308814f34d21b6da6e0f9c",
+    "g_rc4_key": "Hollowing_PE!!!!",
+    "g_xor_key_hex": "deadbeef1337cafebabe",
+    "hollowing_target_path(stack string)": "C:\\Windows\\System32\\svchost.exe",
+    "source_filename_in_debug_info": "windows_level17_ProcessHollowing.c"
+  },
+  "encoded_strings": true,
+  "encryption_details": {
+    "algorithm": "Two-layer symmetric encryption of the embedded payload: (1) repeating-key XOR with a 10-byte key, then (2) RC4 (KSA+PRGA, 256-byte state) with a 16-byte key. Decryption in WinMain: xor_decrypt(buf,64,g_xor_key,10) followed by rc4_init/rc4_crypt with g_rc4_key.",
+    "key": "XOR key: de ad be ef 13 37 ca fe ba be ('deadbeef1337cafebabe', 10 bytes used of a 16-byte zero-padded array). RC4 key: 'Hollowing_PE!!!!' (16 bytes).",
+    "key_storage": "Both keys are hardcoded global constants in .rdata: g_xor_key @ VA 0x140005000, g_rc4_key @ VA 0x140005010 (immediately followed by plaintext ntdll API-name strings). The 64-byte ciphertext is g_encrypted_pe_stub in .data @ VA 0x140004000."
+  },
+  "file_type": "PE32+ (x86-64) console executable, MinGW-w64 GCC 13, unstripped with DWARF debug symbols",
+  "injection_details": {
+    "entry_point_redirect": "GetThreadContext/SetThreadContext with ContextFlags=0x10000B; sets RCX (CONTEXT+0x80) = payload base, so RtlUserThreadStart transfers control to the injected stub on ResumeThread",
+    "method": "Process hollowing: CreateProcessA with CREATE_SUSPENDED (4) -> NtQueryInformationProcess(ProcessBasicInformation) to get PEB -> NtReadVirtualMemory(PEB+0x10) to read victim image base -> NtUnmapViewOfSection(image base) -> VirtualAllocEx (MEM_COMMIT|MEM_RESERVE 0x3000, PAGE_EXECUTE_READWRITE 0x40; fallback base=NULL) -> WriteProcessMemory -> SetThreadContext -> ResumeThread; Sleep(2000) after injection",
+    "payload": "64-byte stub stored encrypted as g_encrypted_pe_stub in .data (0x140004000); decrypted at runtime (XOR key deadbeef1337cafebabe, then RC4 'Hollowing_PE!!!!') and written raw at the allocated base (not a section-mapped PE)",
+    "payload_write": "Single WriteProcessMemory of 0x40 (64) bytes to the remotely allocated RWX region",
+    "target_discovery": "Hardcoded path assembled on the stack via mov imm64 immediates (stack string): 'C:\\Windows\\System32\\svchost.exe'",
+    "target_process": "C:\\Windows\\System32\\svchost.exe"
+  },
+  "techniques": [
+    "process_hollowing",
+    "create_process_suspended (CreateProcessA, dwCreationFlags=4)",
+    "ntqueryinformationprocess_PEB (ProcessBasicInformation)",
+    "peb_image_base_read via NtReadVirtualMemory (PEB+0x10)",
+    "ntunmapviewofsection",
+    "virtualallocex_writeprocessmemory (PAGE_EXECUTE_READWRITE)",
+    "getthreadcontext_setthreadcontext (RCX = payload base)",
+    "resumethread",
+    "xor_encryption (repeating 10-byte key)",
+    "rc4_encryption (16-byte key)",
+    "stack_string (svchost.exe path built from immediates)",
+    "runtime_api_resolution (GetModuleHandleA/GetProcAddress for ntdll natives)",
+    "anti_debug_ntqueryinformationprocess (ProcessDebugPort=7 and ProcessDebugFlags=0x1F)",
+    "terminateprocess_cleanup_on_failure"
+  ]
+}

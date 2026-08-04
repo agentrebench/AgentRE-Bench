@@ -1,0 +1,39 @@
+{
+  "file_type": "PE32+ (x86-64) Windows console executable",
+  "encoded_strings": false,
+  "decoded_c2": null,
+  "techniques": [
+    "RC4-encrypted embedded payload",
+    "dynamic API resolution via GetModuleHandleA and GetProcAddress",
+    "Hell's Gate-style ntdll syscall-number extraction",
+    "ntdll syscall-stub prologue inspection and fallback scan for MOV EAX, imm32",
+    "self-injection / in-process shellcode execution",
+    "VirtualAlloc with MEM_COMMIT|MEM_RESERVE and PAGE_EXECUTE_READWRITE",
+    "payload copy via memcpy",
+    "thread execution via CreateThread",
+    "WaitForSingleObject synchronization and CloseHandle cleanup",
+    "decoy/unused resolution of NtAllocateVirtualMemory, NtWriteVirtualMemory, NtProtectVirtualMemory, NtCreateThreadEx, NtClose, NtOpenProcess, and NtQueueApcThread"
+  ],
+  "c2_protocol": null,
+  "encryption_details": {
+    "algorithm": "RC4 (standard 256-byte KSA and PRGA)",
+    "key": "H3llsG@t3_Sysc@l",
+    "key_storage": "16 plaintext bytes in .rdata at RVA 0x4000 (VA 0x140004000); the code supplies the explicit key length 16. A 64-byte ciphertext is stored in .data at RVA 0x3000 and decrypted in place on the stack."
+  },
+  "decoded_strings": {},
+  "anti_analysis": [
+    "RC4 concealment of the 64-byte executable payload",
+    "Checks the beginning of an ntdll syscall stub for the canonical x64 bytes 4C 8B D1 B8 to identify a patched/hooked prologue",
+    "Hell's Gate-style syscall-ID recovery, including scanning the first 32 bytes of a stub for B8 <imm32> when the canonical prologue is absent",
+    "Native-API syscall names are dynamically resolved; the harvested syscall IDs are ultimately unused and no direct syscall instruction is executed"
+  ],
+  "injection_details": {
+    "method": "Self-injection/local shellcode execution using VirtualAlloc(NULL, 64, MEM_COMMIT|MEM_RESERVE, PAGE_EXECUTE_READWRITE), memcpy, and CreateThread with the allocation as the thread start address",
+    "target_process": "Current process only; there is no remote-process injection and no target executable name",
+    "target_discovery": "No remote target discovery. GetCurrentProcess is called, but its pseudo-handle is not used; allocation and copying occur directly in the caller's address space.",
+    "payload_source": "64 encrypted bytes at .data RVA 0x3000, RC4-decrypted with the plaintext 16-byte key H3llsG@t3_Sysc@l",
+    "payload_written": "The decrypted 64-byte payload is copied into the local RWX allocation with memcpy, not WriteProcessMemory or NtWriteVirtualMemory",
+    "execution": "CreateThread(NULL, 0, payload_address, NULL, 0, NULL), followed by WaitForSingleObject with a 5000 ms timeout and CloseHandle",
+    "native_api_note": "NtOpenProcess, NtWriteVirtualMemory, NtAllocateVirtualMemory, NtProtectVirtualMemory, NtCreateThreadEx, NtClose, and NtQueueApcThread names are inspected to recover syscall numbers, but these native APIs are not invoked for the observed execution path."
+  }
+}

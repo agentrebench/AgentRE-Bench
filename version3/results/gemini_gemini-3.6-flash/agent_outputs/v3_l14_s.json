@@ -1,0 +1,49 @@
+{
+  "injection_details": {
+    "target_process": "explorer.exe",
+    "target_discovery": "Process enumeration using CreateToolhelp32Snapshot / Process32First / Process32Next matching explorer.exe",
+    "payload_writing": "VirtualAllocEx + WriteProcessMemory",
+    "method": "CreateRemoteThread + LoadLibraryA"
+  },
+  "encoded_strings": true,
+  "decoded_c2": null,
+  "encryption_details": {
+    "key_storage": "Stored in .rdata section at VA 0x140004000",
+    "key": "5a 3c 7f e1 2d 94 b8 6a",
+    "algorithm": "XOR"
+  },
+  "anti_analysis": [
+    "PEB BeingDebugged check (gs:[0x60] + 0x02)",
+    "TLS callbacks used for code execution before main entry point"
+  ],
+  "decoded_strings": {
+    "api_names": [
+      "CreateToolhelp32Snapshot",
+      "Process32First",
+      "Process32Next",
+      "OpenProcess",
+      "VirtualAllocEx",
+      "WriteProcessMemory",
+      "CreateRemoteThread",
+      "CloseHandle",
+      "WaitForSingleObject",
+      "LoadLibraryA"
+    ],
+    "target_process": "explorer.exe",
+    "dll_names": [
+      "kernel32.dll"
+    ]
+  },
+  "techniques": [
+    "process_injection",
+    "dll_injection",
+    "createremotethread_injection",
+    "tls_callbacks",
+    "manual_getprocaddress",
+    "peb_antidebug",
+    "process_enumeration",
+    "xor_encoding"
+  ],
+  "c2_protocol": null,
+  "file_type": "PE32+ (x86-64)"
+}

@@ -1,0 +1,48 @@
+{
+  "file_type": "PE32+ (x86-64) console executable, MinGW-w64 GCC 13 build, stripped to external PDB",
+  "encoded_strings": true,
+  "techniques": [
+    "rc4_encryption",
+    "apc_injection",
+    "self_injection",
+    "manual_getprocaddress",
+    "native_nt_api_usage",
+    "thread_enumeration_toolhelp",
+    "thread_suspension",
+    "rwx_memory_allocation",
+    "anti_debug_processdebugport",
+    "sleep_delay"
+  ],
+  "injection_details": {
+    "method": "APC queue injection (early-bird style): NtQueueApcThread + NtAlertResumeThread on a suspended thread",
+    "target_process": "self (own process; PID obtained via GetCurrentProcessId)",
+    "target_discovery": "Opens own process with NtOpenProcess (access 0x42A = PROCESS_CREATE_THREAD|PROCESS_VM_OPERATION|PROCESS_VM_WRITE|PROCESS_QUERY_INFORMATION), then enumerates system threads with CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD=4)/Thread32First/Thread32Next, picks the first thread whose th32OwnerProcessID == own PID, opens it with OpenThread(0x12 = THREAD_SET_CONTEXT|THREAD_SUSPEND_RESUME) and suspends it with SuspendThread",
+    "payload_write": "48-byte shellcode (RC4-decrypted from .data:0x140004000) written into self via NtAllocateVirtualMemory(MEM_COMMIT|MEM_RESERVE=0x3000, PAGE_EXECUTE_READWRITE=0x40) followed by NtWriteVirtualMemory; the allocation base is queued as the APC routine and the suspended thread is resumed in alertable state with NtAlertResumeThread, executing the shellcode; process then calls Sleep(500)"
+  },
+  "encryption_details": {
+    "algorithm": "RC4 (standard KSA at 0x140001480, PRGA/XOR at 0x140001573; 256-byte S-box followed by i counter at +0x100 and j counter at +0x104)",
+    "key": "4a8c1fd367e92b05cafe77339d125e88 (16 bytes)",
+    "key_storage": "plaintext, hardcoded in .rdata section at VA 0x140005000 (start of section)"
+  },
+  "decoded_strings": {
+    "note": "The only encrypted content is a 48-byte (0x30) blob at .data:0x140004000 which RC4-decrypts (key 4a8c1fd367e92b05cafe77339d125e88) to the shellcode that is APC-injected into the process's own suspended thread. The API-name strings used for dynamic resolution are stored as plaintext in .rdata:",
+    "encrypted_payload_.data_0x140004000": "8e3d721ed55891c32f46bb79e4118c5a673ea40df69b2844bd7113a5dc087e329954e16c1a87f0462b985dcf730ea641 (RC4-encrypted shellcode, 48 bytes)",
+    "plaintext_api_strings_.rdata": [
+      "ntdll.dll",
+      "NtOpenProcess",
+      "NtClose",
+      "NtQueryInformationProcess",
+      "NtAllocateVirtualMemory",
+      "NtWriteVirtualMemory",
+      "NtQueueApcThread",
+      "NtAlertResumeThread"
+    ]
+  },
+  "anti_analysis": [
+    "anti_debug_ntqueryinformationprocess_processdebugport (class 7 on own process handle; aborts if debug port == 0xFFFFFFFF)",
+    "direct native NT API resolution via GetModuleHandleA(\"ntdll.dll\")+GetProcAddress to evade user-mode hooks/AV instrumentation",
+    "stripped symbols (external PDB only)"
+  ],
+  "c2_protocol": null,
+  "decoded_c2": null
+}

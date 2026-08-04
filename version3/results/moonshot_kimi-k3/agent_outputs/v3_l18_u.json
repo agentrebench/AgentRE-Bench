@@ -1,0 +1,41 @@
+{
+  "file_type": "PE32+ (x86-64) console executable, MinGW-w64 GCC 13 (unstripped, DWARF debug info present; source filename windows_level18_HellsGate.c)",
+  "encoded_strings": true,
+  "techniques": [
+    "rc4_encryption",
+    "hells_gate",
+    "dynamic_syscall_number_resolution",
+    "edr_hook_detection",
+    "syscall_stub_integrity_check",
+    "self_injection_virtualalloc_rwx_createthread",
+    "shellcode_execution",
+    "sleep_delay"
+  ],
+  "injection_details": {
+    "method": "VirtualAlloc(NULL, 0x40, MEM_COMMIT|MEM_RESERVE (0x3000), PAGE_EXECUTE_READWRITE (0x40)) + memcpy + CreateThread(start=payload) + WaitForSingleObject(5000ms) + CloseHandle",
+    "target_process": "Self (own process) - GetCurrentProcess() called at start of execute_payload",
+    "target_discovery": "N/A - injects into its own process; no remote process enumeration",
+    "payload_write": "64-byte RC4-encrypted payload (g_encrypted_payload, .data @0x140003000) decrypted in WinMain via rc4_init/rc4_crypt, then memcpy'd into the RWX VirtualAlloc buffer; new thread started on the shellcode",
+    "note": "Hell's Gate syscall numbers are resolved for NtAllocateVirtualMemory/NtWriteVirtualMemory/NtProtectVirtualMemory/NtCreateThreadEx/NtClose/NtOpenProcess/NtQueueApcThread, but invoke_syscall is a stub returning STATUS_UNSUCCESSFUL (0xC0000001) - the direct syscalls are never actually invoked; execution uses standard Win32 APIs instead"
+  },
+  "encryption_details": {
+    "algorithm": "RC4 (standard KSA + PRGA stream cipher; rc4_init @0x140001480, rc4_crypt @0x140001573)",
+    "key": "H3llsG@t3_Sysc@l (16 bytes, key length 0x10 passed to rc4_init)",
+    "key_storage": "Hardcoded in plaintext in .rdata section at VA 0x140004000 (g_rc4_key), immediately followed by plaintext ntdll.dll and Nt* function name strings"
+  },
+  "decoded_strings": {
+    "rc4_key": "H3llsG@t3_Sysc@l",
+    "encrypted_payload_hex": "c97e13a845df326c910e75b328fa4d8117a3d568f02b9e44cc59e73f8a16b15d22946fdb087caa31e54f891cd265f83b9d1076c057ea24b84c811ea933dd6bf5",
+    "payload_note": "64-byte RC4-encrypted x86-64 shellcode at .data VA 0x140003000; decrypted at runtime and executed via CreateThread in RWX memory",
+    "module_string": "ntdll.dll",
+    "hells_gate_resolved_functions": "NtAllocateVirtualMemory, NtWriteVirtualMemory, NtProtectVirtualMemory, NtCreateThreadEx, NtClose, NtOpenProcess, NtQueueApcThread (stored plaintext in .rdata at 0x140004010-0x140004097, used by resolve_syscall_number/check_stub_integrity)"
+  },
+  "anti_analysis": [
+    "edr_hook_detection: check_stub_integrity verifies ntdll syscall stub prologue bytes 4C 8B D1 B8 (mov r10,rcx; mov eax,imm32) to detect AV/EDR inline hooks before use",
+    "hells_gate_evasion: resolve_syscall_number dynamically extracts syscall numbers from ntdll stubs instead of hardcoding SSNs; includes hooked-stub fallback scanning up to 32 bytes for a B8 imm32 pattern with zero high bytes",
+    "payload_rc4_encryption: shellcode stored encrypted to evade static signature detection",
+    "sleep_delay: Sleep(1000) after payload execution; 5000ms WaitForSingleObject on payload thread"
+  ],
+  "c2_protocol": null,
+  "decoded_c2": null
+}

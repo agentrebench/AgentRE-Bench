@@ -1,0 +1,57 @@
+{
+  "file_type": "PE32+ (x86-64) Windows console executable",
+  "encoded_strings": true,
+  "decoded_c2": null,
+  "techniques": [
+    "rc4_encrypted_embedded_payload",
+    "in_memory_rc4_decryption",
+    "toolhelp_process_enumeration",
+    "remote_pe_manual_mapping",
+    "process_injection",
+    "virtualallocex_rwx_allocation",
+    "ntwritevirtualmemory",
+    "manual_pe_header_and_section_mapping",
+    "manual_dir64_base_relocation",
+    "createremotethread",
+    "dynamic_api_resolution_via_getprocaddress",
+    "sandboxie_module_detection",
+    "sleep_delay_evasion",
+    "self_injection_fallback"
+  ],
+  "c2_protocol": null,
+  "encryption_details": {
+    "algorithm": "RC4 (custom KSA and PRGA; 64-byte embedded buffer decrypted in place)",
+    "key": "R3m0t3_PE_3x3c_K",
+    "key_storage": "Hard-coded plaintext 16-byte global g_rc4_key in .rdata at RVA 0x5000 (VA 0x140005000); the 64-byte ciphertext g_encrypted_pe is stored in .data at RVA 0x4000 and copied to the stack before decryption."
+  },
+  "decoded_strings": {
+    "encrypted_string_recovery": "No encrypted configuration strings were identified; RC4 is applied to a 64-byte binary buffer treated as a PE image, while the behavioral strings are stored in plaintext.",
+    "rc4_key": "R3m0t3_PE_3x3c_K",
+    "native_module": "ntdll.dll",
+    "resolved_native_apis": [
+      "NtWriteVirtualMemory",
+      "NtClose"
+    ],
+    "target_process": "explorer.exe",
+    "sandbox_probe": "sbiedll.dll",
+    "debug_library_probe": "dbghelp.dll",
+    "debug_api_probe": "SymSetOptions"
+  },
+  "anti_analysis": [
+    "Checks loaded modules with GetModuleHandleA for sbiedll.dll to detect Sandboxie; if present, sleeps 30,000 ms and exits before payload execution.",
+    "Probes whether dbghelp.dll is loaded and resolves SymSetOptions; the result is discarded and does not affect execution, so this is not an effective debugger check.",
+    "Uses sleep delays: 30 seconds on the Sandboxie-detected path and 2 seconds after the injection attempt.",
+    "No PEB/BeingDebugged, IsDebuggerPresent, CheckRemoteDebuggerPresent, or ptrace-style anti-debugging was found."
+  ],
+  "injection_details": {
+    "method": "Manual PE mapping into a remote process followed by CreateRemoteThread at remote_base + AddressOfEntryPoint.",
+    "target_process": "explorer.exe; if no matching PID is found, the code falls back to GetCurrentProcessId and operates on itself.",
+    "target_discovery": "CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS) with Process32First/Process32Next; compares PROCESSENTRY32.szExeFile to \"explorer.exe\" using case-sensitive strcmp.",
+    "process_open": "OpenProcess with access mask 0x43A (PROCESS_CREATE_THREAD | PROCESS_VM_OPERATION | PROCESS_VM_READ | PROCESS_VM_WRITE | PROCESS_QUERY_INFORMATION).",
+    "remote_allocation": "Reads SizeOfImage from the decrypted PE and calls VirtualAllocEx at an arbitrary base with MEM_RESERVE|MEM_COMMIT (0x3000) and PAGE_EXECUTE_READWRITE (0x40).",
+    "payload_written": "Resolves NtWriteVirtualMemory and NtClose dynamically from ntdll.dll. Writes SizeOfHeaders bytes to the remote base, then iterates IMAGE_SECTION_HEADER records and writes each section's SizeOfRawData bytes from PointerToRawData to remote_base + VirtualAddress.",
+    "relocations": "If the allocated base differs from the preferred ImageBase, iterates base-relocation blocks and handles IMAGE_REL_BASED_DIR64 (type 10) entries. It reads each remote 64-bit value with ReadProcessMemory, adds the image delta, and writes it back with NtWriteVirtualMemory. The mapper does not visibly rebuild the import table.",
+    "thread_start": "CreateRemoteThread(process, NULL, 0, remote_base + AddressOfEntryPoint, remote_base, 0, NULL), then WaitForSingleObject for 10,000 ms.",
+    "embedded_payload": "Only 64 encrypted bytes are embedded and passed as the payload buffer; the code treats the decrypted result as a PE image."
+  }
+}

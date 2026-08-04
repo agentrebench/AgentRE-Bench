@@ -1,0 +1,53 @@
+{
+  "file_type": "PE32+ (x86-64) Windows console executable (MinGW-w64 GCC 13, DWARF debug info embedded, 19 sections)",
+  "encoded_strings": true,
+  "techniques": [
+    "xor_encoding",
+    "manual_getprocaddress",
+    "process_hollowing",
+    "ghost_process_hollowing",
+    "nt_query_information_process_antidebug",
+    "dynamic_native_api_resolution",
+    "ntcreateprocess",
+    "ntallocatevirtualmemory",
+    "ntwritevirtualmemory",
+    "ntcreatethreadex",
+    "ntresumethread",
+    "silent_exit_on_debugger"
+  ],
+  "decoded_c2": null,
+  "c2_protocol": null,
+  "encryption_details": {
+    "algorithm": "Repeating-key XOR (single-byte XOR, key index = i % 18)",
+    "key": "Gh0stPr0c3ssH0ll0w",
+    "key_storage": "Plaintext global g_xor_key in .rdata (RVA 0x4000 / file offset 0x2600); 18 bytes (0x12). The string doubles as an in-binary marker. The 64-byte payload g_encrypted_payload is at .data RVA 0x3000 / file offset 0x2400 and is XOR-decrypted in-place on the stack by xor_crypt() before injection."
+  },
+  "decoded_strings": {
+    "xor_key_marker": "Gh0stPr0c3ssH0ll0w",
+    "decrypted_64_byte_payload_hex": "6d 64 65 6d 73 6e 69 6c 6c 71 0e 42 50 5a 4b 21 0b 6d 2f 61 61 5d 0b 44 31 5d 5b 6d 52 79 3d 7f 7a 34 1d 14 4c 14 03 6a 30 3f 5a 6a 72 0e 01 7d 1c 1b 0e 64 4e 42 58 21 5c 49 23 70 7b 41 28 2e",
+    "plaintext_nt_api_names": [
+      "ntdll.dll",
+      "NtQueryInformationProcess",
+      "NtCreateProcess",
+      "NtAllocateVirtualMemory",
+      "NtWriteVirtualMemory",
+      "NtCreateThreadEx",
+      "NtResumeThread",
+      "NtClose"
+    ]
+  },
+  "anti_analysis": [
+    "NtQueryInformationProcess ProcessDebugPort (class 7): if returned value == 0xFFFFFFFF, debugger detected -> WinMain returns 0 without injecting",
+    "NtQueryInformationProcess ProcessDebugFlags (class 0x1F): if returned value == 0, debugger detected -> silent exit",
+    "Indirect/dynamic resolution of native NT APIs (GetModuleHandleA('ntdll.dll') + GetProcAddress) to avoid IAT-based static detection",
+    "XOR-encrypted payload to defeat static string/byte-signature scanning of injected code",
+    "Silent failure (return 0) when NT API resolution or injection fails"
+  ],
+  "injection_details": {
+    "method": "Ghost Process Hollowing (hasherezade-style) using native NT APIs: NtCreateProcess -> NtAllocateVirtualMemory -> NtWriteVirtualMemory -> NtCreateThreadEx -> NtResumeThread",
+    "target_process": "A suspended 'ghost' child process created by the malware itself via NtCreateProcess with the current process as parent (a clone of its own image; no separate EXE launched on disk)",
+    "target_discovery": "N/A - obtains a handle to itself via OpenProcess(PROCESS_CREATE_PROCESS=0x80, FALSE, GetCurrentProcessId()), then spawns the ghost child with NtCreateProcess",
+    "payload_write": "64-byte XOR-decrypted stub written into the ghost process via NtAllocateVirtualMemory(MEM_COMMIT|MEM_RESERVE=0x3000, PAGE_EXECUTE_READWRITE=0x40) + NtWriteVirtualMemory; execution via NtCreateThreadEx(start=allocated base) + NtResumeThread, then WaitForSingleObject(hThread, 5000) and NtClose on both handles",
+    "api_resolution": "resolve_nt() resolves NtCreateProcess/NtAllocateVirtualMemory/NtWriteVirtualMemory/NtCreateThreadEx/NtResumeThread/NtClose at runtime from ntdll.dll"
+  }
+}

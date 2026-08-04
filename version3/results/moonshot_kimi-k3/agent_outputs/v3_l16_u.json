@@ -1,0 +1,48 @@
+{
+  "anti_analysis": [
+    "anti_vm_cpuid_hypervisor_bit: anti_vm_check executes CPUID leaf 1 and tests ECX bit 31 (hypervisor-present flag); returns 1 if running under a hypervisor",
+    "sleep_delay_evasion: if a VM/hypervisor is detected the process calls Sleep(30000) and exits silently without injecting; also Sleep(1000) after injection",
+    "dynamic_api_resolution: NtCreateThreadEx is resolved at runtime via GetModuleHandleA(\"ntdll.dll\") + GetProcAddress instead of a static import (used as fallback when CreateRemoteThread fails)",
+    "encrypted_payload: shellcode and a 16-byte block are stored encrypted in .data and only decrypted in memory at runtime"
+  ],
+  "c2_protocol": null,
+  "decoded_c2": null,
+  "decoded_strings": {
+    "aes128_decrypted_block_hex": "054b587f0db3fccc7016aeb32a5df501",
+    "aes_key_ascii": "4xdm1n_S3cr3t!!!",
+    "dll_name": "ntdll.dll",
+    "resolved_nt_function": "NtCreateThreadEx",
+    "source_filename_in_debug_info": "windows_level16_CodeCave.c",
+    "xor_decrypted_shellcode_ascii": "Lgkb`edfgccfuEG\"4qP^\\x03)-\\x14S\\3SF..]....yu~...z......",
+    "xor_decrypted_shellcode_hex": "4c676b626065646667636366754547223471505e03292d14535c335346c3c05d8ec6a61bf779757ea98d917aea0904aade94d9a7",
+    "xor_key_hex": "c37a9f2e558b1d6ce431a84f"
+  },
+  "encoded_strings": true,
+  "encryption_details": {
+    "algorithm": "Two schemes: (1) repeating-key XOR for the 48-byte shellcode (buf[i] ^= key[i % 12]); (2) custom toy block cipher named aes128_decrypt_block \u2014 NOT real AES: 10 rounds over a 16-byte block using the standard AES S-box: state[j] = sbox[state[j]] ^ key[j] ^ (27*round), round=0..9",
+    "key": "XOR key (12 bytes): c3 7a 9f 2e 55 8b 1d 6c e4 31 a8 4f ; S-box cipher key (16 bytes): ASCII \"4xdm1n_S3cr3t!!!\"",
+    "key_storage": "Both keys hardcoded in .rdata: g_xor_key @ 0x140004000, g_aes_sbox (standard AES S-box) @ 0x140004020, g_aes_key @ 0x140004120. Encrypted data in .data: g_encrypted_shellcode (48 bytes) @ 0x140003000, g_encrypted_block (16 bytes) @ 0x140003030"
+  },
+  "file_type": "PE32+ (x86-64) console executable, MinGW-w64 GCC 13 (not stripped, contains DWARF debug info; original source windows_level16_CodeCave.c)",
+  "injection_details": {
+    "method": "Code cave injection: find_code_cave parses the target image's PE headers, scans executable sections (Characteristics & IMAGE_SCN_MEM_EXECUTE 0x20000000) for either section slack (VirtualSize - SizeOfRawData >= payload size, cave at VirtualAddress+SizeOfRawData) or a contiguous run of 0xCC/0x00 padding bytes. Then VirtualProtectEx(cave, PAGE_EXECUTE_READWRITE) -> WriteProcessMemory(payload) -> VirtualProtectEx(cave, PAGE_EXECUTE_READ) -> CreateRemoteThread(start=cave). Fallback: dynamically resolves NtCreateThreadEx from ntdll.dll and calls it with THREAD_ALL_ACCESS (0x1fffff). Waits via WaitForSingleObject(thread, 5000) and CloseHandle.",
+    "other": "Payload is a 48-byte shellcode stored XOR-encrypted in .data (g_encrypted_shellcode) and decrypted at runtime with a 12-byte repeating XOR key. CreateRemoteThread imported statically; NtCreateThreadEx resolved manually.",
+    "target_discovery": "GetCurrentProcess() returns pseudo-handle to self; GetModuleHandleA(NULL) obtains the process's own image base, whose PE sections are then scanned for a code cave",
+    "target_process": "Itself (self-injection into the process's own loaded image)"
+  },
+  "techniques": [
+    "code_cave_injection",
+    "self_injection",
+    "WriteProcessMemory",
+    "VirtualProtectEx",
+    "CreateRemoteThread",
+    "NtCreateThreadEx_fallback",
+    "manual_getprocaddress (GetModuleHandleA+GetProcAddress for NtCreateThreadEx)",
+    "pe_header_parsing (MZ/PE/section walk to find code caves)",
+    "xor_encoding (12-byte repeating key)",
+    "custom_sbox_block_cipher (AES S-box, 10 rounds, mislabeled aes128_decrypt_block)",
+    "anti_vm_cpuid (CPUID leaf 1 ECX bit 31 hypervisor check)",
+    "sleep_delay_evasion (Sleep 30000 on VM detect, Sleep 1000 post-injection)",
+    "hardcoded_crypto_keys_in_rdata"
+  ]
+}

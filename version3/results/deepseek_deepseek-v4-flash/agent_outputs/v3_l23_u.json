@@ -1,0 +1,77 @@
+{
+  "file_type": "PE32+ (x86-64) Windows console executable (CUI subsystem), MinGW-w64 GCC 13-win32, unstripped with full DWARF debug info and COFF symbols; entry point 0x140001410 (mainCRTStartup)",
+  "encoded_strings": true,
+  "techniques": [
+    "xor_encoding",
+    "custom_aes_like_block_cipher",
+    "ransomware_file_encryption",
+    "file_extension_targeting",
+    "ransom_note_drop",
+    "single_instance_mutex",
+    "killswitch_check",
+    "service_creation",
+    "tcp_port_445_scanner",
+    "c2_tcp_beacon",
+    "manual_getprocaddress",
+    "peb_antidebug",
+    "isdebuggerpresent_check",
+    "ntqueryinformationprocess_debug_check",
+    "dbghelp_dll_check",
+    "vmware_driver_check",
+    "sandboxie_detection",
+    "cpuid_hypervisor_check",
+    "embedded_rsa_public_key"
+  ],
+  "decoded_c2": null,
+  "c2_protocol": "TCP",
+  "encryption_details": {
+    "algorithm": "Dual scheme: (1) File encryption = custom AES-128-like block cipher: for each 16-byte block, 10 rounds of per-byte AES S-box substitution XOR key byte XOR round constant (27*round); (2) String encryption = repeating-key XOR (buf[i] ^= key[i % keylen]) via xor_decrypt at 0x14000156b",
+    "key": "File key: 'W@nCryPt0K3y2024' (16 ASCII bytes). String XOR key: DE AD BE EF 13 37 CA FE (8 bytes, 'deadbeef 1337cafe' magic)",
+    "key_storage": "File key stored as plaintext ASCII in .rdata at g_aes_file_key (0x14000a100). XOR key stored in plaintext at the start of g_str_key (0x14000a220). Encrypted runtime data: g_encrypted_c2_ip (0x140009128, 13-byte IP string blob) and g_encrypted_note_path (0x140009100, 40 bytes), both decrypted at runtime with xor_decrypt"
+  },
+  "decoded_strings": {
+    "mutex": "Global\\MsWinZonesCacheCounterMutexA",
+    "killswitch_url": "http://example.com",
+    "user_agent": "Microsoft Internet Explorer",
+    "service_name": "mssecsvc2.0",
+    "service_display": "Microsoft Security Center (2.0)",
+    "ransom_note_file": "%s\\@Please_Read_Me@.txt",
+    "ransom_note_text": "Oops, your files have been encrypted! ... Payment: Send $300 worth of Bitcoin to this address: 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa (Synthetic - this is the Bitcoin genesis address, no real wallet)",
+    "beacon_format": "SYSTEM:%s:WIN:%ld",
+    "scan_format": "192.0.2.%d (TEST-NET-1 range, loop 1..445)",
+    "target_dirs": [
+      "USERPROFILE\\Desktop",
+      "USERPROFILE\\Documents",
+      "USERPROFILE\\Documents\\synthetic_target"
+    ],
+    "api_resolution": [
+      "ntdll.dll",
+      "NtQueryInformationProcess"
+    ],
+    "vm_sandbox_indicators": [
+      "C:\\Windows\\System32\\drivers\\vmmouse.sys",
+      "C:\\Windows\\System32\\drivers\\vmhgfs.sys",
+      "sbiedll.dll",
+      "dbghelp.dll"
+    ],
+    "encrypted_blobs": {
+      "g_encrypted_c2_ip": "93 c3 ce ad 20 5f 8b da dd 8a d3 99 32 (13 bytes, runtime-XOR-decrypted, passed to inet_addr; exact plaintext IP not statically recoverable)",
+      "g_encrypted_note_path": "91 d5 d7 a3 76 51 e5 92 d6 fd d7 cd 67 50 ee c6 ... (40 bytes, runtime-XOR-decrypted)"
+    }
+  },
+  "anti_analysis": [
+    "IsDebuggerPresent() check",
+    "PEB->BeingDebugged check (gs:[0x60]+2)",
+    "NtQueryInformationProcess(ProcessDebugPort=7) resolved via GetModuleHandleA+GetProcAddress on ntdll.dll",
+    "GetModuleHandleA('dbghelp.dll') detection (debugger/analysis tooling)",
+    "VMware detection: GetFileAttributesA on vmmouse.sys and vmhgfs.sys driver files",
+    "Sandboxie detection: GetModuleHandleA('sbiedll.dll')",
+    "CPUID leaf 1 ECX bit 31 (hypervisor present) check",
+    "Killswitch abort: if http://example.com is reachable via InternetOpenUrlA the malware exits",
+    "Single-instance mutex (Global\\MsWinZonesCacheCounterMutexA) to prevent re-execution"
+  ],
+  "injection_details": {
+    "method": "None - no process injection observed",
+    "evidence": "No injection-related APIs are imported (no CreateRemoteThread, VirtualAllocEx, WriteProcessMemory, OpenProcess, NtCreateThreadEx) and none are resolved dynamically. The 'worm' component (worm_propagate at 0x140001c8d) is only a TCP connect-scanner: it iterates IPs 192.0.2.1..192.0.2.445, attempts a TCP connect to port 445 (SMB) with a 2s timeout, and closes the socket on success (no exploit payload, no injection). Propagation/persistence is instead done by installing/starting an 'mssecsvc2.0' service (display name 'Microsoft Security Center (2.0)') pointing at the malware's own executable."
+  }
+}

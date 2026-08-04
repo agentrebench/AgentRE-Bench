@@ -1,0 +1,52 @@
+{
+  "file_type": "PE32+ (x86-64) console executable, MinGW-w64/GCC 13 build, no C2 networking",
+  "encoded_strings": true,
+  "techniques": [
+    "manual_map_injection",
+    "create_remote_thread",
+    "virtualallocex_rwx",
+    "ntwritevirtualmemory",
+    "process_enumeration_toolhelp32",
+    "rc4_encryption",
+    "manual_getprocaddress",
+    "anti_sandbox_sbiedll",
+    "dbghelp_presence_check",
+    "string_obfuscation_leetspeak",
+    "tls_callbacks",
+    "long_sleep_evasion"
+  ],
+  "decoded_c2": null,
+  "c2_protocol": null,
+  "encryption_details": {
+    "algorithm": "RC4",
+    "key": "R3m0t3_PE_3x3c_K",
+    "key_storage": "Key is embedded in .rdata at VA 0x140005000 as the first 16 bytes of the obfuscated string 'R3m0t3_PE_3x3c_Kntdll.dll'. The same string stores 'ntdll.dll' at offset 0x10, which is used as the module name for runtime GetModuleHandleA/GetProcAddress resolution. The RC4-encrypted 64-byte payload blob is stored in .data at VA 0x140004000 and decrypted on the stack with a 16-byte key length."
+  },
+  "decoded_strings": {
+    "R3m0t3_PE_3x3c_Kntdll.dll": "Obfuscated marker string; decodes to RC4 key 'R3m0t3_PE_3x3c_K' (bytes 0-15) and module name 'ntdll.dll' (bytes 16+), used for manual API resolution",
+    "ntdll.dll": "Module name (pointer at VA 0x140005010 into the obfuscated string) used with GetModuleHandleA/GetProcAddress",
+    "NtWriteVirtualMemory": "Native API resolved at runtime from ntdll.dll to write the injected PE into the target process",
+    "NtClose": "Native API resolved at runtime from ntdll.dll to close the target process handle",
+    "explorer.exe": "Injection target process name",
+    "sbiedll.dll": "Sandboxie detection module checked via GetModuleHandleA",
+    "dbghelp.dll": "Anti-analysis presence check module",
+    "SymSetOptions": "Resolved from dbghelp.dll as part of the anti-analysis check"
+  },
+  "anti_analysis": [
+    "Sandboxie detection: GetModuleHandleA('sbiedll.dll') - returns early from main payload if found",
+    "Debugger/analysis tooling check: GetModuleHandleA('dbghelp.dll') + GetProcAddress('SymSetOptions')",
+    "Sandbox evasion sleep: Sleep(30000) executed when sandbox presence is detected",
+    "String obfuscation: leetspeak-encoded string 'R3m0t3_PE_3x3c_Kntdll.dll' hides both the RC4 key and the 'ntdll.dll' module name",
+    "RC4 encryption of the 64-byte payload blob in .data",
+    "Dynamic API resolution (manual GetProcAddress) to keep sensitive imports out of the import table",
+    "TLS callbacks present (CRT-style, call runtime init on process attach/detach)"
+  ],
+  "injection_details": {
+    "method": "Manual-map / reflective-style PE injection: OpenProcess -> VirtualAllocEx(MEM_COMMIT|MEM_RESERVE, PAGE_EXECUTE_READWRITE) -> NtWriteVirtualMemory to write PE headers and each section -> base-relocation fixup (IMAGE_REL_BASED_DIR64) performed in the remote process via ReadProcessMemory + NtWriteVirtualMemory -> CreateRemoteThread at the payload's AddressOfEntryPoint (image base passed as thread parameter) -> WaitForSingleObject(10000ms) -> CloseHandle + NtClose",
+    "target_process": "explorer.exe",
+    "target_discovery": "CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS) + Process32First/Process32Next loop comparing PROCESSENTRY32.szExeFile to 'explorer.exe' (strcmp)",
+    "payload_write": "NtWriteVirtualMemory (dynamically resolved from ntdll.dll), writing SizeOfHeaders then each section (VirtualAddress+SizeOfRawData from the payload PE); remote base allocated with VirtualAllocEx sized by SizeOfImage",
+    "handles": "OpenProcess with 0x43a access; process and thread handles closed with NtClose/CloseHandle; VirtualFreeEx(MEM_RELEASE) on failure paths",
+    "post_inject": "Sleep(2000) after launching the remote thread"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "file_type": "PE32+ (x86-64) Windows console executable",
+  "encoded_strings": true,
+  "decoded_c2": null,
+  "techniques": [
+    "process_hollowing",
+    "create_suspended_process",
+    "remote_peb_image_base_discovery",
+    "nt_unmap_view_of_section",
+    "virtualallocex_rwx",
+    "writeprocessmemory",
+    "thread_context_hijacking_rcx",
+    "resume_suspended_thread",
+    "dynamic_api_resolution_getmodulehandle_getprocaddress",
+    "ntqueryinformationprocess_antidebug",
+    "repeating_key_xor",
+    "rc4_payload_decryption",
+    "stack_string_construction",
+    "sleep_delay"
+  ],
+  "c2_protocol": null,
+  "encryption_details": {
+    "algorithm": "Layered repeating-key XOR and standard RC4 (KSA/PRGA), applied in place to a 64-byte payload. Runtime decryption first XORs the blob with the 10-byte repeating key and then applies RC4; because both layers are XOR streams, this reverses the build-time layering.",
+    "key": "XOR key (hex): DE AD BE EF 13 37 CA FE BA BE; RC4 key (ASCII): Hollowing_PE!!!!",
+    "key_storage": "Both keys are stored in cleartext in .rdata: the 10-byte binary XOR key at VA 0x140005000 and the 16-byte RC4 key at VA 0x140005010. The 64-byte ciphertext is stored at VA 0x140004000 in .data, copied to the stack, and decrypted in place before injection. No IV is used."
+  },
+  "decoded_strings": {
+    "stack_constructed_target": "C:\\Windows\\System32\\svchost.exe",
+    "note": "The encrypted 64-byte object is consumed as raw executable payload rather than as a verified printable string. Native API names ntdll.dll, NtQueryInformationProcess, NtUnmapViewOfSection, and NtReadVirtualMemory are already plaintext in .rdata."
+  },
+  "anti_analysis": [
+    "NtQueryInformationProcess with ProcessDebugPort (information class 7); treats a returned debug port of -1 as debugger detection",
+    "NtQueryInformationProcess with ProcessDebugFlags (information class 0x1F); treats a returned value of 0 as debugger detection",
+    "Early return before payload decryption and injection when either native anti-debug check triggers",
+    "Dynamic resolution of ntdll native APIs through GetModuleHandleA and GetProcAddress, keeping them out of the static import table",
+    "Target path is assembled from immediate chunks on the stack rather than stored as one ordinary string",
+    "Sleep(2000) delay after the hollowing attempt"
+  ],
+  "injection_details": {
+    "method": "Process hollowing / suspended-process image replacement using CreateProcessA(CREATE_SUSPENDED) + NtUnmapViewOfSection + VirtualAllocEx + WriteProcessMemory + GetThreadContext/SetThreadContext + ResumeThread",
+    "target_process": "C:\\Windows\\System32\\svchost.exe",
+    "target_discovery": "No process enumeration. A hard-coded absolute path is assembled on the stack and passed as the CreateProcessA command line with creation flag 0x4 (CREATE_SUSPENDED).",
+    "remote_image_base_discovery": "Calls dynamically resolved NtQueryInformationProcess with ProcessBasicInformation (class 0), obtains the remote PEB, then uses dynamically resolved NtReadVirtualMemory to read the original ImageBaseAddress from PEB+0x10.",
+    "image_replacement": "Calls dynamically resolved NtUnmapViewOfSection on the original image base. It first requests MEM_COMMIT|MEM_RESERVE memory at that same base with PAGE_EXECUTE_READWRITE; if that fails it retries at an arbitrary address.",
+    "payload_write": "Copies the 64-byte ciphertext from .data, decrypts it in memory with the repeating XOR and RC4 layers, and writes the resulting raw 64-byte buffer in one WriteProcessMemory call. It does not manually map PE sections.",
+    "thread_redirection": "Requests x64 CONTEXT flags 0x10000B, sets CONTEXT.Rcx to the remote allocation (the payload start), applies SetThreadContext, and resumes the primary thread with ResumeThread."
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "file_type": "PE32+ (x86-64) Windows console executable",
+  "encoded_strings": true,
+  "decoded_c2": null,
+  "techniques": [
+    "process_hollowing",
+    "CreateProcessA_CREATE_SUSPENDED",
+    "dynamic_api_resolution_via_GetModuleHandleA_GetProcAddress",
+    "NtQueryInformationProcess_ProcessBasicInformation",
+    "remote_PEB_ImageBaseAddress_read_via_NtReadVirtualMemory",
+    "NtUnmapViewOfSection_image_unmapping",
+    "VirtualAllocEx_MEM_COMMIT_RESERVE_PAGE_EXECUTE_READWRITE",
+    "WriteProcessMemory_payload_write",
+    "GetThreadContext_SetThreadContext_Rcx_redirection",
+    "ResumeThread",
+    "repeating_key_XOR",
+    "RC4_KSA_PRGA",
+    "NtQueryInformationProcess_ProcessDebugPort_antidebug",
+    "NtQueryInformationProcess_ProcessDebugFlags_antidebug"
+  ],
+  "c2_protocol": null,
+  "encryption_details": {
+    "algorithm": "Layered payload decryption: repeating-key XOR followed by standard RC4 (KSA + PRGA), both applied in place to a 64-byte buffer",
+    "key": "XOR key (10 bytes): DE AD BE EF 13 37 CA FE BA BE; RC4 key (16 bytes): \"Hollowing_PE!!!!\" (hex 48 6F 6C 6C 6F 77 69 6E 67 5F 50 45 21 21 21 21)",
+    "key_storage": "Both keys are stored directly in plaintext/static form in .rdata: g_xor_key at VA 0x140005000 and g_rc4_key at VA 0x140005010. The 64-byte ciphertext g_encrypted_pe_stub is stored in .data at VA 0x140004000, copied to a stack buffer, XOR-decoded, then RC4-decoded before injection."
+  },
+  "decoded_strings": {
+    "stack_assembled_target_path": "C:\\Windows\\System32\\svchost.exe",
+    "rc4_key_ascii": "Hollowing_PE!!!!",
+    "ntdll_library": "ntdll.dll",
+    "dynamically_resolved_nt_apis": [
+      "NtQueryInformationProcess",
+      "NtUnmapViewOfSection",
+      "NtReadVirtualMemory"
+    ],
+    "note": "The layered ciphertext is a 64-byte binary payload/stub rather than a text string; no separate ciphertext-backed C2 or configuration string was found."
+  },
+  "anti_analysis": [
+    "NtQueryInformationProcess with ProcessDebugPort (information class 7); a successful query returning 0xFFFFFFFF is treated as debugger presence",
+    "NtQueryInformationProcess with ProcessDebugFlags (information class 31); a successful query returning zero is treated as debugger presence",
+    "NtQueryInformationProcess is resolved dynamically from ntdll.dll via GetModuleHandleA/GetProcAddress rather than statically imported",
+    "WinMain exits before payload decryption/injection when either debugger check triggers"
+  ],
+  "injection_details": {
+    "method": "64-bit process hollowing/image replacement: CreateProcessA suspended, read and unmap the original image, allocate remote executable memory, write the decoded payload, redirect the initial thread context, and resume it",
+    "target_process": "C:\\Windows\\System32\\svchost.exe",
+    "target_discovery": "No process enumeration or lookup. The absolute path is assembled from immediate constants on the stack and passed as the writable command line to CreateProcessA with dwCreationFlags=CREATE_SUSPENDED (0x4).",
+    "original_image_discovery": "Calls dynamically resolved NtQueryInformationProcess(ProcessBasicInformation=0), takes the returned PEB address, and uses NtReadVirtualMemory on PEB+0x10 to recover the target's ImageBaseAddress.",
+    "image_unmapping": "Calls dynamically resolved NtUnmapViewOfSection on the recovered original ImageBaseAddress.",
+    "remote_allocation": "VirtualAllocEx first requests the original image base, payload size 0x40, MEM_COMMIT|MEM_RESERVE (0x3000), PAGE_EXECUTE_READWRITE (0x40). If that fails, it retries with a NULL preferred address.",
+    "payload_write": "A single WriteProcessMemory call writes all 64 bytes of the locally XOR+RC4-decoded payload into the remote allocation.",
+    "thread_redirection": "Sets CONTEXT.ContextFlags to 0x10000B, obtains the suspended thread context, replaces x64 CONTEXT.Rcx with the remote allocation address, calls SetThreadContext, then ResumeThread.",
+    "payload_form": "Raw 64-byte decoded stub/blob; the routine does not map PE sections or apply relocations/import fixups."
+  }
+}

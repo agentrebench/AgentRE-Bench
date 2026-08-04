@@ -1,0 +1,39 @@
+{
+  "c2_protocol": null,
+  "encryption_details": {
+    "key": "R3m0t3_PE_3x3c_K",
+    "key_storage": "Hardcoded ASCII string in .rdata section at VA 0x140005000 (g_rc4_key)",
+    "algorithm": "RC4"
+  },
+  "encoded_strings": true,
+  "injection_details": {
+    "method": "CreateRemoteThread + VirtualAllocEx + NtWriteVirtualMemory",
+    "target_process": "explorer.exe",
+    "target_discovery": "CreateToolhelp32Snapshot + Process32First/Process32Next process enumeration matching explorer.exe",
+    "payload_writing": "NtWriteVirtualMemory"
+  },
+  "decoded_c2": null,
+  "file_type": "PE32+",
+  "decoded_strings": {
+    "dbghelp_dll": "dbghelp.dll",
+    "explorer_exe": "explorer.exe",
+    "sbiedll_dll": "sbiedll.dll",
+    "ntclose": "NtClose",
+    "symsetoptions": "SymSetOptions",
+    "ntdll_dll": "ntdll.dll",
+    "ntwritevirtualmemory": "NtWriteVirtualMemory"
+  },
+  "techniques": [
+    "rc4_encryption",
+    "sandbox_evasion",
+    "process_enumeration",
+    "process_injection",
+    "create_remote_thread",
+    "dynamic_api_resolution"
+  ],
+  "anti_analysis": [
+    "sandbox_detection_sbiedll",
+    "debugger_detection_dbghelp",
+    "delayed_execution_sleep"
+  ]
+}

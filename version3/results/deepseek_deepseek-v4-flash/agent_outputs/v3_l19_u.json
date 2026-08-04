@@ -1,0 +1,42 @@
+{
+  "file_type": "PE32+ (x86-64) Windows console executable (MinGW-w64 GCC 13, with DWARF debug info/symbols)",
+  "encoded_strings": true,
+  "techniques": [
+    "reflective_dll_injection",
+    "self_injection",
+    "manual_pe_mapping",
+    "manual_relocation_processing",
+    "manual_import_resolution",
+    "aes_sbox_cipher",
+    "encrypted_payload",
+    "peb_antidebug",
+    "leetspeak_obfuscation",
+    "sleep_timing"
+  ],
+  "injection_details": {
+    "method": "Reflective DLL injection into the current (own) process. No remote-process APIs (no OpenProcess/WriteProcessMemory/CreateRemoteThread). The decrypted DLL is mapped manually: get_nt_headers -> VirtualAlloc(SizeOfImage, MEM_COMMIT|MEM_RESERVE, PAGE_EXECUTE_READWRITE) at preferred base (fallback NULL) -> memcpy SizeOfHeaders -> map_pe_sections (per-section RVA copy) -> process_relocations (delta = alloc_base - ImageBase, IMAGE_REL_BASED_DIR64=0xA) -> resolve_imports (LoadLibraryA + GetProcAddress for each imported DLL/function) -> export 'DllMain' found by name via export directory (NamePointerTable/OrdinalTable/AddressOfFunctions) and called with (base, DLL_PROCESS_ATTACH=1, NULL).",
+    "target_process": "Current process (self-injection; no target discovery/enumeration)",
+    "payload_write": "32-byte encrypted blob g_encrypted_dll decrypted in place on stack (aes128_decrypt, length 0x20), then mapped via VirtualAlloc + memcpy of headers and sections",
+    "entry_call": "DllMain(base, 1, 0) invoked directly (call r9); reflective_load returns after entry",
+    "other": "After reflective_load, WinMain calls Sleep(2000) and returns 0. The decrypted 32-byte payload does not start with 'MZ' (first plaintext bytes 8F BF AD 51 0C 69 04 03 ...), so the embedded DLL stub does not validate as a PE through this decryptor - payload appears non-functional/decoy."
+  },
+  "encryption_details": {
+    "algorithm": "Custom 128-bit block cipher (named aes128_decrypt): 10 rounds over 16-byte blocks, ECB-style; per byte each round: block[i] = AES_SBOX[block[i]] XOR key[i] XOR (round*27). AES-128-sized key and AES S-box table, but not standard AES (no MixColumns/ShiftRows/key schedule).",
+    "key": "Rfl3ct!v3_DLL_k3 (16 bytes, ASCII; leetspeak for 'Reflect!ve_DLL_k3' / 'Reflective_DLL_key')",
+    "key_storage": "Embedded in .rdata at g_aes_key (VA 0x140005100, file offset 0x2b00) as a plaintext leetspeak-obfuscated string; AES S-box (g_aes_sbox) at VA 0x140005000 (file offset 0x2a00); encrypted payload g_encrypted_dll at VA 0x140004000 (.data, file offset 0x2800, 32 bytes)"
+  },
+  "decoded_strings": {
+    "g_aes_key": "Rfl3ct!v3_DLL_k3 (decodes from leetspeak to 'Reflect!ve_DLL_k3'/'Reflective_DLL_key' - the 16-byte cipher key)",
+    "dll_entry_export": "DllMain (plaintext at g_aes_key+0x10, VA 0x140005110 - export name located and called after reflective load)",
+    "source_file": "windows_level19_ReflectiveDLLInjection.c (debug info)",
+    "decrypted_payload_prefix": "8F BF AD 51 0C 69 04 03 ... (32-byte blob decrypted with the custom cipher; non-ASCII, no MZ/PE magic - payload does not form a valid PE)"
+  },
+  "anti_analysis": [
+    "peb_antidebug: anti_debug_peb reads TEB->ProcessEnvironmentBlock via gs:[0x60] and checks the PEB.BeingDebugged flag (byte at PEB+2); WinMain aborts (returns 0) if set",
+    "encrypted_payload: embedded DLL is stored encrypted (32-byte blob, custom AES-S-box cipher) and only decrypted at runtime",
+    "leetspeak_obfuscation: cipher key stored as obfuscated string 'Rfl3ct!v3_DLL_k3' instead of plaintext to evade string-based detection",
+    "manual_api_usage: injection implemented via manual PE parsing (relocations/imports resolved by hand) with no suspicious remote-injection API imports"
+  ],
+  "decoded_c2": null,
+  "c2_protocol": null
+}

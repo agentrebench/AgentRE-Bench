@@ -1,0 +1,48 @@
+{
+  "file_type": "PE32+ (x86-64) console executable, MinGW-w64 GCC 13, not stripped (contains DWARF debug info; source file windows_level20_RemotePEExecution.c)",
+  "encoded_strings": true,
+  "techniques": [
+    "rc4_encryption",
+    "embedded_encrypted_pe",
+    "remote_pe_injection",
+    "createremotethread",
+    "virtualallocex_rwx",
+    "ntwritevirtualmemory",
+    "manual_relocation_fixup",
+    "process_enumeration_toolhelp32",
+    "getprocaddress_resolve_ntdll",
+    "anti_sandbox_sbiedll",
+    "sleep_evasion"
+  ],
+  "injection_details": {
+    "method": "Remote PE injection (RunPE-style): OpenProcess(0x43A = PROCESS_VM_OPERATION|PROCESS_VM_WRITE|PROCESS_VM_READ|PROCESS_CREATE_THREAD|PROCESS_QUERY_INFORMATION) -> VirtualAllocEx(MEM_COMMIT|MEM_RESERVE, PAGE_EXECUTE_READWRITE, SizeOfImage) -> NtWriteVirtualMemory of PE headers (SizeOfHeaders) and each section (PointerToRawData -> VirtualAddress) -> manual base-relocation fixups for IMAGE_REL_BASED_DIR64 entries (ReadProcessMemory 8 bytes, add delta = remoteBase - ImageBase, NtWriteVirtualMemory back) -> CreateRemoteThread with lpStartAddress = remoteBase + AddressOfEntryPoint and lpParameter = remoteBase -> WaitForSingleObject(hThread, 10000) -> CloseHandle/NtClose",
+    "target_process": "explorer.exe",
+    "target_discovery": "CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS) + Process32First/Process32Next, strcmp(szExeFile, \"explorer.exe\"); falls back to GetCurrentProcessId() (self-injection) if explorer.exe not found",
+    "payload_write": "64-byte RC4-encrypted PE at g_encrypted_pe (.data 0x140004000) decrypted in-memory with RC4 key g_rc4_key, then written into the remote process via NtWriteVirtualMemory (resolved at runtime from ntdll.dll via GetModuleHandleA+GetProcAddress); NtClose used instead of CloseHandle for the process handle"
+  },
+  "encryption_details": {
+    "algorithm": "RC4 (custom rc4_init KSA / rc4_crypt PRGA implementation)",
+    "key": "R3m0t3_PE_3x3c_K (16 bytes ASCII, key length 0x10 passed to rc4_init)",
+    "key_storage": "Hardcoded global g_rc4_key in .rdata at VA 0x140005000; the 16 key bytes are immediately followed by \"ntdll.dll\", together forming the leetspeak decoy string \"R3m0t3_PE_3x3c_Kntdll.dll\" (GetModuleHandleA is called with offset +0x10 so it reads \"ntdll.dll\")"
+  },
+  "decoded_strings": {
+    "g_rc4_key": "R3m0t3_PE_3x3c_K",
+    "rdata_0x140005010": "ntdll.dll",
+    "rdata_0x14000501a": "sbiedll.dll",
+    "rdata_0x140005026": "dbghelp.dll",
+    "rdata_0x140005032": "SymSetOptions",
+    "rdata_0x140005040": "NtWriteVirtualMemory",
+    "rdata_0x140005055": "NtClose",
+    "rdata_0x14000505d": "explorer.exe",
+    "combined_decoy_string": "R3m0t3_PE_3x3c_Kntdll.dll",
+    "note": "The 64-byte blob at g_encrypted_pe (7de35a8c1fb446d92e81f73b65ca0892...) is an RC4-encrypted PE image (runtime code validates MZ/PE magic and reads SizeOfImage/AddressOfEntryPoint before injection); it decrypts in memory and is never written to disk"
+  },
+  "anti_analysis": [
+    "anti_sandbox_check: GetModuleHandleA(\"sbiedll.dll\") detects Sandboxie; if present WinMain calls Sleep(30000) and exits without injecting",
+    "secondary check: GetModuleHandleA(\"dbghelp.dll\") + GetProcAddress(\"SymSetOptions\") (decoy/AV-analysis detection stub)",
+    "time-based evasion: Sleep(30000) on sandbox detection; Sleep(2000) after injection",
+    "resolves NtWriteVirtualMemory/NtClose from ntdll at runtime instead of importing WriteProcessMemory (API-hook/EDR evasion); import table stays minimal"
+  ],
+  "c2_protocol": null,
+  "decoded_c2": null
+}

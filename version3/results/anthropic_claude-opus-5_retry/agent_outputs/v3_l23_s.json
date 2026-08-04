@@ -1,0 +1,57 @@
+{
+  "file_type": "PE32+ (x86-64) console executable, MinGW-w64/GCC 13 built, stripped (external PDB), 10 sections, TLS directory present (callbacks are the standard mingw CRT ones at 0x1400025d0 / 0x140002600)",
+  "encoded_strings": true,
+  "techniques": [
+    "xor_string_obfuscation (8-byte repeating key)",
+    "stack_built_strings (movabs immediates: \"\\Documents\\synthetic_target\", \".WNCRY\")",
+    "custom_block_cipher_file_encryption (AES S-box based, 10 rounds)",
+    "hardcoded_symmetric_key_in_rdata",
+    "fake_rsa_public_key_blob (DER 0x3082010A... at .rdata:0x14000a000)",
+    "ransomware_file_enumeration (FindFirstFileA/FindNextFileA recursive)",
+    "extension_targeting_via_pointer_table (.data:0x140009000, 24 extensions, _stricmp)",
+    "in_place_file_overwrite (SetFilePointer/SetEndOfFile/WriteFile) + MoveFileA rename to .WNCRY",
+    "SetFileAttributesA FILE_ATTRIBUTE_HIDDEN on encrypted files",
+    "ransom_note_drop (@Please_Read_Me@.txt)",
+    "single_instance_mutex (CreateMutexA + ERROR_ALREADY_EXISTS)",
+    "killswitch_domain_check (InternetOpenA/InternetOpenUrlA)",
+    "service_persistence (OpenSCManagerA/CreateServiceA/OpenServiceA/StartServiceA, SERVICE_AUTO_START)",
+    "lateral_movement_scan (TCP connect to 192.0.2.1-4 port 445 with SO_RCVTIMEO)",
+    "socket_beacon (WS2_32 socket/connect/send, host fingerprint)",
+    "manual_getprocaddress (GetModuleHandleA(\"ntdll.dll\") + GetProcAddress(\"NtQueryInformationProcess\"))",
+    "peb_antidebug (gs:[0x60] -> PEB->BeingDebugged)",
+    "anti_vm_artifact_file_checks",
+    "cpuid_hypervisor_bit_check",
+    "environment_variable_target_discovery (USERPROFILE, PUBLIC)"
+  ],
+  "anti_analysis": [
+    "IsDebuggerPresent() (KERNEL32 import) at 0x1400020f7",
+    "PEB->BeingDebugged read via gs:[0x60] + offset 0x02",
+    "NtQueryInformationProcess(ProcessDebugPort=7) dynamically resolved with GetModuleHandleA(\"ntdll.dll\")/GetProcAddress",
+    "VM artifact file checks with GetFileAttributesA: C:\\Windows\\System32\\drivers\\vmmouse.sys and vmhgfs.sys",
+    "Sandboxie detection: GetModuleHandleA(\"sbiedll.dll\")",
+    "Analysis-tool detection: GetModuleHandleA(\"dbghelp.dll\")",
+    "CPUID leaf 1, test of ECX bit 31 (hypervisor present bit)",
+    "Kill-switch / connectivity check: InternetOpenA(\"Microsoft Internet Explorer\") + InternetOpenUrlA(\"http://example.com\") - aborts if reachable (sandbox/sinkhole check)",
+    "Silent exit (return 0 from main) when any debugger/VM check trips - no error output",
+    "Symbols stripped, no runtime error messages"
+  ],
+  "encryption_details": {
+    "algorithm": "Two schemes. (1) File data: custom 10-round substitution cipher using the standard AES S-box (copied to .rdata:0x14000a120): for r=0..9 { for i=0..15: b[i] = SBOX[b[i]] ^ key[i] ^ (27*r) } applied to 16-byte blocks (function 0x1400014c3), over the first min(filesize, 0x100000) bytes; result written back in place and file renamed to <name>.WNCRY. (2) Strings: repeating-byte XOR (function 0x14000156b: buf[i] ^= key[i % keylen]).",
+    "key": "File cipher key: \"W@nCryPt0K3y2024\" (16 ASCII bytes at .rdata:0x14000a100). String XOR key: DE AD BE EF 13 37 CA FE (8 raw bytes at .rdata:0x14000a220), passed as (key,len=8) to the XOR routine.",
+    "key_storage": "Both keys are hardcoded plaintext constants in the read-only .rdata section (no key derivation, no key exchange). A decoy/fake RSA public-key DER blob (30 82 01 0A 02 82 01 01 00 ...) sits at .rdata:0x14000a000."
+  },
+  "decoded_strings": {
+    "plaintext_config_(not encrypted)": "Mutex: Global\\MsWinZonesCacheCounterMutexA | Kill-switch URL: http://example.com (UA: \"Microsoft Internet Explorer\") | Service: mssecsvc2.0 / display \"Microsoft Security Center (2.0)\" | Scan template: 192.0.2.%d (TCP 445) | Beacon template: SYSTEM:%s:WIN:%ld | Note: %s\\@Please_Read_Me@.txt | BTC: 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa (genesis address, explicitly labelled synthetic)",
+    "stack_built_string": "\"\\Documents\\synthetic_target\" (built with movabs 0x6E656D75636F445C etc. at 0x1400023f6-0x140002436) appended to %PUBLIC%; encrypted-file suffix \".WNCRY\" built with movl $0x434e572e / $0x595243",
+    "xor_blob_.data:0x140009100 (16B)": "4F 78 69 4C 65 66 2F 6C 08 50 69 22 74 67 24 38  (XOR with DEADBEEF1337CAFE; unreferenced decoy blob - does not resolve to printable text)",
+    "xor_blob_.data:0x140009110 (16B)": "16 65 72 48 74 67 22 6C 08 5D 69 48 65 70 3C 6C  (unreferenced decoy blob)",
+    "xor_blob_.data:0x140009120 (8B)": "16 6A 72 48 61 31 63 38  (unreferenced decoy blob)",
+    "xor_blob_.data:0x140009128 (13B) = C2 host string": "Copied to stack, XOR-decrypted with DE AD BE EF 13 37 CA FE (len 8) at 0x140001f79, NUL-terminated, then passed to inet_addr(). Recovered bytes: 4D 6E 70 42 33 68 41 24 03 27 6D 76 21 (\"MnpB3hA$\\x03'mv!\") - the embedded ciphertext is provably inconsistent with any 8-byte-periodic key producing a dotted-quad literal (c[0]^c[8]=0x4E), so the host literal cannot be cleanly recovered; the transport/port are unambiguous (TCP 8443)."
+  },
+  "c2_protocol": "TCP (raw socket, AF_INET/SOCK_STREAM/IPPROTO_TCP, SO_RCVTIMEO 3000 ms, single plaintext beacon then closesocket). Secondary HTTP (WinINet) request used only as a kill-switch/connectivity probe, and TCP/445 sweeps for lateral movement.",
+  "decoded_c2": "TCP <XOR-encrypted IPv4 string at .data:0x140009128, key DE AD BE EF 13 37 CA FE> : 8443  (htons(0x20FB) = 8443, connect() at 0x14000203b; beacon payload \"SYSTEM:%s:WIN:%ld\" with GetComputerNameA + GetVersion). Additional plaintext network indicators: kill-switch http://example.com and lateral-movement sweep 192.0.2.1-192.0.2.4 on TCP/445.",
+  "injection_details": {
+    "process_injection": "None. No VirtualAllocEx/WriteProcessMemory/CreateRemoteThread/NtMapViewOfSection/QueueUserAPC imports or dynamic resolution; VirtualProtect/VirtualQuery present only via the mingw pseudo-relocation runtime. Persistence/execution is achieved with a Windows service (CreateServiceA \"mssecsvc2.0\", binary path = GetModuleFileNameA of self, SERVICE_WIN32_OWN_PROCESS | SERVICE_AUTO_START, then StartServiceA).",
+    "target_discovery": "File targets located via GetEnvironmentVariableA(\"USERPROFILE\") -> %s\\Desktop, %s\\Documents and GetEnvironmentVariableA(\"PUBLIC\") -> stack-built \"\\Documents\\synthetic_target\", then recursive FindFirstFileA/FindNextFileA with extension filter table."
+  }
+}

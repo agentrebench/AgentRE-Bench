@@ -1,0 +1,48 @@
+{
+  "c2_protocol": null,
+  "file_type": "PE32+",
+  "injection_details": {
+    "payload_writing": "WriteProcessMemory into RWX allocated memory",
+    "target_process": "Self / Current Process (GetCurrentProcess())",
+    "method": "VirtualAllocEx + WriteProcessMemory + CreateRemoteThread",
+    "target_discovery": "GetCurrentProcess()"
+  },
+  "decoded_strings": {
+    "syscall_4": "NtCreateThreadEx",
+    "syscall_3": "NtProtectVirtualMemory",
+    "thread_query_func": "NtQueryInformationProcess",
+    "thread_hide_func": "NtSetInformationThread",
+    "ntdll": "ntdll.dll",
+    "syscall_1": "NtAllocateVirtualMemory",
+    "syscall_2": "NtWriteVirtualMemory",
+    "aes_key": "AES-256-S3cur3-K3y-F0r-Mult1-T3c"
+  },
+  "techniques": [
+    "local_process_injection",
+    "remote_thread_injection",
+    "hells_gate",
+    "peb_traversal",
+    "tls_callbacks",
+    "aes_encryption",
+    "anti_debug_isdebuggerpresent",
+    "anti_debug_checkremotedebuggerpresent",
+    "anti_debug_ntqueryinformationprocess",
+    "anti_debug_ntsetinformationthread"
+  ],
+  "decoded_c2": null,
+  "encoded_strings": true,
+  "anti_analysis": [
+    "IsDebuggerPresent",
+    "CheckRemoteDebuggerPresent",
+    "NtQueryInformationProcess (ProcessDebugPort)",
+    "NtSetInformationThread (ThreadHideFromDebugger)",
+    "TLS Callbacks",
+    "Hell's Gate SSN resolution",
+    "PEB Module List Traversal"
+  ],
+  "encryption_details": {
+    "key_storage": "Hardcoded ASCII string in .rdata section (offset 0x2e4f0)",
+    "algorithm": "AES-256 (Custom S-Box + round substitution cipher)",
+    "key": "AES-256-S3cur3-K3y-F0r-Mult1-T3c"
+  }
+}

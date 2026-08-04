@@ -1,0 +1,55 @@
+{
+  "anti_analysis": [
+    "anti_sandbox_sandboxie_sbiedll: GetModuleHandleA(\"sbiedll.dll\") check - if Sandboxie module is loaded, calls Sleep(30000) and exits without injecting",
+    "analysis_tool_probe: checks GetModuleHandleA(\"dbghelp.dll\") and resolves \"SymSetOptions\" (vestigial debugger/AV detection)",
+    "sleep_timing_evasion: Sleep(30000) on sandbox detection, Sleep(2000) after injection, WaitForSingleObject(thread, 10000)",
+    "native_nt_api_hook_evasion: uses NtWriteVirtualMemory/NtClose resolved at runtime instead of WriteProcessMemory/CloseHandle for remote writes",
+    "stripped_symbols: binary stripped to external PDB"
+  ],
+  "c2_protocol": null,
+  "decoded_c2": null,
+  "decoded_strings": {
+    "dbghelp_check": "dbghelp.dll",
+    "encrypted_payload_location": ".data VA 0x140004000, 64 bytes",
+    "encrypted_payload_withheld_note": "Payload is RC4-encrypted; injector proves plaintext is a PE (validates MZ/PE, SizeOfImage, sections, DIR64 relocs). Exact plaintext bytes not recovered statically.",
+    "ntdll_apis": [
+      "NtWriteVirtualMemory",
+      "NtClose"
+    ],
+    "rc4_key": "R3m0t3_PE_3x3c_K",
+    "sandbox_check": "sbiedll.dll",
+    "sym_check": "SymSetOptions",
+    "target_process": "explorer.exe"
+  },
+  "encoded_strings": true,
+  "encryption_details": {
+    "algorithm": "RC4",
+    "key": "R3m0t3_PE_3x3c_K",
+    "key_storage": "Hardcoded plaintext 16-byte key in .rdata at VA 0x140005000 (leetspeak for 'Remote_PE_Exec_K'), packed immediately before the 'ntdll.dll' string. RC4 KSA at 0x140001480, PRGA/XOR crypt at 0x140001573. Encrypts a 64-byte embedded payload in .data at VA 0x140004000: 7de35a8c1fb446d92e81f73b65ca08924a1cbd73e85d319f06fc78dd238a51b714e06bcd38a50f72d6499e35fb11872c60aa19f44d83e57a3ec19658b026dd6f"
+  },
+  "file_type": "PE32+ (x86-64) console executable, MinGW-w64 GCC 13, stripped",
+  "injection_details": {
+    "cleanup": "WaitForSingleObject(hThread, 10000ms), CloseHandle(hThread), NtClose(hProcess); VirtualFreeEx on failure paths",
+    "fallback": "If explorer.exe not found, injects into own process (GetCurrentProcessId)",
+    "method": "Remote PE injection (RunPE-style without hollowing): OpenProcess(0x43A = PROCESS_CREATE_THREAD|PROCESS_VM_OPERATION|PROCESS_VM_WRITE|PROCESS_VM_READ|PROCESS_QUERY_INFORMATION) -> VirtualAllocEx(NULL, SizeOfImage, MEM_COMMIT|MEM_RESERVE, PAGE_EXECUTE_READWRITE) -> NtWriteVirtualMemory of PE headers (SizeOfHeaders) and each section (raw data mapped to remoteBase+VirtualAddress) -> manual base relocation of IMAGE_REL_BASED_DIR64 entries using ReadProcessMemory/NtWriteVirtualMemory with delta = remoteBase - ImageBase -> CreateRemoteThread(start = remoteBase + AddressOfEntryPoint, lpParameter = remoteBase)",
+    "payload_source": "64-byte RC4-encrypted blob in .data at VA 0x140004000, decrypted in memory with key 'R3m0t3_PE_3x3c_K' before injection; injector validates MZ/PE magic and maps it as a PE image",
+    "target_discovery": "CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS) + Process32First/Process32Next, strncmp against szExeFile of each PROCESSENTRY32",
+    "target_process": "explorer.exe"
+  },
+  "techniques": [
+    "remote_pe_injection",
+    "create_remote_thread",
+    "virtual_alloc_ex_rwx",
+    "openprocess_0x43a",
+    "ntdll_native_api_ntwritevirtualmemory",
+    "manual_pe_mapping_headers_sections",
+    "manual_base_relocation_dir64_remote",
+    "toolhelp32_process_enumeration",
+    "rc4_encrypted_payload",
+    "hardcoded_rc4_key_in_rdata",
+    "runtime_getprocaddress_ntdll",
+    "anti_sandbox_sbiedll_dll_check",
+    "sleep_evasion",
+    "self_injection_fallback"
+  ]
+}

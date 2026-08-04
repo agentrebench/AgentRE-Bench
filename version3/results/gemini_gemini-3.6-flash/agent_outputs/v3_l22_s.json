@@ -1,0 +1,47 @@
+{
+  "file_type": "PE32+",
+  "encoded_strings": true,
+  "anti_analysis": [
+    "IsDebuggerPresent",
+    "CheckRemoteDebuggerPresent",
+    "NtQueryInformationProcess (ProcessDebugPort / 0x07)",
+    "NtSetInformationThread (ThreadHideFromDebugger / 0x11)",
+    "TLS Callbacks",
+    "Direct Syscalls / SSN extraction (parsing ntdll.dll stubs to bypass EDR/API hooks)",
+    "PEB Module Walking (GS:[0x60] PEB Ldr InMemoryOrderModuleList traversal)"
+  ],
+  "decoded_strings": {
+    "ntdll": "ntdll.dll",
+    "NtCreateThreadEx": "NtCreateThreadEx",
+    "NtQueryInformationProcess": "NtQueryInformationProcess",
+    "NtAllocateVirtualMemory": "NtAllocateVirtualMemory",
+    "NtProtectVirtualMemory": "NtProtectVirtualMemory",
+    "NtSetInformationThread": "NtSetInformationThread",
+    "encryption_key": "AES-256-S3cur3-K3y-F0r-Mult1-T3c",
+    "NtWriteVirtualMemory": "NtWriteVirtualMemory"
+  },
+  "decoded_c2": null,
+  "injection_details": {
+    "payload_writing": "NtWriteVirtualMemory into memory allocated in target process via NtAllocateVirtualMemory",
+    "target_process": "GetCurrentProcess (Self-injection)",
+    "target_discovery": "GetCurrentProcess API call",
+    "method": "CreateRemoteThread / NtCreateThreadEx + WriteProcessMemory / NtWriteVirtualMemory + VirtualAllocEx / NtAllocateVirtualMemory"
+  },
+  "encryption_details": {
+    "key": "AES-256-S3cur3-K3y-F0r-Mult1-T3c",
+    "algorithm": "AES-256 (Custom S-Box round substitution-XOR cipher)",
+    "key_storage": "Hardcoded in .rdata section at RVA 0x2f0f0"
+  },
+  "c2_protocol": null,
+  "techniques": [
+    "process_injection",
+    "remote_thread_injection",
+    "self_injection",
+    "direct_syscalls",
+    "syscall_ssn_extraction",
+    "peb_traversal",
+    "anti_debugging",
+    "aes_encryption",
+    "tls_callbacks"
+  ]
+}

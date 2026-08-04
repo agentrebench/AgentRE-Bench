@@ -1,0 +1,52 @@
+{
+  "file_type": "PE32+ (x86-64) Windows console executable",
+  "encoded_strings": true,
+  "decoded_c2": "255.255.255.255:8443",
+  "c2_protocol": "TCP",
+  "techniques": [
+    "recursive_file_encryption",
+    "extension_based_file_targeting",
+    "custom_aes_sbox_substitution_cipher",
+    "static_symmetric_key",
+    "xor_string_obfuscation",
+    "encrypted_file_rename_to_WNCRY",
+    "encrypted_file_hidden_attribute",
+    "ransom_note_creation",
+    "named_mutex_single_instance_check",
+    "windows_service_persistence_CreateServiceA",
+    "HTTP_reachability_execution_gate",
+    "TCP_connect_scan_192.0.2.1-4_port_445",
+    "TCP_system_fingerprint_beacon",
+    "dynamic_GetProcAddress_for_NtQueryInformationProcess",
+    "anti_debug_IsDebuggerPresent",
+    "anti_debug_PEB_BeingDebugged",
+    "anti_debug_ProcessDebugPort",
+    "anti_vm_VMware_artifact_checks",
+    "anti_sandbox_Sandboxie_module_check",
+    "anti_vm_CPUID_hypervisor_bit"
+  ],
+  "encryption_details": {
+    "algorithm": "File data: custom 16-byte, 10-round AES-S-box substitution/XOR transform (ECB-like independent blocks, but not standard AES: no key expansion, ShiftRows, or MixColumns). Each byte is transformed as Sbox[state] XOR key_byte XOR (27 * round). Strings: repeating-key XOR.",
+    "key": "File cipher key: ASCII \"W@nCryPt0K3y2024\" (16 bytes). String-XOR key: DE AD BE EF 13 37 CA FE (8 bytes).",
+    "key_storage": "Both keys are stored directly in plaintext in .rdata: file key at RVA 0xA100, XOR key at RVA 0xA220; the standard AES S-box is stored at RVA 0xA120. File encryption processes complete 16-byte blocks from at most the first 1 MiB, truncates the file to the processed read length, writes it back, and renames it with .WNCRY."
+  },
+  "decoded_strings": {
+    "xor_decoded_c2_buffer": "MnpB3hA$\\x03'mv!",
+    "xor_decoded_c2_buffer_hex": "4d6e70423368412403276d7621",
+    "c2_decode_note": "The XOR-decoded buffer passed to inet_addr is not a valid IPv4 string. inet_addr therefore yields INADDR_NONE (0xFFFFFFFF), making the effective attempted TCP destination 255.255.255.255:8443.",
+    "constructed_encrypted_extension": ".WNCRY",
+    "constructed_public_target": "%PUBLIC%\\Documents\\synthetic_target",
+    "service_name": "mssecsvc2.0",
+    "service_display_name": "Microsoft Security Center (2.0)",
+    "beacon_format": "SYSTEM:%s:WIN:%ld"
+  },
+  "anti_analysis": [
+    "IsDebuggerPresent API check",
+    "Direct PEB BeingDebugged-byte check via GS:[0x60] and PEB+2",
+    "NtQueryInformationProcess with ProcessDebugPort (information class 7), resolved dynamically from ntdll.dll",
+    "VMware driver artifact checks for C:\\Windows\\System32\\drivers\\vmmouse.sys and C:\\Windows\\System32\\drivers\\vmhgfs.sys",
+    "Sandboxie detection through loaded-module check for sbiedll.dll",
+    "CPUID leaf 1 ECX bit 31 hypervisor-present check",
+    "Execution is gated on successful access to http://example.com using WinINet"
+  ]
+}

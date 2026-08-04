@@ -1,0 +1,45 @@
+{
+  "file_type": "PE32+ (x86-64) Windows console executable",
+  "encoded_strings": false,
+  "decoded_c2": null,
+  "techniques": [
+    "rc4_payload_decryption",
+    "sandboxie_module_detection",
+    "sleep_delay",
+    "dynamic_api_resolution_via_GetModuleHandleA_GetProcAddress",
+    "toolhelp32_process_enumeration",
+    "manual_map_pe_injection",
+    "OpenProcess",
+    "VirtualAllocEx_RWX",
+    "NtWriteVirtualMemory",
+    "ReadProcessMemory",
+    "IMAGE_REL_BASED_DIR64_relocation_fixups",
+    "CreateRemoteThread"
+  ],
+  "c2_protocol": null,
+  "encryption_details": {
+    "algorithm": "RC4 (standard 256-byte KSA and PRGA); decrypts a 64-byte embedded payload in place",
+    "key": "R3m0t3_PE_3x3c_K",
+    "key_storage": "16-byte plaintext key hard-coded at the start of .rdata (VA 0x140005000), immediately followed by the separately addressed string \"ntdll.dll\"; the 64-byte ciphertext is stored at .data VA 0x140004000-0x14000403f and copied to the stack before decryption"
+  },
+  "decoded_strings": {},
+  "anti_analysis": [
+    "Sandboxie loaded-module detection using GetModuleHandleA(\"sbiedll.dll\"); when present, the program sleeps for 30,000 ms and exits before decryption/injection",
+    "The program also probes loaded \"dbghelp.dll\" and resolves \"SymSetOptions\", but the result is discarded and does not change control flow; no debugger-specific PEB flag check is confirmed"
+  ],
+  "injection_details": {
+    "method": "Manual PE mapping into a remote process followed by CreateRemoteThread at the mapped image entry point",
+    "target_process": "explorer.exe; falls back to its own process ID if explorer.exe is not found",
+    "target_discovery": "CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0), Process32First/Process32Next, and strcmp against PROCESSENTRY32.szExeFile",
+    "process_access": "OpenProcess with access mask 0x43a (create-thread, VM operation/read/write, and query-information rights)",
+    "payload": "A 64-byte RC4-encrypted blob from .data is decrypted on the stack and passed to the PE manual-mapping routine",
+    "remote_allocation": "VirtualAllocEx(NULL, payload SizeOfImage, MEM_COMMIT|MEM_RESERVE, PAGE_EXECUTE_READWRITE)",
+    "payload_write": "NtWriteVirtualMemory is resolved dynamically from ntdll.dll. The mapper writes PE headers using SizeOfHeaders, then writes each section from PointerToRawData to remote_base + VirtualAddress using the section VirtualSize.",
+    "relocations": "Computes remote_base minus preferred ImageBase, walks the base-relocation directory, handles IMAGE_REL_BASED_DIR64 entries, reads each remote 8-byte value with ReadProcessMemory, adds the delta, and writes it back with NtWriteVirtualMemory.",
+    "execution": "CreateRemoteThread starts at remote_base + AddressOfEntryPoint with remote_base as the thread parameter; it waits up to 10,000 ms and closes the thread/process handles.",
+    "dynamically_resolved_apis": [
+      "NtWriteVirtualMemory",
+      "NtClose"
+    ]
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "file_type": "PE32+ (x86-64) console executable for MS Windows (MinGW-w64 GCC 13, stripped, 10 sections)",
+  "encoded_strings": true,
+  "techniques": [
+    "process_injection",
+    "dll_injection_create_remote_thread_loadlibrary",
+    "manual_getprocaddress",
+    "xor_encoding",
+    "peb_antidebug",
+    "toolhelp32_process_enumeration",
+    "dynamic_api_resolution",
+    "sleep"
+  ],
+  "injection_details": {
+    "method": "CreateRemoteThread + LoadLibraryA (classic DLL injection)",
+    "target_process": "explorer.exe",
+    "target_discovery": "CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS=0x2) then Process32First/Process32Next loop comparing PROCESSENTRY32.szExeFile (offset 0x2C) to 'explorer.exe' via strcmp; PID saved from th32ProcessID (offset 0x8)",
+    "payload_write": "OpenProcess(0x42A) -> VirtualAllocEx(hProc, 0, strlen(payload)+1, MEM_COMMIT|MEM_RESERVE(0x3000), PAGE_READWRITE(0x04)) -> WriteProcessMemory(hProc, remoteBuf, payload, strlen+1, &written)",
+    "execution": "CreateRemoteThread(hProc, NULL, 0, LoadLibraryA, remoteBuf, 0, NULL); WaitForSingleObject(hThread, INFINITE); CloseHandle(hThread); CloseHandle(hProc)",
+    "payload": "XOR-decrypted 32-byte DLL path string written into the remote process and passed to LoadLibraryA",
+    "api_resolution": "All 10 injection APIs (CreateToolhelp32Snapshot, Process32First, Process32Next, OpenProcess, VirtualAllocEx, WriteProcessMemory, CreateRemoteThread, CloseHandle, WaitForSingleObject, LoadLibraryA) resolved at runtime by manual PE export-table walking of kernel32.dll (GetModuleHandleA is the only kernel32 import used for this)"
+  },
+  "encryption_details": {
+    "algorithm": "Custom repeating-key XOR (byte-wise, in-place; key[i] applied as data[i] ^= key[i % keylen])",
+    "key": "5a 3c 7f e1 2d 94 b8 6a (8 bytes)",
+    "key_storage": "Hardcoded in .rdata at RVA 0x4000 (VA 0x140004000), stored as the 8 bytes immediately preceding the plaintext 'kernel32.dll' string; 32-byte ciphertext resides in .data at VA 0x140003000 (file offset 0x2400)"
+  },
+  "decoded_strings": {
+    "xor_key": "5a 3c 7f e1 2d 94 b8 6a",
+    "encrypted_payload_32_bytes": "13 6f 55 89 4d a0 9d 41 67 0d 52 a0 45 9c e0 0a 37 0e 52 a0 59 fc ef 05 37 7e 47 89 43 f5 d5 00",
+    "decoded_dll_payload": "IS*h`4%+=1-Ah\\x08X`m2-AthWomB8hnamj"
+  },
+  "anti_analysis": [
+    "peb_antidebug: reads PEB via gs:[0x60] and tests PEB+0x2 (BeingDebugged); if a debugger is present the decrypt/inject routine returns immediately without injecting",
+    "xor_string_obfuscation: injected DLL path is encrypted with an 8-byte repeating-XOR key",
+    "api_obfuscation / manual_getprocaddress: all process-injection APIs are resolved at runtime by walking kernel32's export directory, so they do not appear in the import table (only GetModuleHandleA is imported)",
+    "tls_callbacks: TLS callback array present (VA 0x140009038) with CRT callbacks at 0x140001cc0/0x140001c90",
+    "anti-analysis_gating: injection only occurs when BeingDebugged flag is clear"
+  ],
+  "decoded_c2": null,
+  "c2_protocol": null
+}

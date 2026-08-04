@@ -1,0 +1,47 @@
+{
+  "file_type": "PE32+ (x86-64) console executable, MinGW-w64/GCC 13 built (debug symbols retained; source name windows_level20_RemotePEExecution.c)",
+  "encoded_strings": true,
+  "techniques": [
+    "remote_pe_injection",
+    "manual_pe_mapping_in_remote_process",
+    "process_enumeration_toolhelp32",
+    "openprocess_virtualallocex_rwx",
+    "ntdll_api_resolution_via_getmodulehandle_getprocaddress",
+    "nt_api_use_NtWriteVirtualMemory_NtClose",
+    "createremotethread_execution",
+    "base_relocation_fixup_via_ReadProcessMemory_plus_NtWriteVirtualMemory",
+    "rc4_payload_decryption",
+    "embedded_encrypted_pe_payload",
+    "self_injection_fallback_GetCurrentProcessId",
+    "sleep_delay_evasion",
+    "loaded_module_based_sandbox_debugger_detection"
+  ],
+  "injection_details": {
+    "method": "Remote PE execution / manual PE mapping: OpenProcess(0x43A) -> VirtualAllocEx(NULL, SizeOfImage, MEM_COMMIT|MEM_RESERVE, PAGE_EXECUTE_READWRITE 0x40) -> NtWriteVirtualMemory of PE headers (SizeOfHeaders) -> per-section loop writing each IMAGE_SECTION_HEADER's raw data to remoteBase+VirtualAddress with NtWriteVirtualMemory -> base relocation processing -> CreateRemoteThread(hProc, NULL, 0, remoteBase+AddressOfEntryPoint, NULL, 0, NULL) -> WaitForSingleObject(hThread, 10000) -> CloseHandle + NtClose",
+    "target_process": "explorer.exe",
+    "target_discovery": "CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS)/Process32First/Process32Next, strcmp() against PROCESSENTRY32.szExeFile; if not found falls back to GetCurrentProcessId() (self-injection)",
+    "payload_write": "NtWriteVirtualMemory (resolved dynamically from ntdll.dll via GetModuleHandleA+GetProcAddress) instead of imported WriteProcessMemory; headers first, then section-by-section copy",
+    "relocation_handling": "Reads IMAGE_DIRECTORY_ENTRY_BASERELOC (NT header +0xB0), walks relocation blocks, for each entry (offset = word & 0xFFF) uses ReadProcessMemory to read the 8-byte target in the remote process, adds delta = remoteBase - OptionalHeader.ImageBase, and writes it back with NtWriteVirtualMemory",
+    "payload_source": "64-byte RC4-encrypted blob 'g_encrypted_pe' in .data (0x140004000), copied to stack and decrypted in-place before injection",
+    "cleanup_on_failure": "VirtualFreeEx(MEM_RELEASE) + NtClose",
+    "post_injection": "Sleep(2000) in the injector before returning"
+  },
+  "encryption_details": {
+    "algorithm": "RC4 (custom implementation: rc4_init KSA over 256-byte S-box + rc4_crypt PRGA XOR)",
+    "key": "R3m0t3_PE_3x3c_K (16 bytes, ASCII, no NUL terminator)",
+    "key_storage": "Hard-coded plaintext byte array 'g_rc4_key' in .rdata at VA 0x140005000 (52 33 6D 30 74 33 5F 50 45 5F 33 78 33 63 5F 4B); passed to rc4_init with length 0x10"
+  },
+  "decoded_strings": {
+    "g_rc4_key (.rdata:0x140005000)": "R3m0t3_PE_3x3c_K",
+    "g_encrypted_pe (.data:0x140004000, 0x40 bytes RC4 ciphertext)": "7de35a8c1fb446d92e81f73b65ca08924a1cbd73e85d319f06fc78dd238a51b714e06bcd38a50f72d6499e35fb11872c60aa19f44d83e57a3ec19658b026dd6f \u2014 decrypted at runtime with RC4/'R3m0t3_PE_3x3c_K' and then treated as an in-memory PE image (MZ/PE signatures validated by get_pe_image_size/get_pe_entry_point) to be mapped into the remote process",
+    "plaintext API/target strings (not encrypted)": "ntdll.dll, sbiedll.dll, dbghelp.dll, SymSetOptions, NtWriteVirtualMemory, NtClose, explorer.exe"
+  },
+  "anti_analysis": [
+    "Sandboxie detection: GetModuleHandleA(\"sbiedll.dll\") \u2014 if loaded, anti_sandbox_check() returns 1 and WinMain calls Sleep(30000) then exits without injecting",
+    "Analysis/debugger tooling detection: GetModuleHandleA(\"dbghelp.dll\") followed by GetProcAddress(\"SymSetOptions\") to confirm the debug-help library is present",
+    "Dynamic (non-import-table) resolution of ntdll functions NtWriteVirtualMemory/NtClose via GetModuleHandleA+GetProcAddress, hiding the memory-write primitive from the import table (no WriteProcessMemory import)",
+    "Sleep-based timing/delay behaviour (Sleep(30000) on detection, Sleep(2000) after injection)"
+  ],
+  "c2_protocol": null,
+  "decoded_c2": null
+}

@@ -1,0 +1,38 @@
+{
+  "file_type": "PE32+ (x86-64 Windows console executable)",
+  "encoded_strings": false,
+  "decoded_c2": null,
+  "techniques": [
+    "RC4-encrypted embedded shellcode",
+    "dynamic ntdll API resolution via GetModuleHandleA and GetProcAddress",
+    "NtQueryInformationProcess ProcessDebugPort anti-debug check",
+    "native APC self-injection",
+    "current-process targeting via GetCurrentProcessId and NtOpenProcess",
+    "Toolhelp thread enumeration via CreateToolhelp32Snapshot/Thread32First/Thread32Next",
+    "target thread suspension via SuspendThread",
+    "RWX allocation via NtAllocateVirtualMemory",
+    "payload writing via NtWriteVirtualMemory",
+    "APC queuing via NtQueueApcThread",
+    "alert-and-resume execution via NtAlertResumeThread"
+  ],
+  "c2_protocol": null,
+  "encryption_details": {
+    "algorithm": "RC4 (standard KSA and PRGA), applied to a 48-byte embedded shellcode blob",
+    "key": "4a8c1fd367e92b05cafe77339d125e88",
+    "key_storage": "Hard-coded 16-byte raw global array g_rc4_key in .rdata at RVA 0x5000 (VA 0x140005000); ciphertext is g_encrypted_shellcode in .data at RVA 0x4000"
+  },
+  "decoded_strings": {},
+  "anti_analysis": [
+    "Calls dynamically resolved NtQueryInformationProcess with information class 7 (ProcessDebugPort) against the current process and aborts the injection path when the returned 32-bit debug-port value is 0xFFFFFFFF"
+  ],
+  "injection_details": {
+    "method": "Native APC self-injection using NtQueueApcThread followed by NtAlertResumeThread",
+    "target_process": "Current process (self)",
+    "target_discovery": "Obtains its PID with GetCurrentProcessId, opens itself with NtOpenProcess (desired access 0x42A), snapshots all threads with CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD), selects a THREADENTRY32 whose th32OwnerProcessID matches the current PID, and opens it with OpenThread access 0x12",
+    "thread_preparation": "Suspends the selected existing thread with SuspendThread",
+    "payload": "48-byte embedded shellcode copied to the stack and decrypted in place with RC4",
+    "payload_write": "NtAllocateVirtualMemory in the opened process with MEM_RESERVE|MEM_COMMIT (0x3000) and PAGE_EXECUTE_READWRITE (0x40), then NtWriteVirtualMemory copies the decrypted 48-byte payload",
+    "execution": "NtQueueApcThread queues the allocated base as the APC routine (Arg1 is also the allocated base; Arg2 and Arg3 are zero), then NtAlertResumeThread alerts and resumes the suspended thread",
+    "cleanup": "Resolves and calls NtClose on the thread and process handles"
+  }
+}

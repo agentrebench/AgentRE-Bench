@@ -1,0 +1,44 @@
+{
+  "file_type": "PE32+ (x86-64) Windows console executable",
+  "encoded_strings": true,
+  "decoded_c2": null,
+  "techniques": [
+    "dll_injection",
+    "CreateRemoteThread_LoadLibraryA",
+    "toolhelp_process_enumeration",
+    "VirtualAllocEx_WriteProcessMemory",
+    "manual_getprocaddress_via_pe_export_parsing",
+    "dynamic_api_resolution",
+    "repeating_key_xor",
+    "peb_beingdebugged_check",
+    "sleep_delay"
+  ],
+  "c2_protocol": null,
+  "encryption_details": {
+    "algorithm": "Repeating-key XOR over a 32-byte embedded string",
+    "key": "5a3c7fe12d94b86a",
+    "key_storage": "Hard-coded 8-byte key at the start of .rdata (RVA 0x4000, file offset 0x2600); the 32-byte ciphertext is stored at the start of .data (RVA 0x3000). The key is repeated modulo 8."
+  },
+  "decoded_strings": {
+    "injected_dll_path_escaped": "IS*h`4%+=1-Ah\\x08X`m2-AthWomB8hnamj",
+    "injected_dll_path_hex": "49532a686034252b3d312d41680858606d322d417468576f6d4238686e616d6a",
+    "target_process": "explorer.exe",
+    "resolved_module": "kernel32.dll",
+    "remote_thread_start_routine": "LoadLibraryA"
+  },
+  "anti_analysis": [
+    "Direct x64 PEB BeingDebugged check: reads GS:[0x60] and tests byte offset 0x2; injection is skipped when a debugger is indicated",
+    "Injection APIs are omitted from the import table and resolved dynamically by manually parsing kernel32.dll's PE export directory",
+    "Calls Sleep(1000) after the injection attempt"
+  ],
+  "injection_details": {
+    "method": "Classic DLL injection using CreateRemoteThread with LoadLibraryA",
+    "target_process": "explorer.exe",
+    "target_discovery": "Calls CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0), iterates with Process32First/Process32Next, and compares PROCESSENTRY32.szExeFile to explorer.exe; it uses the matching th32ProcessID.",
+    "api_resolution": "Uses imported GetModuleHandleA(\"kernel32.dll\"), then a custom PE export-table parser instead of GetProcAddress to resolve CreateToolhelp32Snapshot, Process32First, Process32Next, OpenProcess, VirtualAllocEx, WriteProcessMemory, CreateRemoteThread, CloseHandle, WaitForSingleObject, and LoadLibraryA.",
+    "process_open": "OpenProcess access mask 0x42A: PROCESS_QUERY_INFORMATION | PROCESS_VM_WRITE | PROCESS_VM_OPERATION | PROCESS_CREATE_THREAD.",
+    "payload": "The payload written remotely is a NUL-terminated, XOR-decoded DLL path string, not embedded DLL image bytes. The statically recovered 32-byte value is IS*h`4%+=1-Ah\\x08X`m2-AthWomB8hnamj.",
+    "payload_write": "Computes strlen(decoded_string)+1, allocates remote memory with VirtualAllocEx(MEM_COMMIT|MEM_RESERVE, PAGE_READWRITE), then copies the path with WriteProcessMemory.",
+    "execution": "Resolves LoadLibraryA from kernel32.dll, starts it in explorer.exe with CreateRemoteThread using the remote string as its argument, waits indefinitely with WaitForSingleObject(INFINITE), then closes the thread and process handles."
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "file_type": "PE32+ (x86-64) console executable, MinGW-w64/GCC 13 built, stripped (external PDB), 10 sections",
+  "encoded_strings": true,
+  "techniques": [
+    "apc_injection",
+    "early_bird_apc_queue",
+    "self_process_injection",
+    "ntdll_api_resolution_getmodulehandle_getprocaddress",
+    "manual_getprocaddress",
+    "indirect_ntapi_calls_via_function_pointers",
+    "thread_enumeration_createtoolhelp32snapshot",
+    "thread32first_thread32next_filter_by_owner_pid",
+    "openthread_suspendthread",
+    "ntallocatevirtualmemory_rwx",
+    "ntwritevirtualmemory",
+    "ntqueueapcthread",
+    "ntalertresumethread",
+    "rc4_encrypted_shellcode_payload",
+    "rc4_key_scheduling_algorithm",
+    "anti_debug_ntqueryinformationprocess_processdebugport",
+    "stripped_symbols"
+  ],
+  "injection_details": {
+    "method": "NtQueueApcThread user-mode APC injection (Early-Bird style) into a suspended thread; payload staged with NtAllocateVirtualMemory (PAGE_EXECUTE_READWRITE, MEM_COMMIT|MEM_RESERVE = 0x3000/0x40) and NtWriteVirtualMemory, then NtAlertResumeThread to trigger execution",
+    "target_process": "its own process (self-injection) - PID obtained from GetCurrentProcessId() at 0x140001bb8",
+    "target_discovery": "CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD=4,0) then Thread32First/Thread32Next walking THREADENTRY32 (dwSize=0x1c); first entry whose th32OwnerProcessID (offset 0xC) equals the target PID is taken, th32ThreadID (offset 0x8) opened with OpenThread(0x12 = THREAD_SUSPEND_RESUME|THREAD_SET_CONTEXT, FALSE, tid) and immediately SuspendThread()'d",
+    "payload_write": "NtWriteVirtualMemory(hProcess, remoteBase, decryptedBuffer, 0x30, &bytesWritten) after NtAllocateVirtualMemory reserved 0x30 bytes RWX in the same process",
+    "payload_source": "48-byte RC4-encrypted blob at .data 0x140004000, decrypted on the stack before injection",
+    "apc_call": "NtQueueApcThread(hThread, ApcRoutine=remoteBase, ApcArgument1=remoteBase, 0, 0) then NtAlertResumeThread(hThread, &suspendCount)",
+    "process_handle": "NtOpenProcess with DesiredAccess 0x42A (PROCESS_CREATE_THREAD|VM_OPERATION|VM_WRITE|QUERY_INFORMATION) and ClientId = target PID",
+    "helper_functions": {
+      "0x1400016a9": "resolve_ntdll_export(name) = GetModuleHandleA(\"ntdll.dll\") + GetProcAddress",
+      "0x1400016f4": "open target process, anti-debug check, locate + suspend a thread",
+      "0x140001957": "allocate/write/queue-APC/resume",
+      "0x140001b06": "WinMain - decrypt payload then inject"
+    },
+    "resolved_ntdll_apis": [
+      "NtOpenProcess",
+      "NtClose",
+      "NtQueryInformationProcess",
+      "NtAllocateVirtualMemory",
+      "NtWriteVirtualMemory",
+      "NtQueueApcThread",
+      "NtAlertResumeThread"
+    ]
+  },
+  "encryption_details": {
+    "algorithm": "RC4 (custom-implemented KSA at 0x140001480 and PRGA/XOR keystream at 0x140001573; state = 256-byte S-box + i at +0x100, j at +0x104)",
+    "key": "4A8C1FD367E92B05CAFE77339D125E88 (16 bytes, hex)",
+    "key_storage": "Hard-coded plaintext byte array embedded in the .rdata section at VA 0x140005000 (first 16 bytes of .rdata); passed to the KSA with an explicit length of 0x10"
+  },
+  "decoded_strings": {
+    "ntdll.dll": "plaintext in .rdata 0x140005010 (not encoded)",
+    "NtOpenProcess / NtClose / NtQueryInformationProcess / NtAllocateVirtualMemory / NtWriteVirtualMemory / NtQueueApcThread / NtAlertResumeThread": "plaintext API-name strings at .rdata 0x14000501A-0x140005098, resolved dynamically at runtime",
+    "RC4_encrypted_payload (.data:0x140004000, 48 bytes, ciphertext)": "8E3D721ED55891C32F46BB79E4118C5A673EA40DF69B2844BD7113A5DC087E329954E16C1A87F0462B985DCF730EA641 -- decrypts with RC4 key 4A8C1FD367E92B05CAFE77339D125E88 into the 48-byte shellcode that is written into RWX memory and executed via the queued APC; plaintext not recoverable with static-only tooling (no cipher execution available)"
+  },
+  "anti_analysis": [
+    "Anti-debug: NtQueryInformationProcess(ProcessInformationClass = 7 / ProcessDebugPort) on the opened process handle; if the returned debug port == 0xFFFFFFFF the sample calls NtClose and aborts the injection silently (no output, clean exit)",
+    "All sensitive native APIs are resolved at runtime through GetModuleHandleA(\"ntdll.dll\") + GetProcAddress and invoked via function pointers, so no Nt* entries appear in the import table (import-table/IAT-hook evasion)",
+    "Payload never exists in plaintext on disk: 48-byte shellcode is RC4-encrypted in .data and only decrypted on the stack immediately before injection (defeats static strings/signature scanning)",
+    "Uses only benign-looking KERNEL32 imports (Toolhelp32, OpenThread, SuspendThread, Sleep); no CreateRemoteThread/WriteProcessMemory/LoadLibrary imports",
+    "Target thread is suspended before the APC is queued and resumed with NtAlertResumeThread, avoiding a new thread creation event (thread-creation telemetry evasion)",
+    "Binary is compiled stripped (symbols/line numbers removed, debug info directed to an external PDB); no exports and no resources",
+    "Sleep(500) delay after injection before process exit"
+  ],
+  "c2_protocol": null,
+  "decoded_c2": null
+}

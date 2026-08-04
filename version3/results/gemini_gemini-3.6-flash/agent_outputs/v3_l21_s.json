@@ -1,0 +1,32 @@
+{
+  "c2_protocol": null,
+  "techniques": [
+    "process_injection",
+    "process_hollowing",
+    "dynamic_api_resolution",
+    "xor_encryption",
+    "anti_debugging"
+  ],
+  "injection_details": {
+    "target_discovery": "Obtains current process handle via OpenProcess(PROCESS_CREATE_PROCESS, FALSE, GetCurrentProcessId())",
+    "method": "Ghost Process Injection / Process Hollowing via NtCreateProcess + NtAllocateVirtualMemory + NtWriteVirtualMemory + NtCreateThreadEx + NtResumeThread",
+    "payload_execution": "NtCreateThreadEx + NtResumeThread",
+    "target_process": "Ghost process object created via NtCreateProcess using current process as parent",
+    "payload_writing": "NtAllocateVirtualMemory + NtWriteVirtualMemory"
+  },
+  "file_type": "PE32+",
+  "decoded_strings": {
+    "payload_buffer": "64-byte decrypted shellcode payload buffer"
+  },
+  "encoded_strings": true,
+  "encryption_details": {
+    "key_storage": "Plaintext string stored in .rdata section at address 0x140004000",
+    "algorithm": "XOR",
+    "key": "Gh0stPr0c3ssH0ll0w"
+  },
+  "anti_analysis": [
+    "NtQueryInformationProcess(ProcessDebugPort)",
+    "NtQueryInformationProcess(ProcessDebugFlags)"
+  ],
+  "decoded_c2": null
+}

@@ -1,0 +1,43 @@
+{
+  "file_type": "PE32+ (x86-64/AMD64) Windows console executable",
+  "encoded_strings": true,
+  "decoded_c2": null,
+  "techniques": [
+    "native_api_process_injection",
+    "NtCreateProcess_with_null_section_handle",
+    "ghost_process_style_process_clone",
+    "dynamic_ntdll_api_resolution_via_GetProcAddress",
+    "remote_rwx_memory_allocation",
+    "NtWriteVirtualMemory_payload_write",
+    "NtCreateThreadEx_remote_thread_creation",
+    "NtResumeThread",
+    "repeating_key_xor_payload_obfuscation",
+    "NtQueryInformationProcess_antidebug"
+  ],
+  "c2_protocol": null,
+  "encryption_details": {
+    "algorithm": "Repeating-key XOR: payload[i] ^= key[i % 18]",
+    "key": "Gh0stPr0c3ssH0ll0w",
+    "key_storage": "The 18-byte, non-NUL-terminated key is stored in plaintext as g_xor_key in .rdata at VA 0x140004000. The 64-byte ciphertext is g_encrypted_payload in .data at VA 0x140003000. WinMain copies it to a stack buffer and decrypts it in place before injection."
+  },
+  "decoded_strings": {
+    "decrypted_payload_hex": "6d 64 65 6d 73 6e 69 6c 6c 71 0e 42 50 5a 4b 21 0b 6d 2f 61 61 5d 0b 44 31 5d 5b 6d 52 79 3d 7f 7a 34 1d 14 4c 14 03 6a 30 3f 5a 6a 72 0e 01 7d 1c 1b 0e 64 4e 42 58 21 5c 49 23 70 7b 41 28 2e",
+    "decrypted_payload_ascii_escaped": "mdemsnillq\\x0eBPZK!\\x0bm/aa]\\x0bD1][mRy=\\x7fz4\\x1d\\x14L\\x14\\x03j0?Zjr\\x0e\\x01}\\x1c\\x1b\\x0edNBX!\\\\I#p{A(.",
+    "note": "The XOR output is binary rather than a coherent textual configuration string. DLL and native API names (ntdll.dll, NtQueryInformationProcess, NtCreateProcess, NtAllocateVirtualMemory, NtWriteVirtualMemory, NtCreateThreadEx, NtResumeThread, NtClose) are already plaintext."
+  },
+  "anti_analysis": [
+    "NtQueryInformationProcess with ProcessDebugPort (information class 7); treats a successful result of -1 as debugger presence",
+    "NtQueryInformationProcess with ProcessDebugFlags (information class 31); treats a successful result of 0 as debugger presence",
+    "Immediate WinMain exit when either native anti-debug check reports a debugger",
+    "Dynamic resolution of ntdll native APIs through GetModuleHandleA and GetProcAddress, avoiding static Nt* imports",
+    "Repeating-key XOR obfuscation of the injected 64-byte payload"
+  ],
+  "injection_details": {
+    "method": "NtCreateProcess-based ghost-process-style injection followed by NtAllocateVirtualMemory, NtWriteVirtualMemory, NtCreateThreadEx, and NtResumeThread. This is not conventional suspended-image hollowing: the sample does not call CreateProcess, NtUnmapViewOfSection, or replace a mapped executable image.",
+    "target_process": "A newly created unnamed process object derived from the current process; there is no hard-coded external target process or executable name. NtCreateProcess is invoked with SectionHandle=NULL and the current process handle as ParentProcess.",
+    "target_discovery": "No existing victim is searched by name. The sample calls GetCurrentProcessId, then OpenProcess(PROCESS_CREATE_PROCESS / 0x80, FALSE, current PID) to acquire the parent handle supplied to NtCreateProcess.",
+    "process_creation": "NtCreateProcess(&newProcess, PROCESS_ALL_ACCESS/0x1FFFFF, &OBJECT_ATTRIBUTES, currentProcessHandle, FALSE, NULL, NULL, NULL).",
+    "payload_write": "The locally XOR-decrypted 64-byte buffer is allocated in the new process with NtAllocateVirtualMemory using MEM_COMMIT|MEM_RESERVE (0x3000) and PAGE_EXECUTE_READWRITE (0x40), then copied with NtWriteVirtualMemory.",
+    "payload_execution": "NtCreateThreadEx creates a thread in the new process with its start routine set directly to the remote payload base and a NULL argument. CreateFlags is 0; the code nevertheless calls NtResumeThread, waits up to 5000 ms, and closes the thread and process handles with NtClose."
+  }
+}

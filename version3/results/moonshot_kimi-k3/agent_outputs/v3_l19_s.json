@@ -1,0 +1,44 @@
+{
+  "anti_analysis": [
+    "peb_beingdebugged_check: reads PEB via gs:[0x60] and tests the BeingDebugged byte at PEB+2; if a debugger is present WinMain returns 0 immediately without decrypting or loading the payload",
+    "encrypted_payload: the 32-byte payload in .data is only decrypted at runtime with a custom AES-SBOX cipher, hiding it from static string analysis"
+  ],
+  "c2_protocol": null,
+  "decoded_c2": null,
+  "decoded_strings": {
+    "cipher_key_plaintext_in_rdata": "Rfl3ct!v3_DLL_k3",
+    "decrypted_data_blob_0x140004000_hex": "8f692c569a5ff68444509cf2775e07a66bf9b7a9fb2d51ff81f3bfdd25db76c2",
+    "decrypted_data_note": "32 pseudo-random bytes; not a valid PE image, so the reflective load attempt fails the MZ check at runtime (payload is placeholder/key material in this sample)",
+    "target_export_plaintext_in_rdata": "DllMain"
+  },
+  "encoded_strings": true,
+  "encryption_details": {
+    "algorithm": "Custom 16-byte block cipher, 10 rounds. Per byte, per round r (0..9): b = AES_SBOX[b] XOR key[i] XOR (27*r). Uses the standard AES substitution box (stored at VA 0x140005000) but is not full AES \u2014 a substitution-XOR construction. Applied to 16-byte blocks (function 0x140001480, block loop 0x140001530).",
+    "key": "Rfl3ct!v3_DLL_k3 (16 bytes, leetspeak for 'Reflective_DLL_key')",
+    "key_storage": "Hardcoded in plaintext in .rdata at VA 0x140005100; the 256-byte AES S-box table is at VA 0x140005000; encrypted 32-byte payload is in .data at VA 0x140004000"
+  },
+  "file_type": "PE32+ (x86-64) console executable, mingw-w64/GCC 13 build, stripped",
+  "injection_details": {
+    "dllmain_invocation": "Walks the mapped image's export table comparing names with 'DllMain' (strcmp), then calls DllMain(base, DLL_PROCESS_ATTACH=1, NULL) via a register call",
+    "method": "Reflective DLL injection (manual in-memory PE mapping) using VirtualAlloc + memcpy of headers/sections + manual base relocation (IMAGE_REL_BASED_DIR64) + manual import resolution + call to the DllMain export",
+    "note": "The embedded payload is only 32 bytes and is not a valid PE, so the loader's MZ/PE validation fails at runtime; the injection machinery is present and exercised but no actual DLL is loaded in this sample",
+    "payload_source": "Embedded in the binary's .data section at VA 0x140004000 (32 bytes), encrypted with the custom AES-SBOX cipher; decrypted to a stack buffer in WinMain before being passed to the loader at 0x140001997",
+    "payload_write": "VirtualAlloc at the PE's preferred ImageBase (fallback: arbitrary base) with MEM_COMMIT|MEM_RESERVE (0x3000) and PAGE_EXECUTE_READWRITE (0x40); SizeOfHeaders copied, then each section copied to its virtual address",
+    "target_discovery": "N/A (self-injection; no process enumeration, no external target process)",
+    "target_process": "Self (current process)"
+  },
+  "techniques": [
+    "reflective_dll_injection",
+    "manual_pe_mapping",
+    "manual_getprocaddress_import_resolution",
+    "loadlibrarya_getprocaddress",
+    "virtualalloc_rwx",
+    "base_relocation_dir64",
+    "custom_encryption_aes_sbox_xor",
+    "hardcoded_encryption_key",
+    "encrypted_payload_in_data_section",
+    "peb_antidebug_beingdebugged",
+    "anti_debug_silent_exit",
+    "sleep_delay_2000ms"
+  ]
+}

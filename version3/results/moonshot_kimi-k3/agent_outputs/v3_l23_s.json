@@ -1,0 +1,48 @@
+{
+  "file_type": "PE32+ (x86-64) console executable, MinGW-w64 GCC 13, stripped, 10 sections, TLS callbacks present",
+  "encoded_strings": true,
+  "techniques": [
+    "custom_block_cipher_file_encryption (16-byte blocks, 10 rounds: per-byte AES S-box substitution -> XOR key byte -> XOR round*24; max 1MB per file)",
+    "file_extension_targeting (30 extensions: .doc/.docx/.xls/.xlsx/.ppt/.pptx/.pdf/.txt/.jpg/.png/.bmp/.zip/.rar/.7z/.sql/.mdb/.cpp/.c/.h/.py/.js/.html/.css/.xml/.json/.csv/.mp3/.mp4/.avi/.wav)",
+    "encrypted_file_rename (appends '.WNCRY' via MoveFileA, then SetFileAttributesA FILE_ATTRIBUTE_HIDDEN)",
+    "ransom_note_drop ('@Please_Read_Me@.txt' in %USERPROFILE%\\Desktop and %USERPROFILE%\\Documents; WannaCry-style note, $300 BTC to genesis address, marked synthetic)",
+    "recursive_directory_traversal (FindFirstFileA/FindNextFileA; encrypts only under %PUBLIC%\\Documents\\synthetic_target)",
+    "service_persistence (CreateServiceA/StartServiceA: service 'mssecsvc2.0' / display 'Microsoft Security Center (2.0)', SERVICE_ALL_ACCESS 0xF01FF, start type 2, binary path = own image)",
+    "mutex_single_instance ('Global\\MsWinZonesCacheCounterMutexA', exit on ERROR_ALREADY_EXISTS 0xB7)",
+    "killswitch_domain_check (InternetOpenA 'Microsoft Internet Explorer' + InternetOpenUrlA 'http://example.com'; if reachable the process exits, WannaCry-style kill switch)",
+    "xor_string_encoding (repeating-key XOR used to decode C2/config blob in .data at runtime)",
+    "c2_beacon (socket/connect to XOR-decoded IP at TCP/8443 with 3s setsockopt timeout; on success sends 'SYSTEM:<computername>:WIN:<GetVersion>' built via sprintf)",
+    "network_spread_simulation (loop i=1..4: sprintf '192.0.2.%d', TCP connect to port 445 with 2s timeout, Sleep(100) - SMB worm-spread simulation against TEST-NET-1)",
+    "anti_debug_IsDebuggerPresent",
+    "peb_antidebug (gs:[0x60] -> PEB, check PEB+2 BeingDebugged)",
+    "ntqueryinformationprocess_antidebug (ProcessDebugPort class 7, checks for 0xFFFFFFFF)",
+    "manual_getprocaddress (GetModuleHandleA('ntdll.dll') + GetProcAddress('NtQueryInformationProcess'))",
+    "vm_detection_files (GetFileAttributesA on C:\\Windows\\System32\\drivers\\vmmouse.sys and vmhgfs.sys)",
+    "sandbox_detection_dll (GetModuleHandleA('sbiedll.dll') Sandboxie, GetModuleHandleA('dbghelp.dll'))",
+    "cpuid_hypervisor_check (CPUID leaf 1, tests ECX bit 31 hypervisor-present flag)",
+    "decoy_rsa_key_blob (truncated DER RSA public key at .rdata 0x14000a000, unreferenced)"
+  ],
+  "encryption_details": {
+    "algorithm": "Two schemes: (1) File encryption = custom toy block cipher: 16-byte blocks, 10 rounds; each round each byte = AES_SBOX[byte] XOR key[i] XOR (round*24). Not real AES (no key schedule/ShiftRows/MixColumns; only the AES S-box table at .rdata 0x14000a120 is borrowed). Only whole 16-byte blocks of the first 1MB are transformed in place. (2) String/C2 encoding = repeating-key XOR (buf[i] ^= key[i % 8]).",
+    "key": "File encryption key = ASCII 'W@nCryPt0K3y2024' (16 bytes). XOR string key = raw bytes DE AD BE EF 13 37 CA FE ('deadbeef1337cafe').",
+    "key_storage": "Both keys hardcoded in cleartext in .rdata (0x14000a100 and 0x14000a220 respectively); XOR key passed by pointer to the decode routine."
+  },
+  "decoded_strings": {
+    "c2_beacon_blob": "13 encoded bytes at .data 0x140009128 (93 C3 CE AD 20 5F 8B DA DD 8A D3 99 32) XORed at runtime with key 'deadbeef1337cafe' (DE AD BE EF 13 37 CA FE) yield bytes 4D 6E 70 42 33 68 41 24 03 27 6D 76 21 ('MnPB3hA$..' ) - not a valid dotted-quad, so inet_addr fails (INADDR_NONE); the TCP/8443 beacon is a non-functional placeholder in this synthetic sample",
+    "config_blob_.data_0x140009100": "64-byte XOR-encoded blob; with the same key it decodes to non-printable bytes, consistent with a synthetic placeholder",
+    "plaintext_IOCs": "kill-switch URL http://example.com; scan format '192.0.2.%d' (i=1..4) port 445; beacon format 'SYSTEM:%s:WIN:%ld' port 8443; service 'mssecsvc2.0'/'Microsoft Security Center (2.0)'; mutex 'Global\\MsWinZonesCacheCounterMutexA'; ransom file '@Please_Read_Me@.txt'; encrypted extension '.WNCRY'; target dir '%PUBLIC%\\Documents\\synthetic_target'; anti-VM/anti-debug strings vmmouse.sys, vmhgfs.sys, sbiedll.dll, dbghelp.dll, ntdll.dll/NtQueryInformationProcess"
+  },
+  "anti_analysis": [
+    "IsDebuggerPresent() API check (exit if true)",
+    "PEB.BeingDebugged check via gs:[0x60] (exit if true)",
+    "NtQueryInformationProcess(ProcessDebugPort=7) resolved manually from ntdll.dll; treats 0xFFFFFFFF as debugger (exit)",
+    "VMware detection via presence of C:\\Windows\\System32\\drivers\\vmmouse.sys and vmhgfs.sys (GetFileAttributesA != -1 -> exit)",
+    "Sandboxie detection via GetModuleHandleA('sbiedll.dll')",
+    "Analysis-tool detection via GetModuleHandleA('dbghelp.dll')",
+    "CPUID leaf-1 hypervisor-present bit (ECX bit 31) check",
+    "Kill-switch/connectivity gate: if http://example.com is reachable via WININET the sample exits (WannaCry-style)",
+    "Single-instance mutex Global\\MsWinZonesCacheCounterMutexA (second instance exits)"
+  ],
+  "c2_protocol": "TCP (beacon on port 8443 sending 'SYSTEM:<host>:WIN:<ver>'; plus TCP/445 spread attempts); HTTP used only for the kill-switch check (http://example.com)",
+  "decoded_c2": "Primary C2 beacon: TCP connect to runtime-XOR-decoded IP at port 8443 (encoded 13 bytes at .data 0x140009128, key 'deadbeef1337cafe'; static decode yields non-printable placeholder bytes, i.e. intentionally non-routable in this synthetic sample). Verifiable network C2/spread endpoints hardcoded via '192.0.2.%d': 192.0.2.1:445, 192.0.2.2:445, 192.0.2.3:445, 192.0.2.4:445 (TCP). Kill-switch URL: http://example.com (HTTP)."
+}

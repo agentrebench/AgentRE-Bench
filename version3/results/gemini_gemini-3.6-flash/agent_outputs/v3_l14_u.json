@@ -1,0 +1,30 @@
+{
+  "file_type": "PE32+",
+  "injection_details": {
+    "target_discovery": "Process enumeration using CreateToolhelp32Snapshot, Process32First, and Process32Next searching for process name explorer.exe",
+    "method": "CreateRemoteThread + LoadLibraryA",
+    "target_process": "explorer.exe",
+    "payload_writing": "Memory allocated in target process via VirtualAllocEx and payload path written via WriteProcessMemory"
+  },
+  "anti_analysis": [
+    "peb_beingdebugged (checks BeingDebugged flag in PEB via %gs:0x60 + 0x2)"
+  ],
+  "techniques": [
+    "dll_injection",
+    "manual_getprocaddress",
+    "peb_antidebug",
+    "xor_encoding",
+    "process_enumeration"
+  ],
+  "decoded_strings": {
+    "g_encrypted_dll_path": "DLL path string decrypted at runtime in WinMain prior to injection into explorer.exe"
+  },
+  "c2_protocol": null,
+  "encryption_details": {
+    "algorithm": "XOR",
+    "key": "5a3c7fe12d94b86a",
+    "key_storage": "Stored in .rdata section at symbol g_xor_key (VA 0x140004000)"
+  },
+  "decoded_c2": null,
+  "encoded_strings": true
+}

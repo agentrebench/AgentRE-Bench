@@ -1,0 +1,40 @@
+{
+  "file_type": "PE32+ (x86-64) console executable, MinGW-w64 GCC 13, stripped, 10 sections",
+  "encoded_strings": true,
+  "techniques": [
+    "dll_injection",
+    "manual_getprocaddress",
+    "xor_encoding",
+    "peb_antidebug",
+    "process_enumeration_toolhelp32",
+    "sleep_delay"
+  ],
+  "injection_details": {
+    "method": "OpenProcess(0x42A = PROCESS_CREATE_THREAD|PROCESS_VM_OPERATION|PROCESS_VM_WRITE|PROCESS_QUERY_INFORMATION) -> VirtualAllocEx(MEM_COMMIT|MEM_RESERVE 0x3000, PAGE_READWRITE) -> WriteProcessMemory(decoded DLL path, strlen+1) -> CreateRemoteThread(start = LoadLibraryA, param = remote buffer) -> WaitForSingleObject(thread, INFINITE) -> CloseHandle",
+    "target_process": "explorer.exe",
+    "target_discovery": "CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS=2), then Process32First/Process32Next loop comparing PROCESSENTRY32.szExeFile (offset 0x2c) against \"explorer.exe\" via strcmp; matching th32ProcessID is opened",
+    "payload_write": "The 32-byte XOR-decoded string from .data is written into remotely allocated PAGE_READWRITE memory in explorer.exe and used as the argument to LoadLibraryA (classic CreateRemoteThread DLL injection)",
+    "api_resolution": "Only GetModuleHandleA is imported; all injection APIs (CreateToolhelp32Snapshot, Process32First, Process32Next, OpenProcess, VirtualAllocEx, WriteProcessMemory, CreateRemoteThread, CloseHandle, WaitForSingleObject, LoadLibraryA) are resolved at runtime by a custom export-table parser (manual GetProcAddress at 0x1400014ef) walking kernel32.dll's export directory",
+    "injector_function": "0x14000167f",
+    "main_function": "0x140001ae9"
+  },
+  "encryption_details": {
+    "algorithm": "XOR (repeating 8-byte key), buf[i] ^= key[i % 8], length 0x20",
+    "key": "5a 3c 7f e1 2d 94 b8 6a",
+    "key_storage": "Hardcoded as the first 8 bytes of the .rdata section (VA 0x140004000), immediately before the plaintext \"kernel32.dll\" string; the 32-byte ciphertext blob is in .data at VA 0x140003000 and is copied to the stack before in-place decryption"
+  },
+  "decoded_strings": {
+    "dll_path_used_for_injection": "IS*h`4%+=1-Ah\\x08X`m2-AthWomB8hnamj",
+    "dll_path_hex": "49 53 2a 68 60 34 25 2b 3d 31 2d 41 68 08 58 60 6d 32 2d 41 74 68 57 6f 6d 42 38 68 6e 61 6d 6a",
+    "ciphertext_hex": "13 6f 55 89 4d a0 9d 41 67 0d 52 a0 45 9c e0 0a 37 0e 52 a0 59 fc ef 05 37 7e 47 89 43 f5 d5 00",
+    "note": "This 32-byte decoded value is passed to LoadLibraryA in explorer.exe as the DLL path. API/target strings stored in plaintext in .rdata (not encrypted): kernel32.dll, CreateToolhelp32Snapshot, Process32First, Process32Next, OpenProcess, VirtualAllocEx, WriteProcessMemory, CreateRemoteThread, CloseHandle, WaitForSingleObject, explorer.exe, LoadLibraryA"
+  },
+  "anti_analysis": [
+    "PEB anti-debug: reads PEB via gs:[0x60] and tests the BeingDebugged byte at PEB+2 (function 0x14000163f); main returns 0 immediately without injecting when a debugger is present",
+    "Minimal import table / API hiding: injection-related APIs are not imported; resolved at runtime via a custom PE export-table parser (no GetProcAddress import), so static import analysis only shows benign CRT/KERNEL32 entries",
+    "XOR-obfuscated payload DLL path stored in .data, decrypted only at runtime",
+    "Sleep(1000) delay after injection"
+  ],
+  "c2_protocol": null,
+  "decoded_c2": null
+}
