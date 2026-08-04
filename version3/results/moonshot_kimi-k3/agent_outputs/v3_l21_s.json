@@ -1,0 +1,46 @@
+{
+  "anti_analysis": [
+    "NtQueryInformationProcess(ProcessDebugPort=7) debugger check - returns 'debugged' if port == 0xFFFFFFFF",
+    "NtQueryInformationProcess(ProcessDebugFlags=0x1F) debugger check - returns 'debugged' if flags == 0",
+    "Silent early exit (return 0) when a debugger is detected - injection is skipped entirely",
+    "Dynamic API resolution (GetModuleHandleA/GetProcAddress) hides all ntdll usage from the static import table",
+    "Use of undocumented native NT APIs instead of Win32 equivalents to evade import-based detection",
+    "TLS callbacks present but are standard MinGW CRT (__mingw_TLScallback), not malicious",
+    "PE timestamp is in the future (2026-07-28), likely forged/irrelevant"
+  ],
+  "c2_protocol": null,
+  "decoded_c2": null,
+  "decoded_strings": {
+    "ntdll_exports_resolved_at_runtime": "ntdll.dll: NtQueryInformationProcess, NtCreateProcess, NtAllocateVirtualMemory, NtWriteVirtualMemory, NtCreateThreadEx, NtResumeThread, NtClose",
+    "payload_@0x140003000_xor_decoded_ascii": "mdemsnillq\\x0eBPZK!\\x0bm/aa]\\x0bD1][mRy=\\x7fz4\\x1d\\x14L\\x14\\x03j0?Zjr\\x0e\\x01}\\x1c\\x1b\\x0edNBX!\\\\I#p{A(.",
+    "payload_@0x140003000_xor_decoded_hex": "6d64656d736e696c6c710e42505a4b210b6d2f61615d0b44315d5b6d52793d7f7a341d144c14036a303f5a6a720e017d1c1b0e644e4258215c4923707b41282e",
+    "payload_note": "Decrypted 64 bytes are neither valid x86-64 code (offset 0 = 0x6D 'insd', privileged; offset 0x12 = 0x2F invalid in 64-bit) nor ASCII text - appears to be a dummy/placeholder payload that would crash the child process when executed",
+    "xor_key_@0x140004000": "Gh0stPr0c3ssH0ll0w"
+  },
+  "encoded_strings": true,
+  "encryption_details": {
+    "algorithm": "XOR with repeating key (data[i] ^= key[i % keylen])",
+    "key": "Gh0stPr0c3ssH0ll0w (18 bytes, 0x12)",
+    "key_storage": "Hardcoded in plaintext in .rdata at VA 0x140004000 (file offset 0x2400), not null-terminated, immediately followed by plaintext \"ntdll.dll\" and the NT API name strings; the encrypted 64-byte payload blob sits in .data at VA 0x140003000"
+  },
+  "file_type": "PE32+ executable (console) x86-64, MinGW-w64 GCC 13, stripped to external PDB",
+  "injection_details": {
+    "entry_point": "WinMain-style function at 0x14000194B (reached via CRT main wrapper tail-jmp at 0x140002DB2) - runs anti-debug check first, then decrypts and injects",
+    "execution_method": "NtCreateThreadEx(&hThread, THREAD_ALL_ACCESS(0x1FFFFF), NULL, hProcess, payloadBase, NULL, 0,0,0,0,NULL) starting a remote thread directly at the injected payload, followed by NtResumeThread(hThread), WaitForSingleObject(hThread, 5000ms), NtClose(hThread), NtClose(hProcess)",
+    "extra": "After injecting, the injector sleeps 2000ms and exits. Decrypted payload is a 64-byte dummy blob (not valid code) in this sample",
+    "method": "Process injection / hollowing-style via undocumented native NT APIs: NtCreateProcess to spawn a new child process object, NtAllocateVirtualMemory to allocate RWX memory in it, NtWriteVirtualMemory to write the decrypted 64-byte payload, NtCreateThreadEx + NtResumeThread to execute it",
+    "payload_write": "64-byte buffer copied from .data (VA 0x140003000) to stack, XOR-decrypted with repeating key \"Gh0stPr0c3ssH0ll0w\", then written into the child at the allocated base via NtWriteVirtualMemory; memory allocated by NtAllocateVirtualMemory(Process, &base=NULL, 0, &size=0x40, MEM_COMMIT|MEM_RESERVE=0x3000, PAGE_EXECUTE_READWRITE=0x40)",
+    "target_discovery": "No process enumeration. The injector opens ITSELF with OpenProcess(PROCESS_CREATE_PROCESS=0x80, FALSE, GetCurrentProcessId()) and passes that handle as the ParentProcess argument to NtCreateProcess(&hProcess, PROCESS_ALL_ACCESS=0x1FFFFF, &objAttributes, hSelf, 0,0,0,0), creating a fresh child process parented to the injector",
+    "target_process": "A new child process created at runtime by NtCreateProcess (self-spawned; no external target such as explorer.exe)"
+  },
+  "techniques": [
+    "xor_encoding_repeating_key (payload obfuscation, function 0x140001480)",
+    "dynamic_api_resolution (GetModuleHandleA(\"ntdll.dll\") + GetProcAddress for all NT APIs, function 0x1400014EF)",
+    "process_injection_native_ntapi (NtCreateProcess + NtAllocateVirtualMemory + NtWriteVirtualMemory + NtCreateThreadEx + NtResumeThread, function 0x140001614)",
+    "process_hollowing_style_self_spawn (new child process parented to self via OpenProcess(PROCESS_CREATE_PROCESS) on own PID; key string \"Gh0stPr0c3ssH0ll0w\")",
+    "antidebug_NtQueryInformationProcess_ProcessDebugPort (info class 7, debugger if port == -1)",
+    "antidebug_NtQueryInformationProcess_ProcessDebugFlags (info class 0x1F, debugger if flags == 0)",
+    "rwx_remote_memory_allocation (PAGE_EXECUTE_READWRITE in child process)",
+    "silent_exit_on_debugger"
+  ]
+}

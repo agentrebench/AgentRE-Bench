@@ -1,0 +1,42 @@
+{
+  "file_type": "PE32+ (x86-64) Windows console executable (MinGW-w64 GCC 13, stripped)",
+  "encoded_strings": true,
+  "techniques": [
+    "reflective_dll_loading",
+    "manual_pe_mapping",
+    "custom_block_cipher",
+    "aes_sbox_xor",
+    "peb_antidebug",
+    "tls_callbacks",
+    "virtualalloc_rwx",
+    "sleep",
+    "encrypted_payload"
+  ],
+  "injection_details": {
+    "method": "Reflective DLL loader (in-process manual PE mapping). Decrypted image is mapped into a VirtualAlloc'd RWX buffer, section-mapped, relocations fixed, imports resolved, then its DllMain export is invoked directly.",
+    "target_process": "Self (current process) \u2014 no remote process injection; no CreateRemoteThread/WriteProcessMemory/OpenProcess present",
+    "target_discovery": "N/A (no external target located; embedded payload loaded into own address space)",
+    "payload_write": "VirtualAlloc(NULL/preferred ImageBase, SizeOfImage, MEM_COMMIT|MEM_RESERVE (0x3000), PAGE_EXECUTE_READWRITE (0x40)); memcpy SizeOfHeaders; per-section mapping (VirtualAddress + raw size); fix IMAGE_REL_BASED_DIR64 (type 0xA) relocations via BaseRelocationDirectory; resolve imports with LoadLibraryA + GetProcAddress (ImportDirectory); search export table for 'DllMain' and call DllMain(base, DLL_PROCESS_ATTACH=1, NULL); then Sleep(2000).",
+    "entry_call": "Entry 0x1410 -> CRT startup 0x1190 -> main 0x140002f30 -> tail-jump (jmp 0x1bd6) into payload runner 0x140001bd5"
+  },
+  "encryption_details": {
+    "algorithm": "Custom 16-byte block cipher, 10 rounds: for each round i (0..9) and byte j (0..15): out[j] = AES_SBOX[in[j]] XOR key[j] XOR (27 * i). Uses the standard 256-byte AES forward S-box stored at RVA 0x5000 (.rdata). 32-byte encrypted blob processed as two 16-byte blocks.",
+    "key": "Rfl3ct!v3_DLL_k3DllMain (first 16 bytes 'Rfl3ct!v3_DLL_k3' used per block)",
+    "key_storage": "Plaintext ASCII in .rdata at RVA 0x5100; the key string's trailing 'DllMain' (0x5110) is also used as the export-name string the reflective loader strcmp()s against"
+  },
+  "decoded_strings": {
+    "key_string": "Rfl3ct!v3_DLL_k3DllMain",
+    "key_leet_decoded": "Reflective_DLL_keDllMain (3->e, !->i leetspeak obfuscation)",
+    "export_name_searched": "DllMain (plaintext at RVA 0x5110)",
+    "decrypted_payload": "32-byte blob at .data RVA 0x4000 decrypts to non-PE, non-printable bytes (0xCD 0xF5 0x9F 0x42 0xF3 ...) - placeholder/dummy payload that would fail the loader's MZ check"
+  },
+  "anti_analysis": [
+    "peb_antidebug: BeingDebugged flag read via TEB->PEB (gs:[0x60]) + byte at PEB+2; if debugged, payload is NOT decrypted/loaded (function 0x140001bd5 returns early)",
+    "encrypted_payload: embedded 32-byte PE stub encrypted with custom S-box cipher",
+    "string_obfuscation: leetspeak key string 'Rfl3ct!v3'",
+    "tls_callbacks: MinGW-w64 CRT TLS callbacks present (run before entry point)",
+    "executable memory: VirtualAlloc with PAGE_EXECUTE_READWRITE for mapped image"
+  ],
+  "decoded_c2": null,
+  "c2_protocol": null
+}

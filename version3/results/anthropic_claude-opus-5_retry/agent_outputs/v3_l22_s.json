@@ -1,0 +1,63 @@
+{
+  "file_type": "PE32+ (x86-64) console executable, MinGW/clang (LLD, stripped to external PDB), 7 sections, C++ with RTTI",
+  "encoded_strings": false,
+  "techniques": [
+    "self_process_injection",
+    "virtualallocex_writeprocessmemory_createremotethread",
+    "shellcode_injection_current_process",
+    "encrypted_embedded_payload",
+    "custom_aes_like_sbox_xor_cipher",
+    "hardcoded_key_in_rdata",
+    "peb_walk_module_base_resolution",
+    "manual_getmodulehandle_kernel32_via_peb",
+    "dynamic_api_resolution_getmodulehandlea_getprocaddress",
+    "ntdll_syscall_number_extraction (SSN harvesting from 4C 8B D1 B8 stub)",
+    "ntdll_stub_hook_detection",
+    "tls_callback_execution_before_main",
+    "anti_debug_isdebuggerpresent",
+    "anti_debug_checkremotedebuggerpresent",
+    "anti_debug_ntqueryinformationprocess_processdebugport",
+    "anti_debug_ntsetinformationthread_threadhidefromdebugger",
+    "cpp_vtable_abstraction (CryptoProvider/ProcessInjector interfaces)"
+  ],
+  "injection_details": {
+    "method": "VirtualAllocEx (PAGE_EXECUTE_READWRITE, MEM_COMMIT|MEM_RESERVE) + WriteProcessMemory + CreateRemoteThread + WaitForSingleObject(5000) + CloseHandle",
+    "injector_function": "0x140001a80 (RemoteThreadInjector::inject, called through vtable 0x14002f308+0x10 wrapper 0x140001a80)",
+    "target_process": "own process (self-injection) - handle obtained from GetCurrentProcess() at 0x1400015c3",
+    "target_discovery": "no external target enumeration; kernel32.dll base is additionally resolved manually by walking PEB->Ldr->InMemoryOrderModuleList (function 0x1400017a0) matching wide name 'KERNEL32' ('K'/'k' at index0, '3' at index6)",
+    "payload_source": "0x60 (96) byte encrypted blob embedded in .data at VA 0x14003E000 (file offset 0x3C200), decrypted in place by AES256Provider before injection",
+    "payload_write": "WriteProcessMemory of the decrypted 96-byte buffer into the RWX allocation, then CreateRemoteThread with the allocation as start address",
+    "syscall_prep": "syscall service numbers for NtAllocateVirtualMemory, NtWriteVirtualMemory, NtProtectVirtualMemory, NtCreateThreadEx are harvested from ntdll stubs (function 0x140001920) but the actual injection uses the Win32 wrappers"
+  },
+  "encryption_details": {
+    "algorithm": "Custom 'AES-256' look-alike (class 14AES256Provider : 14CryptoProvider). Real AES S-box (256 bytes at VA 0x14002F150) but no MixColumns/ShiftRows: for each 16-byte block, 14 rounds of b[j] = SBOX[b[j]] ^ key[j % 32] ^ ((round * 0x1B) & 0xFF)  (routine 0x140001c00, vtable slot +0x10). Round constants: 00,1B,36,51,6C,87,A2,BD,D8,F3,0E,29,44,5F; only key bytes 0..15 are ever used because j<16.",
+    "key": "AES-256-S3cur3-K3y-F0r-Mult1-T3c (32 ASCII bytes, non NUL-terminated)",
+    "key_storage": "hardcoded plaintext array in .rdata at VA 0x14002F0F0 (file offset 0x2E4F0), immediately followed by the string 'ntdll.dll'; passed as 4th argument (r9) to the decrypt virtual method"
+  },
+  "decoded_strings": {
+    "0x14002f098": "NtAllocateVirtualMemory (syscall number harvested)",
+    "0x14002f0b0": "NtWriteVirtualMemory (syscall number harvested)",
+    "0x14002f0c5": "NtProtectVirtualMemory (syscall number harvested)",
+    "0x14002f0dc": "NtCreateThreadEx (syscall number harvested)",
+    "0x14002f0f0": "AES-256-S3cur3-K3y-F0r-Mult1-T3c (AES key)",
+    "0x14002f110": "ntdll.dll",
+    "0x14002f11a": "NtSetInformationThread (used with ThreadHideFromDebugger = 0x11)",
+    "0x14002f131": "NtQueryInformationProcess (used with ProcessDebugPort = 7)",
+    "0x14002f150": "AES forward S-box table (63 7c 77 7b f2 6b 6f c5 ...)",
+    "0x14003e000 (encrypted payload ciphertext, 0x60 bytes)": "8f2a1b7ce35d44960abf3168d755821e c43b996f12ad48d07623e58c17a15af3 2d804ec9631fb83791 0cd56af43ea752 198bdd40c6782f9e05b34de17a16ac58 f23c871db9640ea05fcb339728dd7014 be49e68a21f54c903ac76e10b55902df",
+    "note": "Program strings are stored in plaintext; only the 96-byte injected payload blob is encrypted. Reversing the S-box/XOR schedule over the blob yields no ASCII or recognizable shellcode prologue, so the embedded payload appears to be filler/dummy shellcode bytes rather than a functional stage."
+  },
+  "anti_analysis": [
+    "IsDebuggerPresent check (import 0x1400391c0) - aborts execution before any payload work",
+    "CheckRemoteDebuggerPresent(GetCurrentProcess(), &flag) (import 0x140039118)",
+    "NtQueryInformationProcess(ProcessInformationClass = 7 / ProcessDebugPort) resolved dynamically from ntdll, result compared against -1",
+    "NtSetInformationThread(GetCurrentThread(), 0x11 = ThreadHideFromDebugger) to detach thread from debugger events",
+    "TLS callback (0x140001490, registered via .CRT$XL, pointer at 0x14002f090) applies ThreadHideFromDebugger on DLL_PROCESS_ATTACH before main executes",
+    "Dynamic API resolution (GetModuleHandleA + GetProcAddress on ntdll.dll) so sensitive Nt* APIs never appear in the import table",
+    "PEB (gs:[0x60]) Ldr module-list walk to obtain kernel32.dll base without calling GetModuleHandle",
+    "ntdll stub integrity/hook check: validates 'mov r10,rcx; mov eax,imm32' (4C 8B D1 B8) prologue and extracts the syscall number, failing (returns 0) if the stub is hooked/patched",
+    "symbols stripped to external PDB; SEH/try-catch wrapping of the injection routine"
+  ],
+  "c2_protocol": null,
+  "decoded_c2": null
+}

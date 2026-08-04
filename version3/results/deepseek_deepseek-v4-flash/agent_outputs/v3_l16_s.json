@@ -1,0 +1,49 @@
+{
+  "file_type": "PE32+ (x86-64) Windows console executable (MinGW-w64 / GCC 13)",
+  "encoded_strings": true,
+  "techniques": [
+    "self_injection",
+    "process_injection",
+    "write_process_memory",
+    "virtual_protect_ex",
+    "create_remote_thread",
+    "ntcreatethreadex_fallback",
+    "manual_getprocaddress",
+    "xor_encoding",
+    "aes_sbox_substitution",
+    "anti_vm_cpuid",
+    "sleep_delay",
+    "code_cave_injection",
+    "section_overwrite"
+  ],
+  "injection_details": {
+    "method": "Self-injection / local process injection: decrypt 48-byte shellcode, find an executable section or 0xCC/0x00 code cave in the current image, VirtualProtectEx(PAGE_EXECUTE_READWRITE=0x40), WriteProcessMemory, VirtualProtectEx(PAGE_EXECUTE_READ=0x20), then CreateRemoteThread; if CreateRemoteThread fails, NtCreateThreadEx is resolved dynamically from ntdll.dll (LoadLibraryA+GetProcAddress) and used instead; WaitForSingleObject(5000ms) + CloseHandle",
+    "target_process": "Itself (current process) - handle obtained via GetCurrentProcess()",
+    "target_discovery": "Own image base via GetModuleHandleA(NULL); PE section headers parsed to find IMAGE_SCN_MEM_EXECUTE section (VirtualAddress+base = 0x140001000 .text) or a run of >=48 0xCC/0x00 padding bytes used as a code cave",
+    "payload_write": "WriteProcessMemory(current_process, section_ptr, decoded_payload, 0x30) into its own executable section",
+    "payload_size": "0x30 (48) bytes",
+    "payload_source": "Encrypted blob in .data at VA 0x140003000, XOR-decoded at runtime"
+  },
+  "encryption_details": {
+    "algorithm": "Layer 1 (effective): repeating-key XOR, 48-byte payload (VA 0x140003000) XORed byte-wise with key[i mod 12]. Layer 2 (decoy/dead-code): custom AES-S-box byte-substitution, 10 rounds: out[j] = AES_SBOX[in[j]] ^ key[j] ^ (27*round), applied to a separate 16-byte blob (VA 0x140003030); result is discarded (never used)",
+    "key": "XOR key (12 bytes, raw): c3 7a 9f 2e 55 8b 1d 6c e4 31 a8 4f ; S-box routine key (16 bytes, ASCII): 4xdm1n_S3cr3t!!!",
+    "key_storage": "Hardcoded in .rdata: XOR key at VA 0x140004000 (12 bytes, not ASCII), S-box routine key at VA 0x140004120 (plaintext string), AES S-box table (256 bytes) at VA 0x140004020"
+  },
+  "decoded_strings": {
+    "xor_key_12_bytes": "c3 7a 9f 2e 55 8b 1d 6c e4 31 a8 4f",
+    "aes_sbox_key": "4xdm1n_S3cr3t!!!",
+    "resolved_api_strings": [
+      "ntdll.dll",
+      "NtCreateThreadEx"
+    ],
+    "decoded_48_byte_payload_hex": "4c 67 6b 62 60 65 64 66 67 63 63 66 56 14 8e 69 e3 b4 c5 60 85 cb e5 7d 24 62 1a 75 c5 ad b1 11 f7 79 75 7e a9 8d 91 7a ea 09 04 aa de 94 d9 a7"
+  },
+  "anti_analysis": [
+    "anti_vm_cpuid: CPUID leaf 1, tests ECX bit 31 (hypervisor-present bit); if set, Sleep(30000) and skips payload injection",
+    "obfuscation: embedded shellcode payload XOR-encrypted with a 12-byte key",
+    "obfuscation/decoy: AES S-box substitution routine (10 rounds) with key '4xdm1n_S3cr3t!!!' performing dead computation on an unused buffer",
+    "timing/sandbox evasion: Sleep(30000) on suspected VM, Sleep(1000) after injection, WaitForSingleObject(5000)"
+  ],
+  "decoded_c2": null,
+  "c2_protocol": null
+}

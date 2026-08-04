@@ -1,0 +1,56 @@
+{
+  "file_type": "PE32+ (x86-64) Windows console executable (CUI subsystem), MinGW-w64 GCC 13, stripped",
+  "encoded_strings": true,
+  "techniques": [
+    "process_hollowing",
+    "manual_getprocaddress",
+    "anti_debug_ntqueryinformationprocess",
+    "xor_encoding",
+    "rc4_encryption",
+    "peb_reading",
+    "tls_callbacks",
+    "sleep_timing"
+  ],
+  "injection_details": {
+    "method": "process_hollowing (RunPE)",
+    "target_process": "C:\\Windows\\System32\\svchost.exe",
+    "target_discovery": "Hardcoded path built at runtime from immediate constants; process created suspended via CreateProcessA; original image base read from target PEB (offset 0x10) via NtReadVirtualMemory",
+    "payload_written": "64-byte x64 stub, decrypted at runtime (XOR then RC4), written at the unmapped image base via WriteProcessMemory",
+    "sequence": "CreateProcessA(svchost.exe, CREATE_SUSPENDED=4) -> GetThreadContext -> NtUnmapViewOfSection -> VirtualAllocEx(MEM_COMMIT|MEM_RESERVE=0x3000, PAGE_EXECUTE_READWRITE=0x40) at PEB.ImageBaseAddress -> WriteProcessMemory -> SetThreadContext (payload address written into context field at offset 0x80) -> ResumeThread -> Sleep(2000)",
+    "functions_used": [
+      "CreateProcessA",
+      "GetThreadContext",
+      "SetThreadContext",
+      "ResumeThread",
+      "NtUnmapViewOfSection",
+      "NtReadVirtualMemory",
+      "VirtualAllocEx",
+      "WriteProcessMemory",
+      "VirtualFreeEx",
+      "TerminateProcess",
+      "CloseHandle"
+    ]
+  },
+  "encryption_details": {
+    "algorithm": "Layered: repeating-key XOR followed by RC4 stream cipher",
+    "key": "XOR key: DE AD BE EF 13 37 CA FE BA BE (0xDEADBEEF1337CAFEBABE, 10 bytes); RC4 key: 'Hollowing_PE!!!!' (16 bytes)",
+    "key_storage": "Hardcoded in plaintext in .rdata: XOR key at VA 0x140005000, RC4 key at VA 0x140005010; payload (0x40 bytes) stored encrypted in .data at VA 0x140004000"
+  },
+  "decoded_strings": {
+    "Hollowing_PE!!!!": "RC4 key (plaintext in .rdata)",
+    "ntdll.dll": "module resolved via GetModuleHandleA for manual GetProcAddress",
+    "NtQueryInformationProcess": "dynamically resolved; used for anti-debug (ProcessDebugPort=0x7, ProcessDebugObjectHandle=0x1F)",
+    "NtUnmapViewOfSection": "dynamically resolved; unmaps svchost.exe image during hollowing",
+    "NtReadVirtualMemory": "dynamically resolved; reads target PEB ImageBaseAddress",
+    "C:\\Windows\\System32\\svchost.exe": "hollowing target path (reconstructed from immediates in code at 0x140001da8)",
+    "encrypted_payload": "0x40-byte x64 stub at 0x140004000, decrypted at runtime via XOR+RC4 before injection"
+  },
+  "anti_analysis": [
+    "Anti-debug via NtQueryInformationProcess: checks ProcessDebugPort (InfoClass 0x7, returns -1 => debugger) and ProcessDebugObjectHandle (InfoClass 0x1F, nonzero => debugger); aborts hollowing if detected",
+    "Dynamic API resolution (manual GetProcAddress) of NtQueryInformationProcess/NtUnmapViewOfSection/NtReadVirtualMemory to avoid static import of sensitive ntdll functions",
+    "Layered payload encryption (repeating-key XOR + RC4) to hide injected stub",
+    "Target path obfuscated: svchost.exe path not stored as a string, built at runtime from 64-bit immediate constants"
+  ],
+  "decoded_c2": null,
+  "c2_protocol": null
+}

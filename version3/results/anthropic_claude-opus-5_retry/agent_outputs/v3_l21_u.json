@@ -1,0 +1,60 @@
+{
+  "file_type": "PE32+ (x86-64) console executable, MinGW-w64/GCC 13 built (source artifact: windows_level21_GhostProcessHollowing.c)",
+  "encoded_strings": true,
+  "techniques": [
+    "xor_encoding",
+    "repeating_key_xor_payload_decryption",
+    "manual_getprocaddress",
+    "dynamic_ntdll_api_resolution",
+    "ntdll_native_api_usage",
+    "process_forking_via_NtCreateProcess",
+    "ghost_process_hollowing",
+    "self_process_clone_injection",
+    "remote_memory_allocation_NtAllocateVirtualMemory",
+    "remote_memory_write_NtWriteVirtualMemory",
+    "remote_thread_creation_NtCreateThreadEx",
+    "rwx_memory_allocation_PAGE_EXECUTE_READWRITE",
+    "anti_debug_ntqueryinformationprocess",
+    "silent_exit_on_debugger_detection",
+    "shellcode_execution_in_remote_process"
+  ],
+  "injection_details": {
+    "method": "Process forking / \"ghost process hollowing\": NtCreateProcess (SectionHandle = NULL) clones the current process, then NtAllocateVirtualMemory + NtWriteVirtualMemory + NtCreateThreadEx execute the decrypted shellcode inside the cloned child. No CreateRemoteThread/WriteProcessMemory (Win32) calls are used.",
+    "target_process": "A forked clone of itself (own process is the ParentProcess); no third-party/foreign process is targeted",
+    "target_discovery": "GetCurrentProcessId() -> OpenProcess(PROCESS_CREATE_PROCESS 0x80, FALSE, ownPid) to obtain a parent handle, which is passed as ParentProcess to NtCreateProcess",
+    "payload_write": "NtAllocateVirtualMemory(hChild, base=NULL, size=0x40, MEM_COMMIT|MEM_RESERVE 0x3000, PAGE_EXECUTE_READWRITE 0x40) then NtWriteVirtualMemory(hChild, remoteBase, decrypted 64-byte buffer, 0x40, &bytesWritten)",
+    "execution": "NtCreateThreadEx(&hThread, 0x1FFFFF, NULL, hChild, StartRoutine=remoteBase, Argument=NULL, flags=0, ...) followed by WaitForSingleObject(hThread, 5000)",
+    "cleanup": "NtClose(hThread), NtClose(hChildProcess), CloseHandle(hParent); process then Sleep(2000) and exits",
+    "resolved_native_apis": "NtQueryInformationProcess, NtCreateProcess, NtAllocateVirtualMemory, NtWriteVirtualMemory, NtCreateThreadEx, NtResumeThread (resolved but unused), NtClose",
+    "helper_functions": "resolve_nt@0x1400014ef (GetModuleHandleA(\"ntdll.dll\")+GetProcAddress), ghost_hollow@0x140001614, WinMain@0x14000194b"
+  },
+  "encryption_details": {
+    "algorithm": "Repeating-key (Vigenere-style) byte XOR \u2014 xor_crypt() @ 0x140001480: data[i] ^= key[i % keylen]",
+    "key": "Gh0stPr0c3ssH0ll0w (18 bytes / 0x12, ASCII)",
+    "key_storage": "Hard-coded plaintext ASCII in .rdata at VA 0x140004000 (symbol g_xor_key); it is the first string of a contiguous string blob that also holds the plaintext API/module names. Encrypted 64-byte blob is in .data at VA 0x140003000 (symbol g_encrypted_payload) and is decrypted onto the stack at runtime."
+  },
+  "decoded_strings": {
+    "g_xor_key (0x140004000)": "Gh0stPr0c3ssH0ll0w",
+    "0x140004012": "ntdll.dll",
+    "0x14000401c": "NtQueryInformationProcess",
+    "0x140004036": "NtCreateProcess",
+    "0x140004046": "NtAllocateVirtualMemory",
+    "0x14000405e": "NtWriteVirtualMemory",
+    "0x140004073": "NtCreateThreadEx",
+    "0x140004084": "NtResumeThread",
+    "0x140004093": "NtClose",
+    "g_encrypted_payload (0x140003000, ciphertext 64 bytes)": "2a0c551e073e1b5c0f427d31186a274d3b1a6809512e7f14436d385e210a754f16582d630b7c3319446f285a113d720e542b62087e351f496c3a572009714b1d",
+    "g_encrypted_payload XOR 'Gh0stPr0c3ssH0ll0w' (decrypted 64-byte shellcode buffer written to the forked process)": "6d64656d736e696c6c710e42505a4b210b6d2f61615d0b44315d5b6d52793d7f7a341d144c14036a303f5a6a720e017d1c1b0e644e42582158492370 7b41282e (non-ASCII / pseudo-random placeholder shellcode, not a readable string or valid recognizable stub)"
+  },
+  "anti_analysis": [
+    "NtQueryInformationProcess(ProcessDebugPort / class 0x07) checked for 0xFFFFFFFF -> debugger present",
+    "NtQueryInformationProcess(ProcessDebugObjectHandle / class 0x1F) debug-object check",
+    "Debugger checks performed via dynamically resolved native ntdll API rather than IsDebuggerPresent/CheckRemoteDebuggerPresent (evades import-based detection)",
+    "Silent benign exit (return 0 from WinMain, no output) when a debugger is detected",
+    "Dynamic API resolution (GetModuleHandleA + GetProcAddress on ntdll.dll) keeps all Nt* injection APIs out of the import table",
+    "Payload stored XOR-encrypted in .data so no shellcode/strings are visible to static scanners",
+    "Non-standard sections (/4, /19, /31 ... debug sections) and 19 total sections complicate quick triage"
+  ],
+  "c2_protocol": null,
+  "decoded_c2": null
+}

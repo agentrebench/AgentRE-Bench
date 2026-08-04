@@ -1,0 +1,53 @@
+{
+  "file_type": "PE32+ (x86-64) console executable, MinGW-w64 / GCC 13 built, symbols stripped (external PDB reference)",
+  "encoded_strings": true,
+  "techniques": [
+    "rc4_encrypted_shellcode",
+    "hells_gate_syscall_number_resolution",
+    "manual_getprocaddress",
+    "dynamic_ntdll_resolution_getmodulehandlea",
+    "syscall_stub_prologue_parsing",
+    "api_hook_detection",
+    "self_injection_local_shellcode_execution",
+    "virtualalloc_rwx",
+    "createthread_shellcode_execution",
+    "waitforsingleobject_thread_sync",
+    "sleep_delay"
+  ],
+  "c2_protocol": null,
+  "decoded_c2": null,
+  "encryption_details": {
+    "algorithm": "RC4 (standard 256-byte KSA at 0x140001480 + PRGA/XOR at 0x140001573; state struct holds S[256] plus i at +0x100 and j at +0x104)",
+    "key": "H3llsG@t3_Sysc@l",
+    "key_storage": "Hard-coded 16-byte ASCII string in .rdata at VA 0x140004000, passed with length 0x10 to the KSA; the 64-byte ciphertext payload is stored in .data at VA 0x140003000 (c97e13a845df326c910e75b328fa4d8117a3d568f02b9e44cc59e73f8a16b15d22946fdb087caa31e54f891cd265f83b9d1076c057ea24b84c811ea933dd6bf5) and is copied to the stack and decrypted in place before execution"
+  },
+  "decoded_strings": {
+    "rc4_key_rdata_0x140004000": "H3llsG@t3_Sysc@l",
+    "module_string_0x140004010": "ntdll.dll",
+    "syscalls_resolved_0x14000401a": "NtAllocateVirtualMemory",
+    "syscalls_resolved_0x140004032": "NtWriteVirtualMemory",
+    "syscalls_resolved_0x140004047": "NtProtectVirtualMemory",
+    "syscalls_resolved_0x14000405e": "NtCreateThreadEx",
+    "syscalls_resolved_0x14000406f": "NtClose",
+    "syscalls_resolved_0x140004077": "NtOpenProcess",
+    "syscalls_resolved_0x140004085": "NtQueueApcThread",
+    "rc4_ciphertext_payload_.data_0x140003000 (64 bytes, RC4 with key above -> executable shellcode, run via CreateThread on RWX memory)": "c9 7e 13 a8 45 df 32 6c 91 0e 75 b3 28 fa 4d 81 17 a3 d5 68 f0 2b 9e 44 cc 59 e7 3f 8a 16 b1 5d 22 94 6f db 08 7c aa 31 e5 4f 89 1c d2 65 f8 3b 9d 10 76 c0 57 ea 24 b8 4c 81 1e a9 33 dd 6b f5"
+  },
+  "anti_analysis": [
+    "User-mode API hook / EDR detection: function at 0x1400017F0 fetches the ntdll stub for NtAllocateVirtualMemory and validates the classic prologue bytes 4C 8B D1 B8 (mov r10,rcx; mov eax,SSN); a patched (hooked) stub is detected and aborts the flow",
+    "Hell's Gate style syscall number harvesting from ntdll export stubs (0x1400016A9) instead of calling the documented APIs, defeating IAT/API-based monitoring; includes a fallback scan of the first 32 bytes for a 'mov eax, imm32' (B8 xx xx 00 00) pattern to recover the SSN from hooked/jmp-patched stubs",
+    "No static imports of any ntdll/Nt* function - all native API metadata resolved at runtime via GetModuleHandleA + GetProcAddress (manual resolution hides intent from import-table triage)",
+    "Payload stored only as RC4 ciphertext in .data so no shellcode bytes / strings are visible to static scanners",
+    "Timing/execution delays: WaitForSingleObject with 5000 ms timeout on the payload thread and a Sleep(1000) before exit (sandbox timeout evasion)",
+    "Binary is compiled stripped (no symbols, external PDB reference) hampering static analysis"
+  ],
+  "injection_details": {
+    "method": "Local/self shellcode injection: VirtualAlloc(NULL, size, MEM_COMMIT|MEM_RESERVE=0x3000, PAGE_EXECUTE_READWRITE=0x40) -> memcpy of the RC4-decrypted payload -> CreateThread(start_address = RWX buffer) -> WaitForSingleObject(handle, 5000) -> CloseHandle",
+    "target_process": "Its own process (self-injection); GetCurrentProcess() is called at 0x14000188B for the pseudo-handle, no remote process is opened",
+    "target_discovery": "None - no process enumeration; the current process is used. NtOpenProcess / NtQueueApcThread / NtWriteVirtualMemory syscall numbers are resolved (suggesting remote APC injection capability) but are never invoked in this build",
+    "payload_source": "64-byte RC4-encrypted blob embedded in .data at 0x140003000, decrypted on the stack with key 'H3llsG@t3_Sysc@l' inside WinMain (0x1400019BC) then passed to the executor at 0x14000188B",
+    "payload_write": "Plain memcpy (msvcrt) into the locally allocated RWX region - no WriteProcessMemory/NtWriteVirtualMemory call",
+    "execution_trigger": "kernel32!CreateThread on the RWX allocation (thread start address = shellcode base)",
+    "direct_syscall_status": "The syscall invoker stub at 0x1400017C9 is a non-functional placeholder that always returns 0xC0000001 (STATUS_UNSUCCESSFUL); the SSNs are collected but execution actually proceeds through Win32 APIs (VirtualAlloc/CreateThread)"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "file_type": "PE32+ (x86-64) console executable, MinGW-w64 GCC 13, with debug info; source: windows_level15_APCInjection.c",
+  "encoded_strings": true,
+  "techniques": [
+    "apc_injection",
+    "self_injection",
+    "rc4_encrypted_shellcode",
+    "runtime_api_resolution_getprocaddress",
+    "native_ntdll_api_usage",
+    "thread_enumeration_toolhelp32",
+    "thread_suspend_then_alert_resume",
+    "rwx_memory_allocation",
+    "antidebug_processdebugport"
+  ],
+  "injection_details": {
+    "method": "APC injection into a suspended thread: RC4-decrypt payload in place, NtAllocateVirtualMemory (MEM_COMMIT|MEM_RESERVE 0x3000, PAGE_EXECUTE_READWRITE 0x40) + NtWriteVirtualMemory to write the 48-byte payload, NtQueueApcThread(hThread, payload_base, 0,0,0) to queue it as an APC routine, then NtAlertResumeThread to run it",
+    "target_process": "own process (self-injection): NtOpenProcess(GetCurrentProcessId(), access mask 0x42A = PROCESS_CREATE_THREAD|PROCESS_VM_OPERATION|PROCESS_VM_WRITE|PROCESS_QUERY_INFORMATION)",
+    "target_discovery": "GetCurrentProcessId() for the PID; CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD) + Thread32First/Thread32Next to find a thread whose th32OwnerProcessID == own PID; OpenThread(0x12 = THREAD_SET_CONTEXT|THREAD_SUSPEND_RESUME) then SuspendThread",
+    "payload_write": "48-byte shellcode (g_encrypted_shellcode in .data) is RC4-decrypted in WinMain, then written into the target via NtWriteVirtualMemory; execution triggered via queued APC + NtAlertResumeThread; handles closed with NtClose; Sleep(500) afterwards"
+  },
+  "encryption_details": {
+    "algorithm": "RC4 (custom rc4_init/rc4_crypt: KSA + PRGA, 256-byte state at rbp-0x50)",
+    "key": "4a8c1fd367e92b05cafe77339d125e88 (16 bytes)",
+    "key_storage": "hardcoded plaintext byte array g_rc4_key in .rdata section at VA 0x140005000; ciphertext g_encrypted_shellcode (48 bytes) in .data at VA 0x140004000"
+  },
+  "decoded_strings": {
+    "rc4_key_hex": "4a8c1fd367e92b05cafe77339d125e88",
+    "encrypted_shellcode_hex": "8e3d721ed55891c32f46bb79e4118c5a673ea40df69b2844bd7113a5dc087e329954e16c1a87f0462b985dcf730ea641",
+    "decrypted_shellcode_rc4_hex": "b194bbe6afd9b04b9d3151429894024d0558f3f498e52d5b9ec3f12b4def4857d72dcb061d5100c04439b7d498658d",
+    "decrypted_note": "48-byte RC4-decrypted payload does not decode to meaningful x86-64 instructions (appears to be a dummy/random payload; the sample demonstrates the APC-injection mechanism itself)",
+    "plaintext_api_strings": "ntdll.dll, NtOpenProcess, NtClose, NtQueryInformationProcess, NtAllocateVirtualMemory, NtWriteVirtualMemory, NtQueueApcThread, NtAlertResumeThread (resolved at runtime via GetModuleHandleA/GetProcAddress in resolve_nt)"
+  },
+  "anti_analysis": [
+    "anti_debug_processdebugport: calls resolved NtQueryInformationProcess(hProcess, ProcessDebugPort=7, &port, 4, &len) and aborts (NtClose + return failure) if the debug port value is 0xFFFFFFFF, i.e. a debugger is attached"
+  ],
+  "c2_protocol": null,
+  "decoded_c2": null
+}

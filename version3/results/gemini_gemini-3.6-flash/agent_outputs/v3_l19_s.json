@@ -1,0 +1,32 @@
+{
+  "anti_analysis": [
+    "peb_antidebug",
+    "tls_callbacks"
+  ],
+  "decoded_strings": {
+    "encryption_key": "Rfl3ct!v3_DLL_k3",
+    "export_function": "DllMain",
+    "decrypted_pe_header": "MZ"
+  },
+  "encryption_details": {
+    "algorithm": "Custom (AES S-Box Substitution + XOR with Round Constant)",
+    "key_storage": "Plaintext string in .rdata section at VA 0x140005100",
+    "key": "Rfl3ct!v3_DLL_k3"
+  },
+  "file_type": "PE32+",
+  "techniques": [
+    "peb_antidebug",
+    "tls_callbacks",
+    "reflective_dll_loading",
+    "custom_encryption",
+    "manual_import_resolution"
+  ],
+  "encoded_strings": true,
+  "c2_protocol": null,
+  "injection_details": {
+    "target_process": "Self",
+    "target_discovery": "Self-injection (current process)",
+    "method": "Reflective DLL Loading / Manual PE Memory Mapping (VirtualAlloc + section mapping + IAT resolution + DllMain call)"
+  },
+  "decoded_c2": null
+}

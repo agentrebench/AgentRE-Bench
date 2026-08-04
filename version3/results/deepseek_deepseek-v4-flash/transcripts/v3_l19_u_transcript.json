@@ -1,0 +1,344 @@
+{
+  "task_id": "v3_l19_u",
+  "model": "deepseek-v4-flash",
+  "provider": "deepseek",
+  "difficulty": 19,
+  "score": {
+    "tier": "pe_injection",
+    "field_scores": {
+      "techniques": 0.3,
+      "encryption_key": 1.0,
+      "anti_analysis": 0.0,
+      "encryption_algorithm": 1.0,
+      "file_type": 1.0,
+      "encoded_strings": 1.0
+    },
+    "hallucinated_techniques": [],
+    "missing_techniques": [
+      "aes128_encryption",
+      "base_relocation_fixup",
+      "dllmain_invocation",
+      "export_table_parsing",
+      "import_table_resolution",
+      "section_mapping",
+      "virtualalloc_rwx"
+    ],
+    "unmatched_techniques": [
+      "aes_sbox_cipher",
+      "encrypted_payload",
+      "leetspeak_obfuscation",
+      "manual_import_resolution",
+      "manual_relocation_processing",
+      "self_injection",
+      "sleep_timing"
+    ],
+    "spurious_fields": [
+      "injection_details",
+      "decoded_strings"
+    ],
+    "hallucination_penalty": 0.0,
+    "spurious_penalty": 0.1,
+    "weighted_score": 0.5,
+    "final_score": 0.4,
+    "sample": "v3_l19_u"
+  },
+  "agent_result": {
+    "task_id": "v3_l19_u",
+    "final_answer": {
+      "file_type": "PE32+ (x86-64) Windows console executable (MinGW-w64 GCC 13, with DWARF debug info/symbols)",
+      "encoded_strings": true,
+      "techniques": [
+        "reflective_dll_injection",
+        "self_injection",
+        "manual_pe_mapping",
+        "manual_relocation_processing",
+        "manual_import_resolution",
+        "aes_sbox_cipher",
+        "encrypted_payload",
+        "peb_antidebug",
+        "leetspeak_obfuscation",
+        "sleep_timing"
+      ],
+      "injection_details": {
+        "method": "Reflective DLL injection into the current (own) process. No remote-process APIs (no OpenProcess/WriteProcessMemory/CreateRemoteThread). The decrypted DLL is mapped manually: get_nt_headers -> VirtualAlloc(SizeOfImage, MEM_COMMIT|MEM_RESERVE, PAGE_EXECUTE_READWRITE) at preferred base (fallback NULL) -> memcpy SizeOfHeaders -> map_pe_sections (per-section RVA copy) -> process_relocations (delta = alloc_base - ImageBase, IMAGE_REL_BASED_DIR64=0xA) -> resolve_imports (LoadLibraryA + GetProcAddress for each imported DLL/function) -> export 'DllMain' found by name via export directory (NamePointerTable/OrdinalTable/AddressOfFunctions) and called with (base, DLL_PROCESS_ATTACH=1, NULL).",
+        "target_process": "Current process (self-injection; no target discovery/enumeration)",
+        "payload_write": "32-byte encrypted blob g_encrypted_dll decrypted in place on stack (aes128_decrypt, length 0x20), then mapped via VirtualAlloc + memcpy of headers and sections",
+        "entry_call": "DllMain(base, 1, 0) invoked directly (call r9); reflective_load returns after entry",
+        "other": "After reflective_load, WinMain calls Sleep(2000) and returns 0. The decrypted 32-byte payload does not start with 'MZ' (first plaintext bytes 8F BF AD 51 0C 69 04 03 ...), so the embedded DLL stub does not validate as a PE through this decryptor - payload appears non-functional/decoy."
+      },
+      "encryption_details": {
+        "algorithm": "Custom 128-bit block cipher (named aes128_decrypt): 10 rounds over 16-byte blocks, ECB-style; per byte each round: block[i] = AES_SBOX[block[i]] XOR key[i] XOR (round*27). AES-128-sized key and AES S-box table, but not standard AES (no MixColumns/ShiftRows/key schedule).",
+        "key": "Rfl3ct!v3_DLL_k3 (16 bytes, ASCII; leetspeak for 'Reflect!ve_DLL_k3' / 'Reflective_DLL_key')",
+        "key_storage": "Embedded in .rdata at g_aes_key (VA 0x140005100, file offset 0x2b00) as a plaintext leetspeak-obfuscated string; AES S-box (g_aes_sbox) at VA 0x140005000 (file offset 0x2a00); encrypted payload g_encrypted_dll at VA 0x140004000 (.data, file offset 0x2800, 32 bytes)"
+      },
+      "decoded_strings": {
+        "g_aes_key": "Rfl3ct!v3_DLL_k3 (decodes from leetspeak to 'Reflect!ve_DLL_k3'/'Reflective_DLL_key' - the 16-byte cipher key)",
+        "dll_entry_export": "DllMain (plaintext at g_aes_key+0x10, VA 0x140005110 - export name located and called after reflective load)",
+        "source_file": "windows_level19_ReflectiveDLLInjection.c (debug info)",
+        "decrypted_payload_prefix": "8F BF AD 51 0C 69 04 03 ... (32-byte blob decrypted with the custom cipher; non-ASCII, no MZ/PE magic - payload does not form a valid PE)"
+      },
+      "anti_analysis": [
+        "peb_antidebug: anti_debug_peb reads TEB->ProcessEnvironmentBlock via gs:[0x60] and checks the PEB.BeingDebugged flag (byte at PEB+2); WinMain aborts (returns 0) if set",
+        "encrypted_payload: embedded DLL is stored encrypted (32-byte blob, custom AES-S-box cipher) and only decrypted at runtime",
+        "leetspeak_obfuscation: cipher key stored as obfuscated string 'Rfl3ct!v3_DLL_k3' instead of plaintext to evade string-based detection",
+        "manual_api_usage: injection implemented via manual PE parsing (relocations/imports resolved by hand) with no suspicious remote-injection API imports"
+      ],
+      "decoded_c2": null,
+      "c2_protocol": null
+    },
+    "tool_call_count": 15,
+    "tool_calls_by_type": {
+      "file": 1,
+      "pe_info": 1,
+      "strings": 2,
+      "objdump": 2,
+      "hexdump": 7,
+      "entropy": 1,
+      "final_answer": 1
+    },
+    "tool_calls_log": [
+      {
+        "call_number": 1,
+        "tool": "file",
+        "input": {
+          "path": "sample_7fa102.bin"
+        },
+        "output_preview": "/home/marq/Projects/AgentRE-Bench/.workspaces/deepseek_deepseek-v4-flash/v3_l19_u/sample_7fa102.bin: PE32+ executable (console) x86-64, for MS Windows, 19 sections\n"
+      },
+      {
+        "call_number": 2,
+        "tool": "pe_info",
+        "input": {
+          "path": "sample_7fa102.bin"
+        },
+        "output_preview": "Format:      PE32+ (x86-64)\nEntry point: 0x00001410\nImage base:  0x140000000\nSubsystem:   3\nSections:    19\nTimestamp:   1785204241\n\nSECTIONS:\n  .text      vsize=0x0002038 raw=0x0002200 entropy= 5.83 chars=0x60000060\n  .data      vsize=0x00000b0 raw=0x0000200 entropy= 1.27 chars=0xc0000040\n  .rdata     vsize=0x0000a10 raw=0x0000c00 entropy= 4.32 chars=0x40000040\n  .pdata     vsize=0x0000288 raw=0x0000400 entropy= 2.78 chars=0x40000040\n  .xdata     vsize=0x0000258 raw=0x0000400 entropy= 2.96 char"
+      },
+      {
+        "call_number": 3,
+        "tool": "strings",
+        "input": {
+          "path": "sample_7fa102.bin",
+          "min_length": 5
+        },
+        "output_preview": "!This program cannot be run in DOS mode.\n.text\n`.data\n.rdata\n@.pdata\n@.xdata\n@.bss\n.idata\n.reloc\nB/113\nHcP<H\nUAUATWVSH\n([^_A\\A]]\n([^_A\\A]]\nf=MZt\nUWVSH\nl$PHc5\nX[^_]\nUAWAVAUATWVSH\n[^_A\\A]A^A_]\nUAUATWVSH\n([^_A\\A]]H\nUWVSH\n([^_]\nHcQ<H\nHcA<H\nUWVSH\n:MZu[HcB<H\n([^_]\n([^_]\nLcB<I\nHcP<H\nIcP<L\n@' t\tH\nHcH<H\nLcB<I\nIcK<L\nUWVSH\nRfl3ct!v3_DLL_k3DllMain\nArgument domain error (DOMAIN)\nArgument singularity (SIGN)\nOverflow range error (OVERFLOW)\nPartial loss of significance (PLOSS)\nTotal loss of significance (TLOSS)"
+      },
+      {
+        "call_number": 4,
+        "tool": "objdump",
+        "input": {
+          "path": "sample_7fa102.bin",
+          "flags": "-d",
+          "section": ".text"
+        },
+        "output_preview": "\n/home/marq/Projects/AgentRE-Bench/.workspaces/deepseek_deepseek-v4-flash/v3_l19_u/sample_7fa102.bin:     file format pei-x86-64\n\n\nDisassembly of section .text:\n\n0000000140001000 <__mingw_invalidParameterHandler>:\n   140001000:\tc3                   \tret\n   140001001:\t66 66 2e 0f 1f 84 00 \tdata16 cs nopw 0x0(%rax,%rax,1)\n   140001008:\t00 00 00 00 \n   14000100c:\t0f 1f 40 00          \tnopl   0x0(%rax)\n\n0000000140001010 <pre_c_init>:\n   140001010:\t55                   \tpush   %rbp\n   140001011:\t48 8"
+      },
+      {
+        "call_number": 5,
+        "tool": "strings",
+        "input": {
+          "path": "sample_7fa102.bin",
+          "min_length": 4,
+          "encoding": "l"
+        },
+        "output_preview": "(no output)"
+      },
+      {
+        "call_number": 6,
+        "tool": "objdump",
+        "input": {
+          "path": "sample_7fa102.bin",
+          "flags": "-x"
+        },
+        "output_preview": "\n/home/marq/Projects/AgentRE-Bench/.workspaces/deepseek_deepseek-v4-flash/v3_l19_u/sample_7fa102.bin:     file format pei-x86-64\n/home/marq/Projects/AgentRE-Bench/.workspaces/deepseek_deepseek-v4-flash/v3_l19_u/sample_7fa102.bin\narchitecture: i386:x86-64, flags 0x0000013b:\nHAS_RELOC, EXEC_P, HAS_DEBUG, HAS_SYMS, HAS_LOCALS, D_PAGED\nstart address 0x0000000140001410\n\nCharacteristics 0x26\n\texecutable\n\tline numbers stripped\n\tlarge address aware\n\nTime/Date\t\tTue Jul 28 02:04:01 2026\nMagic\t\t\t020b\t(PE32"
+      },
+      {
+        "call_number": 7,
+        "tool": "hexdump",
+        "input": {
+          "path": "sample_7fa102.bin",
+          "offset": 3072,
+          "length": 1024
+        },
+        "output_preview": "00000c00  74 13 48 8b 45 f8 0f b6  40 02 84 c0 74 07 b8 01  |t.H.E...@...t...|\n00000c10  00 00 00 eb 05 b8 00 00  00 00 48 83 c4 20 5d c3  |..........H.. ].|\n00000c20  55 48 89 e5 48 83 ec 10  48 89 4d 10 48 8b 45 10  |UH..H...H.M.H.E.|\n00000c30  48 89 45 f8 48 8b 45 f8  0f b7 00 66 3d 4d 5a 74  |H.E.H.E....f=MZt|\n00000c40  07 b8 00 00 00 00 eb 2d  48 8b 45 f8 8b 40 3c 48  |.......-H.E..@<H|\n00000c50  63 d0 48 8b 45 10 48 01  d0 48 89 45 f0 48 8b 45  |c.H.E.H..H.E.H.E|\n00000c60  f0 8b 00 3d 50 4"
+      },
+      {
+        "call_number": 8,
+        "tool": "hexdump",
+        "input": {
+          "path": "sample_7fa102.bin",
+          "offset": 10240,
+          "length": 1536
+        },
+        "output_preview": "00002800  8f 2a 7c d1 45 b3 e9 66  1a fc 38 8d 57 c4 0e 72  |.*|.E..f..8.W..r|\n00002810  ab 5e 19 f0 36 88 dd 41  6c 97 23 fa 4b 15 ae 80  |.^..6..Al.#.K...|\n00002820  30 30 00 40 01 00 00 00  00 00 00 00 00 00 00 00  |00.@............|\n00002830  ff ff ff ff ff ff ff ff  00 00 00 00 00 00 00 00  |................|\n00002840  02 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|\n00002850  ff ff ff ff 00 00 00 00  00 00 00 00 00 00 00 00  |................|\n00002860  80 2d 00 40 01 0"
+      },
+      {
+        "call_number": 9,
+        "tool": "hexdump",
+        "input": {
+          "path": "sample_7fa102.bin",
+          "offset": 10752,
+          "length": 1024
+        },
+        "output_preview": "00002a00  63 7c 77 7b f2 6b 6f c5  30 01 67 2b fe d7 ab 76  |c|w{.ko.0.g+...v|\n00002a10  ca 82 c9 7d fa 59 47 f0  ad d4 a2 af 9c a4 72 c0  |...}.YG.......r.|\n00002a20  b7 fd 93 26 36 3f f7 cc  34 a5 e5 f1 71 d8 31 15  |...&6?..4...q.1.|\n00002a30  04 c7 23 c3 18 96 05 9a  07 12 80 e2 eb 27 b2 75  |..#..........'.u|\n00002a40  09 83 2c 1a 1b 6e 5a a0  52 3b d6 b3 29 e3 2f 84  |..,..nZ.R;..)./.|\n00002a50  53 d1 00 ed 20 fc b1 5b  6a cb be 39 4a 4c 58 cf  |S... ..[j..9JLX.|\n00002a60  d0 ef aa fb 43 4"
+      },
+      {
+        "call_number": 10,
+        "tool": "hexdump",
+        "input": {
+          "path": "sample_7fa102.bin",
+          "offset": 12288,
+          "length": 512
+        },
+        "output_preview": "00003000  e0 24 00 40 01 00 00 00  00 00 00 00 00 00 00 00  |.$.@............|\n00003010  40 1e 00 40 01 00 00 00  00 00 00 00 00 00 00 00  |@..@............|\n00003020  60 80 00 40 01 00 00 00  00 00 00 00 00 00 00 00  |`..@............|\n00003030  47 43 43 3a 20 28 47 4e  55 29 20 31 33 2d 77 69  |GCC: (GNU) 13-wi|\n00003040  6e 33 32 00 00 00 00 00  00 00 00 00 00 00 00 00  |n32.............|\n00003050  47 43 43 3a 20 28 47 4e  55 29 20 31 33 2d 77 69  |GCC: (GNU) 13-wi|\n00003060  6e 33 32 00 00 0"
+      },
+      {
+        "call_number": 11,
+        "tool": "hexdump",
+        "input": {
+          "length": 176,
+          "offset": 4565,
+          "path": "sample_7fa102.bin"
+        },
+        "output_preview": "000011d5  55 48 89 e5 48 83 ec 40  48 89 4d 10 48 89 55 18  |UH..H..@H.M.H.U.|\n000011e5  4c 89 45 20 44 89 4d 28  e8 e7 f9 ff ff 85 c0 74  |L.E D.M(.......t|\n000011f5  07 b8 00 00 00 00 eb 68  48 8b 05 fc 23 00 00 48  |.......hH...#..H|\n00001205  8b 15 fd 23 00 00 48 89  45 e0 48 89 55 e8 48 8b  |...#..H.E.H.U.H.|\n00001215  05 f6 23 00 00 48 8b 15  f7 23 00 00 48 89 45 f0  |..#..H...#..H.E.|\n00001225  48 89 55 f8 48 8d 45 e0  4c 8d 05 cc 34 00 00 ba  |H.U.H.E.L...4...|\n00001235  20 00 00 00 48 8"
+      },
+      {
+        "call_number": 12,
+        "tool": "hexdump",
+        "input": {
+          "length": 256,
+          "offset": 9520,
+          "path": "sample_7fa102.bin"
+        },
+        "output_preview": "00002530  55 57 56 53 48 81 ec 98  00 00 00 48 8d ac 24 90  |UWVSH......H..$.|\n00002540  00 00 00 31 f6 e8 f6 ed  ff ff e8 51 fe ff ff 48  |...1.......Q...H|\n00002550  8b 18 48 85 db 75 2c e9  9b 00 00 00 0f 1f 40 00  |..H..u,.......@.|\n00002560  84 c9 74 4c 83 e6 01 74  2f be 01 00 00 00 e8 cd  |..tL...t/.......|\n00002570  fe ff ff 85 c0 74 08 80  7b 01 01 48 83 db ff 48  |.....t..{..H...H|\n00002580  83 c3 01 0f be 0b 80 f9  20 7e d5 89 f0 83 f0 01  |........ ~......|\n00002590  80 f9 22 0f 44 f"
+      },
+      {
+        "call_number": 13,
+        "tool": "hexdump",
+        "input": {
+          "length": 96,
+          "offset": 4483,
+          "path": "sample_7fa102.bin"
+        },
+        "output_preview": "00001183  48 01 ca 8b 12 89 d2 48  01 d0 48 89 45 f0 eb 10  |H......H..H.E...|\n00001193  83 45 ec 01 48 8b 45 c8  8b 40 18 39 45 ec 72 84  |.E..H.E..@.9E.r.|\n000011a3  48 83 7d f0 00 74 20 48  8b 45 f8 4c 8b 4d f0 41  |H.}..t H.E.L.M.A|\n000011b3  b8 00 00 00 00 ba 01 00  00 00 48 89 c1 41 ff d1  |..........H..A..|\n000011c3  b8 00 00 00 00 eb 05 b8  ff ff ff ff 48 83 ec 80  |............H...|\n000011d3  5d c3 55 48 89 e5 48 83  ec 40 48 89 4d 10 48 89  |].UH..H..@H.M.H.|\n000011e3\n"
+      },
+      {
+        "call_number": 14,
+        "tool": "entropy",
+        "input": {
+          "path": "sample_7fa102.bin"
+        },
+        "output_preview": "Total size: 129523 bytes\nOverall entropy: 5.4210 bits/byte\nWindow size: 256 bytes\nWindows analyzed: 506\n\nMin window entropy: 0.0000\nMax window entropy: 8.0000\nAvg window entropy: 3.9296\n\nOffset      Size  Entropy\n-----------------------------------\n0x00000000   256  3.4433  #############\n0x00000100   256  1.6492  ######\n0x00000200   256  2.2680  #########\n0x00000300   256  2.1145  ########\n0x00000400   256  1.2008  ####\n0x00000500   256  0.0000  \n0x00000600   256  5.0582  ####################\n0x"
+      },
+      {
+        "call_number": 15,
+        "tool": "final_answer",
+        "input": {
+          "file_type": "PE32+ (x86-64) Windows console executable (MinGW-w64 GCC 13, with DWARF debug info/symbols)",
+          "encoded_strings": true,
+          "techniques": [
+            "reflective_dll_injection",
+            "self_injection",
+            "manual_pe_mapping",
+            "manual_relocation_processing",
+            "manual_import_resolution",
+            "aes_sbox_cipher",
+            "encrypted_payload",
+            "peb_antidebug",
+            "leetspeak_obfuscation",
+            "sleep_timing"
+          ],
+          "injection_details": {
+            "method": "Reflective DLL injection into the current (own) process. No remote-process APIs (no OpenProcess/WriteProcessMemory/CreateRemoteThread). The decrypted DLL is mapped manually: get_nt_headers -> VirtualAlloc(SizeOfImage, MEM_COMMIT|MEM_RESERVE, PAGE_EXECUTE_READWRITE) at preferred base (fallback NULL) -> memcpy SizeOfHeaders -> map_pe_sections (per-section RVA copy) -> process_relocations (delta = alloc_base - ImageBase, IMAGE_REL_BASED_DIR64=0xA) -> resolve_imports (LoadLibraryA + GetProcAddress for each imported DLL/function) -> export 'DllMain' found by name via export directory (NamePointerTable/OrdinalTable/AddressOfFunctions) and called with (base, DLL_PROCESS_ATTACH=1, NULL).",
+            "target_process": "Current process (self-injection; no target discovery/enumeration)",
+            "payload_write": "32-byte encrypted blob g_encrypted_dll decrypted in place on stack (aes128_decrypt, length 0x20), then mapped via VirtualAlloc + memcpy of headers and sections",
+            "entry_call": "DllMain(base, 1, 0) invoked directly (call r9); reflective_load returns after entry",
+            "other": "After reflective_load, WinMain calls Sleep(2000) and returns 0. The decrypted 32-byte payload does not start with 'MZ' (first plaintext bytes 8F BF AD 51 0C 69 04 03 ...), so the embedded DLL stub does not validate as a PE through this decryptor - payload appears non-functional/decoy."
+          },
+          "encryption_details": {
+            "algorithm": "Custom 128-bit block cipher (named aes128_decrypt): 10 rounds over 16-byte blocks, ECB-style; per byte each round: block[i] = AES_SBOX[block[i]] XOR key[i] XOR (round*27). AES-128-sized key and AES S-box table, but not standard AES (no MixColumns/ShiftRows/key schedule).",
+            "key": "Rfl3ct!v3_DLL_k3 (16 bytes, ASCII; leetspeak for 'Reflect!ve_DLL_k3' / 'Reflective_DLL_key')",
+            "key_storage": "Embedded in .rdata at g_aes_key (VA 0x140005100, file offset 0x2b00) as a plaintext leetspeak-obfuscated string; AES S-box (g_aes_sbox) at VA 0x140005000 (file offset 0x2a00); encrypted payload g_encrypted_dll at VA 0x140004000 (.data, file offset 0x2800, 32 bytes)"
+          },
+          "decoded_strings": {
+            "g_aes_key": "Rfl3ct!v3_DLL_k3 (decodes from leetspeak to 'Reflect!ve_DLL_k3'/'Reflective_DLL_key' - the 16-byte cipher key)",
+            "dll_entry_export": "DllMain (plaintext at g_aes_key+0x10, VA 0x140005110 - export name located and called after reflective load)",
+            "source_file": "windows_level19_ReflectiveDLLInjection.c (debug info)",
+            "decrypted_payload_prefix": "8F BF AD 51 0C 69 04 03 ... (32-byte blob decrypted with the custom cipher; non-ASCII, no MZ/PE magic - payload does not form a valid PE)"
+          },
+          "anti_analysis": [
+            "peb_antidebug: anti_debug_peb reads TEB->ProcessEnvironmentBlock via gs:[0x60] and checks the PEB.BeingDebugged flag (byte at PEB+2); WinMain aborts (returns 0) if set",
+            "encrypted_payload: embedded DLL is stored encrypted (32-byte blob, custom AES-S-box cipher) and only decrypted at runtime",
+            "leetspeak_obfuscation: cipher key stored as obfuscated string 'Rfl3ct!v3_DLL_k3' instead of plaintext to evade string-based detection",
+            "manual_api_usage: injection implemented via manual PE parsing (relocations/imports resolved by hand) with no suspicious remote-injection API imports"
+          ],
+          "decoded_c2": null,
+          "c2_protocol": null
+        },
+        "is_final_answer": true
+      }
+    ],
+    "redundant_tool_calls": 0,
+    "invalid_tool_calls": 0,
+    "invalid_json_attempts": 0,
+    "input_tokens": 832678,
+    "output_tokens": 70078,
+    "reasoning_tokens": 67021,
+    "total_tokens": 902756,
+    "wall_time_seconds": 381.09,
+    "llm_seconds": 381.01,
+    "max_steps_hit": false,
+    "has_valid_answer": true,
+    "last_error": null
+  },
+  "metrics": {
+    "task_id": "v3_l19_u",
+    "score": 0.4,
+    "tier": "pe_injection",
+    "field_scores": {
+      "techniques": 0.3,
+      "encryption_key": 1.0,
+      "anti_analysis": 0.0,
+      "encryption_algorithm": 1.0,
+      "file_type": 1.0,
+      "encoded_strings": 1.0
+    },
+    "tool_calls_total": 15,
+    "tool_calls_by_type": {
+      "file": 1,
+      "pe_info": 1,
+      "strings": 2,
+      "objdump": 2,
+      "hexdump": 7,
+      "entropy": 1,
+      "final_answer": 1
+    },
+    "redundant_tool_calls": 0,
+    "invalid_tool_calls": 0,
+    "invalid_json_attempts": 0,
+    "steps_to_answer": 15,
+    "max_steps_hit": false,
+    "has_valid_answer": true,
+    "hallucinated_techniques": [],
+    "hallucination_count": 0,
+    "missing_techniques": [
+      "aes128_encryption",
+      "base_relocation_fixup",
+      "dllmain_invocation",
+      "export_table_parsing",
+      "import_table_resolution",
+      "section_mapping",
+      "virtualalloc_rwx"
+    ],
+    "spurious_fields": [
+      "injection_details",
+      "decoded_strings"
+    ],
+    "spurious_count": 2,
+    "wall_time_seconds": 381.09,
+    "llm_seconds": 381.01,
+    "total_tokens": 902756,
+    "input_tokens": 832678,
+    "output_tokens": 70078,
+    "reasoning_tokens": 67021
+  }
+}

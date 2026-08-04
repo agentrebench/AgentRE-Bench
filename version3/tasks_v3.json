@@ -1,0 +1,185 @@
+{
+  "binary_root": "version3/binaries",
+  "tasks": [
+    {
+      "task_id": "v3_l14_u",
+      "binary_name": "windows/windows_level14_DLLInjection.exe",
+      "display_name": "sample_5281a1.bin",
+      "ground_truth": "version3/ground_truths/windows_level14_DLLInjection.json",
+      "difficulty": 14,
+      "variant": "unstripped",
+      "source_file": "version3/sources/windows_level14_DLLInjection.c"
+    },
+    {
+      "task_id": "v3_l14_s",
+      "binary_name": "windows_stripped/windows_level14_DLLInjection.exe",
+      "display_name": "sample_5281a1.bin",
+      "ground_truth": "version3/ground_truths/windows_level14_DLLInjection.json",
+      "difficulty": 14,
+      "variant": "stripped",
+      "source_file": "version3/sources/windows_level14_DLLInjection.c"
+    },
+    {
+      "task_id": "v3_l15_u",
+      "binary_name": "windows/windows_level15_APCInjection.exe",
+      "display_name": "sample_d3a6b0.bin",
+      "ground_truth": "version3/ground_truths/windows_level15_APCInjection.json",
+      "difficulty": 15,
+      "variant": "unstripped",
+      "source_file": "version3/sources/windows_level15_APCInjection.c"
+    },
+    {
+      "task_id": "v3_l15_s",
+      "binary_name": "windows_stripped/windows_level15_APCInjection.exe",
+      "display_name": "sample_d3a6b0.bin",
+      "ground_truth": "version3/ground_truths/windows_level15_APCInjection.json",
+      "difficulty": 15,
+      "variant": "stripped",
+      "source_file": "version3/sources/windows_level15_APCInjection.c"
+    },
+    {
+      "task_id": "v3_l16_u",
+      "binary_name": "windows/windows_level16_CodeCave.exe",
+      "display_name": "sample_f008e1.bin",
+      "ground_truth": "version3/ground_truths/windows_level16_CodeCave.json",
+      "difficulty": 16,
+      "variant": "unstripped",
+      "source_file": "version3/sources/windows_level16_CodeCave.c"
+    },
+    {
+      "task_id": "v3_l16_s",
+      "binary_name": "windows_stripped/windows_level16_CodeCave.exe",
+      "display_name": "sample_f008e1.bin",
+      "ground_truth": "version3/ground_truths/windows_level16_CodeCave.json",
+      "difficulty": 16,
+      "variant": "stripped",
+      "source_file": "version3/sources/windows_level16_CodeCave.c"
+    },
+    {
+      "task_id": "v3_l17_u",
+      "binary_name": "windows/windows_level17_ProcessHollowing.exe",
+      "display_name": "sample_409a1c.bin",
+      "ground_truth": "version3/ground_truths/windows_level17_ProcessHollowing.json",
+      "difficulty": 17,
+      "variant": "unstripped",
+      "source_file": "version3/sources/windows_level17_ProcessHollowing.c"
+    },
+    {
+      "task_id": "v3_l17_s",
+      "binary_name": "windows_stripped/windows_level17_ProcessHollowing.exe",
+      "display_name": "sample_409a1c.bin",
+      "ground_truth": "version3/ground_truths/windows_level17_ProcessHollowing.json",
+      "difficulty": 17,
+      "variant": "stripped",
+      "source_file": "version3/sources/windows_level17_ProcessHollowing.c"
+    },
+    {
+      "task_id": "v3_l18_u",
+      "binary_name": "windows/windows_level18_HellsGate.exe",
+      "display_name": "sample_a189b9.bin",
+      "ground_truth": "version3/ground_truths/windows_level18_HellsGate.json",
+      "difficulty": 18,
+      "variant": "unstripped",
+      "source_file": "version3/sources/windows_level18_HellsGate.c"
+    },
+    {
+      "task_id": "v3_l18_s",
+      "binary_name": "windows_stripped/windows_level18_HellsGate.exe",
+      "display_name": "sample_a189b9.bin",
+      "ground_truth": "version3/ground_truths/windows_level18_HellsGate.json",
+      "difficulty": 18,
+      "variant": "stripped",
+      "source_file": "version3/sources/windows_level18_HellsGate.c"
+    },
+    {
+      "task_id": "v3_l19_u",
+      "binary_name": "windows/windows_level19_ReflectiveDLLInjection.exe",
+      "display_name": "sample_7fa102.bin",
+      "ground_truth": "version3/ground_truths/windows_level19_ReflectiveDLLInjection.json",
+      "difficulty": 19,
+      "variant": "unstripped",
+      "source_file": "version3/sources/windows_level19_ReflectiveDLLInjection.c"
+    },
+    {
+      "task_id": "v3_l19_s",
+      "binary_name": "windows_stripped/windows_level19_ReflectiveDLLInjection.exe",
+      "display_name": "sample_7fa102.bin",
+      "ground_truth": "version3/ground_truths/windows_level19_ReflectiveDLLInjection.json",
+      "difficulty": 19,
+      "variant": "stripped",
+      "source_file": "version3/sources/windows_level19_ReflectiveDLLInjection.c"
+    },
+    {
+      "task_id": "v3_l20_u",
+      "binary_name": "windows/windows_level20_RemotePEExecution.exe",
+      "display_name": "sample_358577.bin",
+      "ground_truth": "version3/ground_truths/windows_level20_RemotePEExecution.json",
+      "difficulty": 20,
+      "variant": "unstripped",
+      "source_file": "version3/sources/windows_level20_RemotePEExecution.c"
+    },
+    {
+      "task_id": "v3_l20_s",
+      "binary_name": "windows_stripped/windows_level20_RemotePEExecution.exe",
+      "display_name": "sample_358577.bin",
+      "ground_truth": "version3/ground_truths/windows_level20_RemotePEExecution.json",
+      "difficulty": 20,
+      "variant": "stripped",
+      "source_file": "version3/sources/windows_level20_RemotePEExecution.c"
+    },
+    {
+      "task_id": "v3_l21_u",
+      "binary_name": "windows/windows_level21_GhostProcessHollowing.exe",
+      "display_name": "sample_81270e.bin",
+      "ground_truth": "version3/ground_truths/windows_level21_GhostProcessHollowing.json",
+      "difficulty": 21,
+      "variant": "unstripped",
+      "source_file": "version3/sources/windows_level21_GhostProcessHollowing.c"
+    },
+    {
+      "task_id": "v3_l21_s",
+      "binary_name": "windows_stripped/windows_level21_GhostProcessHollowing.exe",
+      "display_name": "sample_81270e.bin",
+      "ground_truth": "version3/ground_truths/windows_level21_GhostProcessHollowing.json",
+      "difficulty": 21,
+      "variant": "stripped",
+      "source_file": "version3/sources/windows_level21_GhostProcessHollowing.c"
+    },
+    {
+      "task_id": "v3_l22_u",
+      "binary_name": "windows/windows_level22_AESEncryptedMultiTechnique.exe",
+      "display_name": "sample_b5133f.bin",
+      "ground_truth": "version3/ground_truths/windows_level22_AESEncryptedMultiTechnique.json",
+      "difficulty": 22,
+      "variant": "unstripped",
+      "source_file": "version3/sources/windows_level22_AESEncryptedMultiTechnique.cpp"
+    },
+    {
+      "task_id": "v3_l22_s",
+      "binary_name": "windows_stripped/windows_level22_AESEncryptedMultiTechnique.exe",
+      "display_name": "sample_b5133f.bin",
+      "ground_truth": "version3/ground_truths/windows_level22_AESEncryptedMultiTechnique.json",
+      "difficulty": 22,
+      "variant": "stripped",
+      "source_file": "version3/sources/windows_level22_AESEncryptedMultiTechnique.cpp"
+    },
+    {
+      "task_id": "v3_l23_u",
+      "binary_name": "windows/windows_level23_WannaCryWorm.exe",
+      "display_name": "sample_7e03ce.bin",
+      "ground_truth": "version3/ground_truths/windows_level23_WannaCryWorm.json",
+      "difficulty": 23,
+      "variant": "unstripped",
+      "source_file": "version3/sources/windows_level23_WannaCryWorm.c"
+    },
+    {
+      "task_id": "v3_l23_s",
+      "binary_name": "windows_stripped/windows_level23_WannaCryWorm.exe",
+      "display_name": "sample_7e03ce.bin",
+      "ground_truth": "version3/ground_truths/windows_level23_WannaCryWorm.json",
+      "difficulty": 23,
+      "variant": "stripped",
+      "source_file": "version3/sources/windows_level23_WannaCryWorm.c"
+    }
+  ]
+}

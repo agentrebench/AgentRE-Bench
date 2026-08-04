@@ -1,0 +1,66 @@
+{
+  "file_type": "PE32+ (x86-64) Windows console executable, LLVM/MinGW-w64 C++ (libc++abi/libunwind), stripped, LLD-linked",
+  "encoded_strings": true,
+  "techniques": [
+    "remote_thread_injection",
+    "process_injection_virtualallocex_writeprocessmemory_createremotethread",
+    "manual_getprocaddress",
+    "direct_syscall",
+    "nt_syscall_number_extraction",
+    "peb_module_walk",
+    "anti_debug_isdebuggerpresent",
+    "anti_debug_checkremotedebuggerpresent",
+    "anti_debug_ntqueryinformationprocess",
+    "anti_debug_ntsetinformationthread",
+    "aes_256_string_encryption",
+    "string_obfuscation",
+    "key_hiding_in_plaintext",
+    "dynamic_api_resolution",
+    "tlscallback"
+  ],
+  "decoded_c2": null,
+  "c2_protocol": null,
+  "encryption_details": {
+    "algorithm": "AES-256 (custom implementation; AES S-box table present in .rdata; class names 'AES256Provider'/'CryptoProvider')",
+    "key": "AES-256-S3cur3-K3y-F0r-Mult1-T3c",
+    "key_storage": "Hard-coded in plaintext in .rdata as the first 32 bytes of the string 'AES-256-S3cur3-K3y-F0r-Mult1-T3cntdll.dll' (the trailing 'ntdll.dll' doubles as the DLL name string passed to GetModuleHandleA/GetProcAddress - classic key-hiding-by-concatenation). Encrypted string blobs stored in .rdata at RVA 0x38780 (40 bytes: 00 80 e0 37 79 c3 41 43 17 6e 05 b5 b5 b8 93 46 f5 f9 3f e9 03 4f 38 4d 32 1d 30 f9 48 77 82 5a 3c bf 73 7f dd 4f 15 75) and RVA 0x387b0 (40 bytes: bc 89 d8 97 b2 d2 9c 3c 33 a7 a8 d5 23 f6 49 39 3d a7 f4 44 fd 0f a5 32 9d 97 8c cf 08 ba 5b 25 43 6f ac 64 28 06 c8 0a), preceded by a length/offset header (dwords 5, 25, 125)."
+  },
+  "decoded_strings": {
+    "aes_key": "AES-256-S3cur3-K3y-F0r-Mult1-T3c",
+    "module_name_wide": "kernel32.dll",
+    "module_name_ascii": "ntdll.dll",
+    "nt_apis_resolved": [
+      "NtAllocateVirtualMemory",
+      "NtWriteVirtualMemory",
+      "NtProtectVirtualMemory",
+      "NtCreateThreadEx",
+      "NtSetInformationThread",
+      "NtQueryInformationProcess"
+    ],
+    "api_resolved": "GetSystemTimePreciseAsFileTime",
+    "class_names": [
+      "AES256Provider",
+      "CryptoProvider",
+      "RemoteThreadInjector",
+      "ProcessInjector"
+    ]
+  },
+  "anti_analysis": [
+    "Anti-debug via IsDebuggerPresent()",
+    "Anti-debug via CheckRemoteDebuggerPresent(GetCurrentProcess(), &out)",
+    "Anti-debug via NtQueryInformationProcess(GetCurrentProcess(), ProcessDebugPort=7, ...)",
+    "Anti-debug via NtSetInformationThread(GetCurrentThread(), ThreadHideFromDebugger=0x11, ...)",
+    "Direct syscall stubs (syscall numbers extracted at runtime from ntdll stubs matching '4C 8B D1 B8' mov r10,rcx/mov eax,imm pattern - Hell's Gate style) to evade user-mode hooks",
+    "Encrypted/encoded strings (AES-256)",
+    "AES key hidden in plaintext by concatenating it with the 'ntdll.dll' string",
+    "PEB InMemoryOrderModuleList walking to locate kernel32.dll (module whose 1st char is 'K'/'k' and 7th char is '3')",
+    "NT API names not imported; resolved dynamically via GetModuleHandleA/GetProcAddress"
+  ],
+  "injection_details": {
+    "method": "VirtualAllocEx -> WriteProcessMemory -> CreateRemoteThread (followed by WaitForSingleObject(5000ms) and CloseHandle); memory allocated with MEM_COMMIT|MEM_RESERVE (0x3000) and PAGE_EXECUTE_READWRITE (0x40). Equivalent NT APIs (NtAllocateVirtualMemory, NtWriteVirtualMemory, NtProtectVirtualMemory, NtCreateThreadEx) are resolved and their syscall numbers extracted for direct-syscall use. An alternate path uses VirtualProtect.",
+    "target_process": "Current process (handle obtained via GetCurrentProcess()) - the sample injects a 0x60-byte payload from .data (RVA 0x3e000) into its own process via CreateRemoteThread in the injection helper at 0x140001a80, orchestrated from the function at 0x140001510 (which first constructs CryptoProvider/AES256Provider objects). No process enumeration (no Toolhelp32 snapshot / OpenProcess / process-name string) was found, so no remote target discovery.",
+    "target_discovery": "None (self-injection; target handle = GetCurrentProcess())",
+    "payload": "0x60-byte buffer at RVA 0x3e000 in .data written to the allocated RWX region and executed as a thread entry point",
+    "code_location": "Injection orchestration at 0x140001510; syscall-number extractor at 0x140001920; anti-debug at 0x140001670; alloc/write/thread helper at 0x140001a80"
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "file_type": "PE32+ (x86-64) console executable, MinGW-w64 / GCC 13 built, 19 sections, DWARF debug info + COFF symbols retained",
+  "encoded_strings": true,
+  "techniques": [
+    "hells_gate_syscall_number_resolution",
+    "syscall_stub_integrity_check",
+    "ntdll_hook_detection",
+    "syscall_number_egg_hunt_scan",
+    "rc4_encrypted_embedded_payload",
+    "self_injection_local_shellcode_execution",
+    "virtualalloc_rwx_allocation",
+    "createthread_shellcode_execution",
+    "dynamic_api_resolution_getmodulehandle_getprocaddress",
+    "runtime_payload_decryption_in_memory",
+    "hardcoded_rc4_key_in_rdata"
+  ],
+  "c2_protocol": null,
+  "decoded_c2": null,
+  "encryption_details": {
+    "algorithm": "RC4 (custom hand-rolled implementation: rc4_init @0x140001480 = standard 256-byte KSA, rc4_crypt @0x140001573 = standard PRGA XOR)",
+    "key": "H3llsG@t3_Sysc@l  (16 bytes: 48 33 6C 6C 73 47 40 74 33 5F 53 79 73 63 40 6C)",
+    "key_storage": "Hard-coded plaintext byte array `g_rc4_key` in the .rdata section at VA 0x140004000; key length 0x10 is passed as an immediate to rc4_init from WinMain (0x140001ADA). No key derivation/obfuscation."
+  },
+  "decoded_strings": {
+    "g_rc4_key @0x140004000": "H3llsG@t3_Sysc@l (RC4 key; deliberately leetspeak-styled 'HellsGate_Syscall' marker)",
+    "0x140004010": "ntdll.dll",
+    "0x14000401A": "NtAllocateVirtualMemory",
+    "0x140004032": "NtWriteVirtualMemory",
+    "0x140004047": "NtProtectVirtualMemory",
+    "0x14000405E": "NtCreateThreadEx",
+    "0x14000406F": "NtClose",
+    "0x140004077": "NtOpenProcess",
+    "0x140004085": "NtQueueApcThread",
+    "g_encrypted_payload @0x140003000 (64 bytes, RC4 ciphertext)": "c97e13a845df326c910e75b328fa4d8117a3d568f02b9e44cc59e73f8a16b15d22946fdb087caa31e54f891cd265f83b9d1076c057ea24b84c811ea933dd6bf5 -- decrypts at runtime with the RC4 key above into a 64-byte shellcode stub that is copied into a PAGE_EXECUTE_READWRITE allocation and run via CreateThread (plaintext not recovered statically; no strings/imports are referenced from it)",
+    "source filename (COFF symbol)": "windows_level18_HellsGate.c",
+    "internal function names (not stripped)": "rc4_init, rc4_crypt, resolve_syscall_number, invoke_syscall, check_stub_integrity, execute_payload, g_rc4_key, g_encrypted_payload, g_syscall_table, g_syscall_count"
+  },
+  "injection_details": {
+    "method": "Local/self shellcode injection: VirtualAlloc(NULL, 0x40, MEM_COMMIT|MEM_RESERVE=0x3000, PAGE_EXECUTE_READWRITE=0x40) -> memcpy(decrypted payload) -> CreateThread(entry=buffer) -> WaitForSingleObject(hThread, 5000) -> CloseHandle",
+    "target_process": "self (own process). GetCurrentProcess() is called at execute_payload+0x10 and stored, and NtOpenProcess/NtQueueApcThread SSNs are resolved, but no remote process is ever opened or written to - the remote-injection path is unimplemented in this build.",
+    "target_discovery": "none - no process enumeration (no CreateToolhelp32Snapshot / NtQuerySystemInformation / process-name comparison). Handle comes from GetCurrentProcess() (pseudo-handle -1).",
+    "payload_write": "plain msvcrt memcpy() into the locally VirtualAlloc'd RWX buffer (no NtWriteVirtualMemory call is actually issued)",
+    "payload_source": "64-byte RC4-encrypted blob `g_encrypted_payload` in .data (0x140003000), copied to a stack buffer and decrypted in place before execution",
+    "payload_size": "0x40 (64) bytes",
+    "execution_primitive": "kernel32!CreateThread (imported via IAT), thread start address = RWX buffer, parameter = NULL, flags = 0",
+    "syscall_layer": "resolve_syscall_number() extracts syscall numbers (SSNs) from ntdll stubs for NtAllocateVirtualMemory, NtWriteVirtualMemory, NtProtectVirtualMemory, NtCreateThreadEx, NtClose, NtOpenProcess, NtQueueApcThread, but invoke_syscall() @0x1400017C9 is a stub that immediately returns STATUS_UNSUCCESSFUL (0xC0000001) - there is no 'syscall' instruction in the binary, so the direct-syscall gate is non-functional and the code falls back to imported Win32 APIs.",
+    "notes": "execute_payload aborts (returns -1) if the NtAllocateVirtualMemory or NtWriteVirtualMemory SSN could not be resolved, so hooked/unresolvable ntdll acts as an execution guard."
+  },
+  "anti_analysis": [
+    "Syscall stub integrity check / user-mode hook detection: check_stub_integrity() @0x1400017F0 resolves an ntdll export and verifies the first four bytes are 4C 8B D1 B8 (mov r10,rcx; mov eax,imm32); any EDR jmp/int3 patch causes the check to fail",
+    "Hell's Gate dynamic SSN resolution: syscall numbers are read at runtime from dword [stub+4] instead of being hard-coded, defeating static SSN signatures and OS-version pinning",
+    "Egg-hunt fallback scan (resolve_syscall_number @0x1400016A9): if the prologue is hooked, it scans the first 32 bytes of the stub for the pattern B8 ?? 00 00 (mov eax, <small imm32>) to recover the SSN from a patched/trampolined stub",
+    "Payload obfuscation: shellcode is stored RC4-encrypted in .data and only decrypted in memory immediately before execution, so it is invisible to static string/YARA scanning of the on-disk file",
+    "Execution guard: aborts with -1 if required SSNs cannot be resolved (i.e. if ntdll is unexpectedly modified/instrumented)",
+    "Sensitive API/DLL names ('ntdll.dll', Nt* names) are resolved dynamically via GetModuleHandleA + GetProcAddress rather than being placed in the import table, keeping the IAT benign (only 18 KERNEL32 + 26 msvcrt imports)",
+    "Sleep(1000) at the end of WinMain and WaitForSingleObject(hThread, 5000) - short timing delays around payload execution",
+    "Note: TLS callback directory is present but points only to mingw-w64's standard __mingw_TLScallback (CRT, not an anti-debug callback); no IsDebuggerPresent / PEB BeingDebugged / NtQueryInformationProcess / CheckRemoteDebuggerPresent / int3 / rdtsc anti-debug checks were found"
+  ]
+}

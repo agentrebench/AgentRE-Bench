@@ -960,7 +960,8 @@ footer a:hover { color: var(--accent); }
           <a href="/challenge/leaderboard/">Leaderboard</a>
         </div>
       </div>
-      <a href="#leaderboard">Leaderboard</a>
+      <a href="/results/v3-pe/">V3 PE Results</a>
+      <a href="#leaderboard">V2 ELF Results</a>
       <a href="#tasks">Tasks</a>
       <a href="#private-evals">Private Evals</a>
       <a href="https://github.com/agentrebench/AgentRE-Bench">GitHub</a>
@@ -977,13 +978,13 @@ footer a:hover { color: var(--accent); }
       <div class="hero-label">AI security benchmark platform</div>
       <h1>AI agents can write code. Can they reverse engineer it?</h1>
       <p class="subtitle">AgentRE-Bench evaluates LLM agents on compiled reverse-engineering tasks with no source code, no hints, and deterministic scoring.</p>
-      <div class="finding-inline"><strong>V2 finding:</strong> reasoning depth does not automatically win. Hallucination calibration does.</div>
+      <div class="finding-inline"><strong>V3 finding:</strong> Kimi K3 leads both breadth and the bonus tier; stripping reduced matched-pair scores by 6.47% without making the PE artifacts opaque.</div>
       <p class="pitch">
         The public benchmark is the credibility layer: open tasks, reproducible runs, and a leaderboard for AI reverse-engineering agents.
         Private evaluations and training-environment pilots test whether agents generalize to unreleased binaries instead of producing plausible reports.
       </p>
       <div class="hero-buttons">
-        <a href="#leaderboard" class="btn btn-primary">View Leaderboard</a>
+        <a href="/results/v3-pe/" class="btn btn-primary">View V3 PE Results</a>
         <a href="mailto:contact@agentrebench.ai?subject=AgentRE-Bench%20Inquiry" class="btn btn-secondary">Contact Us</a>
         <a href="https://github.com/agentrebench/AgentRE-Bench" class="text-link">
           <svg class="gh-icon" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
@@ -994,18 +995,18 @@ footer a:hover { color: var(--accent); }
     <aside class="hero-panel" aria-label="AgentRE-Bench snapshot">
       <div class="panel-top">
         <div class="panel-title">Benchmark Snapshot</div>
-        <span class="status-pill">V2 Linux Results</span>
+        <span class="status-pill">V3 Windows PE</span>
       </div>
       <div class="stat-grid">
-        <div class="stat-card"><strong>13</strong><span>ELF reverse-engineering tasks evaluated</span></div>
-        <div class="stat-card"><strong>10</strong><span>Windows PE tasks in the public ladder</span></div>
-        <div class="stat-card"><strong>6</strong><span>frontier model runs on the leaderboard</span></div>
+        <div class="stat-card"><strong>120</strong><span>binary-only PE evaluation episodes</span></div>
+        <div class="stat-card"><strong>20</strong><span>paired stripped and unstripped artifacts per model</span></div>
+        <div class="stat-card"><strong>6</strong><span>frontier models in the V3 result set</span></div>
         <div class="stat-card"><strong>0</strong><span>LLM judges; deterministic scoring only</span></div>
       </div>
       <div class="mini-leaderboard">
-        <div class="mini-row" style="--score-width: 100%;"><span>01</span><strong>Gemini 3.1 Flash Lite</strong><span>0.667</span></div>
-        <div class="mini-row" style="--score-width: 97%;"><span>02</span><strong>DeepSeek V4 Pro</strong><span>0.648</span></div>
-        <div class="mini-row" style="--score-width: 77%;"><span>03</span><strong>Claude Opus 4.7</strong><span>0.512</span></div>
+        <div class="mini-row" style="--score-width: 100%;"><span>01</span><strong>Kimi K3</strong><span>1.3618</span></div>
+        <div class="mini-row" style="--score-width: 94%;"><span>02</span><strong>Claude Opus 5</strong><span>1.2785</span></div>
+        <div class="mini-row" style="--score-width: 89%;"><span>03</span><strong>GPT-5.6 Sol</strong><span>1.2157</span></div>
       </div>
     </aside>
   </div>
@@ -1038,7 +1039,7 @@ footer a:hover { color: var(--accent); }
     <div class="section-tag">Leaderboard</div>
     <h2 class="section-title">How frontier models perform (Linux levels)</h2>
     <p class="section-desc">
-      All 13 Linux ELF levels, 25 tool-call budget, Docker-sandboxed static analysis tools. Six frontier models evaluated end-to-end. <strong style="color: var(--text);">Headline finding:</strong> a small non-thinking model (Gemini 3.1 Flash Lite) leads the field, beating every frontier reasoning model on Main score. Hallucination calibration &mdash; not reasoning depth &mdash; is the dominant axis on this bench. Windows PE results coming soon.
+      All 13 Linux ELF levels, 25 tool-call budget, Docker-sandboxed static analysis tools. Six frontier models evaluated end-to-end. <strong style="color: var(--text);">Headline finding:</strong> a small non-thinking model (Gemini 3.1 Flash Lite) leads the field, beating every frontier reasoning model on Main score. Hallucination calibration &mdash; not reasoning depth &mdash; is the dominant axis on this bench. <a href="/results/v3-pe/">V3 Windows PE results are now live.</a>
     </p>
 
     <div class="model-tabs" role="tablist" aria-label="Model performance">
@@ -1264,7 +1265,7 @@ footer a:hover { color: var(--accent); }
       <summary>Windows — PE32+ x86-64 (Levels 14-23)</summary>
       <div class="details-content">
     <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 20px;margin-bottom:16px;font-size:0.85rem;color:var(--text-dim);line-height:1.6;">
-      <strong style="color:var(--indigo);">10 Windows PE32+ levels</strong> &mdash; cross-compiled synthetic malware covering DLL injection, process hollowing, Hell's Gate syscalls, reflective DLL loading, and a full synthetic WannaCry-inspired ransomware worm (reconstructed, not original code). <strong style="color:var(--text);">Source code, ground truths, and binaries are ready. LLM agent evaluation results coming soon.</strong>
+      <strong style="color:var(--indigo);">10 Windows PE32+ levels</strong> &mdash; cross-compiled synthetic malware covering DLL injection, process hollowing, Hell's Gate syscalls, reflective DLL loading, and a full synthetic WannaCry-inspired ransomware worm (reconstructed, not original code). <strong style="color:var(--text);">Six frontier models have now completed 120 paired PE episodes.</strong> <a href="/results/v3-pe/">Read the V3 results and stripped-binary analysis.</a>
     </div>
     <div class="table-wrap">
       <table>

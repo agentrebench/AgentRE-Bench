@@ -1,0 +1,47 @@
+{
+  "file_type": "PE32+ (x86-64) console executable for MS Windows (MinGW-w64 / GCC 13.2, built with debug symbols from source 'windows_level20_RemotePEExecution.c')",
+  "encoded_strings": true,
+  "techniques": [
+    "rc4_encryption",
+    "process_injection",
+    "manual_getprocaddress",
+    "create_remote_thread",
+    "virtualalloc_ex_remote_write",
+    "toolhelp_snapshot_target_discovery",
+    "anti_sandbox",
+    "string_obfuscation",
+    "sleep_evasion"
+  ],
+  "decoded_c2": null,
+  "c2_protocol": null,
+  "encryption_details": {
+    "algorithm": "RC4 (custom rc4_init/rc4_crypt routines, standard RC4 KSA/PRGA)",
+    "key": "R3m0t3_PE_3x3c_K",
+    "key_storage": "Hardcoded in .rdata as g_rc4_key (VA 0x140005000). The 16-byte key is the leading portion of the obfuscated string 'R3m0t3_PE_3x3c_Kntdll.dll' (leetspeak for 'Remote_PE_Exec_Kntdll.dll'); the trailing substring 'ntdll.dll' is reused as the module name for NT API resolution. Payload: 64-byte RC4-encrypted blob g_encrypted_pe in .data (VA 0x140004000), decrypted in-place with rc4_crypt(state, g_encrypted_pe, 64)."
+  },
+  "decoded_strings": {
+    "rc4_key": "R3m0t3_PE_3x3c_K",
+    "ntdll_module": "ntdll.dll",
+    "resolved_api_1": "NtWriteVirtualMemory",
+    "resolved_api_2": "NtClose",
+    "injection_target": "explorer.exe",
+    "sandbox_detection": "sbiedll.dll",
+    "debugger_analysis_detection": "dbghelp.dll / SymSetOptions",
+    "encrypted_payload": "7de35a8c1fb446d92e81f73b65ca08924a1cbd73e85d319f06fc78dd238a51b714e06bcd38a50f72d6499e35fb11872c60aa19f44d83e57a3ec19658b026dd6f"
+  },
+  "anti_analysis": [
+    "anti_sandbox: GetModuleHandleA('sbiedll.dll') - detects Sandboxie and returns 1",
+    "anti_debugger_module_detection: GetModuleHandleA('dbghelp.dll') + GetProcAddress('SymSetOptions') (debugger/analysis-tooling presence check)",
+    "sleep_evasion: Sleep(30000ms) then exit when sandbox detected (WinMain)",
+    "string_obfuscation: leetspeak-encoded key string 'R3m0t3_PE_3x3c_K...' and RC4-encrypted embedded payload",
+    "dynamic_api_resolution: NT APIs not imported, resolved at runtime via GetModuleHandleA/GetProcAddress"
+  ],
+  "injection_details": {
+    "method": "Remote PE image injection (manual PE write + remote thread): OpenProcess(0x43A = PROCESS_CREATE_THREAD|PROCESS_QUERY_INFORMATION|PROCESS_VM_OPERATION|PROCESS_VM_READ|PROCESS_VM_WRITE), VirtualAllocEx(MEM_RESERVE|MEM_COMMIT, PAGE_EXECUTE_READWRITE) in target, write PE headers (SizeOfHeaders) and each section (VirtualAddress/PointerToRawData/SizeOfRawData) via NtWriteVirtualMemory, apply IMAGE_REL_BASED_DIR64 base relocations (ReadProcessMemory old value + delta, NtWriteVirtualMemory new value), then CreateRemoteThread at remote_base + AddressOfEntryPoint. Not DLL injection and not process hollowing (no CreateProcess/suspend/PEB write).",
+    "target_process": "explorer.exe",
+    "target_discovery": "CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS) + Process32First/Process32Next + strcmp against 'explorer.exe'",
+    "payload_write": "NtWriteVirtualMemory (resolved from ntdll.dll) into VirtualAllocEx'd region in the target process; payload is the RC4-decrypted 64-byte PE stub stored at g_encrypted_pe",
+    "post_execution": "WaitForSingleObject(hThread, 10000), CloseHandle(hThread), NtClose(hProcess); VirtualFreeEx + NtClose on error paths",
+    "entry_point_param": "CreateRemoteThread lpParameter = remote_base (payload receives its own image base as argument)"
+  }
+}

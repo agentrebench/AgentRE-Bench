@@ -1,0 +1,42 @@
+{
+  "decoded_c2": null,
+  "file_type": "PE32+",
+  "injection_details": {
+    "target_discovery": "Process snapshot enumeration via CreateToolhelp32Snapshot, Process32First, and Process32Next looking for explorer.exe (falls back to GetCurrentProcessId if not found)",
+    "target_process": "explorer.exe",
+    "method": "Manual Mapping / PE Injection via NtWriteVirtualMemory and CreateRemoteThread",
+    "payload_writing": "VirtualAllocEx + NtWriteVirtualMemory (writes PE header, section data, and applies base relocations)"
+  },
+  "encoded_strings": true,
+  "decoded_strings": {
+    "rc4_key": "R3m0t3_PE_3x3c_K",
+    "ntdll_function_1": "NtWriteVirtualMemory",
+    "antidebugging_api": "SymSetOptions",
+    "antidebugging_dll": "dbghelp.dll",
+    "target_process": "explorer.exe",
+    "antivirtualization_dll": "sbiedll.dll",
+    "ntdll_function_2": "NtClose"
+  },
+  "c2_protocol": null,
+  "encryption_details": {
+    "key": "R3m0t3_PE_3x3c_K",
+    "key_storage": "Hardcoded ASCII string stored in .rdata section at image offset 0x5000 (VA 0x140005000)",
+    "algorithm": "RC4"
+  },
+  "anti_analysis": [
+    "Sandboxie detection via GetModuleHandleA('sbiedll.dll')",
+    "Debugger / analysis tool detection via GetModuleHandleA('dbghelp.dll') and GetProcAddress('SymSetOptions')",
+    "Delayed execution / anti-sandbox timing delay via Sleep(30000) if analysis environment is detected"
+  ],
+  "techniques": [
+    "process_injection",
+    "pe_injection",
+    "manual_mapping",
+    "rc4_encryption",
+    "process_enumeration",
+    "dynamic_api_resolution",
+    "anti_sandbox",
+    "anti_debugging",
+    "sleep_delay"
+  ]
+}

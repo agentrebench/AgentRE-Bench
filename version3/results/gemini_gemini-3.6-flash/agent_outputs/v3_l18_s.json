@@ -1,0 +1,42 @@
+{
+  "encryption_details": {
+    "key": "H3llsG@t3_Sysc@l",
+    "key_storage": "Hardcoded ASCII string in .rdata section at VA 0x140004000",
+    "algorithm": "RC4"
+  },
+  "encoded_strings": true,
+  "c2_protocol": null,
+  "file_type": "PE32+",
+  "anti_analysis": [
+    "EDR hook evasion via Hell's Gate / Halo's Gate dynamic SSN resolution from ntdll.dll",
+    "TLS Callbacks execution before PE entry point"
+  ],
+  "injection_details": {
+    "target_discovery": "N/A (self-injection)",
+    "method": "VirtualAlloc + memcpy + CreateThread",
+    "target_process": "self (current process)",
+    "payload_writing": "memcpy into RWX memory buffer"
+  },
+  "decoded_c2": null,
+  "techniques": [
+    "rc4_encryption",
+    "hells_gate",
+    "halos_gate",
+    "direct_syscalls",
+    "tls_callbacks",
+    "shellcode_execution",
+    "dynamic_api_resolution"
+  ],
+  "decoded_strings": {
+    "0x140004077": "NtOpenProcess",
+    "0x14000405e": "NtCreateThreadEx",
+    "0x140004047": "NtProtectVirtualMemory",
+    "0x140004085": "NtQueueApcThread",
+    "0x140004000": "H3llsG@t3_Sysc@l",
+    "0x140003000": "RC4 encrypted shellcode payload (64 bytes)",
+    "0x140004032": "NtWriteVirtualMemory",
+    "0x14000401a": "NtAllocateVirtualMemory",
+    "0x14000406f": "NtClose",
+    "0x140004010": "ntdll.dll"
+  }
+}

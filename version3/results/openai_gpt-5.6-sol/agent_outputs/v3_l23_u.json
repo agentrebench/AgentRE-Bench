@@ -1,0 +1,72 @@
+{
+  "file_type": "PE32+ (x86-64) Windows console executable",
+  "encoded_strings": true,
+  "decoded_c2": "255.255.255.255:8443",
+  "techniques": [
+    "recursive_file_enumeration_FindFirstFileA_FindNextFileA",
+    "extension_based_file_targeting",
+    "custom_aes_like_16_byte_block_encryption",
+    "partial_file_encryption_first_1MiB",
+    "destructive_truncation_of_files_larger_than_1MiB",
+    "encrypted_file_rename_to_.WNCCRY",
+    "encrypted_file_hidden_attribute",
+    "xor_string_obfuscation",
+    "single_instance_mutex_CreateMutexA",
+    "http_killswitch_InternetOpenUrlA",
+    "windows_service_persistence_CreateServiceA_StartServiceA",
+    "tcp_445_connect_scan_192.0.2.1-5",
+    "tcp_beacon_socket_connect_send_port_8443",
+    "dynamic_api_resolution_GetProcAddress_NtQueryInformationProcess",
+    "anti_debug_IsDebuggerPresent",
+    "anti_debug_PEB_BeingDebugged",
+    "anti_debug_NtQueryInformationProcess_ProcessDebugPort",
+    "anti_vm_VMware_driver_artifact_checks",
+    "anti_sandbox_Sandboxie_module_check",
+    "anti_vm_CPUID_hypervisor_present_bit"
+  ],
+  "c2_protocol": "TCP",
+  "encryption_details": {
+    "algorithm": "File encryption uses a custom AES-128-like, ECB-style 16-byte transform, not standards-compliant AES: 10 rounds of standard AES S-box substitution followed by XOR with the same key byte and the low byte of round*27; there is no ShiftRows, MixColumns, key schedule, IV, or padding. Strings use repeating-key XOR.",
+    "key": "File key: ASCII \"W@nCryPt0K3y2024\" (hex 57406e4372795074304b337932303234). String XOR key: hex deadbeef1337cafe.",
+    "key_storage": "Both keys are embedded in cleartext in .rdata as g_aes_file_key (VA 0x14000a100) and g_str_key (VA 0x14000a220); there is no key derivation or wrapping. Only complete 16-byte blocks among the first min(file_size, 0x100000) bytes are transformed. The embedded DER-like g_rsa_pubkey is truncated/unused by the observed encryption path."
+  },
+  "decoded_strings": {
+    "g_encrypted_c2_ip": {
+      "ciphertext_hex": "93c3cead205f8bdadd8ad39932",
+      "xor_result_escaped": "MnpB3hA$\\x03'mv!",
+      "xor_result_hex": "4d6e70423368412403276d7621",
+      "assessment": "The code passes this 13-byte result to inet_addr. It is not valid IPv4 text, so inet_addr returns INADDR_NONE (0xffffffff), making the effective sockaddr destination 255.255.255.255:8443."
+    },
+    "g_encrypted_note_path": {
+      "ciphertext_hex": "91d5d7a37651e592d6fdd7cd6750eec6c8c8cca76750e892d6f0d7a77647f692c8c7cca77206a9c6",
+      "xor_result_escaped": "OxiLef/l\\x08Pi\"tg$8\\x16erHtg\"l\\x08]iHep<l\\x16jrHa1c8",
+      "xor_result_hex": "4f78694c65662f6c0850692274672438166572487467226c085d694865703c6c166a724861316338",
+      "assessment": "This blob does not decode to valid text with the binary's XOR routine/key and is not used by the observed ransom-note path."
+    },
+    "plaintext_ransom_note_path": "%s\\@Please_Read_Me@.txt",
+    "killswitch_url": "http://example.com",
+    "mutex": "Global\\MsWinZonesCacheCounterMutexA",
+    "service_name": "mssecsvc2.0",
+    "service_display_name": "Microsoft Security Center (2.0)",
+    "beacon_format": "SYSTEM:%s:WIN:%ld",
+    "scan_template": "192.0.2.%d"
+  },
+  "anti_analysis": [
+    "IsDebuggerPresent API check",
+    "Direct x64 TEB/PEB access via GS:[0x60], testing PEB.BeingDebugged at offset 2",
+    "GetProcAddress-resolved NtQueryInformationProcess with ProcessDebugPort (information class 7), treating debug port -1 as detected",
+    "GetFileAttributesA checks for VMware artifacts C:\\Windows\\System32\\drivers\\vmmouse.sys and C:\\Windows\\System32\\drivers\\vmhgfs.sys",
+    "GetModuleHandleA check for Sandboxie module sbiedll.dll",
+    "CPUID leaf 1 ECX bit 31 hypervisor-present check",
+    "WinINet kill-switch gate: exits when http://example.com is reachable",
+    "Single-instance global mutex gate"
+  ],
+  "injection_details": {
+    "present": false,
+    "method": null,
+    "target_process": null,
+    "target_discovery": null,
+    "payload_write": null,
+    "evidence": "No process-injection path was found. The binary does not import or dynamically resolve OpenProcess, VirtualAllocEx, WriteProcessMemory, CreateRemoteThread, NtMapViewOfSection, or equivalent injection APIs. Its network propagation routine only probes TCP/445 on 192.0.2.1 through 192.0.2.5 and does not write a payload."
+  }
+}

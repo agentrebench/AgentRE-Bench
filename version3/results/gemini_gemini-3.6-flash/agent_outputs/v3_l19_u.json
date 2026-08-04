@@ -1,0 +1,29 @@
+{
+  "encryption_details": {
+    "key": "Rfl3ct!v3_DLL_k3",
+    "algorithm": "AES-128",
+    "key_storage": "Stored as plaintext string in .rdata section at g_aes_key (VA 0x140005100)"
+  },
+  "file_type": "PE32+",
+  "techniques": [
+    "reflective_dll_injection",
+    "peb_antidebug",
+    "aes_decryption",
+    "dynamic_import_resolution"
+  ],
+  "decoded_strings": {
+    "g_aes_key": "Rfl3ct!v3_DLL_k3",
+    "exported_function_name": "DllMain"
+  },
+  "c2_protocol": null,
+  "encoded_strings": true,
+  "decoded_c2": null,
+  "anti_analysis": [
+    "PEB BeingDebugged flag check via gs:[0x60] + 0x02 (anti_debug_peb)"
+  ],
+  "injection_details": {
+    "payload_location": "g_encrypted_dll in .data section (VA 0x140004000) decrypted into VirtualAlloc memory",
+    "target_process": "Self (current process)",
+    "method": "Reflective DLL Injection (VirtualAlloc + manual PE section mapping, relocation processing, import resolution, and calling DllMain)"
+  }
+}

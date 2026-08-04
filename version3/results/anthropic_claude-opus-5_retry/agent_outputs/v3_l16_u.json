@@ -1,0 +1,56 @@
+{
+  "file_type": "PE32+ (x86-64) console executable, MinGW-w64 / GCC 13 build, 19 sections, DWARF debug info retained (source: windows_level16_CodeCave.c)",
+  "encoded_strings": true,
+  "techniques": [
+    "code_cave_injection",
+    "self_injection",
+    "pe_header_parsing",
+    "section_slack_space_abuse",
+    "xor_decryption_of_payload",
+    "sbox_based_block_decryption_decoy",
+    "manual_getprocaddress",
+    "ntdll_function_resolution",
+    "createremotethread_execution",
+    "ntcreatethreadex_fallback",
+    "virtualprotectex_rwx_flip",
+    "writeprocessmemory_payload_write",
+    "anti_vm_cpuid_hypervisor_bit",
+    "no_virtualalloc_allocation_evasion"
+  ],
+  "injection_details": {
+    "method": "Code-cave injection into the process's own mapped PE image: find_code_cave() -> VirtualProtectEx(PAGE_EXECUTE_READWRITE 0x40) -> WriteProcessMemory -> VirtualProtectEx(PAGE_EXECUTE_READ 0x20) -> CreateRemoteThread, with NtCreateThreadEx as fallback",
+    "target_process": "Self (current process). Handle from GetCurrentProcess(); target module base from GetModuleHandleA(NULL) \u2014 i.e. the sample injects into its own image, no external victim process is opened (no OpenProcess/CreateToolhelp32Snapshot imported)",
+    "target_discovery": "find_code_cave() at 0x140001664 walks the in-memory PE: validates 'MZ' (0x5A4D) and 'PE\\0\\0' (0x4550), iterates IMAGE_SECTION_HEADERs looking for sections with IMAGE_SCN_MEM_EXECUTE (0x20000000). Strategy 1: use the slack between Misc.VirtualSize and SizeOfRawData (returns base + VirtualAddress + SizeOfRawData). Strategy 2: byte-scan the executable section for a contiguous run of 0xCC (INT3 padding) or 0x00 bytes at least payload-size long and return the run start.",
+    "payload_write": "WriteProcessMemory(hProc, cave, decrypted_shellcode, 0x30, &written) after flipping the cave page to PAGE_EXECUTE_READWRITE with VirtualProtectEx; protection is restored to PAGE_EXECUTE_READ before execution. On WriteProcessMemory failure the original protection is restored and the routine bails out.",
+    "payload_size": "0x30 (48) bytes, stored XOR-encrypted in .data as g_encrypted_shellcode (0x140003000)",
+    "execution": "CreateRemoteThread(hProc, NULL, 0, cave, NULL, 0, NULL); if it returns NULL, resolve_nt_func() does GetModuleHandleA(\"ntdll.dll\") + GetProcAddress(\"NtCreateThreadEx\") and calls it with DesiredAccess 0x1FFFFF and StartRoutine = cave. Then WaitForSingleObject(hThread, 5000) and CloseHandle.",
+    "notable": "No VirtualAlloc/VirtualAllocEx is used at all \u2014 the payload is hidden in existing executable section padding, avoiding new RWX private allocations."
+  },
+  "encryption_details": {
+    "algorithm": "Two layers: (1) Real payload = repeating-key XOR (12-byte key) applied by xor_decrypt() at 0x140001480. (2) Decoy 'AES-128' \u2014 aes128_decrypt_block() at 0x1400014EF is NOT real AES: it performs 10 rounds of byte-wise state[j] = AES_SBox[state[j]] ^ key[j] ^ (27*round) with no ShiftRows/MixColumns/key schedule, and uses the FORWARD S-box. It decrypts g_encrypted_block into a stack buffer that is never referenced again (dead code / analyst decoy).",
+    "key": "XOR key (g_xor_key, 12 bytes @0x140004000): C3 7A 9F 2E 55 8B 1D 6C E4 31 A8 4F  |  AES-ish key (g_aes_key, 16 bytes @0x140004120): '4xdm1n_S3cr3t!!!'",
+    "key_storage": "Both keys are hard-coded plaintext in the read-only .rdata section; the AES key is directly adjacent to the plaintext strings 'ntdll.dll' and 'NtCreateThreadEx' (0x140004130/0x14000413A). The full standard AES S-box is embedded at g_aes_sbox (0x140004020). No key derivation, no runtime key material."
+  },
+  "decoded_strings": {
+    "g_aes_key (0x140004120)": "4xdm1n_S3cr3t!!!",
+    "resolve_nt_func module string (0x140004130)": "ntdll.dll",
+    "fallback API name (0x14000413A)": "NtCreateThreadEx",
+    "g_xor_key (0x140004000, 12 bytes)": "C3 7A 9F 2E 55 8B 1D 6C E4 31 A8 4F",
+    "g_encrypted_shellcode (0x140003000, 48 bytes, ciphertext)": "8F 1D F4 4C 35 EE 79 0A 83 52 CB 29 95 6E 11 47 B6 3F D8 0C 61 FA 4D 32 E7 18 85 5B 90 26 AC 7D 13 48 DD 31 6A F7 0E 54 BF 82 19 C6 3A A5 71 E8",
+    "injected payload (XOR-decrypted with g_xor_key, 48 bytes)": "4C 67 6B 62 60 65 64 66 67 63 63 66 56 14 8E 69 E3 B4 C5 60 85 CB E5 7D 24 62 1A 75 C5 AD B1 11 F7 79 75 7E A9 8D 91 7A EA 09 04 AA DE 94 D9 A7  (non-ASCII, non-functional stub/placeholder shellcode - contains no strings, URLs or syscall stubs)",
+    "g_encrypted_block (0x140003030, 16 bytes, decoy AES ciphertext)": "7A 9C F4 2E 8B 1D 6C 55 31 A8 4F E4 2B 91 DD 66",
+    "decoy block after aes128_decrypt_block (first 3 bytes recomputed)": "05 4B 58 ... (result is written to a stack buffer that is never used - pure decoy)"
+  },
+  "anti_analysis": [
+    "anti_vm_cpuid_hypervisor_present_bit: anti_vm_check() at 0x1400015EA executes CPUID with EAX=1 and tests bit 31 of ECX (hypervisor-present bit); if set it returns 1",
+    "sandbox_timeout_evasion: on VM/hypervisor detection WinMain calls Sleep(30000) (0x7530) and returns 0 without ever injecting, so dynamic sandboxes observe benign behaviour",
+    "decoy_crypto_routine: a fake 'AES-128' S-box routine decrypts g_encrypted_block with the eye-catching key '4xdm1n_S3cr3t!!!' but the plaintext is never used - designed to waste analyst time",
+    "dynamic_api_resolution: NtCreateThreadEx is resolved at runtime via GetModuleHandleA(\"ntdll.dll\") + GetProcAddress instead of being imported, hiding it from static import analysis",
+    "in_image_payload_hiding: payload is written into existing executable-section padding (0xCC/0x00 code caves) rather than a fresh VirtualAlloc RWX region, so memory scanners see no private RWX allocation and the module remains image-backed",
+    "transient_page_protection: cave page is only PAGE_EXECUTE_READWRITE during the write and is reverted to PAGE_EXECUTE_READ before thread creation",
+    "payload_encryption_at_rest: shellcode kept XOR-encrypted in .data and only decrypted onto the stack at runtime, defeating signature scanning of the file",
+    "post_injection_sleep: Sleep(1000) after injection"
+  ],
+  "c2_protocol": null,
+  "decoded_c2": null
+}

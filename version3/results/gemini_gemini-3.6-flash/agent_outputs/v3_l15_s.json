@@ -1,0 +1,35 @@
+{
+  "encryption_details": {
+    "key": "4a8c1fd367e92b05cafe77339d125e88",
+    "key_storage": "Embedded plaintext in .rdata section at VMA 0x140005000",
+    "algorithm": "RC4"
+  },
+  "injection_details": {
+    "target_discovery": "GetCurrentProcessId + CreateToolhelp32Snapshot + Thread32First / Thread32Next + OpenThread",
+    "target_process": "Self (current process PID from GetCurrentProcessId)",
+    "method": "APC Injection (NtQueueApcThread)",
+    "execution_method": "NtQueueApcThread + NtAlertResumeThread",
+    "payload_writing": "NtAllocateVirtualMemory + NtWriteVirtualMemory"
+  },
+  "anti_analysis": [
+    "NtQueryInformationProcess with ProcessDebugPort (0x7) check",
+    "TLS callbacks (array at 0x14000a038)"
+  ],
+  "file_type": "PE32+ executable (console) x86-64",
+  "encoded_strings": true,
+  "decoded_strings": {
+    "rc4_key": "4a8c1fd367e92b05cafe77339d125e88",
+    "encrypted_payload_location": "0x140004000 (.data section, 48 bytes)"
+  },
+  "c2_protocol": null,
+  "techniques": [
+    "apc_injection",
+    "ntqueueapcthread_injection",
+    "rc4_encryption",
+    "dynamic_api_resolution",
+    "anti_debugging",
+    "thread_enumeration",
+    "process_suspension"
+  ],
+  "decoded_c2": null
+}

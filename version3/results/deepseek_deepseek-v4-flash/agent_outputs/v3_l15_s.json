@@ -1,0 +1,48 @@
+{
+  "file_type": "PE32+ (x86-64) Windows console executable, MinGW-w64 GCC 13 build, 10 sections, TLS callbacks present, entry point 0x140001410",
+  "encoded_strings": true,
+  "techniques": [
+    "rc4_encryption",
+    "dynamic_api_resolution",
+    "manual_getprocaddress",
+    "apc_injection",
+    "ntapi_usage",
+    "self_process_injection",
+    "thread_enumeration",
+    "thread_suspension",
+    "peb_antidebug",
+    "tls_callback",
+    "sleep_delay"
+  ],
+  "injection_details": {
+    "method": "APC injection via NtQueueApcThread: NtAllocateVirtualMemory (MEM_COMMIT|MEM_RESERVE=0x3000, PAGE_EXECUTE_READWRITE=0x40) -> NtWriteVirtualMemory -> NtQueueApcThread(payload addr) -> NtAlertResumeThread",
+    "target_process": "Self (current process). PID obtained via GetCurrentProcessId(), no hardcoded process name.",
+    "target_discovery": "NtOpenProcess on own PID with DesiredAccess 0x42a; first thread belonging to the PID found via CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD=4)/Thread32First/Thread32Next, opened with OpenThread(0x12) and suspended with SuspendThread before APC delivery",
+    "payload": "0x30-byte (48-byte) x64 shellcode, RC4-decrypted at runtime from .data RVA 0x4000 then written into fresh RWX memory in the same process"
+  },
+  "encryption_details": {
+    "algorithm": "RC4 (hand-rolled KSA at 0x140001480 and PRGA at 0x140001573, 256-byte S-box)",
+    "key": "4a8c1fd367e92b05cafe77339d125e88",
+    "key_storage": "16-byte key stored in plaintext in .rdata at RVA 0x5000 (file offset 0x2800); 48-byte ciphertext blob stored in .data at RVA 0x4000 (file offset 0x2600): 8e3d721ed55891c32f46bb79e4118c5a673ea40df69b2844bd7113a5dc087e329954e16c1a87f0462b985dcf730ea641"
+  },
+  "decoded_strings": {
+    "ntdll.dll": "module resolved at runtime via GetModuleHandleA",
+    "NtOpenProcess": "resolved via GetProcAddress for process open (0x42a)",
+    "NtQueryInformationProcess": "resolved for ProcessDebugPort anti-debug check (class 7)",
+    "NtAllocateVirtualMemory": "resolved for RWX allocation in target",
+    "NtWriteVirtualMemory": "resolved to write RC4-decrypted payload",
+    "NtQueueApcThread": "resolved to queue APC for payload execution",
+    "NtAlertResumeThread": "resolved to resume suspended thread",
+    "NtClose": "resolved for handle cleanup",
+    "rc4_payload": "48-byte x64 shellcode blob encrypted with RC4 (key above); injected and executed in-process via APC"
+  },
+  "anti_analysis": [
+    "anti_debug: NtQueryInformationProcess(ProcessInformationClass=7, ProcessDebugPort) - if DebugPort == -1 (0xffffffff) the run aborts (handle closed, injection skipped)",
+    "TLS callbacks: two callbacks registered (0x140001dc0 and 0x140001d90) that run before entry",
+    "RC4-encrypted embedded payload (no plaintext shellcode/strings in binary)",
+    "Indirect NT API calls through resolved function pointers (no ntdll import table entries)",
+    "No networking/import libraries (ws2_32, wininet, winhttp absent) limiting static detection"
+  ],
+  "decoded_c2": null,
+  "c2_protocol": null
+}

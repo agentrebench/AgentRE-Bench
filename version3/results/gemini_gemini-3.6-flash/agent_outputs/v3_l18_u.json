@@ -1,0 +1,37 @@
+{
+  "decoded_c2": null,
+  "encryption_details": {
+    "key_storage": "Hardcoded global string in .rdata section (g_rc4_key)",
+    "key": "H3llsG@t3_Sysc@l",
+    "algorithm": "RC4"
+  },
+  "c2_protocol": null,
+  "techniques": [
+    "hells_gate",
+    "direct_syscalls",
+    "rc4_encryption",
+    "hook_detection",
+    "dynamic_api_resolution",
+    "shellcode_execution",
+    "local_thread_execution"
+  ],
+  "injection_details": null,
+  "decoded_strings": {
+    "syscall_3": "NtProtectVirtualMemory",
+    "syscall_4": "NtCreateThreadEx",
+    "syscall_2": "NtWriteVirtualMemory",
+    "syscall_5": "NtClose",
+    "g_rc4_key": "H3llsG@t3_Sysc@l",
+    "syscall_6": "NtOpenProcess",
+    "ntdll_module": "ntdll.dll",
+    "syscall_7": "NtQueueApcThread",
+    "syscall_1": "NtAllocateVirtualMemory"
+  },
+  "file_type": "PE32+",
+  "anti_analysis": [
+    "hook_detection",
+    "stub_integrity_checking",
+    "hells_gate_syscall_resolution"
+  ],
+  "encoded_strings": true
+}

@@ -1,0 +1,61 @@
+{
+  "anti_analysis": [
+    "anti_debug_ntqueryinformationprocess_debugport",
+    "anti_debug_ntqueryinformationprocess_debugflags",
+    "silent_exit_on_debugger",
+    "stack_string_obfuscation",
+    "dynamic_api_resolution"
+  ],
+  "c2_protocol": null,
+  "decoded_c2": null,
+  "decoded_strings": {
+    "api_names": [
+      "ntdll.dll",
+      "NtQueryInformationProcess",
+      "NtUnmapViewOfSection",
+      "NtReadVirtualMemory"
+    ],
+    "encrypted_payload_hex": "8bdccb9a7652ab8efdd96c314a27e35f187489bdd0462e6a1b97fc833d51ae127709c4b8e5916f330c58dfa385297b1e46ba92e75c308814f34d21b6da6e0f9c",
+    "encrypted_payload_note": "64-byte blob in .data @ 0x140004000; decrypted at runtime by XOR(key=deadbeef1337cafebabe) then RC4(key=Hollowing_PE!!!!), then injected into suspended svchost.exe",
+    "marker_string": "Hollowing_PE!!!!",
+    "rc4_key": "Hollowing_PE!!!!",
+    "target_path": "C:\\Windows\\System32\\svchost.exe",
+    "xor_key_hex": "deadbeef1337cafebabe"
+  },
+  "encoded_strings": true,
+  "encryption_details": {
+    "algorithm": "Two-layer: (1) repeating-key XOR with 10-byte key DE AD BE EF 13 37 CA FE BA BE, then (2) RC4 with 16-byte ASCII key \"Hollowing_PE!!!!\". Applied to a 64-byte payload blob at .data 0x140004000 (file offset 0x2800). Decryption order in code: XOR first (buf,len=0x40,key,keylen=0xA), then RC4 KSA/PRGA (keylen=0x10).",
+    "key": "XOR key: DE AD BE EF 13 37 CA FE BA BE (10 bytes); RC4 key: \"Hollowing_PE!!!!\" (16 bytes)",
+    "key_storage": "Both keys stored in cleartext in .rdata: XOR key @ 0x140005000, RC4 key @ 0x140005010, adjacent to plaintext ntdll API-name strings."
+  },
+  "file_type": "PE32+ (x86-64) console executable, MinGW-w64 GCC 13, stripped",
+  "injection_details": {
+    "allocation": "VirtualAllocEx(hProcess, preferredImageBase, payloadSize=0x40, MEM_COMMIT|MEM_RESERVE=0x3000, PAGE_EXECUTE_READWRITE=0x40), with retry at arbitrary base if the preferred base allocation fails",
+    "entry_point_redirect": "GetThreadContext(hThread, ctx.ContextFlags=0x10000b), ctx.Rcx = allocated base, SetThreadContext, ResumeThread \u2014 classic hollowing entry-point hijack via Rcx",
+    "execution": "ResumeThread on the suspended primary thread, then Sleep(2000); on failure paths TerminateProcess + CloseHandle cleanup",
+    "method": "Process hollowing via CreateProcessA(CREATE_SUSPENDED) -> NtQueryInformationProcess(ProcessBasicInformation) -> NtReadVirtualMemory(PEB+0x10) -> NtUnmapViewOfSection -> VirtualAllocEx(RWX) -> WriteProcessMemory -> GetThreadContext/SetThreadContext(Rcx=entry) -> ResumeThread",
+    "nt_api_resolution": "NtQueryInformationProcess, NtUnmapViewOfSection, NtReadVirtualMemory resolved at runtime via GetModuleHandleA(\"ntdll.dll\") + GetProcAddress (helper at 0x140001718)",
+    "payload_size": "0x40 (64 bytes)",
+    "payload_source": "64-byte buffer in .data @ 0x140004000, decrypted in-memory at runtime (XOR key deadbeef1337cafebabe, then RC4 key \"Hollowing_PE!!!!\") and written with a single WriteProcessMemory at the allocated image base",
+    "target_discovery": "Hardcoded target path constructed on the stack via movabs immediates (stack string)",
+    "target_process": "C:\\\\Windows\\\\System32\\\\svchost.exe",
+    "unmap": "Original image unmapped with NtUnmapViewOfSection(hProcess, imageBase) after reading ImageBaseAddress from PEB+0x10 via NtReadVirtualMemory"
+  },
+  "techniques": [
+    "process_hollowing",
+    "create_process_suspended",
+    "ntunmapviewofsection",
+    "ntreadvirtualmemory_peb_imagebase",
+    "ntqueryinformationprocess_pbi",
+    "virtualallocex_rwx",
+    "writeprocessmemory",
+    "thread_context_hijack_rcx",
+    "resumethread",
+    "dynamic_api_resolution_getprocaddress",
+    "xor_encoding",
+    "rc4_encryption",
+    "stack_strings_movabs",
+    "anti_debug_processdebugport",
+    "anti_debug_processdebugflags"
+  ]
+}

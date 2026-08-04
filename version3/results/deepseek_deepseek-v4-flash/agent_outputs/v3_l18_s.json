@@ -1,0 +1,50 @@
+{
+  "file_type": "PE32+ (x86-64) Windows console executable (MinGW-w64/GCC 13 build, stripped)",
+  "encoded_strings": true,
+  "techniques": [
+    "rc4_encryption",
+    "hellsgate_syscall_resolution",
+    "direct_syscall_anti_hooking",
+    "virtualalloc_rwx",
+    "createthread_self_injection",
+    "getmodulehandle_getprocaddress",
+    "string_obfuscation_leetspeak",
+    "runtime_decryption_of_payload",
+    "tls_callbacks"
+  ],
+  "encryption_details": {
+    "algorithm": "RC4",
+    "key": "H3llsG@t3_Sysc@l",
+    "key_storage": "16-byte key stored in plaintext in .rdata at RVA 0x140004000; leetspeak-encoded form of 'HellsGate_Syscall'"
+  },
+  "decoded_strings": {
+    "rc4_key_decoded": "H3llsG@t3_Sysc@l -> HellsGate_Syscall",
+    "ntdll_module": "ntdll.dll",
+    "syscall_names": [
+      "NtAllocateVirtualMemory",
+      "NtWriteVirtualMemory",
+      "NtProtectVirtualMemory",
+      "NtCreateThreadEx",
+      "NtClose",
+      "NtOpenProcess",
+      "NtQueueApcThread"
+    ],
+    "encrypted_payload_ciphertext": "c9 7e 13 a8 45 df 32 6c 91 0e 75 b3 28 fa 4d 81 17 a3 d5 68 f0 2b 9e 44 cc 59 e7 3f 8a 16 b1 5d 22 94 6f db 08 7c aa 31 e5 4f 89 1c d2 65 f8 3b 9d 10 76 c0 57 ea 24 b8 4c 81 1e a9 33 dd 6b f5"
+  },
+  "injection_details": {
+    "method": "VirtualAlloc(RWX) + memcpy + CreateThread (current-process self-injection)",
+    "target_process": "current process (GetCurrentProcess handle; no remote target)",
+    "target_discovery": "none - self-injection",
+    "payload_write": "64-byte shellcode RC4-decrypted at runtime (from .data RVA 0x140003000) copied into RWX VirtualAlloc buffer, executed as a new thread",
+    "post_execution": "WaitForSingleObject(5000 ms) then CloseHandle",
+    "note": "Hell's Gate Nt* syscall numbers are resolved (NtAllocateVirtualMemory/NtWriteVirtualMemory/NtProtectVirtualMemory/NtCreateThreadEx/NtClose/NtOpenProcess/NtQueueApcThread) but the executed path uses imported VirtualAlloc/CreateThread - resolved numbers are effectively unused/decoy in this build"
+  },
+  "anti_analysis": [
+    "hellsgate_direct_syscalls (evades userland API hooking/EDR by resolving and invoking native syscalls directly)",
+    "rc4_encrypted_payload_decrypted_at_runtime (payload not visible statically)",
+    "string_obfuscation (leetspeak encoding of key/marker strings)",
+    "tls_callbacks present (MinGW CRT __dyn_tls_init/__tls_init at 0x140001c70/0x140001c40)"
+  ],
+  "decoded_c2": null,
+  "c2_protocol": null
+}

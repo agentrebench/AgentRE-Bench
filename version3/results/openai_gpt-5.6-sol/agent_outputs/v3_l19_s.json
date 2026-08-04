@@ -1,0 +1,45 @@
+{
+  "file_type": "PE32+ (x86-64) Windows console executable",
+  "encoded_strings": false,
+  "decoded_c2": null,
+  "techniques": [
+    "peb_beingdebugged_check",
+    "custom_aes_sbox_xor_payload_transform",
+    "reflective_dll_loading",
+    "in_process_manual_pe_mapping",
+    "manual_section_mapping",
+    "manual_base_relocations_dir64",
+    "manual_iat_resolution_via_loadlibrarya_getprocaddress",
+    "manual_export_lookup_for_dllmain",
+    "rwx_virtualalloc",
+    "direct_dllmain_call",
+    "sleep_delay_2000ms"
+  ],
+  "c2_protocol": null,
+  "encryption_details": {
+    "algorithm": "Custom 10-round, 16-byte-block AES-S-box/XOR transform (not standard AES). For each round r=0..9 and byte i=0..15: state[i] = AES_SBOX[state[i]] XOR key[i] XOR ((27*r) & 0xff). There is no AES key schedule, ShiftRows, or MixColumns. It is applied in place to the 32-byte blob at 0x140004000 before the manual PE loader is called.",
+    "key": "Rfl3ct!v3_DLL_k3",
+    "key_storage": "Fixed 16-byte plaintext key in .rdata at VA 0x140005100; it is not separately NUL-terminated and is immediately followed by the plaintext loader lookup string \"DllMain\"."
+  },
+  "decoded_strings": {
+    "recovered_encrypted_text_strings": [],
+    "plaintext_loader_export": "DllMain",
+    "note": "The transformed object is treated as a binary PE payload, not as text. No encrypted textual strings were recoverable; the key and DllMain lookup string are stored plaintext."
+  },
+  "anti_analysis": [
+    "Direct PEB BeingDebugged test: reads PEB from GS:[0x60] and byte offset +0x2; exits the payload path when nonzero.",
+    "Custom at-rest transformation of the embedded 32-byte payload blob to impede straightforward static inspection.",
+    "Sleep(2000) delay after the manual-loader attempt."
+  ],
+  "injection_details": {
+    "process_injection": false,
+    "method": "Local reflective/manual DLL mapping in the current process; there is no remote-process injection.",
+    "target_process": "Current process (self)",
+    "target_discovery": "None. The code does not enumerate or open another process and imports no OpenProcess, WriteProcessMemory, or remote-thread API.",
+    "payload_source": "A 32-byte blob in .data at VA 0x140004000 is copied to a stack buffer and transformed in 16-byte blocks with the custom AES-S-box/XOR routine.",
+    "payload_write": "The mapper validates DOS/NT headers, calls VirtualAlloc first at the payload's preferred ImageBase and then with a NULL base on failure, using MEM_RESERVE|MEM_COMMIT (0x3000) and PAGE_EXECUTE_READWRITE (0x40). It copies headers and sections with memcpy into the local allocation.",
+    "loader_fixups": "Applies IMAGE_REL_BASED_DIR64 relocations and rebuilds the IAT using the imported LoadLibraryA and GetProcAddress.",
+    "execution": "Parses the mapped image export table, searches for the name \"DllMain\", and directly invokes that export as DllMain(mapped_base, DLL_PROCESS_ATTACH, NULL). No thread is created.",
+    "artifact_note": "Only a 32-byte transformed buffer is supplied to a PE manual mapper in this artifact, so it is not a complete embedded PE image; nevertheless, the full local manual-mapping implementation is present."
+  }
+}

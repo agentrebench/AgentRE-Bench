@@ -1,0 +1,66 @@
+{
+  "file_type": "PE32+ (x86-64) Windows console executable (LLVM/LLD llvm-mingw build, statically linked libc++/libc++abi/libunwind, 14 sections)",
+  "encoded_strings": true,
+  "techniques": [
+    "process_injection_virtualallocex",
+    "process_injection_writeprocessmemory",
+    "process_injection_createremotethread",
+    "self_injection",
+    "aes256_custom_substitution_cipher",
+    "hellsgate_syscall_resolution",
+    "peb_walk_find_kernel32",
+    "manual_getprocaddress",
+    "tls_callback_antidebug",
+    "anti_debug_isdebuggerpresent",
+    "anti_debug_checkremotedebuggerpresent",
+    "anti_debug_ntqueryinformationprocess",
+    "anti_debug_ntsetinformationthread",
+    "encrypted_payload",
+    "sleep_loop"
+  ],
+  "decoded_c2": null,
+  "c2_protocol": null,
+  "encryption_details": {
+    "algorithm": "Custom AES-256 variant (14 rounds, per 16-byte block, per byte: state[col] = AES_SBOX[state[col]] XOR key[col % 32] XOR (0x1B * round); standard AES S-box table embedded at g_aes_sbox RVA 0x2F150; CryptoProvider.decrypt() is a virtual wrapper that dispatches to the same encrypt() routine - symmetric design)",
+    "key": "AES-256-S3cur3-K3y-F0r-Mult1-T3c",
+    "key_storage": "Hardcoded plaintext global in .rdata (g_aes_key @ RVA 0x2F0F0); stored on disk as the 39-byte literal 'AES-256-S3cur3-K3y-F0r-Mult1-T3cntdll.dll' (code only uses key[col % 32], so the 32-byte prefix is the effective key)"
+  },
+  "decoded_strings": {
+    "aes_key": "AES-256-S3cur3-K3y-F0r-Mult1-T3c",
+    "module_for_api_resolution": "ntdll.dll",
+    "resolved_nt_api_names": [
+      "NtAllocateVirtualMemory",
+      "NtWriteVirtualMemory",
+      "NtProtectVirtualMemory",
+      "NtCreateThreadEx",
+      "NtSetInformationThread",
+      "NtQueryInformationProcess"
+    ],
+    "rtti_class_names": [
+      "AES256Provider",
+      "CryptoProvider",
+      "RemoteThreadInjector",
+      "ProcessInjector"
+    ]
+  },
+  "anti_analysis": [
+    "IsDebuggerPresent() check (returns 0 if detected)",
+    "CheckRemoteDebuggerPresent() on own process",
+    "NtQueryInformationProcess(ProcessDebugPort=7) - aborts if debug port == 0xFFFFFFFF",
+    "NtSetInformationThread(ThreadHideFromDebugger=0x11) executed from TLS callback and from anti_debug_checks()",
+    "TLS callback (callback array VA 0x140038AA0) performs NtSetInformationThread hide-from-debugger before main",
+    "PEB walk (gs:[0x60] -> PEB->Ldr->InMemoryOrderModuleList) to locate kernel32 by module-name matching",
+    "HellsGate-style syscall number extraction (scans ntdll stubs for 4C 8B D1 B8 pattern, returns SSN)",
+    "Encrypted/AES-obfuscated 96-byte shellcode payload stored in .data",
+    "Odd linker-named sections (/4,/18,/58,/70,/82,/33,/47) - LLD-produced, complicates static tooling"
+  ],
+  "injection_details": {
+    "method": "Remote thread injection: VirtualAllocEx -> WriteProcessMemory -> CreateRemoteThread -> WaitForSingleObject -> CloseHandle (RemoteThreadInjector::inject at 0x140001A80)",
+    "target_process": "Current process (self-injection) - process handle obtained via GetCurrentProcess()",
+    "target_discovery": "None - no process enumeration; the sample injects into itself",
+    "payload": "96-byte (0x60) shellcode stored encrypted in .data global g_encrypted_sc (RVA 0x3E000), decrypted in place with the AES-256 routine using g_aes_key, then injected",
+    "allocation": "VirtualAllocEx with MEM_RESERVE|MEM_COMMIT (0x3000) and PAGE_EXECUTE_READWRITE (0x40)",
+    "post_injection_behavior": "Waits on the remote thread for 5000 ms, closes handle, then Sleep(1000) and exits",
+    "helper_resolution": "NtAllocateVirtualMemory/NtWriteVirtualMemory/NtProtectVirtualMemory/NtCreateThreadEx SSNs resolved via HellsGate-style stub scan (return values not used by WinMain path - appears to be anti-analysis/decoy) and peb_find_kernel32 for kernel32 base"
+  }
+}

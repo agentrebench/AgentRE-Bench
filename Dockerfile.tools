@@ -1,9 +1,11 @@
 FROM ubuntu:22.04
 RUN apt-get update && apt-get install -y --no-install-recommends \
     binutils \
+    binutils-mingw-w64-x86-64 \
     bsdmainutils \
     file \
     python3 \
+    python3-pefile \
     xxd \
     && rm -rf /var/lib/apt/lists/*
 

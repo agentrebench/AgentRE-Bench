@@ -1,0 +1,35 @@
+{
+  "decoded_strings": {
+    "g_xor_key": "Gh0stPr0c3ssH0ll0w"
+  },
+  "file_type": "PE32+",
+  "c2_protocol": null,
+  "encryption_details": {
+    "key": "Gh0stPr0c3ssH0ll0w",
+    "algorithm": "XOR",
+    "key_storage": "Stored as a plaintext ASCII string in the .rdata section at ImageBase + 0x4000"
+  },
+  "injection_details": {
+    "payload_execution": "NtCreateThreadEx pointing to the allocated buffer followed by NtResumeThread",
+    "payload_writing": "NtAllocateVirtualMemory (PAGE_EXECUTE_READWRITE) + NtWriteVirtualMemory",
+    "target_discovery": "GetCurrentProcessId + OpenProcess(PROCESS_ALL_ACCESS)",
+    "method": "NtCreateProcess + NtAllocateVirtualMemory + NtWriteVirtualMemory + NtCreateThreadEx + NtResumeThread",
+    "target_process": "Cloned self process created via NtCreateProcess"
+  },
+  "anti_analysis": [
+    "NtQueryInformationProcess with ProcessDebugPort (0x7)",
+    "NtQueryInformationProcess with ProcessDebugFlags (0x1f)",
+    "Dynamic resolution of ntdll.dll API functions via GetModuleHandleA and GetProcAddress to evade IAT analysis",
+    "XOR encryption of payload buffer in data section"
+  ],
+  "decoded_c2": null,
+  "encoded_strings": true,
+  "techniques": [
+    "process_hollowing",
+    "process_injection",
+    "xor_encoding",
+    "dynamic_api_resolution",
+    "anti_debugging",
+    "ntqueryinformationprocess_antidebug"
+  ]
+}

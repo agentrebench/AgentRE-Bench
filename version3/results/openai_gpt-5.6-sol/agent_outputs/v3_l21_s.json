@@ -1,0 +1,51 @@
+{
+  "file_type": "PE32+ (x86-64) Windows console executable",
+  "encoded_strings": true,
+  "decoded_c2": null,
+  "techniques": [
+    "repeating_key_xor_payload_decoding",
+    "dynamic_ntdll_api_resolution_via_GetModuleHandleA_GetProcAddress",
+    "native_process_creation_via_NtCreateProcess",
+    "self_derived_child_process_injection",
+    "remote_rwx_allocation_via_NtAllocateVirtualMemory",
+    "remote_payload_write_via_NtWriteVirtualMemory",
+    "remote_thread_execution_via_NtCreateThreadEx",
+    "NtResumeThread_call",
+    "NtQueryInformationProcess_anti_debugging"
+  ],
+  "c2_protocol": null,
+  "encryption_details": {
+    "algorithm": "Repeating-key bytewise XOR in place: buffer[i] ^= key[i % 18]",
+    "key": "Gh0stPr0c3ssH0ll0w",
+    "key_storage": "Stored in plaintext at .rdata VA 0x140004000. The key is not NUL-terminated; code supplies the hard-coded length 0x12. It is immediately adjacent to the plaintext ntdll.dll string. The 64-byte encoded payload is stored at .data VA 0x140003000."
+  },
+  "decoded_strings": {
+    "decoded_text_strings": "No encrypted text/API strings were recovered; the XOR-protected object is a 64-byte payload rather than readable text.",
+    "xor_decoded_payload_hex": "6d64656d736e696c6c710e42505a4b210b6d2f61615d0b44315d5b6d52793d7f7a341d144c14036a303f5a6a720e017d1c1b0e644e4258215c4923707b41282e",
+    "plaintext_dynamic_api_names": [
+      "ntdll.dll",
+      "NtQueryInformationProcess",
+      "NtCreateProcess",
+      "NtAllocateVirtualMemory",
+      "NtWriteVirtualMemory",
+      "NtCreateThreadEx",
+      "NtResumeThread",
+      "NtClose"
+    ]
+  },
+  "anti_analysis": [
+    "Dynamically resolves NtQueryInformationProcess and queries information class 7 (ProcessDebugPort), treating a returned value of 0xffffffff as debugger presence.",
+    "Queries NtQueryInformationProcess information class 0x1f (ProcessDebugFlags), treating a returned value of zero as debugger presence.",
+    "Exits before decoding and injection when either debugger check succeeds."
+  ],
+  "injection_details": {
+    "method": "Native-API remote-thread injection: NtCreateProcess -> NtAllocateVirtualMemory -> NtWriteVirtualMemory -> NtCreateThreadEx",
+    "target_process": "A newly created native child process with the current process supplied as ParentProcess and a NULL SectionHandle; there is no named executable or pre-existing target process.",
+    "target_discovery": "No enumeration or name lookup. The sample calls GetCurrentProcessId, opens itself with OpenProcess access 0x80 (PROCESS_CREATE_PROCESS), and passes that handle to NtCreateProcess as ParentProcess.",
+    "process_creation": "NtCreateProcess requests access 0x1fffff, uses a zeroed OBJECT_ATTRIBUTES structure, does not inherit the object table, and supplies NULL section/debug/exception handles.",
+    "payload_preparation": "Copies the static 64-byte blob from .data to the stack and decodes it with repeating-key XOR using the 18-byte plaintext key Gh0stPr0c3ssH0ll0w.",
+    "payload_write": "NtAllocateVirtualMemory allocates 64 bytes in the child at an arbitrary address using MEM_RESERVE|MEM_COMMIT (0x3000) and PAGE_EXECUTE_READWRITE (0x40). NtWriteVirtualMemory then writes the entire decoded 64-byte blob and records the byte count.",
+    "execution": "NtCreateThreadEx creates a thread whose start address is the remote RWX allocation and whose argument is NULL. CreateFlags is zero; despite that, the code subsequently calls NtResumeThread, waits on the thread for 5000 ms, and closes the thread/process handles with NtClose.",
+    "not_process_hollowing": "No target image name, NtUnmapViewOfSection, thread-context replacement, PE remapping, or entry-point overwrite is present; this is allocated-memory remote-thread injection rather than conventional process hollowing."
+  }
+}

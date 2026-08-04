@@ -1,0 +1,68 @@
+{
+  "file_type": "PE32+ (x86-64) console executable, MinGW-w64/GCC 13 built, 19 sections, DWARF debug symbols retained (function/global names visible)",
+  "encoded_strings": true,
+  "techniques": [
+    "ransomware_file_encryption",
+    "aes_like_sbox_block_cipher (custom/simplified AES-128: SubBytes via 256-byte S-box + round-key XOR, 10 rounds)",
+    "xor_string_obfuscation (xor_decrypt with 8-byte key from .rdata)",
+    "recursive_directory_enumeration (FindFirstFileA/FindNextFileA)",
+    "extension_targeting (30+ doc/media/source extensions, .WNCRY rename via MoveFileA)",
+    "ransom_note_dropping (@Please_Read_Me@.txt on %USERPROFILE%\\Desktop and \\Documents)",
+    "single_instance_mutex (Global\\MsWinZonesCacheCounterMutexA)",
+    "killswitch_domain_check (WININET InternetOpenA/InternetOpenUrlA -> http://example.com, exits if reachable)",
+    "service_persistence (OpenSCManagerA/CreateServiceA/StartServiceA as 'mssecsvc2.0')",
+    "smb_worm_propagation (raw TCP connect scan of 192.0.2.1-4 on port 445 with SO_SNDTIMEO)",
+    "c2_beacon_raw_tcp (WS2_32 socket/connect/send to XOR-encrypted IPv4 on TCP 8443)",
+    "host_fingerprint_exfil (GetComputerNameA + GetVersion -> \"SYSTEM:%s:WIN:%ld\")",
+    "anti_debug_isdebuggerpresent",
+    "peb_being_debugged_check (gs:[0x60] -> PEB+0x2)",
+    "manual_getprocaddress (GetModuleHandleA(\"ntdll.dll\") + GetProcAddress(\"NtQueryInformationProcess\"))",
+    "ntqueryinformationprocess_debugport (class 7)",
+    "vm_artifact_file_checks (vmmouse.sys / vmhgfs.sys via GetFileAttributesA)",
+    "sandbox_module_checks (GetModuleHandleA sbiedll.dll, dbghelp.dll)",
+    "cpuid_hypervisor_bit_check (leaf 1, ECX bit 31)",
+    "file_attribute_hiding (SetFileAttributesA FILE_ATTRIBUTE_HIDDEN on encrypted files)",
+    "fake_rsa_public_key_blob (decoy DER header 30 82 01 0A ... in .rdata)",
+    "tls_callback_present (MinGW CRT __dyn_tls_init_callback, not malicious)"
+  ],
+  "anti_analysis": [
+    "IsDebuggerPresent (KERNEL32 import, called first in anti_debug_all @0x1400020F7)",
+    "PEB->BeingDebugged read directly via gs:[0x60]+0x02",
+    "NtQueryInformationProcess(ProcessDebugPort=7) resolved dynamically from ntdll.dll via GetModuleHandleA+GetProcAddress",
+    "VMware driver artifact checks: C:\\Windows\\System32\\drivers\\vmmouse.sys and vmhgfs.sys (GetFileAttributesA)",
+    "Sandboxie detection: GetModuleHandleA(\"sbiedll.dll\")",
+    "Debug-helper module detection: GetModuleHandleA(\"dbghelp.dll\")",
+    "CPUID leaf 1 ECX bit 31 (hypervisor-present bit) check in anti_vm_check @0x1400021DB",
+    "Kill-switch URL probe (http://example.com) \u2013 aborts execution if the domain resolves/responds, defeating sandboxes with fake internet",
+    "Execution aborts (returns 0 from WinMain) if any anti-debug/anti-VM check trips, before any payload activity",
+    "Mutex-based single-instance guard (ERROR_ALREADY_EXISTS -> exit)"
+  ],
+  "encryption_details": {
+    "algorithm": "Two schemes: (1) File encryption = custom/simplified AES-128 block routine 'aes128_encrypt_block' (10 rounds of AES S-box substitution XORed with the 16-byte key and a round constant, 16-byte blocks, first 1 MB of each file); (2) String obfuscation = repeating-key XOR ('xor_decrypt(buf,len,key,keylen)' @0x14000156B)",
+    "key": "File key (g_aes_file_key @0x14000A100): ASCII \"W@nCryPt0K3y2024\" (16 bytes). String XOR key (g_str_key @0x14000A220): DE AD BE EF 13 37 CA FE (8 bytes). AES S-box table g_aes_sbox @0x14000A120 (256 bytes). Decoy RSA public-key DER blob @0x14000A000.",
+    "key_storage": "Both keys are hard-coded plaintext constants in the .rdata section of the image (no key derivation, no network key exchange); the XOR key pointer is passed directly to xor_decrypt at each call site"
+  },
+  "decoded_strings": {
+    "g_mutex_name (0x14000A040)": "Global\\MsWinZonesCacheCounterMutexA",
+    "g_killswitch_domain (0x14000A018) / URL": "example.com  ->  http://example.com (User-Agent: \"Microsoft Internet Explorer\")",
+    "g_aes_file_key (0x14000A100)": "W@nCryPt0K3y2024",
+    "service name / display name": "mssecsvc2.0  /  \"Microsoft Security Center (2.0)\" (binary path = own GetModuleFileNameA path)",
+    "worm target template (0x14000A4A9)": "192.0.2.%d  (scans 192.0.2.1-192.0.2.4 on TCP 445)",
+    "beacon payload template (0x14000A4E4)": "SYSTEM:%s:WIN:%ld  (GetComputerNameA + GetVersion)",
+    "ransom note file (0x14000A267)": "%s\\@Please_Read_Me@.txt  (dropped in %USERPROFILE%\\Desktop and %USERPROFILE%\\Documents)",
+    "ransom note body (0x14000A280)": "Oops, your files have been encrypted!... Payment: Send $300 worth of Bitcoin to this address: 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa (Synthetic - this is the Bitcoin genesis address, no real wallet)",
+    "encrypted-file extension (immediate in encrypt_file)": ".WNCRY",
+    "encryption target directory (immediates in WinMain)": "%PUBLIC%\\Documents\\synthetic_target",
+    "targeted extensions (g_target_extensions 0x140009000)": ".doc .docx .xls .xlsx .ppt .pptx .pdf .txt .jpg .png .bmp .zip .rar .7z .sql .mdb .cpp .c .h .py .js .html .css .xml .json .csv .mp3 .mp4 .avi .wav",
+    "anti-analysis artifact strings": "ntdll.dll, NtQueryInformationProcess, C:\\Windows\\System32\\drivers\\vmmouse.sys, C:\\Windows\\System32\\drivers\\vmhgfs.sys, sbiedll.dll, dbghelp.dll",
+    "g_encrypted_c2_ip (.data 0x140009128, 13 bytes)": "ciphertext 93 C3 CE AD 20 5F 8B DA DD 8A D3 99 32 \u2013 decrypted in c2_beacon() with xor_decrypt(buf,13,g_str_key,8) then passed to inet_addr(); XOR with the stored key DE AD BE EF 13 37 CA FE yields non-ASCII (4D 6E 70 42 33 68 41 24 03 27 6D 76 21), i.e. the embedded blob does not round-trip to a printable dotted-quad (placeholder/mismatched ciphertext). The high-bit pattern of the blob matches the stored key exactly, confirming the key/algorithm.",
+    "g_encrypted_note_path (.data 0x140009100, 40 bytes)": "ciphertext 91 D5 D7 A3 76 51 E5 92 D6 FD D7 CD 67 50 EE C6 C8 C8 CC A7 67 50 E8 92 D6 F0 D7 A7 76 47 F6 92 C8 C7 CC A7 72 06 A9 C6 \u2013 same 8-byte XOR key; not referenced by any code path (the note path used at runtime is the plaintext \"%s\\@Please_Read_Me@.txt\"); raw XOR also yields non-printable output"
+  },
+  "c2_protocol": "TCP (raw WinSock socket/connect/send, port 8443) plus an HTTP kill-switch probe over WININET",
+  "decoded_c2": "XOR-obfuscated IPv4 in .data:0x140009128 (g_encrypted_c2_ip, 13 bytes, key DE AD BE EF 13 37 CA FE) connected on TCP port 8443 (htons(0x20FB)); the blob does not decode to a printable address with the embedded key, so the literal dotted-quad is not recoverable. Related hard-coded network indicators: worm scan range 192.0.2.1-4/TCP445 (\"192.0.2.%d\") and kill-switch URL http://example.com",
+  "injection_details": {
+    "process_injection": "none observed - no VirtualAllocEx/WriteProcessMemory/CreateRemoteThread/NtMapViewOfSection imports or dynamic resolution; VirtualProtect/VirtualQuery present only from the MinGW pseudo-relocation runtime",
+    "persistence_instead": "Windows service installation via ADVAPI32: OpenSCManagerA -> CreateServiceA(\"mssecsvc2.0\", \"Microsoft Security Center (2.0)\", own image path from GetModuleFileNameA, SERVICE_ALL_ACCESS 0xF01FF) -> StartServiceA, with OpenServiceA fallback if the service already exists",
+    "lateral_movement": "worm_propagate() builds 192.0.2.%d addresses and attempts raw TCP connects to port 445 (SMB) with a 2000 ms send timeout, Sleep(100) between hosts"
+  }
+}

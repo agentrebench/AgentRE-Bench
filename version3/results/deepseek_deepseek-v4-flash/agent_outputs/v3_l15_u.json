@@ -1,0 +1,49 @@
+{
+  "file_type": "PE32+ (x86-64) Windows console executable (MinGW-w64 GCC 13, debug info left in binary as DWARF sections)",
+  "encoded_strings": true,
+  "techniques": [
+    "rc4_encryption",
+    "apc_injection",
+    "early_bird_apc_self_injection",
+    "thread_enumeration",
+    "thread_suspension",
+    "dynamic_api_resolution",
+    "anti_debug_debugport_check",
+    "rwx_memory_allocation",
+    "nt_api_stub_usage"
+  ],
+  "decoded_c2": null,
+  "c2_protocol": null,
+  "encryption_details": {
+    "algorithm": "RC4",
+    "key": "4a8c1fd367e92b05cafe77339d125e88",
+    "key_storage": "Hardcoded 16-byte global g_rc4_key in .rdata at RVA 0x5000 (file offset 0x2a00), passed to rc4_init() with keylen 0x10; used to decrypt the 48-byte (0x30) g_encrypted_shellcode buffer in-place via rc4_crypt().",
+    "payload": "48-byte RC4 ciphertext at .data RVA 0x4000: 8e3d721ed55891c32f46bb79e4118c5a673ea40df69b2844bd7113a5dc087e329954e16c1a87f0462b985dcf730ea641"
+  },
+  "decoded_strings": {
+    "ntdll.dll": "module resolved at runtime with GetModuleHandleA",
+    "NtOpenProcess": "resolved via GetProcAddress for process handle",
+    "NtClose": "resolved for handle cleanup",
+    "NtQueryInformationProcess": "called with ProcessInformationClass 7 (ProcessDebugPort) - anti-debug/state check",
+    "NtAllocateVirtualMemory": "allocates MEM_COMMIT|MEM_RESERVE, PAGE_EXECUTE_READWRITE (0x40) in target",
+    "NtWriteVirtualMemory": "writes decrypted shellcode",
+    "NtQueueApcThread": "queues APC to suspended target thread",
+    "NtAlertResumeThread": "resumes thread to trigger APC",
+    "g_rc4_key": "4a8c1fd367e92b05cafe77339d125e88",
+    "g_encrypted_shellcode": "48-byte RC4 blob at RVA 0x4000 (see encryption_details); plaintext not statically recovered"
+  },
+  "anti_analysis": [
+    "Payload encryption: 48-byte shellcode (g_encrypted_shellcode) stored RC4-encrypted and decrypted only at runtime on the stack",
+    "Dynamic NT API resolution: injection APIs (NtOpenProcess, NtClose, NtQueryInformationProcess, NtAllocateVirtualMemory, NtWriteVirtualMemory, NtQueueApcThread, NtAlertResumeThread) are resolved at runtime via GetModuleHandleA('ntdll.dll') + GetProcAddress (resolve_nt), so ntdll never appears in the import table",
+    "Anti-debug heuristic: NtQueryInformationProcess(ProcessDebugPort, class 7) on own process; injection aborts if returned debug port equals 0xFFFFFFFF",
+    "Suspends a thread of the current process (SuspendThread) before queuing the APC so the payload runs in an alertable/wait state",
+    "Debug-symbol/type info left in the binary (DWARF), which is an opsec failure rather than a technique"
+  ],
+  "injection_details": {
+    "method": "Early-bird/APC injection (self-injection): NtOpenProcess(self) -> NtAllocateVirtualMemory(MEM_COMMIT|MEM_RESERVE, PAGE_EXECUTE_READWRITE) -> NtWriteVirtualMemory -> NtQueueApcThread -> NtAlertResumeThread; then NtClose on both handles and Sleep(500ms)",
+    "target_process": "Itself (current process) - PID obtained via GetCurrentProcessId()",
+    "target_discovery": "find_target_thread(): CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD,0) + Thread32First/Thread32Next, selecting the first thread whose th32OwnerProcessID equals the current PID, then OpenThread(0x12 = THREAD_SUSPEND_RESUME|THREAD_SET_CONTEXT) and SuspendThread",
+    "payload": "48-byte RC4-encrypted shellcode at .data RVA 0x4000, decrypted in-place with the 16-byte RC4 key and written to the newly allocated RWX region",
+    "source_file": "windows_level15_APCInjection.c (function names rc4_init/rc4_crypt/resolve_nt/find_target_thread/apc_inject recovered from embedded DWARF symbols)"
+  }
+}

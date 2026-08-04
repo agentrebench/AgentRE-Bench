@@ -1,0 +1,64 @@
+{
+  "file_type": "PE32+ (x86-64) console executable, MinGW-w64/GCC 13 built, stripped (external PDB ref), 10 sections, no resources",
+  "encoded_strings": true,
+  "techniques": [
+    "xor_encoded_payload",
+    "manual_getprocaddress",
+    "ntdll_api_resolution_via_GetModuleHandleA_GetProcAddress",
+    "direct_ntapi_usage",
+    "process_forking_via_NtCreateProcess",
+    "self_process_clone_injection",
+    "ghost_process_hollowing",
+    "NtAllocateVirtualMemory_RWX_remote_alloc",
+    "NtWriteVirtualMemory_payload_write",
+    "NtCreateThreadEx_remote_thread",
+    "NtResumeThread",
+    "shellcode_execution_in_child_process",
+    "anti_debug_NtQueryInformationProcess_ProcessDebugPort",
+    "anti_debug_NtQueryInformationProcess_ProcessDebugFlags",
+    "silent_exit_on_debugger_detection",
+    "stack_local_payload_decryption"
+  ],
+  "injection_details": {
+    "entry_point": "WinMain at 0x14000194b (reached from MinGW main wrapper at 0x140002cf0)",
+    "injector_function": "0x140001614",
+    "method": "Process forking / 'Ghost Process Hollowing': OpenProcess(PROCESS_CREATE_PROCESS=0x80) on self -> NtCreateProcess(ParentProcess=self handle, DesiredAccess=0x1FFFFF) to create a cloned/forked child process object (never started via CreateProcess, no image on disk) -> NtAllocateVirtualMemory (MEM_COMMIT|MEM_RESERVE 0x3000, PAGE_EXECUTE_READWRITE 0x40) -> NtWriteVirtualMemory -> NtCreateThreadEx(access 0x1FFFFF, start=allocated base) -> NtResumeThread -> WaitForSingleObject(hThread, 5000) -> NtClose(thread), NtClose(process)",
+    "target_process": "A clone/fork of the malware's own process (no external victim process; child inherits the parent's address space via NtCreateProcess)",
+    "target_discovery": "GetCurrentProcessId() then OpenProcess(PROCESS_CREATE_PROCESS, FALSE, pid) to obtain a handle to itself used as ParentProcess for NtCreateProcess",
+    "payload_write": "NtWriteVirtualMemory of the 64-byte XOR-decrypted shellcode buffer (decrypted on the injector's stack) into RWX memory allocated in the child process",
+    "payload_size": "0x40 (64) bytes",
+    "payload_source": ".data at 0x140003000 (XOR-encrypted blob)",
+    "apis_resolved_dynamically": "ntdll.dll: NtQueryInformationProcess, NtCreateProcess, NtAllocateVirtualMemory, NtWriteVirtualMemory, NtCreateThreadEx, NtResumeThread, NtClose (all via GetModuleHandleA(\"ntdll.dll\") + GetProcAddress at helper 0x1400014ef)",
+    "imported_helpers": "KERNEL32: OpenProcess, GetCurrentProcess, GetCurrentProcessId, CloseHandle, WaitForSingleObject, Sleep",
+    "post_injection": "Sleep(2000) then returns 0; returns 0 immediately (no injection) if a debugger is detected"
+  },
+  "encryption_details": {
+    "algorithm": "Repeating-key (Vigen\u00e8re-style) byte XOR; decryptor at 0x140001480: buf[i] ^= key[i % keylen], keylen=0x12, len=0x40",
+    "key": "Gh0stPr0c3ssH0ll0w (18 bytes, ASCII 47 68 30 73 74 50 72 30 63 33 73 73 48 30 6c 6c 30 77)",
+    "key_storage": "Hard-coded plaintext ASCII string at .rdata 0x140004000 (it directly abuts \"ntdll.dll\" and is not NUL-terminated; length 0x12 is passed as an immediate to the XOR routine)"
+  },
+  "decoded_strings": {
+    "key_string_0x140004000": "Gh0stPr0c3ssH0ll0w (XOR key / project marker, hints at 'Ghost Process Hollowing')",
+    "encrypted_payload_ciphertext_0x140003000": "2a0c551e073e1b5c0f427d31186a274d3b1a680 9512e7f14436d385e210a754f16582d630b7c331 9446f285a113d720e542b62087e351f496c3a5720 09714b1d (64 bytes, .data)",
+    "decrypted_payload_hex": "6d 64 65 6d 73 6e 69 6c 6c 71 0e 42 50 5a 4b 21 0b 6d 2f 61 61 5d 0b 44 31 5d 5b 6d 52 79 3d 7f 7a 34 1d 14 4c 14 03 6a 30 3f 5a 6a 72 0e 01 7d 1c 1b 0e 64 4e 42 58 21 5c 49 23 70 7b 41 28 2e  -- 64-byte stub/placeholder shellcode; not valid meaningful x86-64 code or ASCII, i.e. a dummy payload buffer",
+    "ntdll.dll": "plaintext at 0x140004012 (module resolved with GetModuleHandleA)",
+    "NtQueryInformationProcess": "plaintext at 0x14000401c (anti-debug)",
+    "NtCreateProcess": "plaintext at 0x140004036",
+    "NtAllocateVirtualMemory": "plaintext at 0x140004046",
+    "NtWriteVirtualMemory": "plaintext at 0x14000405e",
+    "NtCreateThreadEx": "plaintext at 0x140004073",
+    "NtResumeThread": "plaintext at 0x140004084",
+    "NtClose": "plaintext at 0x140004093"
+  },
+  "anti_analysis": [
+    "NtQueryInformationProcess(ProcessDebugPort=7) check: if STATUS_SUCCESS and returned debug port == 0xFFFFFFFF -> debugger detected (function 0x14000153a)",
+    "NtQueryInformationProcess(ProcessDebugFlags=0x1F) check: if STATUS_SUCCESS and flags == 0 -> debugger detected",
+    "Anti-debug is executed first in WinMain; on detection the program returns 0 silently without decrypting or injecting (no error message, benign-looking execution)",
+    "Payload strings/shellcode kept XOR-encrypted in .data so no meaningful strings/IOCs are visible statically",
+    "Sensitive ntdll APIs are resolved at runtime by name (GetModuleHandleA + GetProcAddress) instead of being listed in the import table, so IAT shows only benign KERNEL32/msvcrt imports",
+    "Payload is decrypted only into a stack buffer (never stored decrypted in the image), then immediately written to the child process",
+    "Binary is compiled stripped (symbols/debug info removed, external PDB reference)"
+  ],
+  "c2_protocol": null,
+  "decoded_c2": null
+}

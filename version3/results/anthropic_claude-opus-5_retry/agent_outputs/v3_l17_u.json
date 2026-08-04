@@ -1,0 +1,68 @@
+{
+  "file_type": "PE32+ (x86-64) Windows console executable, MinGW-w64 / GCC 13 built (19 sections, DWARF debug info + COFF symbols retained)",
+  "encoded_strings": true,
+  "techniques": [
+    "process_hollowing",
+    "create_process_suspended",
+    "dynamic_api_resolution_getmodulehandle_getprocaddress",
+    "ntdll_direct_function_resolution",
+    "ntunmapviewofsection_image_unmap",
+    "peb_image_base_read_via_ntreadvirtualmemory",
+    "ntqueryinformationprocess_processbasicinformation",
+    "virtualallocex_rwx_allocation",
+    "writeprocessmemory_payload_write",
+    "getthreadcontext_setthreadcontext_entrypoint_hijack",
+    "resumethread_execution_trigger",
+    "rc4_encryption",
+    "xor_encoding",
+    "layered_multi_stage_payload_decryption",
+    "stack_string_construction",
+    "anti_debug_ntqueryinformationprocess_processdebugport",
+    "anti_debug_ntqueryinformationprocess_processdebugflags",
+    "silent_exit_on_analysis_detection"
+  ],
+  "injection_details": {
+    "method": "Classic Process Hollowing / RunPE (CreateProcessA CREATE_SUSPENDED -> NtUnmapViewOfSection -> VirtualAllocEx -> WriteProcessMemory -> GetThreadContext/SetThreadContext (RCX) -> ResumeThread)",
+    "target_process": "C:\\Windows\\System32\\svchost.exe",
+    "target_discovery": "Hardcoded absolute path built on the stack at runtime with 64-bit movabs immediates ('C:\\Windo' + 'ws\\Syste' + 'm32\\svch' + 'ost.exe\\0') into a 260-byte (MAX_PATH) buffer that is then zero-filled with rep stosq; no process enumeration - the victim process is created by the malware itself in a suspended state",
+    "injector_function": "hollow_process @ 0x14000183d (called from WinMain @ 0x140001c9f)",
+    "step_1_create": "CreateProcessA(NULL, targetPath, NULL, NULL, FALSE, dwCreationFlags=0x4 /*CREATE_SUSPENDED*/, NULL, NULL, &si(0x68 bytes), &pi(0x18 bytes))",
+    "step_2_locate_image_base": "NtQueryInformationProcess(hProcess, ProcessBasicInformation=0, &pbi, 0x30, &retLen) -> PebBaseAddress (pbi+0x8); then NtReadVirtualMemory(hProcess, PEB+0x10 /*ImageBaseAddress*/, &remoteImageBase, 8, &bytesRead)",
+    "step_3_unmap": "NtUnmapViewOfSection(hProcess, remoteImageBase) - dynamically resolved from ntdll.dll",
+    "step_4_allocate": "VirtualAllocEx(hProcess, remoteImageBase, payloadSize=0x40, MEM_COMMIT|MEM_RESERVE (0x3000), PAGE_EXECUTE_READWRITE (0x40)); on failure retries with lpAddress=NULL (relocation-agnostic fallback)",
+    "step_5_write": "WriteProcessMemory(hProcess, remoteBase, decryptedPayload, 0x40, &bytesWritten); on failure VirtualFreeEx(MEM_RELEASE) + TerminateProcess + CloseHandle",
+    "step_6_hijack_entrypoint": "ctx.ContextFlags = 0x10000B (CONTEXT_FULL); GetThreadContext(hThread,&ctx); ctx.Rcx (CONTEXT+0x80) = remoteBase; SetThreadContext(hThread,&ctx)",
+    "step_7_execute": "ResumeThread(hThread), then CloseHandle(hThread) and CloseHandle(hProcess); WinMain then Sleep(2000)",
+    "payload": "64-byte (0x40) shellcode stub stored encrypted in .data at 0x140004000 (g_encrypted_pe_stub), decrypted in memory before injection",
+    "error_handling": "Every failure branch calls TerminateProcess(hProcess,0) + CloseHandle(hThread/hProcess) and returns -1, leaving no orphaned suspended process"
+  },
+  "encryption_details": {
+    "algorithm": "Two-layer: (1) repeating-key XOR, then (2) RC4 (standard 256-byte KSA + PRGA implemented inline as rc4_init @0x1400014ef / rc4_crypt @0x1400015e2)",
+    "key": "XOR key (10 bytes) = DE AD BE EF 13 37 CA FE BA BE  |  RC4 key (16 bytes ASCII) = \"Hollowing_PE!!!!\"",
+    "key_storage": "Both keys are hardcoded in plaintext in the .rdata section: g_xor_key at VA 0x140005000 (10 bytes, followed by 00 00 padding) and g_rc4_key at VA 0x140005010 (16 ASCII bytes). Ciphertext payload g_encrypted_pe_stub is 64 bytes in .data at VA 0x140004000. Decryption order in WinMain: xor_decrypt(buf,0x40,g_xor_key,10) then rc4_init(state,g_rc4_key,16)+rc4_crypt(state,buf,0x40)"
+  },
+  "decoded_strings": {
+    "g_rc4_key (.rdata 0x140005010)": "Hollowing_PE!!!!",
+    "g_xor_key (.rdata 0x140005000)": "de ad be ef 13 37 ca fe ba be",
+    "resolve_nt module (0x140005020)": "ntdll.dll",
+    "resolved API 1 (0x14000502a)": "NtQueryInformationProcess",
+    "resolved API 2 (0x140005044)": "NtUnmapViewOfSection",
+    "resolved API 3 (0x140005059)": "NtReadVirtualMemory",
+    "stack-built injection target (movabs immediates in WinMain)": "C:\\Windows\\System32\\svchost.exe",
+    "g_encrypted_pe_stub ciphertext (.data 0x140004000, 64 bytes)": "8b dc cb 9a 76 52 ab 8e fd d9 6c 31 4a 27 e3 5f 18 74 89 bd d0 46 2e 6a 1b 97 fc 83 3d 51 ae 12 77 09 c4 b8 e5 91 6f 33 0c 58 df a3 85 29 7b 1e 46 ba 92 e7 5c 30 88 14 f3 4d 21 b6 da 6e 0f 9c",
+    "payload after layer 1 (XOR with de ad be ef 13 37 ca fe ba be), before RC4": "55 71 75 75 65 65 61 70 47 67 b2 9c f4 c8 f0 68 d2 8a 33 03 0e eb 90 85 08 a0 36 7d 87 ef 70 bf c9 e6 d7 8f 2f 6f d5 8d d2 f5 61 4c 96 1e b1 e0 fc 04 4c 4a e2 df 9b 23 39 b3 9b 08 04 c3 b1 73",
+    "final payload (after RC4 with \"Hollowing_PE!!!!\")": "64-byte binary shellcode stub written into the hollowed svchost.exe at its original ImageBase; not byte-decoded statically (requires executing RC4 KSA/PRGA), plaintext is non-ASCII machine code"
+  },
+  "anti_analysis": [
+    "NtQueryInformationProcess with ProcessInformationClass = 7 (ProcessDebugPort) on GetCurrentProcess(); treats a returned debug port of 0xFFFFFFFF as 'debugger present'",
+    "NtQueryInformationProcess with ProcessInformationClass = 0x1F (ProcessDebugFlags); a value of 0 indicates the process was created with DEBUG_PROCESS -> flagged as debugged",
+    "Anti-debug syscall wrapper is resolved dynamically at runtime (GetModuleHandleA(\"ntdll.dll\") + GetProcAddress) so no ntdll import appears in the import table",
+    "Graceful/silent bail-out: anti_analysis_check() returning 1 makes WinMain return 0 immediately, so no payload decryption or injection occurs and no crash/error is visible to the analyst",
+    "Sensitive API names and the payload are not present as plaintext strings; payload is double-encrypted (XOR then RC4) in .data to defeat static signature/YARA scanning",
+    "Injection target path is assembled from 64-bit immediate constants on the stack instead of being stored as a contiguous string",
+    "Runtime redirection of execution via SetThreadContext RCX instead of CreateRemoteThread/WriteProcessMemory-on-entrypoint, avoiding the most commonly hooked injection API",
+    "Benign-looking import set (only KERNEL32 + msvcrt, no ntdll/ws2_32) reduces static suspicion"
+  ],
+  "c2_protocol": null,
+  "decoded_c2": null
+}

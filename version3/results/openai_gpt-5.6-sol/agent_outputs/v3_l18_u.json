@@ -1,0 +1,36 @@
+{
+  "file_type": "PE32+ (x86-64) Windows console executable",
+  "encoded_strings": true,
+  "decoded_c2": null,
+  "techniques": [
+    "rc4_encrypted_payload",
+    "dynamic_ntdll_export_resolution_via_GetModuleHandleA_and_GetProcAddress",
+    "hells_gate_style_syscall_number_extraction_from_ntdll_stubs",
+    "ntdll_syscall_stub_prologue_integrity_check",
+    "rwx_memory_allocation_with_VirtualAlloc",
+    "in_process_shellcode_staging_via_memcpy",
+    "in_process_shellcode_execution_via_CreateThread"
+  ],
+  "c2_protocol": null,
+  "encryption_details": {
+    "algorithm": "RC4 (standard 256-byte KSA and PRGA; no keystream drop)",
+    "key": "H3llsG@t3_Sysc@l",
+    "key_storage": "16-byte plaintext static key in .rdata at RVA 0x4000 (VA 0x140004000); the 64-byte ciphertext is g_encrypted_payload in .data at RVA 0x3000 and is copied to the stack before in-place decryption"
+  },
+  "decoded_strings": {
+    "note": "The RC4-protected object is a 64-byte executable payload, not a textual string. No encrypted textual strings were identified; ntdll.dll and the Nt* export names are stored in plaintext."
+  },
+  "anti_analysis": [
+    "Checks the first four bytes of the ntdll NtAllocateVirtualMemory export for the canonical x64 syscall-stub prologue 4C 8B D1 B8, providing user-mode hook/stub-tampering detection",
+    "Extracts syscall service numbers from ntdll export stubs and falls back to scanning the first 32 bytes for a B8 imm32 pattern when the canonical prologue is absent",
+    "Resolves ntdll exports dynamically with GetModuleHandleA/GetProcAddress rather than importing the Nt* routines directly"
+  ],
+  "injection_details": {
+    "method": "In-process shellcode execution using VirtualAlloc + memcpy + CreateThread; no remote-process injection is implemented",
+    "target_process": "Current process only",
+    "target_discovery": "No external target discovery. GetCurrentProcess is called, but its pseudo-handle is not used for allocation or writing.",
+    "payload_write": "A 64-byte encrypted blob is copied from .data to a stack buffer, RC4-decrypted in place, then copied with memcpy into VirtualAlloc(NULL, 0x40, MEM_COMMIT|MEM_RESERVE, PAGE_EXECUTE_READWRITE) memory.",
+    "execution": "CreateThread starts directly at the allocated buffer; the sample waits up to 5000 ms and closes the thread handle.",
+    "unused_injection_indicators": "Strings for NtOpenProcess and NtQueueApcThread are resolved for syscall-number inspection only; neither remote process opening nor APC injection is performed. The invoke_syscall function is an inert stub returning STATUS_UNSUCCESSFUL and no direct syscall instruction is used."
+  }
+}

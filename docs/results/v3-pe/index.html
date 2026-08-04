@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgentRE-Bench V3 — Windows PE Results</title>
+<meta name="description" content="Verified AgentRE-Bench V3 results: six frontier models reverse engineer paired stripped and unstripped Windows PE binaries using static tools only.">
+<meta property="og:title" content="AgentRE-Bench V3 — Windows PE Results">
+<meta property="og:description" content="120 binary-only PE reverse-engineering episodes. Deterministic scoring. Matched stripped/unstripped analysis.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.agentre-bench.ai/results/v3-pe/">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#060913;--surface:#0d1422;--soft:#121d2e;--border:rgba(148,163,184,.2);--text:#f4f7fb;--dim:#9ba9bd;--accent:#18e0c2;--blue:#4ba3ff;--violet:#8b8cff;--green:#22c55e;--yellow:#eab308;--orange:#f59e0b;--red:#ef4444;--mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace;--sans:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+html[data-theme="light"]{--bg:#f5f8fb;--surface:#fff;--soft:#eaf0f6;--border:rgba(15,23,42,.15);--text:#0f172a;--dim:#526071;--accent:#007f70;--blue:#2563eb;--violet:#4f46e5}
+html{scroll-behavior:smooth}body{font-family:var(--sans);line-height:1.65;color:var(--text);background:radial-gradient(circle at 18% -8%,rgba(24,224,194,.15),transparent 34rem),radial-gradient(circle at 90% 0,rgba(75,163,255,.13),transparent 32rem),var(--bg);-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none}a:hover{opacity:.8}.container{width:min(1160px,calc(100% - 40px));margin:auto}.mono{font-family:var(--mono)}
+nav{position:sticky;top:0;z-index:10;border-bottom:1px solid var(--border);background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(16px)}
+.nav-inner{height:66px;display:flex;align-items:center;justify-content:space-between;gap:24px}.brand{display:flex;align-items:center;gap:10px;color:var(--text);font-weight:800}.brand img{width:32px;height:32px}.nav-links{display:flex;align-items:center;gap:18px;font-size:.86rem}.nav-links a{color:var(--dim)}button{border:1px solid var(--border);border-radius:7px;padding:8px 11px;color:var(--text);background:var(--surface);font:inherit;font-size:.8rem;font-weight:700;cursor:pointer}
+.hero{padding:90px 0 64px}.eyebrow{display:inline-flex;padding:5px 12px;border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);border-radius:999px;background:color-mix(in srgb,var(--accent) 10%,transparent);color:var(--accent);font:700 .76rem var(--mono);letter-spacing:.08em;text-transform:uppercase}.hero h1{max-width:900px;margin:22px 0 18px;font-size:clamp(2.7rem,7vw,5.8rem);line-height:.98;letter-spacing:-.045em}.hero .lede{max-width:790px;color:var(--dim);font-size:clamp(1.05rem,2vw,1.3rem)}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}.btn{display:inline-flex;padding:11px 18px;border:1px solid var(--border);border-radius:7px;font-weight:750;color:var(--text);background:var(--surface)}.btn.primary{border-color:transparent;color:#03100e;background:var(--accent)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:46px}.stat{min-height:125px;padding:19px;border:1px solid var(--border);border-radius:9px;background:linear-gradient(150deg,color-mix(in srgb,var(--accent) 8%,var(--surface)),var(--surface))}.stat strong{display:block;font:800 1.8rem var(--mono)}.stat span{display:block;margin-top:8px;color:var(--dim);font-size:.84rem;line-height:1.35}
+main section{padding:64px 0;border-top:1px solid var(--border)}.tag{margin-bottom:9px;color:var(--violet);font:700 .75rem var(--mono);letter-spacing:.09em;text-transform:uppercase}h2{margin-bottom:12px;font-size:clamp(1.9rem,4vw,3rem);line-height:1.1;letter-spacing:-.025em}.intro{max-width:800px;margin-bottom:30px;color:var(--dim)}
+.callout{padding:22px;border:1px solid color-mix(in srgb,var(--accent) 35%,var(--border));border-radius:9px;background:color-mix(in srgb,var(--accent) 7%,var(--surface));color:var(--dim)}.callout strong{color:var(--text)}
+.table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:9px;background:var(--surface)}table{width:100%;border-collapse:collapse;font-size:.86rem}th,td{padding:13px 14px;border-bottom:1px solid var(--border);text-align:left;white-space:nowrap}th{color:var(--dim);background:var(--soft);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase}tr:last-child td{border-bottom:0}tbody tr:hover{background:var(--soft)}td.num{font-family:var(--mono);font-weight:700;text-align:right}th.num{text-align:right}.rank{color:var(--accent);font-family:var(--mono)}.winner{color:var(--accent)}.zero{color:var(--red)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.card{padding:22px;border:1px solid var(--border);border-radius:9px;background:var(--surface)}.card h3{margin-bottom:8px;font-size:1.05rem}.card p{color:var(--dim);font-size:.9rem}.trait{display:inline-block;margin-bottom:12px;padding:3px 8px;border-radius:999px;background:color-mix(in srgb,var(--violet) 13%,transparent);color:var(--violet);font:700 .68rem var(--mono);text-transform:uppercase}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}.list{display:grid;gap:12px;list-style:none}.list li{padding-left:18px;color:var(--dim);position:relative}.list li::before{content:"/";position:absolute;left:0;color:var(--accent);font-family:var(--mono)}
+.note{margin-top:16px;color:var(--dim);font-size:.82rem}.pill{display:inline-flex;padding:3px 8px;border-radius:999px;font:700 .7rem var(--mono);background:var(--soft);color:var(--dim)}
+footer{padding:40px 0;border-top:1px solid var(--border);color:var(--dim);font-size:.82rem}.footer-inner{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+@media(max-width:850px){.stats,.grid,.two-col{grid-template-columns:1fr 1fr}.nav-links a:not(:last-child){display:none}}
+@media(max-width:580px){.container{width:min(100% - 28px,1160px)}.hero{padding-top:64px}.stats,.grid,.two-col{grid-template-columns:1fr}.hero-actions{flex-direction:column}.btn{justify-content:center}.nav-links{gap:8px}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="container nav-inner">
+    <a class="brand" href="/"><img src="/logo.svg" alt=""><span>AgentRE-Bench</span></a>
+    <div class="nav-links"><a href="#leaderboard">Leaderboard</a><a href="#stripping">Stripping</a><a href="#models">Models</a><a href="#method">Method</a><a href="https://github.com/agentrebench/AgentRE-Bench">Raw data</a><button id="theme" type="button">Theme</button></div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container">
+    <span class="eyebrow">V3 · Windows PE · August 2026</span>
+    <h1>Kimi K3 wins the Windows PE generation.</h1>
+    <p class="lede">Six models reverse engineered 20 paired stripped and unstripped PE artifacts using static tools only. Kimi leads Main, Bonus, and Total with 20/20 valid answers; exact C2 reconstruction remains unsolved.</p>
+    <div class="hero-actions"><a class="btn primary" href="#leaderboard">See the scores</a><a class="btn" href="https://github.com/agentrebench/AgentRE-Bench/blob/main/version3/ANALYSIS.md">Read full analysis</a><a class="btn" href="https://github.com/agentrebench/AgentRE-Bench/tree/main/version3/results">Raw JSON</a></div>
+    <div class="stats">
+      <div class="stat"><strong>120</strong><span>final episode slots across six models</span></div>
+      <div class="stat"><strong>20</strong><span>anonymized PE artifacts per model</span></div>
+      <div class="stat"><strong>0</strong><span>defined symbols in every stripped binary</span></div>
+      <div class="stat"><strong>0</strong><span>LLM judges; deterministic grading only</span></div>
+    </div>
+  </div>
+</header>
+
+<main>
+<section id="leaderboard"><div class="container">
+  <div class="tag">Verified leaderboard</div><h2>Six models, one binary-only tool surface</h2>
+  <p class="intro">Main averages 18 Level 14–22 artifacts. Bonus averages the two Level 23 worm artifacts. Total adds both, so always inspect the split rather than reading Total as a flat average over 20 tasks.</p>
+  <div class="table-wrap"><table><thead><tr><th>Rank</th><th>Model</th><th class="num">Main /1</th><th class="num">Bonus /1</th><th class="num">Total /2</th><th class="num">Valid</th></tr></thead><tbody>
+    <tr><td class="rank">01</td><td class="winner"><strong>Kimi K3</strong></td><td class="num winner">0.6757</td><td class="num winner">0.6861</td><td class="num winner">1.3618</td><td class="num">20/20</td></tr>
+    <tr><td class="rank">02</td><td>Claude Opus 5</td><td class="num">0.6147</td><td class="num">0.6638</td><td class="num">1.2785</td><td class="num">18/20</td></tr>
+    <tr><td class="rank">03</td><td>GPT-5.6 Sol</td><td class="num">0.5859</td><td class="num">0.6298</td><td class="num">1.2157</td><td class="num">18/20</td></tr>
+    <tr><td class="rank">04</td><td>DeepSeek V4 Flash</td><td class="num">0.5125</td><td class="num">0.6782</td><td class="num">1.1906</td><td class="num">19/20</td></tr>
+    <tr><td class="rank">05</td><td>Gemini 3.6 Flash</td><td class="num">0.5400</td><td class="num">0.5653</td><td class="num">1.1052</td><td class="num">20/20</td></tr>
+    <tr><td class="rank">06</td><td>Claude Fable 5</td><td class="num zero">0.0000</td><td class="num zero">0.0000</td><td class="num zero">0.0000</td><td class="num">0/20</td></tr>
+  </tbody></table></div>
+  <div class="two-col" style="margin-top:16px">
+    <div class="callout"><strong>Kimi wins all three score columns.</strong> Its 1.3618 Total leads Opus by 0.0833, while its 0.6757 Main is the best measure of breadth across Levels 14–22.</div>
+    <div class="callout"><strong>GPT owns the best single result.</strong> Its 0.9272 on Level 14 unstripped came with zero unsupported technique claims across the run.</div>
+  </div>
+</div></section>
+
+<section id="stripping"><div class="container">
+  <div class="tag">Matched-pair analysis</div><h2>Stripping removed the map, not every clue</h2>
+  <p class="intro">All stripped artifacts have zero defined symbols, substantially fewer sections, and a 75.67% aggregate size reduction. The table uses only model/level pairs with valid submissions on both variants.</p>
+  <div class="callout" style="margin-bottom:16px"><strong>46 complete model/level pairs:</strong> mean score moved from 0.6428 unstripped to 0.6012 stripped, a −0.0416 absolute change (−6.47% relative). Symbols helped, but surviving PE evidence kept stripped analysis viable.</div>
+  <div class="table-wrap"><table><thead><tr><th>Model</th><th class="num">Pairs</th><th class="num">Unstripped</th><th class="num">Stripped</th><th class="num">S − U</th></tr></thead><tbody>
+    <tr><td>Kimi K3</td><td class="num">10</td><td class="num">0.7122</td><td class="num">0.6413</td><td class="num">−0.0709</td></tr>
+    <tr><td>Claude Opus 5</td><td class="num">8</td><td class="num">0.7313</td><td class="num">0.6720</td><td class="num">−0.0593</td></tr>
+    <tr><td>GPT-5.6 Sol</td><td class="num">9</td><td class="num">0.6731</td><td class="num">0.6387</td><td class="num">−0.0344</td></tr>
+    <tr><td>DeepSeek V4 Flash</td><td class="num">9</td><td class="num">0.5369</td><td class="num">0.5525</td><td class="num">+0.0156</td></tr>
+    <tr><td>Gemini 3.6 Flash</td><td class="num">10</td><td class="num">0.5705</td><td class="num">0.5145</td><td class="num">−0.0560</td></tr>
+  </tbody></table></div>
+  <p class="note">One terminal run per model/artifact means these are descriptive paired differences, not confidence-bounded causal estimates.</p>
+</div></section>
+
+<section id="levels"><div class="container">
+  <div class="tag">Task behavior</div><h2>Where stripping mattered</h2>
+  <p class="intro">Mean variant deltas are computed across complete model pairs for each level. Positive means stripped scored higher.</p>
+  <div class="table-wrap"><table><thead><tr><th>Level</th><th class="num">Complete pairs</th><th class="num">Unstripped</th><th class="num">Stripped</th><th class="num">S − U</th></tr></thead><tbody>
+    <tr><td>14 · DLL Injection</td><td class="num">5</td><td class="num">0.8617</td><td class="num">0.7327</td><td class="num">−0.1290</td></tr>
+    <tr><td>15 · APC Injection</td><td class="num">4</td><td class="num">0.6064</td><td class="num">0.5757</td><td class="num">−0.0307</td></tr>
+    <tr><td>16 · Code Cave</td><td class="num">5</td><td class="num">0.7672</td><td class="num">0.7219</td><td class="num">−0.0453</td></tr>
+    <tr><td>17 · Process Hollowing</td><td class="num">5</td><td class="num">0.4623</td><td class="num">0.5096</td><td class="num">+0.0473</td></tr>
+    <tr><td>18 · Hell’s Gate</td><td class="num">5</td><td class="num">0.5119</td><td class="num">0.4649</td><td class="num">−0.0469</td></tr>
+    <tr><td>19 · Reflective DLL</td><td class="num">4</td><td class="num">0.6119</td><td class="num">0.4114</td><td class="num">−0.2004</td></tr>
+    <tr><td>20 · Remote PE</td><td class="num">5</td><td class="num">0.6678</td><td class="num">0.7054</td><td class="num">+0.0376</td></tr>
+    <tr><td>21 · Ghost Hollowing</td><td class="num">4</td><td class="num">0.5484</td><td class="num">0.6502</td><td class="num">+0.1018</td></tr>
+    <tr><td>22 · Advanced Evasion</td><td class="num">4</td><td class="num">0.7082</td><td class="num">0.5750</td><td class="num">−0.1332</td></tr>
+    <tr><td>23 · Synthetic Worm</td><td class="num">5</td><td class="num">0.6628</td><td class="num">0.6264</td><td class="num">−0.0364</td></tr>
+  </tbody></table></div>
+</div></section>
+
+<section id="models"><div class="container">
+  <div class="tag">Capability profiles</div><h2>Different ways to be good—and to fail</h2>
+  <p class="intro">Score alone hides important operational differences: calibration, coverage, refusal behavior, time, and call-budget discipline.</p>
+  <div class="grid">
+    <article class="card"><span class="trait">Winner · 20/20</span><h3>Kimi K3</h3><p>Best Main, Bonus, decoded-string, and anti-analysis results. Strong and complete, but slow: 9.74 summed episode-hours and repeated long continuations.</p></article>
+    <article class="card"><span class="trait">Second · 18/20</span><h3>Claude Opus 5</h3><p>Best injection-detail mean and strong technique recall. Two mid-analysis refusals remain part of the result.</p></article>
+    <article class="card"><span class="trait">Precision · 18/20</span><h3>GPT-5.6 Sol</h3><p>Best single score and zero unsupported techniques. Both dense Level 22 variants ended at the call budget without answers.</p></article>
+    <article class="card"><span class="trait">Bonus strength · 19/20</span><h3>DeepSeek V4 Flash</h3><p>Second on Bonus and strong on encryption, but less consistent on techniques; one max-cap exit and the most unsupported claims.</p></article>
+    <article class="card"><span class="trait">Fast · 20/20</span><h3>Gemini 3.6 Flash</h3><p>Fastest complete run at 0.58 summed episode-hours. Excellent metadata recovery; weaker decoded-string and technique detail.</p></article>
+    <article class="card"><span class="trait">Refusal · 0/20</span><h3>Claude Fable 5</h3><p>Refused every episode before calling a tool. Its zero is a benchmark coverage and policy outcome, not a clean knowledge measure.</p></article>
+  </div>
+</div></section>
+
+<section><div class="container">
+  <div class="tag">Cross-model findings</div><h2>Metadata came first; behavior reconstruction lagged</h2>
+  <div class="two-col">
+    <div class="card"><span class="trait">Easy layer</span><h3>Format and obfuscation</h3><ul class="list"><li>File type was nearly saturated among valid answers.</li><li>Models usually recognized that strings or payloads were encoded.</li><li>Imports, section flags, constants, and API names survived stripping.</li></ul></div>
+    <div class="card"><span class="trait">Hard layer</span><h3>Exact execution semantics</h3><ul class="list"><li>No model recovered the true Level 23 C2 endpoint.</li><li>Native API allocation/write/thread chains were frequently incomplete.</li><li>Keys, decoded content, and manual PE mapping details remained brittle.</li></ul></div>
+  </div>
+</div></section>
+
+<section id="method"><div class="container">
+  <div class="tag">Method and verification</div><h2>Compiled artifacts only</h2>
+  <p class="intro">Each isolated workspace contained one anonymized PE binary. Agents could use file, strings, PE metadata, disassembly, symbol inspection, hex dumps, and entropy—no source, compilation, decompiler, debugger, or dynamic execution.</p>
+  <div class="callout"><strong>Audit passed.</strong> All 120 stored answers were independently rescored; all six aggregates reconcile; the 366-file raw-result checksum ledger is complete; all 20 binary hashes, all 10 ground-truth hashes, and all 10 source hashes match; and the focused suite passes 51/51 tests. Exact key/algorithm annotations were corrected in the deterministic scorer and every stored answer was rescored—no episode was rerun for that grading correction.</div>
+  <p class="note"><span class="pill">Reproduce</span> Run <span class="mono">python3 version3/verify.py</span> from the repository root. No LLM judge or API key is involved.</p>
+  <div class="callout" style="margin-top:16px"><strong>Scoring caveat:</strong> Level 23 contributes 50% of Total by design. Main is the broader measure across process-injection levels. See the full analysis for field weights, corrections, failure taxonomy, checksums, and exact reproduction commands.</div>
+</div></section>
+</main>
+
+<footer><div class="container footer-inner"><span>AgentRE-Bench V3 · deterministic Windows PE evaluation</span><span><a href="/">Home</a> · <a href="https://github.com/agentrebench/AgentRE-Bench">GitHub</a> · <a href="mailto:contact@agentrebench.ai">Contact</a></span></div></footer>
+<script>
+const root=document.documentElement;const saved=localStorage.getItem("agentre-theme");if(saved)root.dataset.theme=saved;document.getElementById("theme").addEventListener("click",()=>{root.dataset.theme=root.dataset.theme==="light"?"dark":"light";localStorage.setItem("agentre-theme",root.dataset.theme)});
+</script>
+</body>
+</html>

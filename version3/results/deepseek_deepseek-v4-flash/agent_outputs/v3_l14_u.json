@@ -1,0 +1,38 @@
+{
+  "file_type": "PE32+ (x86-64) Windows console executable (MinGW-w64/GCC 13, with DWARF debug info and symbols)",
+  "encoded_strings": true,
+  "techniques": [
+    "dll_injection",
+    "create_remote_thread_loadlibrary",
+    "manual_getprocaddress",
+    "xor_encoding",
+    "peb_antidebug",
+    "process_enumeration_toolhelp32"
+  ],
+  "decoded_c2": null,
+  "c2_protocol": null,
+  "injection_details": {
+    "method": "Classic DLL injection via CreateRemoteThread + LoadLibraryA",
+    "target_process": "explorer.exe",
+    "target_discovery": "CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS=0x2, 0) then Process32First/Process32Next loop, comparing PROCESSENTRY32.szExeFile with strcmp against \"explorer.exe\"",
+    "payload_write": "OpenProcess(PROCESS_ALL_ACCESS=0x42A, FALSE, pid) -> VirtualAllocEx(hProc, NULL, strlen(path)+1, MEM_COMMIT|MEM_RESERVE=0x3000, PAGE_READWRITE=0x4) -> WriteProcessMemory(hProc, remoteBuf, path, len, NULL)",
+    "thread_execution": "manual_get_proc(kernel32, \"LoadLibraryA\"); CreateRemoteThread(hProc, NULL, 0, LoadLibraryA, remoteBuf, 0, NULL); WaitForSingleObject(thread, INFINITE); CloseHandle(thread); CloseHandle(proc)",
+    "api_resolution": "manual_get_proc walks the kernel32 export directory (MZ/PE header, export directory at PE+0x88, name pointer table / ordinal table / address table) to resolve CreateToolhelp32Snapshot, Process32First, Process32Next, OpenProcess, VirtualAllocEx, WriteProcessMemory, CreateRemoteThread, CloseHandle, WaitForSingleObject, and LoadLibraryA; none of these are in the import table",
+    "dll_path": "XOR-decrypted 32-byte path \"IS*h`4%+=1-Ah\\x08X`m2-AthWomB8hnamj\" (see encryption_details), null-terminated on stack and written into explorer.exe"
+  },
+  "encryption_details": {
+    "algorithm": "Repeating-key XOR (custom xor_decrypt: for i in 0..len-1: data[i] ^= key[i % keylen])",
+    "key": "5a 3c 7f e1 2d 94 b8 6a (8 bytes)",
+    "key_storage": "Hardcoded constant array g_xor_key in .rdata at RVA 0x4000 (file offset 0x2800), immediately before the plaintext API-name strings; the ciphertext (g_encrypted_dll_path, 32 bytes) is in .data at RVA 0x3000 (file offset 0x2600). WinMain copies the 32 ciphertext bytes to the stack, calls xor_decrypt(..., len=0x20, keylen=8), and appends a NUL."
+  },
+  "decoded_strings": {
+    "xor_decrypted_dll_path_hex": "49 53 2A 68 60 34 25 2B 3D 31 2D 41 68 08 58 60 6D 32 2D 41 74 68 57 6F 6D 42 38 68 6E 61 6D 6A",
+    "xor_decrypted_dll_path_ascii": "IS*h`4%+=1-Ah\\x08X`m2-AthWomB8hnamj",
+    "plaintext_api_strings_in_rdata": "kernel32.dll, CreateToolhelp32Snapshot, Process32First, Process32Next, OpenProcess, VirtualAllocEx, WriteProcessMemory, CreateRemoteThread, CloseHandle, WaitForSingleObject, explorer.exe, LoadLibraryA"
+  },
+  "anti_analysis": [
+    "peb_antidebug: anti_debug_check() reads PEB via gs:[0x60] and tests the byte at PEB+0x02 (BeingDebugged); WinMain exits immediately (returns 0, no injection) if a debugger is detected",
+    "manual_getprocaddress: injection-critical APIs are resolved at runtime by walking the kernel32 export directory (not present in the import table), evading static IAT-based detection",
+    "string_obfuscation: the injected DLL path is XOR-encrypted (repeating-key XOR, 8-byte key) and decrypted only on the stack at runtime"
+  ]
+}

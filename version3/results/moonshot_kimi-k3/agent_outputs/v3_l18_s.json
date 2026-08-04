@@ -1,0 +1,49 @@
+{
+  "anti_analysis": [
+    "edr_syscall_hook_detection: function 0x1400017f0 verifies the NtAllocateVirtualMemory stub in ntdll begins with the expected '4C 8B D1 B8' (mov r10,rcx; mov eax,imm32) prologue to detect userland EDR/AV inline hooks",
+    "hells_gate_evasion: syscall numbers are extracted directly from ntdll.dll stub bytes (0x1400016a9, with a 32-byte fallback scan for the 'B8 <ssn> 00 00' pattern when the prologue is hooked) instead of calling hooked Win32/Native APIs, evading API monitoring",
+    "rwx_memory_allocation: payload executed from a freshly allocated PAGE_EXECUTE_READWRITE region to run decrypted shellcode from memory only"
+  ],
+  "c2_protocol": null,
+  "decoded_c2": null,
+  "decoded_strings": {
+    "note_plaintext_not_independently_verifiable": "Manual RC4 decryption of the 64-byte blob could not be completed to a verifiable result with static-only tools; the blob decrypts at runtime to position-independent shellcode that is started with CreateThread at offset 0 of an RWX buffer.",
+    "rc4_key": "H3llsG@t3_Sysc@l (leetspeak for 'HellsGate_Syscall', 16 bytes at VA 0x140004000)",
+    "rc4_payload_ciphertext_hex": "c97e13a845df326c910e75b328fa4d8117a3d568f02b9e44cc59e73f8a16b15d22946fdb087caa31e54f891cd265f83b9d1076c057ea24b84c811ea933dd6bf5",
+    "rc4_payload_plaintext_purpose": "64-byte shellcode decrypted in-memory and executed via CreateThread in a PAGE_EXECUTE_READWRITE buffer (function 0x14000188b)",
+    "resolved_ntdll_names_plaintext": [
+      "ntdll.dll",
+      "NtAllocateVirtualMemory",
+      "NtWriteVirtualMemory",
+      "NtProtectVirtualMemory",
+      "NtCreateThreadEx",
+      "NtClose",
+      "NtOpenProcess",
+      "NtQueueApcThread"
+    ]
+  },
+  "encoded_strings": true,
+  "encryption_details": {
+    "algorithm": "RC4",
+    "key": "H3llsG@t3_Sysc@l",
+    "key_storage": "Hardcoded plaintext 16-byte key in .rdata at VA 0x140004000 (immediately followed by 'ntdll.dll' and the Nt* API name strings). KSA at 0x140001480 (key length 0x10), PRGA at 0x140001573; decrypts the 64-byte payload at 0x140003000 (.data) in place."
+  },
+  "file_type": "PE32+ (x86-64) console executable, MinGW-w64 GCC 13, stripped",
+  "injection_details": {
+    "method": "VirtualAlloc(NULL, 0x40, MEM_COMMIT|MEM_RESERVE=0x3000, PAGE_EXECUTE_READWRITE=0x40) -> memcpy decrypted shellcode into buffer -> CreateThread(start=buffer) -> WaitForSingleObject(5000 ms) -> CloseHandle (function 0x14000188b)",
+    "notes": "Resolves remote-injection-capable native APIs via Hell's Gate (NtOpenProcess, NtAllocateVirtualMemory, NtWriteVirtualMemory, NtProtectVirtualMemory, NtCreateThreadEx, NtQueueApcThread, NtClose) and checks NtAllocateVirtualMemory for inline hooks, but the executed path in this binary is local self-injection of the RC4-decrypted 64-byte shellcode.",
+    "payload_written_by": "memcpy (msvcrt) of the in-place RC4-decrypted payload into the RWX allocation",
+    "target_discovery": "None - no process enumeration; the payload is decrypted and executed inside the malware's own process",
+    "target_process": "Self (current process; GetCurrentProcess is called)"
+  },
+  "techniques": [
+    "rc4_encryption",
+    "shellcode_self_injection",
+    "virtualalloc_rwx_createthread",
+    "hells_gate_syscall_resolution",
+    "ntdll_syscall_hook_detection",
+    "getprocaddress_dynamic_resolution",
+    "waitforsingleobject_thread_sync",
+    "sleep_delay"
+  ]
+}

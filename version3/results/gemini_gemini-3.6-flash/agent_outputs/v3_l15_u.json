@@ -1,0 +1,41 @@
+{
+  "c2_protocol": null,
+  "encryption_details": {
+    "key_storage": "Hardcoded byte array in .rdata section (g_rc4_key at 0x140005000)",
+    "algorithm": "RC4",
+    "key": "8e3d721ed55891c32f46bb79e4118c5a"
+  },
+  "anti_analysis": [
+    "NtQueryInformationProcess with ProcessDebugPort (0x07) anti-debugging check",
+    "Dynamic API resolution of Native API (ntdll.dll) functions via GetProcAddress"
+  ],
+  "file_type": "PE32+",
+  "decoded_c2": null,
+  "injection_details": {
+    "payload_writing": "NtAllocateVirtualMemory (PAGE_EXECUTE_READWRITE) and NtWriteVirtualMemory",
+    "method": "Early Bird / Thread APC Injection via NtQueueApcThread and NtAlertResumeThread",
+    "target_discovery": "GetCurrentProcessId + CreateToolhelp32Snapshot (TH32CS_SNAPTHREAD) + Thread32First / Thread32Next",
+    "target_process": "Self (Current process via GetCurrentProcessId)"
+  },
+  "techniques": [
+    "apc_injection",
+    "rc4_encryption",
+    "dynamic_api_resolution",
+    "anti_debug_ntqueryinformationprocess",
+    "thread_enumeration",
+    "process_injection"
+  ],
+  "encoded_strings": true,
+  "decoded_strings": {
+    "ntdll_apis": [
+      "NtQueryInformationProcess",
+      "NtClose",
+      "NtOpenProcess",
+      "NtAllocateVirtualMemory",
+      "NtWriteVirtualMemory",
+      "NtQueueApcThread",
+      "NtAlertResumeThread"
+    ],
+    "g_rc4_key": "8e3d721ed55891c32f46bb79e4118c5a"
+  }
+}

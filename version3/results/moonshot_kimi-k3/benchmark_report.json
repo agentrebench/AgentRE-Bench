@@ -1,0 +1,1697 @@
+{
+  "config": {
+    "model": "kimi-k3",
+    "provider": "moonshot",
+    "max_tool_calls": 25,
+    "use_docker": false,
+    "resume": true
+  },
+  "aggregate_metrics": {
+    "success_rate": 1.0,
+    "main_score": 0.6757,
+    "bonus_score": 0.6861,
+    "total_score": 1.3618,
+    "avg_tool_calls_per_task": 12.9,
+    "avg_tool_calls_per_success": 12.9,
+    "tool_usage_distribution": {
+      "file": 20,
+      "pe_info": 20,
+      "strings": 22,
+      "objdump": 76,
+      "hexdump": 62,
+      "final_answer": 20,
+      "nm": 7,
+      "xxd": 29,
+      "entropy": 2
+    },
+    "avg_hallucination_rate": 0.2,
+    "episode_length_min": 571.97,
+    "episode_length_max": 5653.75,
+    "episode_length_mean": 1752.63,
+    "episode_length_median": 1363.8,
+    "total_wall_time": 35052.63,
+    "total_llm_seconds": 35051.32,
+    "avg_llm_seconds_per_task": 1752.57,
+    "total_tokens": 15594690,
+    "total_reasoning_tokens": 1246874,
+    "max_steps_hit_count": 0,
+    "tasks_run": 20,
+    "tasks_with_answer": 20
+  },
+  "task_metrics": [
+    {
+      "task_id": "v3_l14_u",
+      "score": 0.8893,
+      "tier": "pe_injection",
+      "field_scores": {
+        "techniques": 0.8235294117647058,
+        "injection_details": 0.75,
+        "encryption_key": 1.0,
+        "decoded_strings": 1.0,
+        "anti_analysis": 1.0,
+        "encryption_algorithm": 1.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0
+      },
+      "tool_calls_total": 11,
+      "tool_calls_by_type": {
+        "file": 1,
+        "pe_info": 1,
+        "strings": 1,
+        "objdump": 5,
+        "hexdump": 2,
+        "final_answer": 1
+      },
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 11,
+      "max_steps_hit": false,
+      "has_valid_answer": true,
+      "hallucinated_techniques": [],
+      "hallucination_count": 0,
+      "missing_techniques": [
+        "pe_export_parsing",
+        "virtualallocex_write",
+        "writeprocessmemory"
+      ],
+      "spurious_fields": [],
+      "spurious_count": 0,
+      "wall_time_seconds": 634.38,
+      "llm_seconds": 634.34,
+      "total_tokens": 334381,
+      "input_tokens": 299392,
+      "output_tokens": 34989,
+      "reasoning_tokens": 33095
+    },
+    {
+      "task_id": "v3_l14_s",
+      "score": 0.6765,
+      "tier": "pe_injection",
+      "field_scores": {
+        "techniques": 0.5,
+        "injection_details": 0.75,
+        "encryption_key": 1.0,
+        "decoded_strings": 1.0,
+        "anti_analysis": 0.0,
+        "encryption_algorithm": 1.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0
+      },
+      "tool_calls_total": 20,
+      "tool_calls_by_type": {
+        "file": 1,
+        "pe_info": 1,
+        "strings": 1,
+        "nm": 1,
+        "objdump": 6,
+        "hexdump": 4,
+        "xxd": 5,
+        "final_answer": 1
+      },
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 20,
+      "max_steps_hit": false,
+      "has_valid_answer": true,
+      "hallucinated_techniques": [],
+      "hallucination_count": 0,
+      "missing_techniques": [
+        "createremotethread_injection",
+        "loadlibrary_injection",
+        "pe_export_parsing",
+        "virtualallocex_write",
+        "writeprocessmemory",
+        "xor_string_encryption"
+      ],
+      "spurious_fields": [],
+      "spurious_count": 0,
+      "wall_time_seconds": 1158.28,
+      "llm_seconds": 1158.23,
+      "total_tokens": 789945,
+      "input_tokens": 730958,
+      "output_tokens": 58987,
+      "reasoning_tokens": 55791
+    },
+    {
+      "task_id": "v3_l15_u",
+      "score": 0.6767,
+      "tier": "pe_injection",
+      "field_scores": {
+        "techniques": 0.5,
+        "injection_details": 0.6,
+        "encryption_key": 1.0,
+        "anti_analysis": 1.0,
+        "encryption_algorithm": 1.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0
+      },
+      "tool_calls_total": 9,
+      "tool_calls_by_type": {
+        "file": 1,
+        "pe_info": 1,
+        "strings": 1,
+        "entropy": 1,
+        "objdump": 4,
+        "final_answer": 1
+      },
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 9,
+      "max_steps_hit": false,
+      "has_valid_answer": true,
+      "hallucinated_techniques": [],
+      "hallucination_count": 0,
+      "missing_techniques": [
+        "direct_nt_syscall",
+        "ntalertresumethread",
+        "ntallocatevirtualmemory",
+        "ntqueryinformationprocess_antidebug",
+        "ntqueueapcthread",
+        "ntwritevirtualmemory"
+      ],
+      "spurious_fields": [
+        "decoded_strings"
+      ],
+      "spurious_count": 1,
+      "wall_time_seconds": 3039.47,
+      "llm_seconds": 3039.39,
+      "total_tokens": 1045021,
+      "input_tokens": 940701,
+      "output_tokens": 104320,
+      "reasoning_tokens": 102809
+    },
+    {
+      "task_id": "v3_l15_s",
+      "score": 0.6687,
+      "tier": "pe_injection",
+      "field_scores": {
+        "techniques": 0.47619047619047616,
+        "injection_details": 0.6,
+        "encryption_key": 1.0,
+        "anti_analysis": 1.0,
+        "encryption_algorithm": 1.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0
+      },
+      "tool_calls_total": 10,
+      "tool_calls_by_type": {
+        "file": 1,
+        "pe_info": 1,
+        "strings": 2,
+        "objdump": 4,
+        "hexdump": 1,
+        "final_answer": 1
+      },
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 10,
+      "max_steps_hit": false,
+      "has_valid_answer": true,
+      "hallucinated_techniques": [
+        "manual_getprocaddress"
+      ],
+      "hallucination_count": 1,
+      "missing_techniques": [
+        "direct_nt_syscall",
+        "ntalertresumethread",
+        "ntallocatevirtualmemory",
+        "ntqueryinformationprocess_antidebug",
+        "ntqueueapcthread",
+        "ntwritevirtualmemory"
+      ],
+      "spurious_fields": [
+        "decoded_strings"
+      ],
+      "spurious_count": 1,
+      "wall_time_seconds": 5653.75,
+      "llm_seconds": 5653.71,
+      "total_tokens": 1994391,
+      "input_tokens": 1797171,
+      "output_tokens": 197220,
+      "reasoning_tokens": 195688
+    },
+    {
+      "task_id": "v3_l16_u",
+      "score": 0.8333,
+      "tier": "pe_injection",
+      "field_scores": {
+        "techniques": 0.75,
+        "injection_details": 0.875,
+        "encryption_key": 1.0,
+        "anti_analysis": 1.0,
+        "encryption_algorithm": 1.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0
+      },
+      "tool_calls_total": 11,
+      "tool_calls_by_type": {
+        "file": 1,
+        "pe_info": 1,
+        "strings": 1,
+        "nm": 1,
+        "objdump": 2,
+        "hexdump": 2,
+        "xxd": 2,
+        "final_answer": 1
+      },
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 11,
+      "max_steps_hit": false,
+      "has_valid_answer": true,
+      "hallucinated_techniques": [],
+      "hallucination_count": 0,
+      "missing_techniques": [
+        "virtualprotect_rwx"
+      ],
+      "spurious_fields": [
+        "decoded_strings"
+      ],
+      "spurious_count": 1,
+      "wall_time_seconds": 1038.34,
+      "llm_seconds": 1038.29,
+      "total_tokens": 650814,
+      "input_tokens": 594279,
+      "output_tokens": 56535,
+      "reasoning_tokens": 53902
+    },
+    {
+      "task_id": "v3_l16_s",
+      "score": 0.7621,
+      "tier": "pe_injection",
+      "field_scores": {
+        "techniques": 0.6363636363636364,
+        "injection_details": 0.75,
+        "encryption_key": 1.0,
+        "anti_analysis": 1.0,
+        "encryption_algorithm": 1.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0
+      },
+      "tool_calls_total": 14,
+      "tool_calls_by_type": {
+        "file": 1,
+        "pe_info": 1,
+        "strings": 1,
+        "nm": 1,
+        "objdump": 5,
+        "hexdump": 4,
+        "final_answer": 1
+      },
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 14,
+      "max_steps_hit": false,
+      "has_valid_answer": true,
+      "hallucinated_techniques": [
+        "manual_getprocaddress"
+      ],
+      "hallucination_count": 1,
+      "missing_techniques": [
+        "aes128_encryption",
+        "pe_section_parsing",
+        "virtualprotect_rwx"
+      ],
+      "spurious_fields": [
+        "decoded_strings"
+      ],
+      "spurious_count": 1,
+      "wall_time_seconds": 721.55,
+      "llm_seconds": 721.5,
+      "total_tokens": 517356,
+      "input_tokens": 484653,
+      "output_tokens": 32703,
+      "reasoning_tokens": 30614
+    },
+    {
+      "task_id": "v3_l17_u",
+      "score": 0.6208,
+      "tier": "pe_injection",
+      "field_scores": {
+        "techniques": 0.7857142857142857,
+        "encryption_key": 1.0,
+        "anti_analysis": 0.0,
+        "encryption_algorithm": 1.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0
+      },
+      "tool_calls_total": 13,
+      "tool_calls_by_type": {
+        "pe_info": 1,
+        "file": 1,
+        "strings": 1,
+        "nm": 1,
+        "objdump": 2,
+        "hexdump": 6,
+        "final_answer": 1
+      },
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 13,
+      "max_steps_hit": false,
+      "has_valid_answer": true,
+      "hallucinated_techniques": [],
+      "hallucination_count": 0,
+      "missing_techniques": [
+        "peb_parsing"
+      ],
+      "spurious_fields": [
+        "injection_details",
+        "decoded_strings"
+      ],
+      "spurious_count": 2,
+      "wall_time_seconds": 915.87,
+      "llm_seconds": 915.81,
+      "total_tokens": 605483,
+      "input_tokens": 559242,
+      "output_tokens": 46241,
+      "reasoning_tokens": 43705
+    },
+    {
+      "task_id": "v3_l17_s",
+      "score": 0.5558,
+      "tier": "pe_injection",
+      "field_scores": {
+        "techniques": 0.6428571428571429,
+        "encryption_key": 1.0,
+        "anti_analysis": 0.0,
+        "encryption_algorithm": 1.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0
+      },
+      "tool_calls_total": 10,
+      "tool_calls_by_type": {
+        "file": 1,
+        "pe_info": 1,
+        "strings": 1,
+        "objdump": 2,
+        "hexdump": 4,
+        "final_answer": 1
+      },
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 10,
+      "max_steps_hit": false,
+      "has_valid_answer": true,
+      "hallucinated_techniques": [],
+      "hallucination_count": 0,
+      "missing_techniques": [
+        "getthreadcontext",
+        "peb_parsing",
+        "setthreadcontext"
+      ],
+      "spurious_fields": [
+        "injection_details",
+        "decoded_strings"
+      ],
+      "spurious_count": 2,
+      "wall_time_seconds": 981.0,
+      "llm_seconds": 980.96,
+      "total_tokens": 372477,
+      "input_tokens": 323323,
+      "output_tokens": 49154,
+      "reasoning_tokens": 47335
+    },
+    {
+      "task_id": "v3_l18_u",
+      "score": 0.7325,
+      "tier": "pe_injection",
+      "field_scores": {
+        "techniques": 0.631578947368421,
+        "encryption_key": 1.0,
+        "anti_analysis": 1.0,
+        "encryption_algorithm": 1.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0
+      },
+      "tool_calls_total": 8,
+      "tool_calls_by_type": {
+        "file": 1,
+        "pe_info": 1,
+        "strings": 1,
+        "nm": 1,
+        "objdump": 3,
+        "final_answer": 1
+      },
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 8,
+      "max_steps_hit": false,
+      "has_valid_answer": true,
+      "hallucinated_techniques": [],
+      "hallucination_count": 0,
+      "missing_techniques": [
+        "ntallocatevirtualmemory",
+        "ntcreatethreadex",
+        "ntprotectvirtualmemory",
+        "ntwritevirtualmemory"
+      ],
+      "spurious_fields": [
+        "injection_details",
+        "decoded_strings"
+      ],
+      "spurious_count": 2,
+      "wall_time_seconds": 1442.23,
+      "llm_seconds": 1442.19,
+      "total_tokens": 479529,
+      "input_tokens": 424441,
+      "output_tokens": 55088,
+      "reasoning_tokens": 53065
+    },
+    {
+      "task_id": "v3_l18_s",
+      "score": 0.455,
+      "tier": "pe_injection",
+      "field_scores": {
+        "techniques": 0.42105263157894735,
+        "encryption_key": 1.0,
+        "anti_analysis": 0.0,
+        "encryption_algorithm": 1.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0
+      },
+      "tool_calls_total": 10,
+      "tool_calls_by_type": {
+        "file": 1,
+        "pe_info": 1,
+        "strings": 1,
+        "objdump": 3,
+        "hexdump": 3,
+        "final_answer": 1
+      },
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 10,
+      "max_steps_hit": false,
+      "has_valid_answer": true,
+      "hallucinated_techniques": [],
+      "hallucination_count": 0,
+      "missing_techniques": [
+        "createthread_execution",
+        "ntallocatevirtualmemory",
+        "ntcreatethreadex",
+        "ntprotectvirtualmemory",
+        "ntwritevirtualmemory",
+        "syscall_stub_parsing"
+      ],
+      "spurious_fields": [
+        "injection_details",
+        "decoded_strings"
+      ],
+      "spurious_count": 2,
+      "wall_time_seconds": 2152.45,
+      "llm_seconds": 2152.41,
+      "total_tokens": 656288,
+      "input_tokens": 585107,
+      "output_tokens": 71181,
+      "reasoning_tokens": 68247
+    },
+    {
+      "task_id": "v3_l19_u",
+      "score": 0.7325,
+      "tier": "pe_injection",
+      "field_scores": {
+        "techniques": 0.631578947368421,
+        "encryption_key": 1.0,
+        "anti_analysis": 1.0,
+        "encryption_algorithm": 1.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0
+      },
+      "tool_calls_total": 13,
+      "tool_calls_by_type": {
+        "file": 1,
+        "pe_info": 1,
+        "strings": 1,
+        "objdump": 5,
+        "hexdump": 3,
+        "xxd": 1,
+        "final_answer": 1
+      },
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 13,
+      "max_steps_hit": false,
+      "has_valid_answer": true,
+      "hallucinated_techniques": [],
+      "hallucination_count": 0,
+      "missing_techniques": [
+        "aes128_encryption",
+        "dllmain_invocation",
+        "export_table_parsing",
+        "section_mapping"
+      ],
+      "spurious_fields": [
+        "injection_details",
+        "decoded_strings"
+      ],
+      "spurious_count": 2,
+      "wall_time_seconds": 824.41,
+      "llm_seconds": 824.35,
+      "total_tokens": 533551,
+      "input_tokens": 506317,
+      "output_tokens": 27234,
+      "reasoning_tokens": 25368
+    },
+    {
+      "task_id": "v3_l19_s",
+      "score": 0.5917,
+      "tier": "pe_injection",
+      "field_scores": {
+        "techniques": 0.5217391304347826,
+        "encryption_key": 1.0,
+        "anti_analysis": 1.0,
+        "encryption_algorithm": 0.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0
+      },
+      "tool_calls_total": 12,
+      "tool_calls_by_type": {
+        "file": 1,
+        "pe_info": 1,
+        "strings": 1,
+        "objdump": 6,
+        "xxd": 2,
+        "final_answer": 1
+      },
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 12,
+      "max_steps_hit": false,
+      "has_valid_answer": true,
+      "hallucinated_techniques": [],
+      "hallucination_count": 0,
+      "missing_techniques": [
+        "aes128_encryption",
+        "dllmain_invocation",
+        "export_table_parsing",
+        "import_table_resolution"
+      ],
+      "spurious_fields": [
+        "injection_details",
+        "decoded_strings"
+      ],
+      "spurious_count": 2,
+      "wall_time_seconds": 1478.42,
+      "llm_seconds": 1478.36,
+      "total_tokens": 291604,
+      "input_tokens": 244220,
+      "output_tokens": 47384,
+      "reasoning_tokens": 45108
+    },
+    {
+      "task_id": "v3_l20_u",
+      "score": 0.7243,
+      "tier": "pe_injection",
+      "field_scores": {
+        "techniques": 0.6086956521739131,
+        "injection_details": 0.6428571428571429,
+        "encryption_key": 1.0,
+        "anti_analysis": 1.0,
+        "encryption_algorithm": 1.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0
+      },
+      "tool_calls_total": 12,
+      "tool_calls_by_type": {
+        "file": 1,
+        "pe_info": 1,
+        "strings": 1,
+        "nm": 1,
+        "objdump": 3,
+        "hexdump": 4,
+        "final_answer": 1
+      },
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 12,
+      "max_steps_hit": false,
+      "has_valid_answer": true,
+      "hallucinated_techniques": [],
+      "hallucination_count": 0,
+      "missing_techniques": [
+        "anti_sandbox_dll_check",
+        "pe_header_parsing",
+        "pe_section_mapping",
+        "readprocessmemory"
+      ],
+      "spurious_fields": [
+        "decoded_strings"
+      ],
+      "spurious_count": 1,
+      "wall_time_seconds": 2785.76,
+      "llm_seconds": 2785.69,
+      "total_tokens": 1402361,
+      "input_tokens": 1274478,
+      "output_tokens": 127883,
+      "reasoning_tokens": 125528
+    },
+    {
+      "task_id": "v3_l20_s",
+      "score": 0.7437,
+      "tier": "pe_injection",
+      "field_scores": {
+        "techniques": 0.6666666666666666,
+        "injection_details": 0.6428571428571429,
+        "encryption_key": 1.0,
+        "anti_analysis": 1.0,
+        "encryption_algorithm": 1.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0
+      },
+      "tool_calls_total": 14,
+      "tool_calls_by_type": {
+        "file": 1,
+        "pe_info": 1,
+        "strings": 2,
+        "objdump": 5,
+        "xxd": 4,
+        "final_answer": 1
+      },
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 14,
+      "max_steps_hit": false,
+      "has_valid_answer": true,
+      "hallucinated_techniques": [],
+      "hallucination_count": 0,
+      "missing_techniques": [
+        "pe_header_parsing",
+        "pe_section_mapping",
+        "readprocessmemory"
+      ],
+      "spurious_fields": [
+        "decoded_strings"
+      ],
+      "spurious_count": 1,
+      "wall_time_seconds": 1611.68,
+      "llm_seconds": 1611.62,
+      "total_tokens": 844561,
+      "input_tokens": 780599,
+      "output_tokens": 63962,
+      "reasoning_tokens": 61257
+    },
+    {
+      "task_id": "v3_l21_u",
+      "score": 0.6368,
+      "tier": "pe_injection",
+      "field_scores": {
+        "techniques": 0.42105263157894735,
+        "encryption_key": 1.0,
+        "anti_analysis": 1.0,
+        "encryption_algorithm": 1.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0
+      },
+      "tool_calls_total": 8,
+      "tool_calls_by_type": {
+        "file": 1,
+        "pe_info": 1,
+        "strings": 1,
+        "entropy": 1,
+        "objdump": 3,
+        "final_answer": 1
+      },
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 8,
+      "max_steps_hit": false,
+      "has_valid_answer": true,
+      "hallucinated_techniques": [
+        "rwx_memory_allocation"
+      ],
+      "hallucination_count": 1,
+      "missing_techniques": [
+        "manual_pe_mapping",
+        "ntallocatevirtualmemory",
+        "ntcreatethreadex",
+        "ntresumethread",
+        "ntwritevirtualmemory",
+        "rtlcreateprocessparameters",
+        "setthreadcontext"
+      ],
+      "spurious_fields": [
+        "injection_details",
+        "decoded_strings"
+      ],
+      "spurious_count": 2,
+      "wall_time_seconds": 571.97,
+      "llm_seconds": 571.91,
+      "total_tokens": 135480,
+      "input_tokens": 116378,
+      "output_tokens": 19102,
+      "reasoning_tokens": 17044
+    },
+    {
+      "task_id": "v3_l21_s",
+      "score": 0.7347,
+      "tier": "pe_injection",
+      "field_scores": {
+        "techniques": 0.6363636363636364,
+        "encryption_key": 1.0,
+        "anti_analysis": 1.0,
+        "encryption_algorithm": 1.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0
+      },
+      "tool_calls_total": 15,
+      "tool_calls_by_type": {
+        "file": 1,
+        "pe_info": 1,
+        "strings": 1,
+        "objdump": 5,
+        "hexdump": 6,
+        "final_answer": 1
+      },
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 15,
+      "max_steps_hit": false,
+      "has_valid_answer": true,
+      "hallucinated_techniques": [],
+      "hallucination_count": 0,
+      "missing_techniques": [
+        "ghost_process_hollowing",
+        "manual_pe_mapping",
+        "rtlcreateprocessparameters",
+        "setthreadcontext"
+      ],
+      "spurious_fields": [
+        "injection_details",
+        "decoded_strings"
+      ],
+      "spurious_count": 2,
+      "wall_time_seconds": 1285.36,
+      "llm_seconds": 1285.29,
+      "total_tokens": 408192,
+      "input_tokens": 360142,
+      "output_tokens": 48050,
+      "reasoning_tokens": 45279
+    },
+    {
+      "task_id": "v3_l22_u",
+      "score": 0.5771,
+      "tier": "pe_injection",
+      "field_scores": {
+        "techniques": 0.6896551724137931,
+        "encryption_key": 0.0,
+        "anti_analysis": 1.0,
+        "encryption_algorithm": 1.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0
+      },
+      "tool_calls_total": 23,
+      "tool_calls_by_type": {
+        "file": 1,
+        "pe_info": 1,
+        "strings": 1,
+        "objdump": 3,
+        "hexdump": 1,
+        "xxd": 15,
+        "final_answer": 1
+      },
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 23,
+      "max_steps_hit": false,
+      "has_valid_answer": true,
+      "hallucinated_techniques": [],
+      "hallucination_count": 0,
+      "missing_techniques": [
+        "aes256_encryption",
+        "cpp_class_obfuscation",
+        "virtual_method_dispatch"
+      ],
+      "spurious_fields": [
+        "injection_details",
+        "decoded_strings"
+      ],
+      "spurious_count": 2,
+      "wall_time_seconds": 1082.01,
+      "llm_seconds": 1081.86,
+      "total_tokens": 1273200,
+      "input_tokens": 1242150,
+      "output_tokens": 31050,
+      "reasoning_tokens": 27617
+    },
+    {
+      "task_id": "v3_l22_s",
+      "score": 0.5515,
+      "tier": "pe_injection",
+      "field_scores": {
+        "techniques": 0.3333333333333333,
+        "encryption_key": 1.0,
+        "anti_analysis": 0.75,
+        "encryption_algorithm": 1.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0
+      },
+      "tool_calls_total": 16,
+      "tool_calls_by_type": {
+        "file": 1,
+        "pe_info": 1,
+        "strings": 1,
+        "objdump": 4,
+        "hexdump": 8,
+        "final_answer": 1
+      },
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 16,
+      "max_steps_hit": false,
+      "has_valid_answer": true,
+      "hallucinated_techniques": [
+        "rwx_memory_allocation"
+      ],
+      "hallucination_count": 1,
+      "missing_techniques": [
+        "aes256_encryption",
+        "anti_debug_checkremotedebuggerpresent",
+        "anti_debug_isdebuggerpresent",
+        "anti_debug_ntqueryinformationprocess",
+        "anti_debug_threadhidefromdebugger",
+        "cpp_class_obfuscation",
+        "hells_gate_syscall_resolution",
+        "tls_callback",
+        "virtual_method_dispatch"
+      ],
+      "spurious_fields": [
+        "injection_details",
+        "decoded_strings"
+      ],
+      "spurious_count": 2,
+      "wall_time_seconds": 1888.65,
+      "llm_seconds": 1888.5,
+      "total_tokens": 1001601,
+      "input_tokens": 942724,
+      "output_tokens": 58877,
+      "reasoning_tokens": 56398
+    },
+    {
+      "task_id": "v3_l23_u",
+      "score": 0.6988,
+      "tier": "bonus",
+      "field_scores": {
+        "decoded_c2": 0.0,
+        "encryption_algorithm": 1.0,
+        "encryption_key": 1.0,
+        "techniques": 0.782608695652174,
+        "decoded_strings": 0.5,
+        "anti_analysis": 1.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0,
+        "c2_protocol": 1.0
+      },
+      "tool_calls_total": 17,
+      "tool_calls_by_type": {
+        "file": 1,
+        "pe_info": 1,
+        "strings": 1,
+        "nm": 1,
+        "objdump": 3,
+        "hexdump": 9,
+        "final_answer": 1
+      },
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 17,
+      "max_steps_hit": false,
+      "has_valid_answer": true,
+      "hallucinated_techniques": [],
+      "hallucination_count": 0,
+      "missing_techniques": [
+        "port_445_scanning",
+        "rsa2048_key_embedding",
+        "system_info_exfiltration"
+      ],
+      "spurious_fields": [
+        "encryption_key_storage"
+      ],
+      "spurious_count": 1,
+      "wall_time_seconds": 3072.69,
+      "llm_seconds": 3072.61,
+      "total_tokens": 1545381,
+      "input_tokens": 1447329,
+      "output_tokens": 98052,
+      "reasoning_tokens": 95273
+    },
+    {
+      "task_id": "v3_l23_s",
+      "score": 0.6733,
+      "tier": "bonus",
+      "field_scores": {
+        "decoded_c2": 0.0,
+        "encryption_algorithm": 1.0,
+        "encryption_key": 1.0,
+        "techniques": 0.7727272727272727,
+        "decoded_strings": 0.6818181818181818,
+        "anti_analysis": 1.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0,
+        "c2_protocol": 0.0
+      },
+      "tool_calls_total": 12,
+      "tool_calls_by_type": {
+        "file": 1,
+        "pe_info": 1,
+        "strings": 1,
+        "objdump": 3,
+        "hexdump": 5,
+        "final_answer": 1
+      },
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 12,
+      "max_steps_hit": false,
+      "has_valid_answer": true,
+      "hallucinated_techniques": [],
+      "hallucination_count": 0,
+      "missing_techniques": [
+        "aes128_file_encryption",
+        "antivm_driver_check",
+        "rsa2048_key_embedding",
+        "system_info_exfiltration"
+      ],
+      "spurious_fields": [
+        "encryption_key_storage"
+      ],
+      "spurious_count": 1,
+      "wall_time_seconds": 2714.36,
+      "llm_seconds": 2714.3,
+      "total_tokens": 713074,
+      "input_tokens": 646763,
+      "output_tokens": 66311,
+      "reasoning_tokens": 63751
+    }
+  ],
+  "score_results": [
+    {
+      "tier": "pe_injection",
+      "field_scores": {
+        "techniques": 0.8235294117647058,
+        "injection_details": 0.75,
+        "encryption_key": 1.0,
+        "decoded_strings": 1.0,
+        "anti_analysis": 1.0,
+        "encryption_algorithm": 1.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0
+      },
+      "hallucinated_techniques": [],
+      "missing_techniques": [
+        "pe_export_parsing",
+        "virtualallocex_write",
+        "writeprocessmemory"
+      ],
+      "unmatched_techniques": [],
+      "spurious_fields": [],
+      "hallucination_penalty": 0.0,
+      "spurious_penalty": 0.0,
+      "weighted_score": 0.8893,
+      "final_score": 0.8893,
+      "sample": "v3_l14_u"
+    },
+    {
+      "tier": "pe_injection",
+      "field_scores": {
+        "techniques": 0.5,
+        "injection_details": 0.75,
+        "encryption_key": 1.0,
+        "decoded_strings": 1.0,
+        "anti_analysis": 0.0,
+        "encryption_algorithm": 1.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0
+      },
+      "hallucinated_techniques": [],
+      "missing_techniques": [
+        "createremotethread_injection",
+        "loadlibrary_injection",
+        "pe_export_parsing",
+        "virtualallocex_write",
+        "writeprocessmemory",
+        "xor_string_encryption"
+      ],
+      "unmatched_techniques": [
+        "sleep_delay",
+        "xor_encoding"
+      ],
+      "spurious_fields": [],
+      "hallucination_penalty": 0.0,
+      "spurious_penalty": 0.0,
+      "weighted_score": 0.6765,
+      "final_score": 0.6765,
+      "sample": "v3_l14_s"
+    },
+    {
+      "tier": "pe_injection",
+      "field_scores": {
+        "techniques": 0.5,
+        "injection_details": 0.6,
+        "encryption_key": 1.0,
+        "anti_analysis": 1.0,
+        "encryption_algorithm": 1.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0
+      },
+      "hallucinated_techniques": [],
+      "missing_techniques": [
+        "direct_nt_syscall",
+        "ntalertresumethread",
+        "ntallocatevirtualmemory",
+        "ntqueryinformationprocess_antidebug",
+        "ntqueueapcthread",
+        "ntwritevirtualmemory"
+      ],
+      "unmatched_techniques": [
+        "antidebug_processdebugport",
+        "native_ntdll_api_usage",
+        "runtime_api_resolution_getprocaddress",
+        "self_injection"
+      ],
+      "spurious_fields": [
+        "decoded_strings"
+      ],
+      "hallucination_penalty": 0.0,
+      "spurious_penalty": 0.05,
+      "weighted_score": 0.7267,
+      "final_score": 0.6767,
+      "sample": "v3_l15_u"
+    },
+    {
+      "tier": "pe_injection",
+      "field_scores": {
+        "techniques": 0.47619047619047616,
+        "injection_details": 0.6,
+        "encryption_key": 1.0,
+        "anti_analysis": 1.0,
+        "encryption_algorithm": 1.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0
+      },
+      "hallucinated_techniques": [
+        "manual_getprocaddress"
+      ],
+      "missing_techniques": [
+        "direct_nt_syscall",
+        "ntalertresumethread",
+        "ntallocatevirtualmemory",
+        "ntqueryinformationprocess_antidebug",
+        "ntqueueapcthread",
+        "ntwritevirtualmemory"
+      ],
+      "unmatched_techniques": [
+        "anti_debug_processdebugport",
+        "manual_getprocaddress",
+        "native_nt_api_usage",
+        "self_injection",
+        "sleep_delay"
+      ],
+      "spurious_fields": [
+        "decoded_strings"
+      ],
+      "hallucination_penalty": 0.0,
+      "spurious_penalty": 0.05,
+      "weighted_score": 0.7187,
+      "final_score": 0.6687,
+      "sample": "v3_l15_s"
+    },
+    {
+      "tier": "pe_injection",
+      "field_scores": {
+        "techniques": 0.75,
+        "injection_details": 0.875,
+        "encryption_key": 1.0,
+        "anti_analysis": 1.0,
+        "encryption_algorithm": 1.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0
+      },
+      "hallucinated_techniques": [],
+      "missing_techniques": [
+        "virtualprotect_rwx"
+      ],
+      "unmatched_techniques": [
+        "VirtualProtectEx",
+        "WriteProcessMemory",
+        "hardcoded_crypto_keys_in_rdata",
+        "self_injection",
+        "sleep_delay_evasion (Sleep 30000 on VM detect, Sleep 1000 post-injection)"
+      ],
+      "spurious_fields": [
+        "decoded_strings"
+      ],
+      "hallucination_penalty": 0.0,
+      "spurious_penalty": 0.05,
+      "weighted_score": 0.8833,
+      "final_score": 0.8333,
+      "sample": "v3_l16_u"
+    },
+    {
+      "tier": "pe_injection",
+      "field_scores": {
+        "techniques": 0.6363636363636364,
+        "injection_details": 0.75,
+        "encryption_key": 1.0,
+        "anti_analysis": 1.0,
+        "encryption_algorithm": 1.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0
+      },
+      "hallucinated_techniques": [
+        "manual_getprocaddress"
+      ],
+      "missing_techniques": [
+        "aes128_encryption",
+        "pe_section_parsing",
+        "virtualprotect_rwx"
+      ],
+      "unmatched_techniques": [
+        "VirtualProtectEx_permission_change",
+        "WriteProcessMemory",
+        "manual_getprocaddress",
+        "self_injection",
+        "sleep_delay_evasion"
+      ],
+      "spurious_fields": [
+        "decoded_strings"
+      ],
+      "hallucination_penalty": 0.0,
+      "spurious_penalty": 0.05,
+      "weighted_score": 0.8121,
+      "final_score": 0.7621,
+      "sample": "v3_l16_s"
+    },
+    {
+      "tier": "pe_injection",
+      "field_scores": {
+        "techniques": 0.7857142857142857,
+        "encryption_key": 1.0,
+        "anti_analysis": 0.0,
+        "encryption_algorithm": 1.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0
+      },
+      "hallucinated_techniques": [],
+      "missing_techniques": [
+        "peb_parsing"
+      ],
+      "unmatched_techniques": [
+        "ntqueryinformationprocess_PEB (ProcessBasicInformation)",
+        "peb_image_base_read via NtReadVirtualMemory (PEB+0x10)",
+        "runtime_api_resolution (GetModuleHandleA/GetProcAddress for ntdll natives)",
+        "stack_string (svchost.exe path built from immediates)",
+        "terminateprocess_cleanup_on_failure"
+      ],
+      "spurious_fields": [
+        "injection_details",
+        "decoded_strings"
+      ],
+      "hallucination_penalty": 0.0,
+      "spurious_penalty": 0.1,
+      "weighted_score": 0.7208,
+      "final_score": 0.6208,
+      "sample": "v3_l17_u"
+    },
+    {
+      "tier": "pe_injection",
+      "field_scores": {
+        "techniques": 0.6428571428571429,
+        "encryption_key": 1.0,
+        "anti_analysis": 0.0,
+        "encryption_algorithm": 1.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0
+      },
+      "hallucinated_techniques": [],
+      "missing_techniques": [
+        "getthreadcontext",
+        "peb_parsing",
+        "setthreadcontext"
+      ],
+      "unmatched_techniques": [
+        "anti_debug_processdebugflags",
+        "anti_debug_processdebugport",
+        "dynamic_api_resolution_getprocaddress",
+        "ntqueryinformationprocess_pbi",
+        "ntreadvirtualmemory_peb_imagebase",
+        "stack_strings_movabs",
+        "thread_context_hijack_rcx"
+      ],
+      "spurious_fields": [
+        "injection_details",
+        "decoded_strings"
+      ],
+      "hallucination_penalty": 0.0,
+      "spurious_penalty": 0.1,
+      "weighted_score": 0.6558,
+      "final_score": 0.5558,
+      "sample": "v3_l17_s"
+    },
+    {
+      "tier": "pe_injection",
+      "field_scores": {
+        "techniques": 0.631578947368421,
+        "encryption_key": 1.0,
+        "anti_analysis": 1.0,
+        "encryption_algorithm": 1.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0
+      },
+      "hallucinated_techniques": [],
+      "missing_techniques": [
+        "ntallocatevirtualmemory",
+        "ntcreatethreadex",
+        "ntprotectvirtualmemory",
+        "ntwritevirtualmemory"
+      ],
+      "unmatched_techniques": [
+        "self_injection_virtualalloc_rwx_createthread",
+        "shellcode_execution",
+        "sleep_delay"
+      ],
+      "spurious_fields": [
+        "injection_details",
+        "decoded_strings"
+      ],
+      "hallucination_penalty": 0.0,
+      "spurious_penalty": 0.1,
+      "weighted_score": 0.8325,
+      "final_score": 0.7325,
+      "sample": "v3_l18_u"
+    },
+    {
+      "tier": "pe_injection",
+      "field_scores": {
+        "techniques": 0.42105263157894735,
+        "encryption_key": 1.0,
+        "anti_analysis": 0.0,
+        "encryption_algorithm": 1.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0
+      },
+      "hallucinated_techniques": [],
+      "missing_techniques": [
+        "createthread_execution",
+        "ntallocatevirtualmemory",
+        "ntcreatethreadex",
+        "ntprotectvirtualmemory",
+        "ntwritevirtualmemory",
+        "syscall_stub_parsing"
+      ],
+      "unmatched_techniques": [
+        "getprocaddress_dynamic_resolution",
+        "shellcode_self_injection",
+        "sleep_delay",
+        "virtualalloc_rwx_createthread",
+        "waitforsingleobject_thread_sync"
+      ],
+      "spurious_fields": [
+        "injection_details",
+        "decoded_strings"
+      ],
+      "hallucination_penalty": 0.0,
+      "spurious_penalty": 0.1,
+      "weighted_score": 0.555,
+      "final_score": 0.455,
+      "sample": "v3_l18_s"
+    },
+    {
+      "tier": "pe_injection",
+      "field_scores": {
+        "techniques": 0.631578947368421,
+        "encryption_key": 1.0,
+        "anti_analysis": 1.0,
+        "encryption_algorithm": 1.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0
+      },
+      "hallucinated_techniques": [],
+      "missing_techniques": [
+        "aes128_encryption",
+        "dllmain_invocation",
+        "export_table_parsing",
+        "section_mapping"
+      ],
+      "unmatched_techniques": [
+        "aes_like_custom_encryption",
+        "embedded_encrypted_payload",
+        "manual_getprocaddress_import_resolution"
+      ],
+      "spurious_fields": [
+        "injection_details",
+        "decoded_strings"
+      ],
+      "hallucination_penalty": 0.0,
+      "spurious_penalty": 0.1,
+      "weighted_score": 0.8325,
+      "final_score": 0.7325,
+      "sample": "v3_l19_u"
+    },
+    {
+      "tier": "pe_injection",
+      "field_scores": {
+        "techniques": 0.5217391304347826,
+        "encryption_key": 1.0,
+        "anti_analysis": 1.0,
+        "encryption_algorithm": 0.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0
+      },
+      "hallucinated_techniques": [],
+      "missing_techniques": [
+        "aes128_encryption",
+        "dllmain_invocation",
+        "export_table_parsing",
+        "import_table_resolution"
+      ],
+      "unmatched_techniques": [
+        "anti_debug_silent_exit",
+        "custom_encryption_aes_sbox_xor",
+        "encrypted_payload_in_data_section",
+        "hardcoded_encryption_key",
+        "loadlibrarya_getprocaddress",
+        "manual_getprocaddress_import_resolution",
+        "sleep_delay_2000ms"
+      ],
+      "spurious_fields": [
+        "injection_details",
+        "decoded_strings"
+      ],
+      "hallucination_penalty": 0.0,
+      "spurious_penalty": 0.1,
+      "weighted_score": 0.6917,
+      "final_score": 0.5917,
+      "sample": "v3_l19_s"
+    },
+    {
+      "tier": "pe_injection",
+      "field_scores": {
+        "techniques": 0.6086956521739131,
+        "injection_details": 0.6428571428571429,
+        "encryption_key": 1.0,
+        "anti_analysis": 1.0,
+        "encryption_algorithm": 1.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0
+      },
+      "hallucinated_techniques": [],
+      "missing_techniques": [
+        "anti_sandbox_dll_check",
+        "pe_header_parsing",
+        "pe_section_mapping",
+        "readprocessmemory"
+      ],
+      "unmatched_techniques": [
+        "anti_sandbox_sbiedll",
+        "embedded_encrypted_pe",
+        "getprocaddress_resolve_ntdll",
+        "manual_relocation_fixup",
+        "sleep_evasion"
+      ],
+      "spurious_fields": [
+        "decoded_strings"
+      ],
+      "hallucination_penalty": 0.0,
+      "spurious_penalty": 0.05,
+      "weighted_score": 0.7743,
+      "final_score": 0.7243,
+      "sample": "v3_l20_u"
+    },
+    {
+      "tier": "pe_injection",
+      "field_scores": {
+        "techniques": 0.6666666666666666,
+        "injection_details": 0.6428571428571429,
+        "encryption_key": 1.0,
+        "anti_analysis": 1.0,
+        "encryption_algorithm": 1.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0
+      },
+      "hallucinated_techniques": [],
+      "missing_techniques": [
+        "pe_header_parsing",
+        "pe_section_mapping",
+        "readprocessmemory"
+      ],
+      "unmatched_techniques": [
+        "manual_pe_mapping_headers_sections",
+        "openprocess_0x43a",
+        "runtime_getprocaddress_ntdll",
+        "self_injection_fallback",
+        "sleep_evasion"
+      ],
+      "spurious_fields": [
+        "decoded_strings"
+      ],
+      "hallucination_penalty": 0.0,
+      "spurious_penalty": 0.05,
+      "weighted_score": 0.7937,
+      "final_score": 0.7437,
+      "sample": "v3_l20_s"
+    },
+    {
+      "tier": "pe_injection",
+      "field_scores": {
+        "techniques": 0.42105263157894735,
+        "encryption_key": 1.0,
+        "anti_analysis": 1.0,
+        "encryption_algorithm": 1.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0
+      },
+      "hallucinated_techniques": [
+        "rwx_memory_allocation"
+      ],
+      "missing_techniques": [
+        "manual_pe_mapping",
+        "ntallocatevirtualmemory",
+        "ntcreatethreadex",
+        "ntresumethread",
+        "ntwritevirtualmemory",
+        "rtlcreateprocessparameters",
+        "setthreadcontext"
+      ],
+      "unmatched_techniques": [
+        "dynamic_api_resolution_getprocaddress",
+        "rwx_memory_allocation",
+        "silent_exit_on_debugger",
+        "sleep_delay"
+      ],
+      "spurious_fields": [
+        "injection_details",
+        "decoded_strings"
+      ],
+      "hallucination_penalty": 0.0,
+      "spurious_penalty": 0.1,
+      "weighted_score": 0.7368,
+      "final_score": 0.6368,
+      "sample": "v3_l21_u"
+    },
+    {
+      "tier": "pe_injection",
+      "field_scores": {
+        "techniques": 0.6363636363636364,
+        "encryption_key": 1.0,
+        "anti_analysis": 1.0,
+        "encryption_algorithm": 1.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0
+      },
+      "hallucinated_techniques": [],
+      "missing_techniques": [
+        "ghost_process_hollowing",
+        "manual_pe_mapping",
+        "rtlcreateprocessparameters",
+        "setthreadcontext"
+      ],
+      "unmatched_techniques": [
+        "dynamic_api_resolution (GetModuleHandleA(\"ntdll.dll\") + GetProcAddress for all NT APIs, function 0x1400014EF)",
+        "process_hollowing_style_self_spawn (new child process parented to self via OpenProcess(PROCESS_CREATE_PROCESS) on own PID; key string \"Gh0stPr0c3ssH0ll0w\")",
+        "rwx_remote_memory_allocation (PAGE_EXECUTE_READWRITE in child process)",
+        "silent_exit_on_debugger"
+      ],
+      "spurious_fields": [
+        "injection_details",
+        "decoded_strings"
+      ],
+      "hallucination_penalty": 0.0,
+      "spurious_penalty": 0.1,
+      "weighted_score": 0.8347,
+      "final_score": 0.7347,
+      "sample": "v3_l21_s"
+    },
+    {
+      "tier": "pe_injection",
+      "field_scores": {
+        "techniques": 0.6896551724137931,
+        "encryption_key": 0.0,
+        "anti_analysis": 1.0,
+        "encryption_algorithm": 1.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0
+      },
+      "hallucinated_techniques": [],
+      "missing_techniques": [
+        "aes256_encryption",
+        "cpp_class_obfuscation",
+        "virtual_method_dispatch"
+      ],
+      "unmatched_techniques": [
+        "dynamic_api_resolution_getprocaddress",
+        "hardcoded_aes_key",
+        "hells_gate_ssn_extraction",
+        "manual_ntdll_resolution",
+        "self_process_injection",
+        "shellcode_encryption_custom_aes_like_cipher"
+      ],
+      "spurious_fields": [
+        "injection_details",
+        "decoded_strings"
+      ],
+      "hallucination_penalty": 0.0,
+      "spurious_penalty": 0.1,
+      "weighted_score": 0.6771,
+      "final_score": 0.5771,
+      "sample": "v3_l22_u"
+    },
+    {
+      "tier": "pe_injection",
+      "field_scores": {
+        "techniques": 0.3333333333333333,
+        "encryption_key": 1.0,
+        "anti_analysis": 0.75,
+        "encryption_algorithm": 1.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0
+      },
+      "hallucinated_techniques": [
+        "rwx_memory_allocation"
+      ],
+      "missing_techniques": [
+        "aes256_encryption",
+        "anti_debug_checkremotedebuggerpresent",
+        "anti_debug_isdebuggerpresent",
+        "anti_debug_ntqueryinformationprocess",
+        "anti_debug_threadhidefromdebugger",
+        "cpp_class_obfuscation",
+        "hells_gate_syscall_resolution",
+        "tls_callback",
+        "virtual_method_dispatch"
+      ],
+      "unmatched_techniques": [
+        "cpp_vtable_polymorphism_injector_family",
+        "custom_aes_sbox_xor_encryption",
+        "hardcoded_crypto_key",
+        "manual_getprocaddress_ntdll",
+        "rwx_memory_allocation",
+        "self_process_injection",
+        "syscall_number_extraction_from_ntdll_stubs"
+      ],
+      "spurious_fields": [
+        "injection_details",
+        "decoded_strings"
+      ],
+      "hallucination_penalty": 0.0,
+      "spurious_penalty": 0.1,
+      "weighted_score": 0.6515,
+      "final_score": 0.5515,
+      "sample": "v3_l22_s"
+    },
+    {
+      "tier": "bonus",
+      "field_scores": {
+        "decoded_c2": 0.0,
+        "encryption_algorithm": 1.0,
+        "encryption_key": 1.0,
+        "techniques": 0.782608695652174,
+        "decoded_strings": 0.5,
+        "anti_analysis": 1.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0,
+        "c2_protocol": 1.0
+      },
+      "hallucinated_techniques": [],
+      "missing_techniques": [
+        "port_445_scanning",
+        "rsa2048_key_embedding",
+        "system_info_exfiltration"
+      ],
+      "unmatched_techniques": [
+        "Sleep(60000) at end of execution",
+        "anti_sandboxie (sbiedll.dll module check)",
+        "anti_vm_driver_file_checks (vmmouse.sys, vmhgfs.sys)",
+        "manual_getprocaddress (GetModuleHandleA+GetProcAddress to resolve NtQueryInformationProcess)",
+        "stack_string_construction (\"\\Documents\\synthetic_target\" built via mov immediates)",
+        "target_extension_whitelist (.doc .docx .xls .xlsx .ppt .pptx .pdf .txt .jpg .png .bmp .zip .rar .7z .sql .mdb .cpp .c .h .py .js .html .css .xml .json .csv .mp3 .mp4 .avi .wav)",
+        "targets %PUBLIC%\\Documents\\synthetic_target for encryption"
+      ],
+      "spurious_fields": [
+        "encryption_key_storage"
+      ],
+      "hallucination_penalty": 0.0,
+      "spurious_penalty": 0.03,
+      "weighted_score": 0.7288,
+      "final_score": 0.6988,
+      "sample": "v3_l23_u"
+    },
+    {
+      "tier": "bonus",
+      "field_scores": {
+        "decoded_c2": 0.0,
+        "encryption_algorithm": 1.0,
+        "encryption_key": 1.0,
+        "techniques": 0.7727272727272727,
+        "decoded_strings": 0.6818181818181818,
+        "anti_analysis": 1.0,
+        "file_type": 1.0,
+        "encoded_strings": 1.0,
+        "c2_protocol": 0.0
+      },
+      "hallucinated_techniques": [],
+      "missing_techniques": [
+        "aes128_file_encryption",
+        "antivm_driver_check",
+        "rsa2048_key_embedding",
+        "system_info_exfiltration"
+      ],
+      "unmatched_techniques": [
+        "custom_block_cipher_file_encryption (16-byte blocks, 10 rounds: per-byte AES S-box substitution -> XOR key byte -> XOR round*24; max 1MB per file)",
+        "decoy_rsa_key_blob (truncated DER RSA public key at .rdata 0x14000a000, unreferenced)",
+        "manual_getprocaddress (GetModuleHandleA('ntdll.dll') + GetProcAddress('NtQueryInformationProcess'))",
+        "peb_antidebug (gs:[0x60] -> PEB, check PEB+2 BeingDebugged)",
+        "sandbox_detection_dll (GetModuleHandleA('sbiedll.dll') Sandboxie, GetModuleHandleA('dbghelp.dll'))",
+        "vm_detection_files (GetFileAttributesA on C:\\Windows\\System32\\drivers\\vmmouse.sys and vmhgfs.sys)"
+      ],
+      "spurious_fields": [
+        "encryption_key_storage"
+      ],
+      "hallucination_penalty": 0.0,
+      "spurious_penalty": 0.03,
+      "weighted_score": 0.7033,
+      "final_score": 0.6733,
+      "sample": "v3_l23_s"
+    }
+  ]
+}

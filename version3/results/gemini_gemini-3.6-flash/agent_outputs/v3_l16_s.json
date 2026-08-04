@@ -1,0 +1,39 @@
+{
+  "decoded_strings": {
+    "module_name": "ntdll.dll",
+    "api_function": "NtCreateThreadEx",
+    "key_string": "4xdm1n_S3cr3t!!!"
+  },
+  "techniques": [
+    "self_injection",
+    "code_cave_injection",
+    "tls_callback",
+    "cpuid_hypervisor_detection",
+    "xor_encryption",
+    "aes_encryption",
+    "dynamic_api_resolution",
+    "evasion_delay"
+  ],
+  "c2_protocol": null,
+  "injection_details": {
+    "method": "Code Cave Self-Injection (VirtualProtect/Ex + WriteProcessMemory + CreateRemoteThread / NtCreateThreadEx)",
+    "thread_creation": "CreateRemoteThread with fallback to dynamically resolved NtCreateThreadEx",
+    "target_discovery": "Scans section headers of current module (.text section) for code cave space with sufficient size",
+    "payload_writing": "Modifies .text memory permissions via VirtualProtect to PAGE_EXECUTE_READWRITE, writes payload using WriteProcessMemory, restores permissions to PAGE_EXECUTE_READ",
+    "target_process": "Self (GetCurrentProcess)"
+  },
+  "encoded_strings": true,
+  "encryption_details": {
+    "key_storage": "Stored as raw bytes in .rdata section at VA 0x140004000 and VA 0x140004120",
+    "algorithm": "Repeated XOR (payload) and AES/S-box block cipher (data/key check)",
+    "key": "12-byte XOR key: c3 7a 9f 2e 55 8b 1d 6c e4 31 a8 4f; 16-byte AES key: 4xdm1n_S3cr3t!!!"
+  },
+  "file_type": "PE32+",
+  "decoded_c2": null,
+  "anti_analysis": [
+    "TLS callback execution prior to main entry point (VA 0x140001c50 -> 0x140002720)",
+    "CPUID hypervisor presence detection (leaf 1, ECX bit 31)",
+    "Evasion delay / Sleep(30000) execution upon hypervisor detection",
+    "Dynamic API resolution of NtCreateThreadEx from ntdll.dll via GetModuleHandleA and GetProcAddress"
+  ]
+}

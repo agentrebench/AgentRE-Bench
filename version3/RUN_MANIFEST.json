@@ -1,0 +1,385 @@
+{
+  "suite": "AgentRE-Bench V3 Windows PE",
+  "created_at_utc": "2026-08-04T00:57:44.345038+00:00",
+  "git_commit": "932b8278a772a10eb8678d385cf5cd01400d4893",
+  "worktree_dirty": true,
+  "tasks_manifest": "version3/tasks_v3.json",
+  "tasks_manifest_sha256": "cd6d2d53d925c277b522fb097dc18bda28ff17deb5edf8806ead42f1640e7564",
+  "execution": {
+    "binary_only_isolated_workspace": true,
+    "source_available_to_agent": false,
+    "source_compilation_requested": false,
+    "docker": false,
+    "max_tool_calls": 25,
+    "tool_surface": [
+      "file",
+      "strings",
+      "objdump",
+      "nm",
+      "hexdump",
+      "xxd",
+      "entropy",
+      "pe_info",
+      "final_answer"
+    ],
+    "max_tool_output_chars": 50000,
+    "max_model_response_tokens": 16000,
+    "tool_call_cap_semantics": "25-call turn-boundary cap; a parallel tool batch may cross the numeric boundary before the next turn"
+  },
+  "models": [
+    {
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "reasoning_effort": "xhigh"
+    },
+    {
+      "provider": "anthropic",
+      "model": "claude-fable-5",
+      "thinking_effort": "high"
+    },
+    {
+      "provider": "anthropic",
+      "model": "claude-opus-5",
+      "thinking_effort": "high"
+    },
+    {
+      "provider": "moonshot",
+      "model": "kimi-k3",
+      "reasoning_effort": "max"
+    },
+    {
+      "provider": "deepseek",
+      "model": "deepseek-v4-flash",
+      "selection_note": "current Flash model exposed by provider catalog; no V3 Flash ID exposed"
+    },
+    {
+      "provider": "gemini",
+      "model": "gemini-3.6-flash",
+      "reasoning_mode": "provider default; no thinking override"
+    }
+  ],
+  "credentials": {
+    "values_recorded": false
+  },
+  "artifacts": [
+    {
+      "task_id": "v3_l14_u",
+      "variant": "unstripped",
+      "display_name": "sample_5281a1.bin",
+      "binary": "version3/binaries/windows/windows_level14_DLLInjection.exe",
+      "binary_sha256": "36f843848b4aa8bc5672a241fcfd9046d6174d27bdfab9b51ed1d9597262557f",
+      "ground_truth": "version3/ground_truths/windows_level14_DLLInjection.json",
+      "ground_truth_sha256": "8853aae1b9de7b6a8c43e3bab9a4a1d2a9825a36e5e5916574a05d369368c02e",
+      "source": "version3/sources/windows_level14_DLLInjection.c",
+      "source_sha256": "0974819913c49b8493828b174dcb8635966c8bc4031b6e4223eaac1c64bfebc0"
+    },
+    {
+      "task_id": "v3_l14_s",
+      "variant": "stripped",
+      "display_name": "sample_5281a1.bin",
+      "binary": "version3/binaries/windows_stripped/windows_level14_DLLInjection.exe",
+      "binary_sha256": "80985ff85db3f829fb4c1e77843c4c2d3f875c73c1daac820512fc52e63face9",
+      "ground_truth": "version3/ground_truths/windows_level14_DLLInjection.json",
+      "ground_truth_sha256": "8853aae1b9de7b6a8c43e3bab9a4a1d2a9825a36e5e5916574a05d369368c02e",
+      "source": "version3/sources/windows_level14_DLLInjection.c",
+      "source_sha256": "0974819913c49b8493828b174dcb8635966c8bc4031b6e4223eaac1c64bfebc0"
+    },
+    {
+      "task_id": "v3_l15_u",
+      "variant": "unstripped",
+      "display_name": "sample_d3a6b0.bin",
+      "binary": "version3/binaries/windows/windows_level15_APCInjection.exe",
+      "binary_sha256": "22a3bd6caecb97c473d021baf0ba12c5fedd48e5bfcd1974a752883f06a1dea1",
+      "ground_truth": "version3/ground_truths/windows_level15_APCInjection.json",
+      "ground_truth_sha256": "1f1b7302b53a622e464fe05f1cf5f1612e589c884c58333484f7a2ecef50b354",
+      "source": "version3/sources/windows_level15_APCInjection.c",
+      "source_sha256": "1eb8727b149397f0b6dc824fec54b1d6f601bddb3964482132c63dea1ea77c2e"
+    },
+    {
+      "task_id": "v3_l15_s",
+      "variant": "stripped",
+      "display_name": "sample_d3a6b0.bin",
+      "binary": "version3/binaries/windows_stripped/windows_level15_APCInjection.exe",
+      "binary_sha256": "a15cd54f75172ff7278ec298912051784e6ed15f26e57807eda5f0f65dce1ba3",
+      "ground_truth": "version3/ground_truths/windows_level15_APCInjection.json",
+      "ground_truth_sha256": "1f1b7302b53a622e464fe05f1cf5f1612e589c884c58333484f7a2ecef50b354",
+      "source": "version3/sources/windows_level15_APCInjection.c",
+      "source_sha256": "1eb8727b149397f0b6dc824fec54b1d6f601bddb3964482132c63dea1ea77c2e"
+    },
+    {
+      "task_id": "v3_l16_u",
+      "variant": "unstripped",
+      "display_name": "sample_f008e1.bin",
+      "binary": "version3/binaries/windows/windows_level16_CodeCave.exe",
+      "binary_sha256": "003a52516b84dd055d83b5be696ee727331ce8894ce6f8ce92c7b246ac1f01d4",
+      "ground_truth": "version3/ground_truths/windows_level16_CodeCave.json",
+      "ground_truth_sha256": "c113cccebf4bb9133fc98c304364b69ae23aff7d4e16ffd8df4991a0e9bc2a30",
+      "source": "version3/sources/windows_level16_CodeCave.c",
+      "source_sha256": "a6868fcfd8991462223cc666861f9118315f4fb52f099f0d9597ddfa551da4f9"
+    },
+    {
+      "task_id": "v3_l16_s",
+      "variant": "stripped",
+      "display_name": "sample_f008e1.bin",
+      "binary": "version3/binaries/windows_stripped/windows_level16_CodeCave.exe",
+      "binary_sha256": "41256ca6b967c6293622ac5f5d5ceda1ac4955dc11e9a94d55fd3d7f14f0de54",
+      "ground_truth": "version3/ground_truths/windows_level16_CodeCave.json",
+      "ground_truth_sha256": "c113cccebf4bb9133fc98c304364b69ae23aff7d4e16ffd8df4991a0e9bc2a30",
+      "source": "version3/sources/windows_level16_CodeCave.c",
+      "source_sha256": "a6868fcfd8991462223cc666861f9118315f4fb52f099f0d9597ddfa551da4f9"
+    },
+    {
+      "task_id": "v3_l17_u",
+      "variant": "unstripped",
+      "display_name": "sample_409a1c.bin",
+      "binary": "version3/binaries/windows/windows_level17_ProcessHollowing.exe",
+      "binary_sha256": "e45c744ec1239a13f256afb4893d1bf0bc076b231697c091783025c5bca19087",
+      "ground_truth": "version3/ground_truths/windows_level17_ProcessHollowing.json",
+      "ground_truth_sha256": "6f4389a2d58ad8730fd17037f12c29ee36947eecc957d356011ed56fddea8068",
+      "source": "version3/sources/windows_level17_ProcessHollowing.c",
+      "source_sha256": "dca0d8d0392e0c330aa0aad5d677afc8fbf81ea8540b1ea69786bdfea3a53cc5"
+    },
+    {
+      "task_id": "v3_l17_s",
+      "variant": "stripped",
+      "display_name": "sample_409a1c.bin",
+      "binary": "version3/binaries/windows_stripped/windows_level17_ProcessHollowing.exe",
+      "binary_sha256": "a1cee64b06e6e98e2e2f17d9dc4363d213382d660cdcebf16447bee4b812b337",
+      "ground_truth": "version3/ground_truths/windows_level17_ProcessHollowing.json",
+      "ground_truth_sha256": "6f4389a2d58ad8730fd17037f12c29ee36947eecc957d356011ed56fddea8068",
+      "source": "version3/sources/windows_level17_ProcessHollowing.c",
+      "source_sha256": "dca0d8d0392e0c330aa0aad5d677afc8fbf81ea8540b1ea69786bdfea3a53cc5"
+    },
+    {
+      "task_id": "v3_l18_u",
+      "variant": "unstripped",
+      "display_name": "sample_a189b9.bin",
+      "binary": "version3/binaries/windows/windows_level18_HellsGate.exe",
+      "binary_sha256": "a78e8cc02f35b1788c29f4c2d15a2c83d6068dd7dd7ea938a6e4f17dca7495b5",
+      "ground_truth": "version3/ground_truths/windows_level18_HellsGate.json",
+      "ground_truth_sha256": "32f4c88990f22938cfaf713a4346982c80028e71fbc33cb94cba7b1bba723be9",
+      "source": "version3/sources/windows_level18_HellsGate.c",
+      "source_sha256": "ce4a0f56ec608e7ad0fa67fb65fc3eadda29b2355b0e9d778b57ad9d62c3a2a8"
+    },
+    {
+      "task_id": "v3_l18_s",
+      "variant": "stripped",
+      "display_name": "sample_a189b9.bin",
+      "binary": "version3/binaries/windows_stripped/windows_level18_HellsGate.exe",
+      "binary_sha256": "c7e9110794dc2c239810d36f1ddad90ff0e3b4214f2d3ea9797bed8be8efe62d",
+      "ground_truth": "version3/ground_truths/windows_level18_HellsGate.json",
+      "ground_truth_sha256": "32f4c88990f22938cfaf713a4346982c80028e71fbc33cb94cba7b1bba723be9",
+      "source": "version3/sources/windows_level18_HellsGate.c",
+      "source_sha256": "ce4a0f56ec608e7ad0fa67fb65fc3eadda29b2355b0e9d778b57ad9d62c3a2a8"
+    },
+    {
+      "task_id": "v3_l19_u",
+      "variant": "unstripped",
+      "display_name": "sample_7fa102.bin",
+      "binary": "version3/binaries/windows/windows_level19_ReflectiveDLLInjection.exe",
+      "binary_sha256": "185c2c55fecc953f1e36809307309d4ec7f4049990e7f9ec4c4adb8e945647df",
+      "ground_truth": "version3/ground_truths/windows_level19_ReflectiveDLLInjection.json",
+      "ground_truth_sha256": "b3b7e48fa2bd1610c9e7507c02c85f5a9885d1204abef775ccd0a6cb051601a1",
+      "source": "version3/sources/windows_level19_ReflectiveDLLInjection.c",
+      "source_sha256": "e0464fd135f14c570069e44e7a38571ef65101998890793e1bbbaa6b6b9ca15d"
+    },
+    {
+      "task_id": "v3_l19_s",
+      "variant": "stripped",
+      "display_name": "sample_7fa102.bin",
+      "binary": "version3/binaries/windows_stripped/windows_level19_ReflectiveDLLInjection.exe",
+      "binary_sha256": "a215cf67d7f261706c47d5d7f86c98c7864f081e1f4bb47bb8e63c3071a91037",
+      "ground_truth": "version3/ground_truths/windows_level19_ReflectiveDLLInjection.json",
+      "ground_truth_sha256": "b3b7e48fa2bd1610c9e7507c02c85f5a9885d1204abef775ccd0a6cb051601a1",
+      "source": "version3/sources/windows_level19_ReflectiveDLLInjection.c",
+      "source_sha256": "e0464fd135f14c570069e44e7a38571ef65101998890793e1bbbaa6b6b9ca15d"
+    },
+    {
+      "task_id": "v3_l20_u",
+      "variant": "unstripped",
+      "display_name": "sample_358577.bin",
+      "binary": "version3/binaries/windows/windows_level20_RemotePEExecution.exe",
+      "binary_sha256": "3ba112386655300f75d71dad8445b59e8094389be36995417f1a2d69b1811eaf",
+      "ground_truth": "version3/ground_truths/windows_level20_RemotePEExecution.json",
+      "ground_truth_sha256": "32f5d2968b4064289d8bed3df646dad64faa8f6a0cfb349a75002bcbc1c0f6d0",
+      "source": "version3/sources/windows_level20_RemotePEExecution.c",
+      "source_sha256": "654a0924e34f6288da324297b07d5c15efcad08c5ed4d21b9ae34751e9c6caa9"
+    },
+    {
+      "task_id": "v3_l20_s",
+      "variant": "stripped",
+      "display_name": "sample_358577.bin",
+      "binary": "version3/binaries/windows_stripped/windows_level20_RemotePEExecution.exe",
+      "binary_sha256": "f131ad2326b870e301ac50350631c757b8b21827a830e3cf7f548c636484c5fb",
+      "ground_truth": "version3/ground_truths/windows_level20_RemotePEExecution.json",
+      "ground_truth_sha256": "32f5d2968b4064289d8bed3df646dad64faa8f6a0cfb349a75002bcbc1c0f6d0",
+      "source": "version3/sources/windows_level20_RemotePEExecution.c",
+      "source_sha256": "654a0924e34f6288da324297b07d5c15efcad08c5ed4d21b9ae34751e9c6caa9"
+    },
+    {
+      "task_id": "v3_l21_u",
+      "variant": "unstripped",
+      "display_name": "sample_81270e.bin",
+      "binary": "version3/binaries/windows/windows_level21_GhostProcessHollowing.exe",
+      "binary_sha256": "fb515f5b075fca526337ee509c4131b4c760dd6972cf02384dac0ff32929b3f6",
+      "ground_truth": "version3/ground_truths/windows_level21_GhostProcessHollowing.json",
+      "ground_truth_sha256": "df456b9dea01b45490b63585307a9e23a7a42c54598b6b94203a99b14804ed60",
+      "source": "version3/sources/windows_level21_GhostProcessHollowing.c",
+      "source_sha256": "1ff49b785870f6227c537b1ebcd4e05b5696119217ec430f01affd4ab2cb2f80"
+    },
+    {
+      "task_id": "v3_l21_s",
+      "variant": "stripped",
+      "display_name": "sample_81270e.bin",
+      "binary": "version3/binaries/windows_stripped/windows_level21_GhostProcessHollowing.exe",
+      "binary_sha256": "07343c58d6ae4506d3dc6dcf3761ccf98e3969c23dd3bd73e71f51bbe3a7902f",
+      "ground_truth": "version3/ground_truths/windows_level21_GhostProcessHollowing.json",
+      "ground_truth_sha256": "df456b9dea01b45490b63585307a9e23a7a42c54598b6b94203a99b14804ed60",
+      "source": "version3/sources/windows_level21_GhostProcessHollowing.c",
+      "source_sha256": "1ff49b785870f6227c537b1ebcd4e05b5696119217ec430f01affd4ab2cb2f80"
+    },
+    {
+      "task_id": "v3_l22_u",
+      "variant": "unstripped",
+      "display_name": "sample_b5133f.bin",
+      "binary": "version3/binaries/windows/windows_level22_AESEncryptedMultiTechnique.exe",
+      "binary_sha256": "519e0c234656b5ca8419f1aad0031ac4555d35e934f2e150485ab6534aef498e",
+      "ground_truth": "version3/ground_truths/windows_level22_AESEncryptedMultiTechnique.json",
+      "ground_truth_sha256": "daf840317a6e918fe7d33f5f6a3cf23c3395fd21d891229ebd2e83e9b16b085c",
+      "source": "version3/sources/windows_level22_AESEncryptedMultiTechnique.cpp",
+      "source_sha256": "f528b008ce46f373fa719ae0ecb5bdfb68623625ce74abec288945b84a470ca5"
+    },
+    {
+      "task_id": "v3_l22_s",
+      "variant": "stripped",
+      "display_name": "sample_b5133f.bin",
+      "binary": "version3/binaries/windows_stripped/windows_level22_AESEncryptedMultiTechnique.exe",
+      "binary_sha256": "8cbc664bc946448466a9130a02b92ec6b99d5a8d2698a05ee9bcc91ee3ef4570",
+      "ground_truth": "version3/ground_truths/windows_level22_AESEncryptedMultiTechnique.json",
+      "ground_truth_sha256": "daf840317a6e918fe7d33f5f6a3cf23c3395fd21d891229ebd2e83e9b16b085c",
+      "source": "version3/sources/windows_level22_AESEncryptedMultiTechnique.cpp",
+      "source_sha256": "f528b008ce46f373fa719ae0ecb5bdfb68623625ce74abec288945b84a470ca5"
+    },
+    {
+      "task_id": "v3_l23_u",
+      "variant": "unstripped",
+      "display_name": "sample_7e03ce.bin",
+      "binary": "version3/binaries/windows/windows_level23_WannaCryWorm.exe",
+      "binary_sha256": "20248f947390e2297874cd9ba6eab3fb3fadc9ab025622d9d3997743d2476025",
+      "ground_truth": "version3/ground_truths/windows_level23_WannaCryWorm.json",
+      "ground_truth_sha256": "adb2293a91e7d854247a571c628df0d79da589b6c53b681b944ce36a21fc89b6",
+      "source": "version3/sources/windows_level23_WannaCryWorm.c",
+      "source_sha256": "7006927c1d686edc99fb21926b31a6c269c7691355269634e584422f8d39bcbf"
+    },
+    {
+      "task_id": "v3_l23_s",
+      "variant": "stripped",
+      "display_name": "sample_7e03ce.bin",
+      "binary": "version3/binaries/windows_stripped/windows_level23_WannaCryWorm.exe",
+      "binary_sha256": "76e5e00b6671b1b9af8d6f53224475286428736f1812139ad5a2a21ec446739f",
+      "ground_truth": "version3/ground_truths/windows_level23_WannaCryWorm.json",
+      "ground_truth_sha256": "adb2293a91e7d854247a571c628df0d79da589b6c53b681b944ce36a21fc89b6",
+      "source": "version3/sources/windows_level23_WannaCryWorm.c",
+      "source_sha256": "7006927c1d686edc99fb21926b31a6c269c7691355269634e584422f8d39bcbf"
+    }
+  ],
+  "known_issues": [],
+  "publication": {
+    "status": "verified snapshot",
+    "date_utc": "2026-08-04",
+    "raw_artifacts": "version3/results",
+    "analysis": "version3/ANALYSIS.md",
+    "results_checksum_ledger": "version3/RESULTS_SHA256SUMS",
+    "results_checksum_ledger_sha256": "f6bb3ef24f114ac08e1765fbbbd5e1cc52f8b1f808e34f1db45937284dc96c82",
+    "binaries": "version3/binaries",
+    "sources": "version3/sources",
+    "ground_truths": "version3/ground_truths",
+    "build_script": "version3/build_windows_binaries.sh"
+  },
+  "resolved_corrections": [
+    {
+      "task_ids": [
+        "v3_l14_u",
+        "v3_l14_s"
+      ],
+      "issue": "The original decoded DLL-path expectation did not match the embedded ciphertext.",
+      "resolution": "Ground truth now scores the actual 32-byte decoded hex value; all stored answers were rescored. Models never received ground truth."
+    },
+    {
+      "task_ids": "all",
+      "issue": "Exact recovered keys embedded in explanatory text received zero credit, and exact algorithm names embedded in explanations received partial credit.",
+      "resolution": "Boundary-safe annotation matching was added for exact key strings, byte sequences, and algorithm tokens; near-prefix typos remain rejected. All stored outputs were rescored without rerunning model episodes.",
+      "regression_tests": [
+        "annotated exact key and byte-sequence acceptance",
+        "annotated exact algorithm acceptance",
+        "near-prefix and wrong-cipher rejection"
+      ]
+    },
+    {
+      "task_ids": [
+        "v3_l23_u",
+        "v3_l23_s"
+      ],
+      "model": "openai/gpt-5.6-sol",
+      "issue": "An intermediate resume omitted the configured xhigh reasoning effort.",
+      "resolution": "Both bonus artifacts were discarded and rerun under xhigh before publication."
+    }
+  ],
+  "scoring": {
+    "main": "mean of the 18 Level 14-22 artifacts (0-1)",
+    "bonus": "mean of the two Level 23 artifacts (0-1)",
+    "total": "main + bonus (0-2)",
+    "judge": "deterministic scorer; no LLM judge",
+    "hallucination_penalty": {
+      "main_per_extra_technique": 0.05,
+      "bonus_per_extra_technique": 0.03
+    }
+  },
+  "retry_policy": {
+    "provider_errors": "retried from the failed task only",
+    "terminal_model_outcomes": "preserved; refusals and tool-budget exhaustion were not retried",
+    "exception": "GPT Level 23 pair rerun solely to correct mixed reasoning configuration"
+  },
+  "verification": {
+    "status": "pass",
+    "command": "python3 version3/verify.py",
+    "independently_rescored_rows": 120,
+    "answer_files": 120,
+    "compact_transcripts": 120,
+    "full_transcripts": 120,
+    "focused_tests_passed": 51,
+    "binary_hashes_checked": 20,
+    "ground_truth_hashes_checked": 10,
+    "source_hashes_checked": 10
+  },
+  "report_checksums_sha256": {
+    "anthropic_claude-fable-5": "9b146582851a6555ee2606d4242cc29da9445f821fd761a9ed7cce8f4209a8f9",
+    "anthropic_claude-opus-5_retry": "41c30b605ea8cc943d0bf25b7b7090e5e546e8f79beafeb1341adcb995be383e",
+    "deepseek_deepseek-v4-flash": "1b08efca8941814c16420b0b4d45c273cf01c6d60c7e45350e3d08fe2a5e17f4",
+    "gemini_gemini-3.6-flash": "b9e6167acd2d6cc502241869d82173a90da21a4b3f710752eef5b110a4e53de5",
+    "moonshot_kimi-k3": "b33de7c7c64812532e6f66cd85c847288d0f20ef1790ddc5e629d4a513df7512",
+    "openai_gpt-5.6-sol": "765ddc8c3a9a49c91fcee3e915e2afe909c904ff9fcccd04e03ccb6d4bd49ec1"
+  },
+  "code_checksums_sha256": {
+    "version3/tasks_v3.json": "cd6d2d53d925c277b522fb097dc18bda28ff17deb5edf8806ead42f1640e7564",
+    "scorer.py": "f3ad83fdb87f39ec8832e5c3ce2ec01f33f6513cf7ed536915a2456ec19d1a8e",
+    "run_benchmark.py": "070ed3545a7efcf078ba7cedfeae752fcdcbffc2d6d0bdaa4c8df2a542022905",
+    "version3/build_windows_binaries.sh": "713a265657961ef294f3c58df102ae8f3b94d4b45ca79e820f0b67df74f8f1fa",
+    "src/agentre_bench/harness/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/agentre_bench/harness/agent.py": "f88d49ba08cad856bb365c3fd6cd41d90755a2d1177bad183d37f697348bacc9",
+    "src/agentre_bench/harness/config.py": "4609e609ea653f5f05ddf31df4c7519498483bc296453c40bb89e03b84ebe167",
+    "src/agentre_bench/harness/metrics.py": "7f3577ae5ba09d0e47114a0ee4d7d4e9ef0dcbd188584bc6abcc24b3e925d614",
+    "src/agentre_bench/harness/runner.py": "e7624a269f81ed1582ef6c59d98460d98425be11f57f2aa097a1e559df679574",
+    "src/agentre_bench/harness/sandbox.py": "ac5634eb2ca7b757659a4e803771d8c7be814f337c7031cb27c56cf35a8e4f49",
+    "src/agentre_bench/harness/tools.py": "ccbdcb42dd79cdcfe3e07a88b4447033296354a9a305e3b4b4253743ebcff908",
+    "src/agentre_bench/harness/providers/__init__.py": "5cae1544e2127a49fa54c4ee38d7593643e538005307a00e065b4d5c920df2c3",
+    "src/agentre_bench/harness/providers/anthropic.py": "34402b7c0284879c12d0a605d39e13d4b82c7d2019806b9109f518c40bc0f0f5",
+    "src/agentre_bench/harness/providers/base.py": "86a847e370357f05c385b27063cc24846396e789263eb2946cb53494fdc17097",
+    "src/agentre_bench/harness/providers/deepseek.py": "b812a09381bf7928e9696c35393560a8c4285371a95d38ee485bb97c0d5de94c",
+    "src/agentre_bench/harness/providers/gemini.py": "9138f32e6adf56ab6095cf282a1b8a5654aff116aad06e857c485078c6d1f37d",
+    "src/agentre_bench/harness/providers/glm.py": "492c0740a33017e8335a3b5a9be961bc81e4f10aed01fb4a6ba4dc61ebde64eb",
+    "src/agentre_bench/harness/providers/moonshot.py": "a95a8451183b8c6901270b87acc91341686a379fdb70b1e69d197b166c81bc49",
+    "src/agentre_bench/harness/providers/openai_provider.py": "63685c4cedc851c6648a37ad8a273922b7c3672964614d9bd7fe0cff0f8c2d37",
+    "version3/verify.py": "31354020f47837953bc30b2b0db83d743da41607ef8bee6abefca1cf26940e6a"
+  }
+}

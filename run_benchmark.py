@@ -18,9 +18,12 @@ Then just pick a provider/model:
 """
 
 import argparse
+import json
 import logging
 import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).parent / "src"))
 
 from agentre_bench.harness.config import BenchmarkConfig
 from agentre_bench.harness.runner import run_benchmark
@@ -63,10 +66,27 @@ def main():
         help="API key override (normally loaded from .env or environment)",
     )
     parser.add_argument(
+        "--api-file",
+        type=str,
+        default=None,
+        help="Private provider-key file (default: ./api when present, then .env/environment)",
+    )
+    parser.add_argument(
+        "--manifest",
+        type=str,
+        default=None,
+        help="Path to a custom task manifest JSON (default: tasks.json)",
+    )
+    parser.add_argument(
         "--report",
         type=str,
         default=None,
         help="Custom results directory path",
+    )
+    parser.add_argument(
+        "--resume",
+        action="store_true",
+        help="Reuse and rescore saved tasks; rerun only missing or provider-failed tasks",
     )
     parser.add_argument(
         "--max-tool-calls",
@@ -79,6 +99,12 @@ def main():
         type=int,
         default=4096,
         help="Max tokens per LLM response (default: 4096)",
+    )
+    parser.add_argument(
+        "--reasoning-effort",
+        type=str,
+        default=None,
+        help="Provider reasoning effort, e.g. low/high/max for Kimi K3",
     )
     parser.add_argument(
         "--no-docker",
@@ -121,25 +147,40 @@ def main():
         "gemini": "gemini-2.0-flash",
         "deepseek": "deepseek-chat",
         "glm": "glm-5.1",
-        "moonshot": "kimi-k2.6",
+        "moonshot": "kimi-k3",
     }
     model = args.model or model_defaults.get(args.provider, "claude-opus-4-6")
 
     project_root = Path(__file__).parent.resolve()
+    manifest_path = Path(args.manifest) if args.manifest else None
+    if manifest_path is not None and not manifest_path.is_absolute():
+        manifest_path = project_root / manifest_path
+
+    workspace_dir = project_root / "binaries"
+    if manifest_path is not None:
+        try:
+            manifest_data = json.loads(manifest_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            parser.error(f"cannot read manifest {manifest_path}: {exc}")
+        workspace_dir = project_root / manifest_data.get("binary_root", "binaries")
 
     config = BenchmarkConfig(
         project_root=project_root,
-        workspace_dir=project_root / "binaries",
+        workspace_dir=workspace_dir,
         ground_truths_dir=project_root / "ground_truths",
         model=model,
         provider=args.provider,
         api_key=args.api_key,
+        api_file=Path(args.api_file) if args.api_file else None,
         max_tool_calls=args.max_tool_calls,
         max_tokens=args.max_tokens,
+        reasoning_effort=args.reasoning_effort,
         use_docker=not args.no_docker,
         inter_task_sleep_seconds=args.inter_task_sleep,
+        manifest_path=manifest_path,
         results_dir=Path(args.report) if args.report else None,
         verbose=args.verbose,
+        resume=args.resume,
     )
 
     # Validate

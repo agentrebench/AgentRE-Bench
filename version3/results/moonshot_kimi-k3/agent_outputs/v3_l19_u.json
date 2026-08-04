@@ -1,0 +1,41 @@
+{
+  "file_type": "PE32+ (x86-64) console executable, MinGW-w64 GCC 13, with DWARF debug info",
+  "encoded_strings": true,
+  "techniques": [
+    "reflective_dll_injection",
+    "manual_pe_mapping",
+    "manual_getprocaddress_import_resolution",
+    "base_relocation_processing",
+    "virtualalloc_rwx",
+    "aes_like_custom_encryption",
+    "peb_antidebug",
+    "minimal_import_table",
+    "embedded_encrypted_payload"
+  ],
+  "injection_details": {
+    "method": "Reflective DLL injection (manual in-memory PE mapping): VirtualAlloc(RWX, MEM_COMMIT|MEM_RESERVE) at preferred ImageBase with fallback to arbitrary address, memcpy of PE headers and each section, process DIR64 (type 10) base relocations, resolve imports via LoadLibraryA/GetProcAddress (name and ordinal), then locate exported 'DllMain' by walking the export name table (strcmp) and call DllMain(base, DLL_PROCESS_ATTACH, NULL)",
+    "target_process": "self (current process) \u2014 no remote process injection",
+    "target_discovery": "No process discovery; the payload is an embedded 32-byte blob (g_encrypted_dll in .data @ 0x140004000) decrypted in place and mapped into the same process",
+    "payload_write": "memcpy of headers (SizeOfHeaders) and sections into VirtualAlloc'ed PAGE_EXECUTE_READWRITE memory",
+    "entry_invocation": "Calls the loaded image's exported 'DllMain' with (hinstDLL=mapped base, fdwReason=1 DLL_PROCESS_ATTACH, lpvReserved=NULL)",
+    "note": "The decrypted 32-byte payload does not begin with 'MZ', so get_nt_headers fails and reflective_load returns -1 gracefully; the process then sleeps 2000 ms and exits 0"
+  },
+  "encryption_details": {
+    "algorithm": "Custom AES-128-like block cipher (NOT standard AES): 16-byte blocks (ECB-style), 10 rounds of per-byte operation state[i] = AES_forward_S-box[state[i]] XOR key[i] XOR (27*round mod 256). Uses the standard AES forward S-box table (g_aes_sbox @ .rdata 0x140005000). Function names from symbols: aes128_decrypt_block, aes128_decrypt",
+    "key": "Rfl3ct!v3_DLL_k3 (16 bytes, ASCII)",
+    "key_storage": "Hardcoded in plaintext in .rdata @ 0x140005100 (g_aes_key), immediately after the 256-byte S-box; the export name 'DllMain' is stored right after the key @ 0x140005110"
+  },
+  "decoded_strings": {
+    "aes_key": "Rfl3ct!v3_DLL_k3",
+    "export_name_called": "DllMain",
+    "encrypted_payload_hex": "8f2a7cd145b3e9661afc388d57c40e72ab5e19f03688dd416c9723fa4b15ae80 (32 bytes, .data @ 0x140004000)",
+    "decrypted_payload_hex_best_effort": "8f692c569a5ff68444509cf2775e07a66b53dca9fb2d30ff81f3bf0425db76c2 (hand-computed with the binary's own decrypt algorithm; not a valid PE \u2014 no MZ header \u2014 so the reflective load aborts at the get_nt_headers check)"
+  },
+  "anti_analysis": [
+    "peb_being_debugged_check: anti_debug_peb() reads PEB pointer via gs:[0x60] and tests PEB+0x2 (BeingDebugged); WinMain silently returns 0 before any decryption/injection if a debugger is present",
+    "silent_early_exit on debugger detection (no error output)",
+    "minimal import table (only kernel32/msvcrt) to avoid suspicious imports"
+  ],
+  "c2_protocol": null,
+  "decoded_c2": null
+}

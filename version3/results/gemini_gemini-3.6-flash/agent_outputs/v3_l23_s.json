@@ -1,0 +1,45 @@
+{
+  "decoded_strings": {
+    "xor_key": "DEADBEEF1337CAFE",
+    "ransom_note_filename": "@Please_Read_Me@.txt",
+    "encryption_key": "W@nCryPt0K3y2024",
+    "encrypted_extension": ".WNCRY",
+    "lan_scan_target": "192.0.2.%d",
+    "mutex_name": "Global\\MsWinZonesCacheCounterMutexA",
+    "killswitch_url": "http://example.com",
+    "service_name": "mssecsvc2.0"
+  },
+  "file_type": "PE32+",
+  "encoded_strings": true,
+  "injection_details": null,
+  "techniques": [
+    "ransomware",
+    "file_encryption",
+    "aes_encryption",
+    "xor_encoding",
+    "is_debugger_present",
+    "peb_antidebug",
+    "nt_query_information_process",
+    "anti_vm",
+    "killswitch",
+    "service_creation",
+    "mutex_check",
+    "lan_scanning"
+  ],
+  "decoded_c2": null,
+  "anti_analysis": [
+    "IsDebuggerPresent API call",
+    "PEB BeingDebugged flag check (%gs:[0x60] + 0x2)",
+    "NtQueryInformationProcess with ProcessDebugPort (0x7)",
+    "VMware driver existence check (vmmouse.sys, vmhgfs.sys)",
+    "Sandboxie module check (sbiedll.dll)",
+    "CPUID instruction hypervisor check",
+    "Killswitch domain check (http://example.com via InternetOpenUrlA)"
+  ],
+  "c2_protocol": null,
+  "encryption_details": {
+    "key_storage": "Hardcoded in .rdata section",
+    "algorithm": "AES-128 / XOR",
+    "key": "W@nCryPt0K3y2024 (AES-128), DEADBEEF1337CAFE (XOR)"
+  }
+}

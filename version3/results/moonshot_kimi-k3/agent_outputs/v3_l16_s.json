@@ -1,0 +1,47 @@
+{
+  "anti_analysis": [
+    "cpuid_hypervisor_check (CPUID leaf 1, tests ECX bit 31; if hypervisor present: Sleep(30000) then exits without injecting)",
+    "sleep_evasion (Sleep 30000ms on VM detection; Sleep 1000ms after injection)",
+    "manual_getprocaddress (resolves NtCreateThreadEx from ntdll.dll at runtime via GetModuleHandleA+GetProcAddress to keep it out of the import table)",
+    "decoy_aes_sbox_routine (10-round custom S-box transform whose result is never used - analyst misdirection)"
+  ],
+  "c2_protocol": null,
+  "decoded_c2": null,
+  "decoded_strings": {
+    "aes_sbox_decoy_key": "4xdm1n_S3cr3t!!! (plaintext at 0x140004120, used only by unused decoy routine)",
+    "decrypted_payload_ascii_prefix": "Lgkb`edfgccfV followed by non-printable bytes (executed as shellcode, likely placeholder)",
+    "decrypted_payload_hex": "4c676b62606564666763656 656148e69e3b4c56085cbe57d24621a75c5adb111f779757ea98d917aea0904aade94d9a7",
+    "manual_resolution_plaintext_1": "ntdll.dll",
+    "manual_resolution_plaintext_2": "NtCreateThreadEx",
+    "xor_key_hex": "c37a9f2e558b1d6ce431a84f"
+  },
+  "encoded_strings": true,
+  "encryption_details": {
+    "algorithm": "Repeating-key XOR (buf[i] ^= key[i % 12]) protecting the 48-byte injected payload; secondary decoy routine uses the standard AES S-box in a custom 10-round 16-byte transform (b[j] = SBOX[b[j]] ^ key[j] ^ (27*round)) with key \"4xdm1n_S3cr3t!!!\" - its result is computed and discarded (dead code/decoy)",
+    "key": "c3 7a 9f 2e 55 8b 1d 6c e4 31 a8 4f (12 bytes, hex)",
+    "key_storage": "Hardcoded in .rdata section at VA 0x140004000; encrypted payload at VA 0x140003000 (.data); AES S-box at 0x140004020; decoy key \"4xdm1n_S3cr3t!!!\" at 0x140004120"
+  },
+  "file_type": "PE32+ (x86-64)",
+  "injection_details": {
+    "execution": "CreateRemoteThread(hProcess, NULL, 0, cave, NULL, 0, NULL); on failure falls back to manually resolved NtCreateThreadEx(&hThread, 0x1fffff (THREAD_ALL_ACCESS), NULL, hProcess, cave, NULL, 0, 0, 0, 0, NULL); then WaitForSingleObject(hThread, 5000) and CloseHandle",
+    "method": "code_cave_injection into own image + WriteProcessMemory + CreateRemoteThread (NtCreateThreadEx fallback)",
+    "payload": "48-byte blob in .data at VA 0x140003000, decrypted at runtime with repeating 12-byte XOR key c37a9f2e558b1d6ce431a84f from .rdata 0x140004000",
+    "payload_write": "VirtualProtectEx(cave, 0x30, PAGE_EXECUTE_READWRITE=0x40) -> WriteProcessMemory(hProcess, cave, payload, 0x30) -> VirtualProtectEx(cave, 0x30, PAGE_EXECUTE_READ=0x20)",
+    "target_discovery": "GetModuleHandleA(NULL) obtains own image base; code manually parses own PE headers (checks MZ and PE signatures, walks section headers) looking for sections with IMAGE_SCN_MEM_EXECUTE (0x20000000); uses section slack space (VirtualAddress+SizeOfRawData) when VirtualSize-SizeOfRawData >= payload size, otherwise scans the executable section for a run of >= 0x30 consecutive 0xCC or 0x00 bytes",
+    "target_process": "self (own process, handle from GetCurrentProcess())"
+  },
+  "techniques": [
+    "xor_encoding",
+    "code_cave_injection",
+    "self_injection",
+    "WriteProcessMemory",
+    "CreateRemoteThread",
+    "NtCreateThreadEx_fallback",
+    "manual_getprocaddress",
+    "VirtualProtectEx_permission_change",
+    "cpuid_antivm",
+    "sleep_delay_evasion",
+    "pe_header_parsing",
+    "aes_sbox_decoy"
+  ]
+}

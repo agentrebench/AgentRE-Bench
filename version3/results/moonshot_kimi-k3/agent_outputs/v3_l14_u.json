@@ -1,0 +1,52 @@
+{
+  "anti_analysis": [
+    "PEB.BeingDebugged check: anti_debug_check() (0x14000163f) reads PEB via gs:[0x60] and tests the BeingDebugged byte at PEB+0x2; if a debugger is attached WinMain returns 0 immediately without performing the injection",
+    "Import hiding / API obfuscation: all injection-related APIs are kept out of the IAT (only 12 benign KERNEL32 + 27 msvcrt imports) and resolved at runtime by a custom export-table walker (manual_get_proc)"
+  ],
+  "c2_protocol": null,
+  "decoded_c2": null,
+  "decoded_strings": {
+    "decrypted_dll_path_ascii": "IS*h`4%+=1-Ah\\x08X`m2-AthWomB8hnamj",
+    "decrypted_dll_path_hex": "49532a686034252b3d312d41680858606d322d417468576f6d4238686e616d6a",
+    "note": "32-byte blob g_encrypted_dll_path in .data (VA 0x140003000) decrypted in WinMain with repeating 8-byte XOR key 5a3c7fe12d94b86a (g_xor_key in .rdata at VA 0x140004000) via xor_decrypt(); result is null-terminated and passed to inject_dll as the LoadLibraryA path",
+    "plaintext_api_strings_recovered_from_rdata": [
+      "kernel32.dll",
+      "CreateToolhelp32Snapshot",
+      "Process32First",
+      "Process32Next",
+      "OpenProcess",
+      "VirtualAllocEx",
+      "WriteProcessMemory",
+      "CreateRemoteThread",
+      "CloseHandle",
+      "WaitForSingleObject",
+      "LoadLibraryA",
+      "explorer.exe"
+    ]
+  },
+  "encoded_strings": true,
+  "encryption_details": {
+    "algorithm": "XOR (repeating 8-byte key, data[i] ^= key[i % 8])",
+    "key": "5A 3C 7F E1 2D 94 B8 6A",
+    "key_storage": "Hardcoded global byte array g_xor_key in .rdata at VA 0x140004000 (8 bytes, immediately followed by the plaintext \"kernel32.dll\" string). The 32-byte ciphertext g_encrypted_dll_path is a global in .data at VA 0x140003000. Decryption routine xor_decrypt() is at 0x140001480; called from WinMain with len=0x20, keylen=8."
+  },
+  "file_type": "PE32+ (x86-64) console executable",
+  "injection_details": {
+    "api_resolution": "manual_get_proc (0x1400014ef) walks the in-memory kernel32.dll export table (checks MZ/PE signatures, reads export directory RVA at NT headers+0x88, iterates AddressOfNames/AddressOfNameOrdinals/AddressOfFunctions with strcmp) to resolve CreateToolhelp32Snapshot, Process32First, Process32Next, OpenProcess, VirtualAllocEx, WriteProcessMemory, CreateRemoteThread, CloseHandle, WaitForSingleObject and LoadLibraryA; module handle obtained via GetModuleHandleA(\"kernel32.dll\")",
+    "entry_flow": "WinMain (0x140001ae9) first calls anti_debug_check(); if PEB.BeingDebugged is set it returns 0 without injecting. Otherwise it XOR-decrypts the 32-byte DLL path and calls inject_dll(path), then Sleep(1000) and exits",
+    "execution": "CreateRemoteThread(hProcess, NULL, 0, pLoadLibraryA, remote_path_buf, 0, NULL); then WaitForSingleObject(hThread, INFINITE) and CloseHandle(thread/process)",
+    "method": "CreateRemoteThread + LoadLibraryA classic DLL injection",
+    "open_process_access": "OpenProcess(0x42A = PROCESS_CREATE_THREAD | PROCESS_VM_OPERATION | PROCESS_VM_WRITE | PROCESS_QUERY_INFORMATION, FALSE, explorer_pid)",
+    "payload_write": "VirtualAllocEx(hProcess, NULL, strlen(dllPath)+1, MEM_COMMIT|MEM_RESERVE (0x3000), PAGE_READWRITE (0x4)) followed by WriteProcessMemory of the decrypted DLL path string (including NUL); LoadLibraryA address used as the remote thread start routine with the remote path buffer as parameter",
+    "target_discovery": "CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS=2, 0), then Process32First/Process32Next loop calling strcmp(pe.szExeFile, \"explorer.exe\") to capture the PID (PROCESSENTRY32.szExeFile at +0x2C, th32ProcessID at +0x8); snapshot closed via CloseHandle",
+    "target_process": "explorer.exe"
+  },
+  "techniques": [
+    "dll_injection",
+    "createremotethread_loadlibrary",
+    "manual_getprocaddress_eat_walk",
+    "xor_string_encryption",
+    "peb_beingdebugged_antidebug",
+    "process_enumeration_toolhelp32"
+  ]
+}

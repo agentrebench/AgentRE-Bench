@@ -1,0 +1,54 @@
+{
+  "file_type": "PE32+ (x86-64) console executable, MinGW-w64/GCC 13, stripped (external PDB), 10 sections",
+  "encoded_strings": true,
+  "techniques": [
+    "self_injection_code_cave",
+    "pe_header_parsing_section_table",
+    "code_cave_search_0xCC_0x00_runs",
+    "executable_section_slack_space_abuse",
+    "WriteProcessMemory_payload_write",
+    "VirtualProtectEx_rwx_then_restore_rx",
+    "CreateRemoteThread_execution",
+    "manual_getprocaddress",
+    "ntdll_NtCreateThreadEx_fallback_execution",
+    "xor_encoding",
+    "custom_aes_sbox_substitution_cipher",
+    "cpuid_hypervisor_detection",
+    "sleep_evasion",
+    "tls_callbacks_present (mingw CRT)",
+    "GetCurrentProcess_self_target",
+    "GetModuleHandleA_own_image_base"
+  ],
+  "injection_details": {
+    "method": "Self-injection into a code cave of the process's own primary module: VirtualProtectEx(PAGE_EXECUTE_READWRITE=0x40) -> WriteProcessMemory -> VirtualProtectEx(PAGE_EXECUTE_READ=0x20) -> CreateRemoteThread(cave); if CreateRemoteThread fails, NtCreateThreadEx (resolved dynamically from ntdll.dll) is used with desired access 0x1FFFFF",
+    "target_process": "own process (GetCurrentProcess()), own module image (GetModuleHandleA(NULL))",
+    "target_discovery": "Parses own MZ/PE headers, iterates IMAGE_SECTION_HEADERs, picks sections with IMAGE_SCN_MEM_EXECUTE (0x20000000); first tries slack space at (imagebase + VirtualAddress + SizeOfRawData), otherwise scans the section for a contiguous run of 0xCC or 0x00 bytes >= payload size (function at 0x140001664)",
+    "payload_write": "WriteProcessMemory into the located code cave (48-byte XOR-decrypted shellcode built on the stack)",
+    "payload_size": "0x30 (48) bytes, stored encrypted at .data:0x140003000",
+    "thread_wait": "WaitForSingleObject(hThread, 5000) then CloseHandle, followed by Sleep(1000)",
+    "injector_function": "0x1400017ED (inject), called from WinMain 0x140001A2E",
+    "api_resolution_helper": "0x14000159F = GetModuleHandleA(\"ntdll.dll\") + GetProcAddress(name)"
+  },
+  "encryption_details": {
+    "algorithm": "Two layers: (1) repeating-key XOR over the 48-byte shellcode (routine 0x140001480); (2) custom 10-round substitution cipher over a 16-byte blob (routine 0x1400014EF): b[j] = AES_SBOX[b[j]] ^ key[j] ^ (27*round), round = 0..9, using the standard AES S-box table at .rdata:0x140004020",
+    "key": "XOR key (12 bytes, .rdata:0x140004000): C3 7A 9F 2E 55 8B 1D 6C E4 31 A8 4F | Block-cipher key (16 bytes, .rdata:0x140004120): \"4xdm1n_S3cr3t!!!\"",
+    "key_storage": "Both keys are stored as plaintext constant byte arrays hardcoded in the .rdata section (no derivation, no obfuscation); AES S-box lookup table also embedded at 0x140004020"
+  },
+  "decoded_strings": {
+    "shellcode_payload_48B_xor_decrypted": "4C 67 6B 62 60 65 64 66 67 63 63 66 56 14 8E 69 E3 B4 C5 60 85 CB E5 7D 24 62 1A 75 C5 AD B1 11 F7 79 75 7E A9 8D 91 7A EA 09 04 AA DE 94 D9 A7 (placeholder/stub shellcode written into the code cave)",
+    "xor_key_rdata_0x140004000": "C3 7A 9F 2E 55 8B 1D 6C E4 31 A8 4F",
+    "sbox_cipher_key_rdata_0x140004120": "4xdm1n_S3cr3t!!!",
+    "plaintext_api_strings": "ntdll.dll (0x140004130), NtCreateThreadEx (0x14000413A)",
+    "sbox_blob_data_0x140003030": "ciphertext 7A 9C F4 2E 8B 1D 6C 55 31 A8 4F E4 2B 91 DD 66 -> decrypts to non-ASCII binary (first bytes 0x05 0x84 ...); result is never referenced afterwards, i.e. decoy / unused key material"
+  },
+  "anti_analysis": [
+    "CPUID leaf 1 hypervisor-present bit (ECX bit 31) VM/sandbox detection at 0x1400015EA; on detection it only Sleep(30000) and exits without dropping the payload",
+    "Sleep-based execution delay / sandbox timeout evasion (Sleep(30000) on VM detect, Sleep(1000) after injection)",
+    "Encrypted (XOR + custom AES-S-box cipher) embedded payload and decoy blob to defeat static string/signature scanning",
+    "No suspicious plaintext strings; API names for the thread-creation fallback resolved at runtime via GetModuleHandleA/GetProcAddress (manual resolution hides NtCreateThreadEx from the import table)",
+    "Code cave reuse inside the image's own executable section instead of VirtualAlloc'd RWX memory (evades RWX private-memory heuristics); page protection restored to PAGE_EXECUTE_READ after writing",
+    "Binary stripped of symbols/debug info (external PDB reference removed)"
+  ],
+  "c2_protocol": null,
+  "decoded_c2": null
+}
