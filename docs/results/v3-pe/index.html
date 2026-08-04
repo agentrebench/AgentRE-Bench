@@ -1004,7 +1004,8 @@ html[data-theme="light"] .results-callout {
   .results-hero .hero-panel { transform: none; }
 }
 </style>
-
+<link rel="stylesheet" href="/handbook-theme.css">
+<script defer src="/handbook-theme.js"></script>
 </head>
 <body>
 
@@ -1134,7 +1135,7 @@ html[data-theme="light"] .results-callout {
   </div>
 </div></section>
 
-<section><div class="container">
+<section id="findings"><div class="container">
   <div class="section-tag">Cross-model findings</div><h2 class="section-title">Metadata came first; behavior reconstruction lagged</h2>
   <div class="comparison">
     <div class="card"><span class="badge">Easy layer</span><h3>Format and obfuscation</h3><ul class="results-list"><li>File type was nearly saturated among valid answers.</li><li>Models usually recognized that strings or payloads were encoded.</li><li>Imports, section flags, constants, and API names survived stripping.</li></ul></div>
