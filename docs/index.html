@@ -735,12 +735,6 @@ tbody tr:hover { background: var(--surface-alt); }
 }
 .results-table .winner { color: var(--accent); }
 .results-table .zero { color: var(--text-dim); }
-.results-score-bars { margin-top: 24px; }
-.results-score-bar { cursor: default; }
-.results-score-bar:hover {
-  border-color: var(--border);
-  background: var(--glass);
-}
 .level-num { font-family: var(--mono); font-weight: 600; color: var(--accent); }
 .diff-badge {
   display: inline-block;
@@ -1041,36 +1035,40 @@ footer a:hover { color: var(--accent); }
       Six frontier models analyzed 20 binary-only Windows PE artifacts each: matched stripped and unstripped variants across Levels 14&ndash;23. Main averages the 18 Level 14&ndash;22 artifacts; Bonus averages the two Level 23 worm artifacts; Total adds both.
     </p>
 
-    <div class="model-tabs results-score-bars" role="list" aria-label="V3 Total scores out of 2">
-      <div class="model-tab results-score-bar" role="listitem" aria-label="Kimi K3 Total score 1.3618 out of 2">
+    <div class="results-score-legend" aria-hidden="true">
+      <span><i></i>Main /1</span>
+      <span><i class="bonus-swatch"></i>+ Bonus /1</span>
+    </div>
+    <div class="model-tabs results-score-bars" role="list" aria-label="V3 Main scores with shaded Bonus additions">
+      <div class="model-tab results-score-bar" role="listitem" aria-label="Kimi K3 Main score 0.6757 plus 0.6861 Bonus">
         <span class="lb-model" style="color: var(--cyan);">Kimi K3</span>
-        <div class="lb-bar-track" aria-hidden="true"><div class="lb-bar" style="width:68.09%; background:var(--cyan);"></div></div>
-        <span class="lb-score" style="color:var(--cyan);">1.3618</span>
+        <div class="lb-bar-track results-score-track" aria-hidden="true"><div class="lb-bar results-main-bar" style="width:33.785%; background:var(--cyan);"></div><div class="lb-bar results-bonus-bar" style="width:34.305%; background:var(--cyan);"></div></div>
+        <span class="lb-score results-score-value" style="color:var(--cyan);"><strong>0.6757</strong><small>+0.6861 bonus</small></span>
       </div>
-      <div class="model-tab results-score-bar" role="listitem" aria-label="Claude Opus 5 Total score 1.2785 out of 2">
+      <div class="model-tab results-score-bar" role="listitem" aria-label="Claude Opus 5 Main score 0.6147 plus 0.6638 Bonus">
         <span class="lb-model" style="color: var(--orange);">Claude Opus 5</span>
-        <div class="lb-bar-track" aria-hidden="true"><div class="lb-bar" style="width:63.93%; background:var(--orange);"></div></div>
-        <span class="lb-score" style="color:var(--orange);">1.2785</span>
+        <div class="lb-bar-track results-score-track" aria-hidden="true"><div class="lb-bar results-main-bar" style="width:30.735%; background:var(--orange);"></div><div class="lb-bar results-bonus-bar" style="width:33.19%; background:var(--orange);"></div></div>
+        <span class="lb-score results-score-value" style="color:var(--orange);"><strong>0.6147</strong><small>+0.6638 bonus</small></span>
       </div>
-      <div class="model-tab results-score-bar" role="listitem" aria-label="GPT-5.6 Sol Total score 1.2157 out of 2">
+      <div class="model-tab results-score-bar" role="listitem" aria-label="GPT-5.6 Sol Main score 0.5859 plus 0.6298 Bonus">
         <span class="lb-model" style="color: var(--indigo);">GPT-5.6 Sol</span>
-        <div class="lb-bar-track" aria-hidden="true"><div class="lb-bar" style="width:60.79%; background:var(--indigo);"></div></div>
-        <span class="lb-score" style="color:var(--indigo);">1.2157</span>
+        <div class="lb-bar-track results-score-track" aria-hidden="true"><div class="lb-bar results-main-bar" style="width:29.295%; background:var(--indigo);"></div><div class="lb-bar results-bonus-bar" style="width:31.49%; background:var(--indigo);"></div></div>
+        <span class="lb-score results-score-value" style="color:var(--indigo);"><strong>0.5859</strong><small>+0.6298 bonus</small></span>
       </div>
-      <div class="model-tab results-score-bar" role="listitem" aria-label="DeepSeek V4 Flash Total score 1.1906 out of 2">
+      <div class="model-tab results-score-bar" role="listitem" aria-label="DeepSeek V4 Flash Main score 0.5125 plus 0.6782 Bonus">
         <span class="lb-model" style="color: var(--yellow);">DeepSeek V4 Flash</span>
-        <div class="lb-bar-track" aria-hidden="true"><div class="lb-bar" style="width:59.53%; background:var(--yellow);"></div></div>
-        <span class="lb-score" style="color:var(--yellow);">1.1906</span>
+        <div class="lb-bar-track results-score-track" aria-hidden="true"><div class="lb-bar results-main-bar" style="width:25.625%; background:var(--yellow);"></div><div class="lb-bar results-bonus-bar" style="width:33.91%; background:var(--yellow);"></div></div>
+        <span class="lb-score results-score-value" style="color:var(--yellow);"><strong>0.5125</strong><small>+0.6782 bonus</small></span>
       </div>
-      <div class="model-tab results-score-bar" role="listitem" aria-label="Gemini 3.6 Flash Total score 1.1052 out of 2">
+      <div class="model-tab results-score-bar" role="listitem" aria-label="Gemini 3.6 Flash Main score 0.5400 plus 0.5653 Bonus">
         <span class="lb-model" style="color: var(--accent);">Gemini 3.6 Flash</span>
-        <div class="lb-bar-track" aria-hidden="true"><div class="lb-bar" style="width:55.26%; background:var(--accent);"></div></div>
-        <span class="lb-score" style="color:var(--accent);">1.1052</span>
+        <div class="lb-bar-track results-score-track" aria-hidden="true"><div class="lb-bar results-main-bar" style="width:27%; background:var(--accent);"></div><div class="lb-bar results-bonus-bar" style="width:28.265%; background:var(--accent);"></div></div>
+        <span class="lb-score results-score-value" style="color:var(--accent);"><strong>0.5400</strong><small>+0.5653 bonus</small></span>
       </div>
-      <div class="model-tab results-score-bar" role="listitem" aria-label="Claude Fable 5 Total score 0 out of 2">
+      <div class="model-tab results-score-bar" role="listitem" aria-label="Claude Fable 5 Main score 0 plus 0 Bonus">
         <span class="lb-model" style="color: var(--red);">Claude Fable 5</span>
-        <div class="lb-bar-track" aria-hidden="true"><div class="lb-bar" style="width:0%; background:var(--red);"></div></div>
-        <span class="lb-score" style="color:var(--red);">0.0000</span>
+        <div class="lb-bar-track results-score-track" aria-hidden="true"><div class="lb-bar results-main-bar" style="width:0%; background:var(--red);"></div><div class="lb-bar results-bonus-bar" style="width:0%; background:var(--red);"></div></div>
+        <span class="lb-score results-score-value" style="color:var(--red);"><strong>0.0000</strong><small>+0.0000 bonus</small></span>
       </div>
     </div>
 
