@@ -8,6 +8,8 @@
 
 This is the exhaustive publication for the V3 Windows generation. It includes the leaderboard, matched stripped-binary analysis, model capability profiles, reliability outcomes, verification audit, and reproduction details. Raw answers, reports, and transcripts are preserved under [`version3/results/`](results/).
 
+For the broader security argument behind this work, read [`WHY_AGENTRE_MATTERS.md`](WHY_AGENTRE_MATTERS.md).
+
 ## 1. Headline
 
 **Kimi K3 wins AgentRE-Bench V3.** It leads Main, Bonus, and Total with 20/20 valid submissions: **0.6757 Main, 0.6861 Bonus, and 1.3618/2.0 Total**. Claude Opus 5 places second at 1.2785 despite two refusals; GPT-5.6 Sol places third at 1.2157 and records both the best single artifact score (0.9272) and zero hallucinated techniques.
@@ -295,6 +297,7 @@ Change provider/model/reasoning flags according to the configuration table. Use 
 ## 13. Publication files
 
 - [`ANALYSIS.md`](ANALYSIS.md) — this write-up
+- [`WHY_AGENTRE_MATTERS.md`](WHY_AGENTRE_MATTERS.md) — why binary reverse-engineering capability matters for defenders
 - [`RUN_MANIFEST.json`](RUN_MANIFEST.json) — hashes, configurations, corrections, retry policy
 - [`tasks_v3.json`](tasks_v3.json) — anonymized paired task manifest
 - [`results/`](results/) — six raw model snapshots containing `benchmark_report.json`, `agent_outputs/`, and `transcripts/`
