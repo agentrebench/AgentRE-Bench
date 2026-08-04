@@ -976,6 +976,12 @@ html[data-theme="light"] .results-callout {
 }
 .results-table .winner { color: var(--accent); }
 .results-table .zero { color: var(--red); }
+.results-score-bars { margin-top: 24px; }
+.results-score-bar { cursor: default; }
+.results-score-bar:hover {
+  border-color: var(--border);
+  background: var(--glass);
+}
 
 .profile-grid .card { min-height: 190px; }
 .profile-grid .badge { margin-bottom: 14px; }
@@ -1077,6 +1083,38 @@ html[data-theme="light"] .results-callout {
 <section id="leaderboard"><div class="container">
   <div class="section-tag">Verified leaderboard</div><h2 class="section-title">Six models, one binary-only tool surface</h2>
   <p class="section-desc">Main averages 18 Level 14–22 artifacts. Bonus averages the two Level 23 worm artifacts. Total adds both, so always inspect the split rather than reading Total as a flat average over 20 tasks.</p>
+  <div class="model-tabs results-score-bars" role="list" aria-label="V3 Total scores out of 2">
+    <div class="model-tab results-score-bar" role="listitem" aria-label="Kimi K3 Total score 1.3618 out of 2">
+      <span class="lb-model" style="color: var(--cyan);">Kimi K3</span>
+      <div class="lb-bar-track" aria-hidden="true"><div class="lb-bar" style="width:68.09%; background:var(--cyan);"></div></div>
+      <span class="lb-score" style="color:var(--cyan);">1.3618</span>
+    </div>
+    <div class="model-tab results-score-bar" role="listitem" aria-label="Claude Opus 5 Total score 1.2785 out of 2">
+      <span class="lb-model" style="color: var(--orange);">Claude Opus 5</span>
+      <div class="lb-bar-track" aria-hidden="true"><div class="lb-bar" style="width:63.93%; background:var(--orange);"></div></div>
+      <span class="lb-score" style="color:var(--orange);">1.2785</span>
+    </div>
+    <div class="model-tab results-score-bar" role="listitem" aria-label="GPT-5.6 Sol Total score 1.2157 out of 2">
+      <span class="lb-model" style="color: var(--indigo);">GPT-5.6 Sol</span>
+      <div class="lb-bar-track" aria-hidden="true"><div class="lb-bar" style="width:60.79%; background:var(--indigo);"></div></div>
+      <span class="lb-score" style="color:var(--indigo);">1.2157</span>
+    </div>
+    <div class="model-tab results-score-bar" role="listitem" aria-label="DeepSeek V4 Flash Total score 1.1906 out of 2">
+      <span class="lb-model" style="color: var(--yellow);">DeepSeek V4 Flash</span>
+      <div class="lb-bar-track" aria-hidden="true"><div class="lb-bar" style="width:59.53%; background:var(--yellow);"></div></div>
+      <span class="lb-score" style="color:var(--yellow);">1.1906</span>
+    </div>
+    <div class="model-tab results-score-bar" role="listitem" aria-label="Gemini 3.6 Flash Total score 1.1052 out of 2">
+      <span class="lb-model" style="color: var(--accent);">Gemini 3.6 Flash</span>
+      <div class="lb-bar-track" aria-hidden="true"><div class="lb-bar" style="width:55.26%; background:var(--accent);"></div></div>
+      <span class="lb-score" style="color:var(--accent);">1.1052</span>
+    </div>
+    <div class="model-tab results-score-bar" role="listitem" aria-label="Claude Fable 5 Total score 0 out of 2">
+      <span class="lb-model" style="color: var(--red);">Claude Fable 5</span>
+      <div class="lb-bar-track" aria-hidden="true"><div class="lb-bar" style="width:0%; background:var(--red);"></div></div>
+      <span class="lb-score" style="color:var(--red);">0.0000</span>
+    </div>
+  </div>
   <div class="table-wrap"><table class="results-table"><thead><tr><th>Rank</th><th>Model</th><th class="num">Main /1</th><th class="num">Bonus /1</th><th class="num">Total /2</th><th class="num">Valid</th></tr></thead><tbody>
     <tr><td class="rank">01</td><td class="winner"><strong>Kimi K3</strong></td><td class="num winner">0.6757</td><td class="num winner">0.6861</td><td class="num winner">1.3618</td><td class="num">20/20</td></tr>
     <tr><td class="rank">02</td><td>Claude Opus 5</td><td class="num">0.6147</td><td class="num">0.6638</td><td class="num">1.2785</td><td class="num">18/20</td></tr>

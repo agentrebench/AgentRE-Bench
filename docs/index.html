@@ -735,6 +735,12 @@ tbody tr:hover { background: var(--surface-alt); }
 }
 .results-table .winner { color: var(--accent); }
 .results-table .zero { color: var(--text-dim); }
+.results-score-bars { margin-top: 24px; }
+.results-score-bar { cursor: default; }
+.results-score-bar:hover {
+  border-color: var(--border);
+  background: var(--glass);
+}
 .level-num { font-family: var(--mono); font-weight: 600; color: var(--accent); }
 .diff-badge {
   display: inline-block;
@@ -1034,6 +1040,39 @@ footer a:hover { color: var(--accent); }
     <p class="section-desc">
       Six frontier models analyzed 20 binary-only Windows PE artifacts each: matched stripped and unstripped variants across Levels 14&ndash;23. Main averages the 18 Level 14&ndash;22 artifacts; Bonus averages the two Level 23 worm artifacts; Total adds both.
     </p>
+
+    <div class="model-tabs results-score-bars" role="list" aria-label="V3 Total scores out of 2">
+      <div class="model-tab results-score-bar" role="listitem" aria-label="Kimi K3 Total score 1.3618 out of 2">
+        <span class="lb-model" style="color: var(--cyan);">Kimi K3</span>
+        <div class="lb-bar-track" aria-hidden="true"><div class="lb-bar" style="width:68.09%; background:var(--cyan);"></div></div>
+        <span class="lb-score" style="color:var(--cyan);">1.3618</span>
+      </div>
+      <div class="model-tab results-score-bar" role="listitem" aria-label="Claude Opus 5 Total score 1.2785 out of 2">
+        <span class="lb-model" style="color: var(--orange);">Claude Opus 5</span>
+        <div class="lb-bar-track" aria-hidden="true"><div class="lb-bar" style="width:63.93%; background:var(--orange);"></div></div>
+        <span class="lb-score" style="color:var(--orange);">1.2785</span>
+      </div>
+      <div class="model-tab results-score-bar" role="listitem" aria-label="GPT-5.6 Sol Total score 1.2157 out of 2">
+        <span class="lb-model" style="color: var(--indigo);">GPT-5.6 Sol</span>
+        <div class="lb-bar-track" aria-hidden="true"><div class="lb-bar" style="width:60.79%; background:var(--indigo);"></div></div>
+        <span class="lb-score" style="color:var(--indigo);">1.2157</span>
+      </div>
+      <div class="model-tab results-score-bar" role="listitem" aria-label="DeepSeek V4 Flash Total score 1.1906 out of 2">
+        <span class="lb-model" style="color: var(--yellow);">DeepSeek V4 Flash</span>
+        <div class="lb-bar-track" aria-hidden="true"><div class="lb-bar" style="width:59.53%; background:var(--yellow);"></div></div>
+        <span class="lb-score" style="color:var(--yellow);">1.1906</span>
+      </div>
+      <div class="model-tab results-score-bar" role="listitem" aria-label="Gemini 3.6 Flash Total score 1.1052 out of 2">
+        <span class="lb-model" style="color: var(--accent);">Gemini 3.6 Flash</span>
+        <div class="lb-bar-track" aria-hidden="true"><div class="lb-bar" style="width:55.26%; background:var(--accent);"></div></div>
+        <span class="lb-score" style="color:var(--accent);">1.1052</span>
+      </div>
+      <div class="model-tab results-score-bar" role="listitem" aria-label="Claude Fable 5 Total score 0 out of 2">
+        <span class="lb-model" style="color: var(--red);">Claude Fable 5</span>
+        <div class="lb-bar-track" aria-hidden="true"><div class="lb-bar" style="width:0%; background:var(--red);"></div></div>
+        <span class="lb-score" style="color:var(--red);">0.0000</span>
+      </div>
+    </div>
 
     <div class="table-wrap">
       <table class="results-table">
