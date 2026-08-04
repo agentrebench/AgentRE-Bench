@@ -468,6 +468,7 @@ Sequential execution recommended for OpenAI and Gemini to avoid TPM rate limits.
 version2/
 ├── ANALYSIS.md                                  (this file — updated 2026-04-29)
 ├── NOTES_FOR_AGENTS.md                          (V3 sample-design brief for DeepSeek/Codex)
+├── samples/                                     ← C source for Levels 1–13
 └── results/
     ├── anthropic_claude-opus-4-7/               ← Opus 4.7 thinking, 13/13
     ├── deepseek_deepseek-v4-pro/                ← V4 Pro thinking, 10/13
@@ -484,4 +485,4 @@ each results/<provider_model>/ contains:
     transcripts/              ← per-task scoring + full conversation
 ```
 
-The original `results/` directory in the repo root continues to be the working area; this `version2/` is a frozen snapshot for the V2 generation analysis. The 2026-04-29 expansion added Flash Lite, Pro Preview (DNF), GLM (DNF), and Kimi to the original four-model set.
+The `samples/` directory contains the 13 C sources used to build the V2 benchmark binaries. The original `results/` directory in the repo root continues to be the working area; this `version2/` is a frozen snapshot for the V2 generation analysis. The 2026-04-29 expansion added Flash Lite, Pro Preview (DNF), GLM (DNF), and Kimi to the original four-model set.
