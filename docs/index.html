@@ -723,6 +723,18 @@ tbody td {
 }
 tbody tr:last-child td { border-bottom: none; }
 tbody tr:hover { background: var(--surface-alt); }
+.results-table .num {
+  text-align: right;
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+.results-table .rank {
+  color: var(--accent);
+  font-family: var(--mono);
+  font-weight: 700;
+}
+.results-table .winner { color: var(--accent); }
+.results-table .zero { color: var(--text-dim); }
 .level-num { font-family: var(--mono); font-weight: 600; color: var(--accent); }
 .diff-badge {
   display: inline-block;
@@ -962,8 +974,8 @@ footer a:hover { color: var(--accent); }
           <a href="/challenge/leaderboard/">Leaderboard</a>
         </div>
       </div>
-      <a href="/results/v3-pe/">V3 PE Results</a>
-      <a href="#leaderboard">V2 ELF Results</a>
+      <a href="#leaderboard">V3 Results</a>
+      <a href="#v2-results">V2 Archive</a>
       <a href="#tasks">Tasks</a>
       <a href="#private-evals">Private Evals</a>
       <a href="https://github.com/agentrebench/AgentRE-Bench">GitHub</a>
@@ -1014,6 +1026,70 @@ footer a:hover { color: var(--accent); }
   </div>
 </section>
 
+<!-- ── V3 Windows PE Leaderboard ── -->
+<section id="leaderboard">
+  <div class="container">
+    <div class="section-tag">V3 Windows PE Leaderboard</div>
+    <h2 class="section-title">Kimi K3 leads the paired PE generation</h2>
+    <p class="section-desc">
+      Six frontier models analyzed 20 binary-only Windows PE artifacts each: matched stripped and unstripped variants across Levels 14&ndash;23. Main averages the 18 Level 14&ndash;22 artifacts; Bonus averages the two Level 23 worm artifacts; Total adds both.
+    </p>
+
+    <div class="table-wrap">
+      <table class="results-table">
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Model</th>
+            <th class="num">Main /1</th>
+            <th class="num">Bonus /1</th>
+            <th class="num">Total /2</th>
+            <th class="num">Valid</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="rank">01</td><td class="winner"><strong>Kimi K3</strong></td><td class="num winner">0.6757</td><td class="num winner">0.6861</td><td class="num winner">1.3618</td><td class="num">20/20</td></tr>
+          <tr><td class="rank">02</td><td>Claude Opus 5</td><td class="num">0.6147</td><td class="num">0.6638</td><td class="num">1.2785</td><td class="num">18/20</td></tr>
+          <tr><td class="rank">03</td><td>GPT-5.6 Sol</td><td class="num">0.5859</td><td class="num">0.6298</td><td class="num">1.2157</td><td class="num">18/20</td></tr>
+          <tr><td class="rank">04</td><td>DeepSeek V4 Flash</td><td class="num">0.5125</td><td class="num">0.6782</td><td class="num">1.1906</td><td class="num">19/20</td></tr>
+          <tr><td class="rank">05</td><td>Gemini 3.6 Flash</td><td class="num">0.5400</td><td class="num">0.5653</td><td class="num">1.1052</td><td class="num">20/20</td></tr>
+          <tr><td class="rank">06</td><td>Claude Fable 5</td><td class="num zero">0.0000</td><td class="num zero">0.0000</td><td class="num zero">0.0000</td><td class="num">0/20</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="safety-note">
+      Terminal refusals and tool-budget exits remain part of the aggregate. Provider failures were retried under the recorded policy. Total is the official score, but Main is the broader measure across the process-injection ladder.
+    </p>
+
+    <div class="feature-grid" style="margin-top:24px">
+      <article class="card">
+        <span class="badge">Winner</span>
+        <h3>Kimi leads every aggregate</h3>
+        <p>Kimi K3 ranks first on Main, Bonus, and Total with 20/20 valid answers. Its 0.6757 Main is the strongest measure of breadth across Levels 14&ndash;22.</p>
+      </article>
+      <article class="card">
+        <span class="badge">Stripping</span>
+        <h3>Symbols helped, but were not decisive</h3>
+        <p>Across 46 complete model/level pairs, stripping moved mean score from 0.6428 to 0.6012: a 0.0416 absolute or 6.47% relative reduction.</p>
+      </article>
+      <article class="card">
+        <span class="badge">Hard boundary</span>
+        <h3>Exact reconstruction remains unsolved</h3>
+        <p>Models recovered metadata and broad behavior more reliably than Native API chains, keys, decoded content, and the true Level 23 C2 endpoint.</p>
+      </article>
+    </div>
+
+    <div class="cta-band">
+      <div>
+        <h3>Read the full V3 report</h3>
+        <p>Explore matched stripped/unstripped results, per-level scores, model profiles, hallucination analysis, reliability outcomes, methodology, corrections, and the independent verification audit.</p>
+      </div>
+      <a class="btn btn-primary" href="/results/v3-pe/">Open V3 analysis</a>
+    </div>
+  </div>
+</section>
+
 <!-- ── Research Mentions ── -->
 <section class="research-mentions" id="research-mentions">
   <div class="container">
@@ -1035,13 +1111,13 @@ footer a:hover { color: var(--accent); }
 </section>
 
 
-<!-- ── Leaderboard ── -->
-<section id="leaderboard">
+<!-- ── V2 Linux ELF Archive ── -->
+<section id="v2-results">
   <div class="container">
-    <div class="section-tag">Leaderboard</div>
-    <h2 class="section-title">How frontier models perform (Linux levels)</h2>
+    <div class="section-tag">V2 Linux ELF Archive</div>
+    <h2 class="section-title">Previous-generation Linux results</h2>
     <p class="section-desc">
-      All 13 Linux ELF levels, 25 tool-call budget, Docker-sandboxed static analysis tools. Six frontier models evaluated end-to-end. <strong style="color: var(--text);">Headline finding:</strong> a small non-thinking model (Gemini 3.1 Flash Lite) leads the field, beating every frontier reasoning model on Main score. Hallucination calibration &mdash; not reasoning depth &mdash; is the dominant axis on this bench. <a href="/results/v3-pe/">V3 Windows PE results are now live.</a>
+      The V2 archive covers 13 Linux ELF levels with a 25-call budget and Docker-sandboxed static-analysis tools. Gemini 3.1 Flash Lite led the generation: hallucination calibration, rather than reasoning depth alone, was the dominant axis on this suite.
     </p>
 
     <div class="model-tabs" role="tablist" aria-label="Model performance">
@@ -1348,11 +1424,11 @@ footer a:hover { color: var(--accent); }
   </div>
 </section>
 
-<!-- ── Key Findings ── -->
-<section id="findings">
+<!-- ── V2 Key Findings Archive ── -->
+<section id="v2-findings">
   <div class="container">
-    <div class="section-tag">Key Findings</div>
-    <h2 class="section-title">Calibration beats reasoning depth</h2>
+    <div class="section-tag">V2 Finding Archive</div>
+    <h2 class="section-title">Calibration beat reasoning depth in the Linux generation</h2>
     <p class="section-kicker">
       Binary reverse engineering punishes unsupported claims. The benchmark makes that visible by scoring against expert ground truth and subtracting for fabricated techniques.
     </p>
