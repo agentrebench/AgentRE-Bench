@@ -26,16 +26,16 @@
 }
 
 html[data-theme="light"] {
-  --bg: #f5f6f2;
-  --surface: #fbfcf9;
-  --surface-alt: #eef1ec;
-  --surface-soft: #e7ece7;
-  --glass: rgba(255, 255, 255, 0.38);
+  --bg: #f3eee3;
+  --surface: #fbf7ef;
+  --surface-alt: #ece4d6;
+  --surface-soft: #e5dccb;
+  --glass: rgba(255, 252, 245, 0.42);
   --card-bg: transparent;
-  --border: #d9dfda;
-  --border-strong: #aebbb5;
-  --text: #172523;
-  --text-dim: #5d6d68;
+  --border: #d8cfbf;
+  --border-strong: #b5aa97;
+  --text: #262a27;
+  --text-dim: #69675f;
   --accent: #0e6d62;
   --accent-dim: rgba(14, 109, 98, 0.08);
   --accent-border: rgba(14, 109, 98, 0.3);
