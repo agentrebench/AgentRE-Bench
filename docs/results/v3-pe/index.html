@@ -1039,10 +1039,10 @@ html[data-theme="light"] .results-callout {
   <div class="container">
     <div class="hero-text">
       <div class="hero-label">V3 · Windows PE · August 2026</div>
-      <h1>Kimi K3 wins the Windows PE generation.</h1>
-      <p class="subtitle">Six models reverse engineered 20 paired stripped and unstripped PE artifacts using static tools only.</p>
-      <div class="finding-inline"><strong>Headline:</strong> Kimi leads Main, Bonus, and Total with 20/20 valid answers; exact C2 reconstruction remains unsolved.</div>
-      <p class="pitch">The V3 release preserves every model answer, tool transcript, deterministic score, frozen binary, ground truth, and source file needed to inspect or reproduce the result.</p>
+      <h1>Kimi K3 leads V3. Exact behavior recovery is still incomplete.</h1>
+      <p class="subtitle">Six models completed 120 static-analysis episodes across paired stripped and unstripped Windows PE binaries.</p>
+      <div class="finding-inline"><strong>Bottom line:</strong> AI can accelerate malware triage, but no model recovered the true C2 endpoint and several runs refused or exhausted their tool budget.</div>
+      <p class="pitch">Every answer, tool transcript, score, binary, ground truth, and checksum is published for independent review.</p>
       <div class="hero-buttons">
         <a class="btn btn-primary" href="#leaderboard">See the scores</a>
         <a class="btn btn-secondary" href="https://github.com/agentrebench/AgentRE-Bench/blob/f63202ff0f618f4e23a833c55cb92c08e5e87d02/version3/ANALYSIS.md">Read full analysis</a>
@@ -1060,8 +1060,8 @@ html[data-theme="light"] .results-callout {
       </div>
       <div class="stat-grid">
         <div class="stat-card"><strong>120</strong><span>binary-only PE evaluation episodes</span></div>
-        <div class="stat-card"><strong>20</strong><span>paired stripped and unstripped artifacts per model</span></div>
-        <div class="stat-card"><strong>0</strong><span>defined symbols in every stripped artifact</span></div>
+        <div class="stat-card"><strong>20</strong><span>artifacts analyzed per model</span></div>
+        <div class="stat-card"><strong>6</strong><span>frontier models evaluated</span></div>
         <div class="stat-card"><strong>0</strong><span>LLM judges; deterministic scoring only</span></div>
       </div>
       <div class="mini-leaderboard">
@@ -1075,8 +1075,8 @@ html[data-theme="light"] .results-callout {
 
 <main>
 <section id="leaderboard"><div class="container">
-  <div class="section-tag">Verified leaderboard</div><h2 class="section-title">Six models. Twenty binaries each. One shared tool environment.</h2>
-  <p class="section-desc">Each model analyzed 20 Windows PE binaries using the same static tools. Main is the average score across the 18 Level 14–22 artifacts. Bonus is the average across the two Level 23 worm artifacts. Total equals Main plus Bonus—it is not an average across all 20 binaries.</p>
+  <div class="section-tag">Results at a glance</div><h2 class="section-title">Kimi leads. Main is the score to compare.</h2>
+  <p class="section-desc">Main averages the 18 Level 14–22 artifacts and measures breadth. Bonus averages the two Level 23 worm artifacts. Total equals Main plus Bonus—it is not an average across all 20 binaries.</p>
   <div class="results-score-legend" aria-hidden="true">
     <span><i></i>Main /1</span>
     <span><i class="bonus-swatch"></i>+ Bonus /1</span>
@@ -1113,78 +1113,103 @@ html[data-theme="light"] .results-callout {
       <span class="lb-score results-score-value" style="color:var(--red);"><strong>0.0000</strong><small>+0.0000 bonus</small></span>
     </div>
   </div>
-  <div class="table-wrap"><table class="results-table"><thead><tr><th>Rank</th><th>Model</th><th class="num">Main /1</th><th class="num">Bonus /1</th><th class="num">Total /2</th><th class="num">Valid</th></tr></thead><tbody>
-    <tr><td class="rank">01</td><td class="winner"><strong>Kimi K3</strong></td><td class="num winner">0.6757</td><td class="num winner">0.6861</td><td class="num winner">1.3618</td><td class="num">20/20</td></tr>
-    <tr><td class="rank">02</td><td>Claude Opus 5</td><td class="num">0.6147</td><td class="num">0.6638</td><td class="num">1.2785</td><td class="num">18/20</td></tr>
-    <tr><td class="rank">03</td><td>GPT-5.6 Sol</td><td class="num">0.5859</td><td class="num">0.6298</td><td class="num">1.2157</td><td class="num">18/20</td></tr>
-    <tr><td class="rank">04</td><td>DeepSeek V4 Flash</td><td class="num">0.5125</td><td class="num">0.6782</td><td class="num">1.1906</td><td class="num">19/20</td></tr>
-    <tr><td class="rank">05</td><td>Gemini 3.6 Flash</td><td class="num">0.5400</td><td class="num">0.5653</td><td class="num">1.1052</td><td class="num">20/20</td></tr>
-    <tr><td class="rank">06</td><td>Claude Fable 5</td><td class="num zero">0.0000</td><td class="num zero">0.0000</td><td class="num zero">0.0000</td><td class="num">0/20</td></tr>
-  </tbody></table></div>
-  <div class="comparison" style="margin-top:16px">
-    <div class="comparison-card results-callout"><strong>Kimi wins all three score columns.</strong> Its 1.3618 Total leads Opus by 0.0833, while its 0.6757 Main is the best measure of breadth across Levels 14–22.</div>
-    <div class="comparison-card results-callout"><strong>GPT owns the best single result.</strong> Its 0.9272 on Level 14 unstripped came with zero unsupported technique claims across the run.</div>
+  <div class="feature-grid" style="margin-top:24px">
+    <article class="card"><span class="badge">Best overall</span><h3>Kimi K3</h3><p>Highest Main, Bonus, and Total, with valid answers on all 20 artifacts.</p></article>
+    <article class="card"><span class="badge">Best single analysis</span><h3>GPT-5.6 Sol</h3><p>Scored 0.9272 on Level 14 unstripped and made no unsupported technique claims.</p></article>
+    <article class="card"><span class="badge">Reliability signal</span><h3>Coverage varied</h3><p>Only Kimi and Gemini returned valid answers for all 20 artifacts; Fable refused every task.</p></article>
   </div>
+  <details class="compact-details">
+    <summary>Show the complete leaderboard</summary>
+    <div class="details-content">
+      <div class="table-wrap"><table class="results-table"><thead><tr><th>Rank</th><th>Model</th><th class="num">Main /1</th><th class="num">Bonus /1</th><th class="num">Total /2</th><th class="num">Valid</th></tr></thead><tbody>
+        <tr><td class="rank">01</td><td class="winner"><strong>Kimi K3</strong></td><td class="num winner">0.6757</td><td class="num winner">0.6861</td><td class="num winner">1.3618</td><td class="num">20/20</td></tr>
+        <tr><td class="rank">02</td><td>Claude Opus 5</td><td class="num">0.6147</td><td class="num">0.6638</td><td class="num">1.2785</td><td class="num">18/20</td></tr>
+        <tr><td class="rank">03</td><td>GPT-5.6 Sol</td><td class="num">0.5859</td><td class="num">0.6298</td><td class="num">1.2157</td><td class="num">18/20</td></tr>
+        <tr><td class="rank">04</td><td>DeepSeek V4 Flash</td><td class="num">0.5125</td><td class="num">0.6782</td><td class="num">1.1906</td><td class="num">19/20</td></tr>
+        <tr><td class="rank">05</td><td>Gemini 3.6 Flash</td><td class="num">0.5400</td><td class="num">0.5653</td><td class="num">1.1052</td><td class="num">20/20</td></tr>
+        <tr><td class="rank">06</td><td>Claude Fable 5</td><td class="num zero">0.0000</td><td class="num zero">0.0000</td><td class="num zero">0.0000</td><td class="num">0/20</td></tr>
+      </tbody></table></div>
+    </div>
+  </details>
 </div></section>
 
 <section id="stripping"><div class="container">
-  <div class="section-tag">Matched-pair analysis</div><h2 class="section-title">Stripping removed the map, not every clue</h2>
-  <p class="section-desc">All stripped artifacts have zero defined symbols, substantially fewer sections, and a 75.67% aggregate size reduction. The table uses only model/level pairs with valid submissions on both variants.</p>
-  <div class="comparison-card results-callout" style="margin-bottom:16px"><strong>46 complete model/level pairs:</strong> mean score moved from 0.6428 unstripped to 0.6012 stripped, a −0.0416 absolute change (−6.47% relative). Symbols helped, but surviving PE evidence kept stripped analysis viable.</div>
-  <div class="table-wrap"><table class="results-table"><thead><tr><th>Model</th><th class="num">Pairs</th><th class="num">Unstripped</th><th class="num">Stripped</th><th class="num">S − U</th></tr></thead><tbody>
-    <tr><td>Kimi K3</td><td class="num">10</td><td class="num">0.7122</td><td class="num">0.6413</td><td class="num">−0.0709</td></tr>
-    <tr><td>Claude Opus 5</td><td class="num">8</td><td class="num">0.7313</td><td class="num">0.6720</td><td class="num">−0.0593</td></tr>
-    <tr><td>GPT-5.6 Sol</td><td class="num">9</td><td class="num">0.6731</td><td class="num">0.6387</td><td class="num">−0.0344</td></tr>
-    <tr><td>DeepSeek V4 Flash</td><td class="num">9</td><td class="num">0.5369</td><td class="num">0.5525</td><td class="num">+0.0156</td></tr>
-    <tr><td>Gemini 3.6 Flash</td><td class="num">10</td><td class="num">0.5705</td><td class="num">0.5145</td><td class="num">−0.0560</td></tr>
-  </tbody></table></div>
-  <p class="safety-note results-note">One terminal run per model/artifact means these are descriptive paired differences, not confidence-bounded causal estimates.</p>
-</div></section>
-
-<section id="levels"><div class="container">
-  <div class="section-tag">Task behavior</div><h2 class="section-title">Where stripping mattered</h2>
-  <p class="section-desc">Mean variant deltas are computed across complete model pairs for each level. Positive means stripped scored higher.</p>
-  <div class="table-wrap"><table class="results-table"><thead><tr><th>Level</th><th class="num">Complete pairs</th><th class="num">Unstripped</th><th class="num">Stripped</th><th class="num">S − U</th></tr></thead><tbody>
-    <tr><td>14 · DLL Injection</td><td class="num">5</td><td class="num">0.8617</td><td class="num">0.7327</td><td class="num">−0.1290</td></tr>
-    <tr><td>15 · APC Injection</td><td class="num">4</td><td class="num">0.6064</td><td class="num">0.5757</td><td class="num">−0.0307</td></tr>
-    <tr><td>16 · Code Cave</td><td class="num">5</td><td class="num">0.7672</td><td class="num">0.7219</td><td class="num">−0.0453</td></tr>
-    <tr><td>17 · Process Hollowing</td><td class="num">5</td><td class="num">0.4623</td><td class="num">0.5096</td><td class="num">+0.0473</td></tr>
-    <tr><td>18 · Hell’s Gate</td><td class="num">5</td><td class="num">0.5119</td><td class="num">0.4649</td><td class="num">−0.0469</td></tr>
-    <tr><td>19 · Reflective DLL</td><td class="num">4</td><td class="num">0.6119</td><td class="num">0.4114</td><td class="num">−0.2004</td></tr>
-    <tr><td>20 · Remote PE</td><td class="num">5</td><td class="num">0.6678</td><td class="num">0.7054</td><td class="num">+0.0376</td></tr>
-    <tr><td>21 · Ghost Hollowing</td><td class="num">4</td><td class="num">0.5484</td><td class="num">0.6502</td><td class="num">+0.1018</td></tr>
-    <tr><td>22 · Advanced Evasion</td><td class="num">4</td><td class="num">0.7082</td><td class="num">0.5750</td><td class="num">−0.1332</td></tr>
-    <tr><td>23 · Synthetic Worm</td><td class="num">5</td><td class="num">0.6628</td><td class="num">0.6264</td><td class="num">−0.0364</td></tr>
-  </tbody></table></div>
+  <div class="section-tag">Effect of stripping</div><h2 class="section-title">Removing symbols lowered scores by 6.47%—not to zero.</h2>
+  <p class="section-desc">Across 46 model/level pairs with valid answers on both variants, mean score fell from 0.6428 unstripped to 0.6012 stripped. Static PE evidence still preserved much of the behavior models needed.</p>
+  <div class="feature-grid">
+    <article class="card"><span class="badge">Symbols</span><h3>0 defined symbols</h3><p>Every stripped artifact removed the symbol names available in its paired original.</p></article>
+    <article class="card"><span class="badge">File size</span><h3>75.67% smaller</h3><p>Aggregate binary size fell sharply, along with the number of sections.</p></article>
+    <article class="card"><span class="badge">Score impact</span><h3>−0.0416 absolute</h3><p>The average relative decline was 6.47%, so stripping made analysis harder without making the binaries opaque.</p></article>
+  </div>
+  <details class="compact-details">
+    <summary>Show stripping results by model</summary>
+    <div class="details-content">
+      <div class="table-wrap"><table class="results-table"><thead><tr><th>Model</th><th class="num">Pairs</th><th class="num">Unstripped</th><th class="num">Stripped</th><th class="num">Change</th></tr></thead><tbody>
+        <tr><td>Kimi K3</td><td class="num">10</td><td class="num">0.7122</td><td class="num">0.6413</td><td class="num">−0.0709</td></tr>
+        <tr><td>Claude Opus 5</td><td class="num">8</td><td class="num">0.7313</td><td class="num">0.6720</td><td class="num">−0.0593</td></tr>
+        <tr><td>GPT-5.6 Sol</td><td class="num">9</td><td class="num">0.6731</td><td class="num">0.6387</td><td class="num">−0.0344</td></tr>
+        <tr><td>DeepSeek V4 Flash</td><td class="num">9</td><td class="num">0.5369</td><td class="num">0.5525</td><td class="num">+0.0156</td></tr>
+        <tr><td>Gemini 3.6 Flash</td><td class="num">10</td><td class="num">0.5705</td><td class="num">0.5145</td><td class="num">−0.0560</td></tr>
+      </tbody></table></div>
+    </div>
+  </details>
+  <details class="compact-details">
+    <summary>Show stripping results by task</summary>
+    <div class="details-content">
+      <div class="table-wrap"><table class="results-table"><thead><tr><th>Level</th><th class="num">Pairs</th><th class="num">Unstripped</th><th class="num">Stripped</th><th class="num">Change</th></tr></thead><tbody>
+        <tr><td>14 · DLL Injection</td><td class="num">5</td><td class="num">0.8617</td><td class="num">0.7327</td><td class="num">−0.1290</td></tr>
+        <tr><td>15 · APC Injection</td><td class="num">4</td><td class="num">0.6064</td><td class="num">0.5757</td><td class="num">−0.0307</td></tr>
+        <tr><td>16 · Code Cave</td><td class="num">5</td><td class="num">0.7672</td><td class="num">0.7219</td><td class="num">−0.0453</td></tr>
+        <tr><td>17 · Process Hollowing</td><td class="num">5</td><td class="num">0.4623</td><td class="num">0.5096</td><td class="num">+0.0473</td></tr>
+        <tr><td>18 · Hell’s Gate</td><td class="num">5</td><td class="num">0.5119</td><td class="num">0.4649</td><td class="num">−0.0469</td></tr>
+        <tr><td>19 · Reflective DLL</td><td class="num">4</td><td class="num">0.6119</td><td class="num">0.4114</td><td class="num">−0.2004</td></tr>
+        <tr><td>20 · Remote PE</td><td class="num">5</td><td class="num">0.6678</td><td class="num">0.7054</td><td class="num">+0.0376</td></tr>
+        <tr><td>21 · Ghost Hollowing</td><td class="num">4</td><td class="num">0.5484</td><td class="num">0.6502</td><td class="num">+0.1018</td></tr>
+        <tr><td>22 · Advanced Evasion</td><td class="num">4</td><td class="num">0.7082</td><td class="num">0.5750</td><td class="num">−0.1332</td></tr>
+        <tr><td>23 · Synthetic Worm</td><td class="num">5</td><td class="num">0.6628</td><td class="num">0.6264</td><td class="num">−0.0364</td></tr>
+      </tbody></table></div>
+    </div>
+  </details>
+  <p class="safety-note results-note">These are descriptive differences from one run per model and artifact, not confidence-bounded causal estimates.</p>
 </div></section>
 
 <section id="models"><div class="container">
-  <div class="section-tag">Capability profiles</div><h2 class="section-title">Different ways to be good—and to fail</h2>
-  <p class="section-desc">Score alone hides important operational differences: calibration, coverage, refusal behavior, time, and call-budget discipline.</p>
-  <div class="feature-grid profile-grid">
-    <article class="card"><span class="badge">Winner · 20/20</span><h3>Kimi K3</h3><p>Best Main, Bonus, decoded-string, and anti-analysis results. Strong and complete, but slow: 9.74 summed episode-hours and repeated long continuations.</p></article>
-    <article class="card"><span class="badge">Second · 18/20</span><h3>Claude Opus 5</h3><p>Best injection-detail mean and strong technique recall. Two mid-analysis refusals remain part of the result.</p></article>
-    <article class="card"><span class="badge">Precision · 18/20</span><h3>GPT-5.6 Sol</h3><p>Best single score and zero unsupported techniques. Both dense Level 22 variants ended at the call budget without answers.</p></article>
-    <article class="card"><span class="badge">Bonus strength · 19/20</span><h3>DeepSeek V4 Flash</h3><p>Second on Bonus and strong on encryption, but less consistent on techniques; one max-cap exit and the most unsupported claims.</p></article>
-    <article class="card"><span class="badge">Fast · 20/20</span><h3>Gemini 3.6 Flash</h3><p>Fastest complete run at 0.58 summed episode-hours. Excellent metadata recovery; weaker decoded-string and technique detail.</p></article>
-    <article class="card"><span class="badge">Refusal · 0/20</span><h3>Claude Fable 5</h3><p>Refused every episode before calling a tool. Its zero is a benchmark coverage and policy outcome, not a clean knowledge measure.</p></article>
-  </div>
+  <div class="section-tag">Model takeaways</div><h2 class="section-title">What each model was good at—and where it failed.</h2>
+  <p class="section-desc">The score is only part of the deployment story. Coverage, precision, speed, refusals, and budget exits changed the practical value of each run.</p>
+  <div class="table-wrap"><table class="results-table"><thead><tr><th>Model</th><th>Useful signal</th><th>Important limitation</th></tr></thead><tbody>
+    <tr><td><strong>Kimi K3</strong><br><span class="badge">20/20 valid</span></td><td>Best Main, Bonus, decoded-string, and anti-analysis results.</td><td>Slowest complete run: 9.74 summed episode-hours.</td></tr>
+    <tr><td><strong>Claude Opus 5</strong><br><span class="badge">18/20 valid</span></td><td>Best injection-detail mean and strong technique recall.</td><td>Refused two tasks during analysis.</td></tr>
+    <tr><td><strong>GPT-5.6 Sol</strong><br><span class="badge">18/20 valid</span></td><td>Best single score and no unsupported technique claims.</td><td>Both Level 22 variants ended at the tool-call limit.</td></tr>
+    <tr><td><strong>DeepSeek V4 Flash</strong><br><span class="badge">19/20 valid</span></td><td>Second on Bonus and strong on encryption details.</td><td>One budget exit and the most unsupported claims.</td></tr>
+    <tr><td><strong>Gemini 3.6 Flash</strong><br><span class="badge">20/20 valid</span></td><td>Fastest complete run and strong metadata recovery.</td><td>Weaker decoded-string and technique detail.</td></tr>
+    <tr><td><strong>Claude Fable 5</strong><br><span class="badge">0/20 valid</span></td><td>No usable capability result.</td><td>Refused every task before using a tool.</td></tr>
+  </tbody></table></div>
 </div></section>
 
 <section id="findings"><div class="container">
-  <div class="section-tag">Cross-model findings</div><h2 class="section-title">Metadata came first; behavior reconstruction lagged</h2>
-  <div class="comparison">
-    <div class="card"><span class="badge">Easy layer</span><h3>Format and obfuscation</h3><ul class="results-list"><li>File type was nearly saturated among valid answers.</li><li>Models usually recognized that strings or payloads were encoded.</li><li>Imports, section flags, constants, and API names survived stripping.</li></ul></div>
-    <div class="card"><span class="badge">Hard layer</span><h3>Exact execution semantics</h3><ul class="results-list"><li>No model recovered the true Level 23 C2 endpoint.</li><li>Native API allocation/write/thread chains were frequently incomplete.</li><li>Keys, decoded content, and manual PE mapping details remained brittle.</li></ul></div>
+  <div class="section-tag">Practical meaning</div><h2 class="section-title">Useful for triage. Not a replacement for expert reverse engineering.</h2>
+  <p class="section-desc">Models were better at identifying the shape of a program than reconstructing the exact details needed for a final incident conclusion.</p>
+  <div class="feature-grid">
+    <article class="card"><span class="badge">Reliable signal</span><h3>Format and broad behavior</h3><p>Valid answers usually identified file type, obfuscation, imports, section flags, constants, and the general technique family.</p></article>
+    <article class="card"><span class="badge">Still brittle</span><h3>Exact execution details</h3><p>Native API chains, keys, decoded content, and manual PE-mapping steps were often incomplete or wrong.</p></article>
+    <article class="card"><span class="badge">Unsolved</span><h3>True Level 23 C2</h3><p>No model recovered the actual command-and-control endpoint. Exact configuration recovery still requires expert validation.</p></article>
   </div>
+  <div class="comparison-card results-callout" style="margin-top:18px"><strong>Recommended use:</strong> analyst-assisted triage, prioritization, and hypothesis generation. Do not treat an unreviewed model report as authoritative malware attribution or configuration recovery.</div>
 </div></section>
 
 <section id="method"><div class="container">
-  <div class="section-tag">Method and verification</div><h2 class="section-title">Compiled artifacts only</h2>
-  <p class="section-desc">Each isolated workspace contained one anonymized PE binary. Agents could use file, strings, PE metadata, disassembly, symbol inspection, hex dumps, and entropy—no source, compilation, decompiler, debugger, or dynamic execution.</p>
-  <div class="comparison-card results-callout"><strong>Audit passed.</strong> All 120 stored answers were independently rescored; all six aggregates reconcile; the 366-file raw-result checksum ledger is complete; all 20 binary hashes, all 10 ground-truth hashes, and all 10 source hashes match; and the focused suite passes 51/51 tests. Exact key/algorithm annotations were corrected in the deterministic scorer and every stored answer was rescored—no episode was rerun for that grading correction.</div>
-  <p class="safety-note results-note"><span class="badge">Reproduce</span> Run <span class="mono">python3 version3/verify.py</span> from the repository root. No LLM judge or API key is involved.</p>
-  <div class="comparison-card results-callout" style="margin-top:16px"><strong>Scoring caveat:</strong> Level 23 contributes 50% of Total by design. Main is the broader measure across process-injection levels. See the full analysis for field weights, corrections, failure taxonomy, checksums, and exact reproduction commands.</div>
+  <div class="section-tag">Method and verification</div><h2 class="section-title">What was tested—and how to verify it.</h2>
+  <div class="feature-grid">
+    <article class="card"><span class="badge">Environment</span><h3>Static, binary-only analysis</h3><p>One anonymized PE per isolated workspace. No source, Internet, debugger, decompiler, compilation, or dynamic execution.</p></article>
+    <article class="card"><span class="badge">Scoring</span><h3>Deterministic ground truth</h3><p>No LLM judge. Terminal refusals and budget exits remain in the aggregates. Main is the broad score; Level 23 supplies the separate Bonus.</p></article>
+    <article class="card"><span class="badge">Audit</span><h3>Fully reproducible</h3><p>All 120 answers were rescored, all six aggregates reconciled, and the 366-file checksum ledger and artifact hashes passed verification.</p></article>
+  </div>
+  <div class="comparison-card results-callout" style="margin-top:18px"><strong>Independent check:</strong> run <span class="mono">python3 version3/verify.py</span> from the repository root. It requires no API key or model call.</div>
+  <div class="hero-buttons" style="margin-top:22px">
+    <a class="btn btn-primary" href="https://github.com/agentrebench/AgentRE-Bench/blob/f63202ff0f618f4e23a833c55cb92c08e5e87d02/version3/ANALYSIS.md">Read full analysis</a>
+    <a class="btn btn-secondary" href="https://github.com/agentrebench/AgentRE-Bench/tree/main/version3/results">Inspect raw results</a>
+    <a class="text-link" href="https://github.com/agentrebench/AgentRE-Bench/blob/main/version3/verify.py">View verifier</a>
+  </div>
 </div></section>
 </main>
 
