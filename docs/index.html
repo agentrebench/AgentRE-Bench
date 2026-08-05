@@ -990,21 +990,16 @@ footer a:hover { color: var(--accent); }
   <div class="container">
     <div class="hero-text">
       <div class="hero-label">AI security benchmark platform</div>
-      <h1>AI agents can write code. Can they reverse engineer it?</h1>
-      <p class="subtitle">AgentRE-Bench evaluates LLM agents on compiled reverse-engineering tasks with no source code, no hints, and deterministic scoring.</p>
-      <div class="finding-inline"><strong>V3 finding:</strong> Kimi K3 leads both breadth and the bonus tier; stripping reduced matched-pair scores by 6.47% without making the PE artifacts opaque.</div>
+      <h1>Can AI agents understand software they have never seen?</h1>
+      <p class="subtitle">AgentRE-Bench measures whether AI agents can reverse engineer compiled binaries without source code, hints, or privileged tooling.</p>
+      <div class="finding-inline"><strong>Measured, not judged:</strong> Every result is scored against expert ground truth using deterministic graders—never an LLM judge.</div>
       <p class="pitch">
-        The public benchmark is the credibility layer: open tasks, reproducible runs, and a leaderboard for AI reverse-engineering agents.
-        Private evaluations and training-environment pilots test whether agents generalize to unreleased binaries instead of producing plausible reports.
+        Agents inspect unfamiliar executables, recover hidden behavior and technical details, and support their conclusions with evidence.
       </p>
       <div class="hero-buttons">
-        <a href="/results/v3-pe/" class="btn btn-primary">View V3 PE Results</a>
-        <a href="/why-agentre/" class="btn btn-secondary">Why AgentRE Matters</a>
-        <a href="mailto:contact@agentrebench.ai?subject=AgentRE-Bench%20Inquiry" class="btn btn-secondary">Contact Us</a>
-        <a href="https://github.com/agentrebench/AgentRE-Bench" class="text-link">
-          <svg class="gh-icon" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-          View GitHub
-        </a>
+        <a href="/results/v3-pe/" class="btn btn-primary">Explore Version 3 Results</a>
+        <a href="/results/v3-pe/#method" class="btn btn-secondary">View the Methodology</a>
+        <a href="mailto:contact@agentrebench.ai?subject=Evaluate%20an%20AI%20Agent" class="btn btn-secondary">Evaluate Your Agent</a>
       </div>
     </div>
     <aside class="hero-panel" aria-label="AgentRE-Bench snapshot">
@@ -1018,27 +1013,84 @@ footer a:hover { color: var(--accent); }
         <div class="stat-card"><strong>6</strong><span>frontier models in the V3 result set</span></div>
         <div class="stat-card"><strong>0</strong><span>LLM judges; deterministic scoring only</span></div>
       </div>
+      <div class="panel-title" style="margin-top:20px">Core benchmark leaders</div>
       <div class="mini-leaderboard">
-        <div class="mini-row" style="--score-width: 100%;"><span>01</span><strong>Kimi K3</strong><span>1.3618</span></div>
-        <div class="mini-row" style="--score-width: 94%;"><span>02</span><strong>Claude Opus 5</strong><span>1.2785</span></div>
-        <div class="mini-row" style="--score-width: 89%;"><span>03</span><strong>GPT-5.6 Sol</strong><span>1.2157</span></div>
+        <div class="mini-row" style="--score-width: 100%;"><span>01</span><strong>Kimi K3</strong><span>67.6%</span></div>
+        <div class="mini-row" style="--score-width: 91%;"><span>02</span><strong>Claude Opus 5</strong><span>61.5%</span></div>
+        <div class="mini-row" style="--score-width: 87%;"><span>03</span><strong>GPT-5.6 Sol</strong><span>58.6%</span></div>
       </div>
     </aside>
   </div>
 </section>
 
-<!-- ── V3 Windows PE Leaderboard ── -->
+<!-- ── Why Reverse Engineering Matters ── -->
+<section id="why-reverse-engineering">
+  <div class="container">
+    <div class="section-tag">Why this capability matters</div>
+    <h2 class="section-title">Code generation is only half the capability equation</h2>
+    <p class="section-desc">
+      AI systems are becoming faster at producing and modifying software. Defenders still need to determine what an unfamiliar compiled program actually does, recover the details that matter, and separate verified evidence from inference.
+    </p>
+    <div class="feature-grid">
+      <article class="card">
+        <span class="badge">Malware analysis</span>
+        <h3>Turn opaque binaries into evidence</h3>
+        <p>Recover behavior, configuration, infrastructure, and execution details from artifacts without source code.</p>
+      </article>
+      <article class="card">
+        <span class="badge">Software assurance</span>
+        <h3>Verify what shipped</h3>
+        <p>Evaluate compiled software when documentation, source access, or build provenance is incomplete.</p>
+      </article>
+      <article class="card">
+        <span class="badge">Autonomous security</span>
+        <h3>Measure before deployment</h3>
+        <p>Test whether agents ground conclusions in evidence before trusting them in security-critical workflows.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ── V3 Windows PE Findings ── -->
 <section id="leaderboard">
   <div class="container">
-    <div class="section-tag">V3 Windows PE Leaderboard</div>
-    <h2 class="section-title">Kimi K3 leads the paired PE generation</h2>
+    <div class="section-tag">Version 3 headline findings</div>
+    <h2 class="section-title">Frontier agents recognize behavior more reliably than they reconstruct it</h2>
     <p class="section-desc">
-      Six frontier models analyzed 20 binary-only Windows PE artifacts each: matched stripped and unstripped variants across Levels 14&ndash;23. Main averages the 18 Level 14&ndash;22 artifacts; Bonus averages the two Level 23 worm artifacts; Total adds both.
+      Version 3 evaluates six frontier models on paired Windows PE binaries using static-analysis tools only. Models frequently identified the broad technique while missing exact API chains, decoded configuration, execution sequences, cryptographic material, or infrastructure details.
     </p>
 
+    <div class="feature-grid four">
+      <article class="card">
+        <span class="badge">Strongest overall</span>
+        <h3>Kimi K3</h3>
+        <p>Led the core benchmark and bonus category with valid answers for all 20 artifacts.</p>
+      </article>
+      <article class="card">
+        <span class="badge">Matched pairs</span>
+        <h3>6.47% stripping decline</h3>
+        <p>Removing symbols hurt aggregate performance, but imports, constants, structure, and disassembly still provided substantial evidence.</p>
+      </article>
+      <article class="card">
+        <span class="badge">Capability boundary</span>
+        <h3>Recognition beat reconstruction</h3>
+        <p>Broad behavior was easier to recover than keys, payload details, configuration values, and complete execution chains.</p>
+      </article>
+      <article class="card">
+        <span class="badge">Operational reality</span>
+        <h3>Coverage affected capability</h3>
+        <p>Refusals, tool-budget exhaustion, runtime, and unsupported claims materially changed useful performance.</p>
+      </article>
+    </div>
+
+    <div class="section-tag" style="margin-top:36px">Compact leaderboard</div>
+    <h3 style="font-size:1.35rem; margin-bottom:4px">Performance across all six models</h3>
+    <p class="safety-note" style="margin-top:0">
+      The solid bar shows average performance on the 18 core artifacts. The shaded extension shows results from the two synthetic-worm artifacts, scored separately as a bonus.
+    </p>
     <div class="results-score-legend" aria-hidden="true">
-      <span><i></i>Main /1</span>
-      <span><i class="bonus-swatch"></i>+ Bonus /1</span>
+      <span><i></i>Main · 18 artifacts</span>
+      <span><i class="bonus-swatch"></i>+ Bonus · 2 artifacts</span>
     </div>
     <div class="model-tabs results-score-bars" role="list" aria-label="V3 Main scores with shaded Bonus additions">
       <div class="model-tab results-score-bar" role="listitem" aria-label="Kimi K3 Main score 0.6757 plus 0.6861 Bonus">
@@ -1073,57 +1125,12 @@ footer a:hover { color: var(--accent); }
       </div>
     </div>
 
-    <div class="table-wrap">
-      <table class="results-table">
-        <thead>
-          <tr>
-            <th>Rank</th>
-            <th>Model</th>
-            <th class="num">Main /1</th>
-            <th class="num">Bonus /1</th>
-            <th class="num">Total /2</th>
-            <th class="num">Valid</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td class="rank">01</td><td class="winner"><strong>Kimi K3</strong></td><td class="num winner">0.6757</td><td class="num winner">0.6861</td><td class="num winner">1.3618</td><td class="num">20/20</td></tr>
-          <tr><td class="rank">02</td><td>Claude Opus 5</td><td class="num">0.6147</td><td class="num">0.6638</td><td class="num">1.2785</td><td class="num">18/20</td></tr>
-          <tr><td class="rank">03</td><td>GPT-5.6 Sol</td><td class="num">0.5859</td><td class="num">0.6298</td><td class="num">1.2157</td><td class="num">18/20</td></tr>
-          <tr><td class="rank">04</td><td>DeepSeek V4 Flash</td><td class="num">0.5125</td><td class="num">0.6782</td><td class="num">1.1906</td><td class="num">19/20</td></tr>
-          <tr><td class="rank">05</td><td>Gemini 3.6 Flash</td><td class="num">0.5400</td><td class="num">0.5653</td><td class="num">1.1052</td><td class="num">20/20</td></tr>
-          <tr><td class="rank">06</td><td>Claude Fable 5</td><td class="num zero">0.0000</td><td class="num zero">0.0000</td><td class="num zero">0.0000</td><td class="num">0/20</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <p class="safety-note">
-      Terminal refusals and tool-budget exits remain part of the aggregate. Provider failures were retried under the recorded policy. Total is the official score, but Main is the broader measure across the process-injection ladder.
-    </p>
-
-    <div class="feature-grid" style="margin-top:24px">
-      <article class="card">
-        <span class="badge">Winner</span>
-        <h3>Kimi leads every aggregate</h3>
-        <p>Kimi K3 ranks first on Main, Bonus, and Total with 20/20 valid answers. Its 0.6757 Main is the strongest measure of breadth across Levels 14&ndash;22.</p>
-      </article>
-      <article class="card">
-        <span class="badge">Stripping</span>
-        <h3>Symbols helped, but were not decisive</h3>
-        <p>Across 46 complete model/level pairs, stripping moved mean score from 0.6428 to 0.6012: a 0.0416 absolute or 6.47% relative reduction.</p>
-      </article>
-      <article class="card">
-        <span class="badge">Hard boundary</span>
-        <h3>Exact reconstruction remains unsolved</h3>
-        <p>Models recovered metadata and broad behavior more reliably than Native API chains, keys, decoded content, and the true Level 23 C2 endpoint.</p>
-      </article>
-    </div>
-
     <div class="cta-band">
       <div>
-        <h3>Read the full V3 report</h3>
-        <p>Explore matched stripped/unstripped results, per-level scores, model profiles, hallucination analysis, reliability outcomes, methodology, corrections, and the independent verification audit.</p>
+        <h3>Explore the complete Version 3 result</h3>
+        <p>See all six models, matched stripped and unstripped analysis, capability findings, failure modes, limitations, and the independent verification audit.</p>
       </div>
-      <a class="btn btn-primary" href="https://github.com/agentrebench/AgentRE-Bench/blob/f63202ff0f618f4e23a833c55cb92c08e5e87d02/version3/ANALYSIS.md">Open V3 analysis</a>
+      <a class="btn btn-primary" href="/results/v3-pe/">Open the V3 report</a>
     </div>
   </div>
 </section>

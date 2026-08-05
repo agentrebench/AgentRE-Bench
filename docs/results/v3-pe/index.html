@@ -1039,12 +1039,12 @@ html[data-theme="light"] .results-callout {
   <div class="container">
     <div class="hero-text">
       <div class="hero-label">V3 · Windows PE · August 2026</div>
-      <h1>Kimi K3 leads V3. Exact behavior recovery is still incomplete.</h1>
-      <p class="subtitle">Six models completed 120 static-analysis episodes across paired stripped and unstripped Windows PE binaries.</p>
-      <div class="finding-inline"><strong>Bottom line:</strong> AI can accelerate malware triage, but no model recovered the true C2 endpoint and several runs refused or exhausted their tool budget.</div>
-      <p class="pitch">Every answer, tool transcript, score, binary, ground truth, and checksum is published for independent review.</p>
+      <h1>Frontier agents recognize behavior. Exact reconstruction remains brittle.</h1>
+      <p class="subtitle">Version 3 evaluates six frontier models on 20 paired Windows PE artifacts using static-analysis tools only.</p>
+      <div class="finding-inline"><strong>Research finding:</strong> Models frequently recovered high-level behavior while missing exact APIs, decoded configuration, execution chains, and infrastructure details.</div>
+      <p class="pitch">Kimi K3 achieved the strongest overall performance. Every answer, tool transcript, score, binary, ground truth, and checksum is published for independent review.</p>
       <div class="hero-buttons">
-        <a class="btn btn-primary" href="#leaderboard">See the scores</a>
+        <a class="btn btn-primary" href="#summary">Read the findings</a>
         <a class="btn btn-secondary" href="https://github.com/agentrebench/AgentRE-Bench/blob/f63202ff0f618f4e23a833c55cb92c08e5e87d02/version3/ANALYSIS.md">Read full analysis</a>
         <a class="text-link" href="https://github.com/agentrebench/AgentRE-Bench/tree/main/version3/results">
           <svg class="gh-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
@@ -1064,22 +1064,35 @@ html[data-theme="light"] .results-callout {
         <div class="stat-card"><strong>6</strong><span>frontier models evaluated</span></div>
         <div class="stat-card"><strong>0</strong><span>LLM judges; deterministic scoring only</span></div>
       </div>
+      <div class="panel-title" style="margin-top:20px">Core benchmark leaders</div>
       <div class="mini-leaderboard">
-        <div class="mini-row" style="--score-width: 100%;"><span>01</span><strong>Kimi K3</strong><span>1.3618</span></div>
-        <div class="mini-row" style="--score-width: 94%;"><span>02</span><strong>Claude Opus 5</strong><span>1.2785</span></div>
-        <div class="mini-row" style="--score-width: 89%;"><span>03</span><strong>GPT-5.6 Sol</strong><span>1.2157</span></div>
+        <div class="mini-row" style="--score-width: 100%;"><span>01</span><strong>Kimi K3</strong><span>67.6%</span></div>
+        <div class="mini-row" style="--score-width: 91%;"><span>02</span><strong>Claude Opus 5</strong><span>61.5%</span></div>
+        <div class="mini-row" style="--score-width: 87%;"><span>03</span><strong>GPT-5.6 Sol</strong><span>58.6%</span></div>
       </div>
     </aside>
   </div>
 </section>
 
 <main>
+<section id="summary"><div class="container">
+  <div class="section-tag">Executive summary</div>
+  <h2 class="section-title">Meaningful progress, with a clear reconstruction gap.</h2>
+  <p class="section-desc">Leading agents can orient themselves inside unfamiliar binaries and identify broad Windows behavior. Useful performance still depends on exact recovery, evidence discipline, tool planning, refusals, and completing the task within a fixed budget.</p>
+  <div class="feature-grid four">
+    <article class="card"><span class="badge">Strongest overall</span><h3>Kimi K3</h3><p>Led the core benchmark and bonus category with valid answers for all 20 artifacts.</p></article>
+    <article class="card"><span class="badge">Matched pairs</span><h3>6.47% decline</h3><p>Removing symbols caused a moderate aggregate reduction across complete stripped and unstripped pairs.</p></article>
+    <article class="card"><span class="badge">Capability boundary</span><h3>Recognition beat reconstruction</h3><p>Broad techniques were easier to identify than keys, configuration, infrastructure, and complete API chains.</p></article>
+    <article class="card"><span class="badge">Operational behavior</span><h3>25 runs produced no valid answer</h3><p>Refusals and tool-budget exhaustion reduced useful coverage independently of analytical knowledge.</p></article>
+  </div>
+</div></section>
+
 <section id="leaderboard"><div class="container">
-  <div class="section-tag">Results at a glance</div><h2 class="section-title">Kimi K3 leads V3 with complete coverage.</h2>
-  <p class="section-desc">Kimi ranks first across the 18 core artifacts and the two Level 23 worm artifacts. The bars show the core average as Main and the separate worm average as Bonus; Total adds the two.</p>
+  <div class="section-tag">Leaderboard</div><h2 class="section-title">See how each model performed.</h2>
+  <p class="section-desc">The solid bar shows average performance on the 18 core artifacts. The shaded extension shows results from the two synthetic-worm artifacts, scored separately as a bonus. Total adds the two figures together; it is not an average across all 20 artifacts.</p>
   <div class="results-score-legend" aria-hidden="true">
-    <span><i></i>Main /1</span>
-    <span><i class="bonus-swatch"></i>+ Bonus /1</span>
+    <span><i></i>Main · 18 artifacts</span>
+    <span><i class="bonus-swatch"></i>+ Bonus · 2 artifacts</span>
   </div>
   <div class="model-tabs results-score-bars" role="list" aria-label="V3 Main scores with shaded Bonus additions">
     <div class="model-tab results-score-bar" role="listitem" aria-label="Kimi K3 Main score 0.6757 plus 0.6861 Bonus">
@@ -1114,20 +1127,20 @@ html[data-theme="light"] .results-callout {
     </div>
   </div>
   <div class="feature-grid" style="margin-top:24px">
-    <article class="card"><span class="badge">Best overall</span><h3>Kimi K3</h3><p>Highest Main, Bonus, and Total, with valid answers on all 20 artifacts.</p></article>
-    <article class="card"><span class="badge">Best single analysis</span><h3>GPT-5.6 Sol</h3><p>Scored 0.9272 on Level 14 unstripped and made no unsupported technique claims.</p></article>
-    <article class="card"><span class="badge">Reliability signal</span><h3>Coverage varied</h3><p>Only Kimi and Gemini returned valid answers for all 20 artifacts; Fable refused every task.</p></article>
+    <article class="card"><span class="badge">Useful coverage</span><h3>95 / 120 valid answers</h3><p>Terminal refusals and tool-budget exits remain part of the observed result.</p></article>
+    <article class="card"><span class="badge">Complete runs</span><h3>2 / 6 models</h3><p>Only Kimi and Gemini returned valid answers for all 20 artifacts.</p></article>
+    <article class="card"><span class="badge">Exact recovery</span><h3>0 true C2 endpoints</h3><p>No model recovered the actual Level 23 command-and-control endpoint.</p></article>
   </div>
   <details class="compact-details">
     <summary>Show the complete leaderboard</summary>
     <div class="details-content">
-      <div class="table-wrap"><table class="results-table"><thead><tr><th>Rank</th><th>Model</th><th class="num">Main /1</th><th class="num">Bonus /1</th><th class="num">Total /2</th><th class="num">Valid</th></tr></thead><tbody>
-        <tr><td class="rank">01</td><td class="winner"><strong>Kimi K3</strong></td><td class="num winner">0.6757</td><td class="num winner">0.6861</td><td class="num winner">1.3618</td><td class="num">20/20</td></tr>
-        <tr><td class="rank">02</td><td>Claude Opus 5</td><td class="num">0.6147</td><td class="num">0.6638</td><td class="num">1.2785</td><td class="num">18/20</td></tr>
-        <tr><td class="rank">03</td><td>GPT-5.6 Sol</td><td class="num">0.5859</td><td class="num">0.6298</td><td class="num">1.2157</td><td class="num">18/20</td></tr>
-        <tr><td class="rank">04</td><td>DeepSeek V4 Flash</td><td class="num">0.5125</td><td class="num">0.6782</td><td class="num">1.1906</td><td class="num">19/20</td></tr>
-        <tr><td class="rank">05</td><td>Gemini 3.6 Flash</td><td class="num">0.5400</td><td class="num">0.5653</td><td class="num">1.1052</td><td class="num">20/20</td></tr>
-        <tr><td class="rank">06</td><td>Claude Fable 5</td><td class="num zero">0.0000</td><td class="num zero">0.0000</td><td class="num zero">0.0000</td><td class="num">0/20</td></tr>
+      <div class="table-wrap"><table class="results-table"><thead><tr><th>Rank</th><th>Model</th><th class="num">Main /1</th><th class="num">Bonus /1</th><th class="num">Valid</th><th>Terminal outcome</th><th class="num">Total /2</th></tr></thead><tbody>
+        <tr><td class="rank">01</td><td class="winner"><strong>Kimi K3</strong></td><td class="num winner">0.6757</td><td class="num winner">0.6861</td><td class="num">20/20</td><td>None</td><td class="num winner">1.3618</td></tr>
+        <tr><td class="rank">02</td><td>Claude Opus 5</td><td class="num">0.6147</td><td class="num">0.6638</td><td class="num">18/20</td><td>2 refusals</td><td class="num">1.2785</td></tr>
+        <tr><td class="rank">03</td><td>GPT-5.6 Sol</td><td class="num">0.5859</td><td class="num">0.6298</td><td class="num">18/20</td><td>2 budget exits</td><td class="num">1.2157</td></tr>
+        <tr><td class="rank">04</td><td>DeepSeek V4 Flash</td><td class="num">0.5125</td><td class="num">0.6782</td><td class="num">19/20</td><td>1 budget exit</td><td class="num">1.1906</td></tr>
+        <tr><td class="rank">05</td><td>Gemini 3.6 Flash</td><td class="num">0.5400</td><td class="num">0.5653</td><td class="num">20/20</td><td>None</td><td class="num">1.1052</td></tr>
+        <tr><td class="rank">06</td><td>Claude Fable 5</td><td class="num zero">0.0000</td><td class="num zero">0.0000</td><td class="num">0/20</td><td>20 refusals</td><td class="num zero">0.0000</td></tr>
       </tbody></table></div>
     </div>
   </details>
@@ -1174,41 +1187,72 @@ html[data-theme="light"] .results-callout {
 </div></section>
 
 <section id="models"><div class="container">
-  <div class="section-tag">Model takeaways</div><h2 class="section-title">What each model was good at—and where it failed.</h2>
-  <p class="section-desc">The score is only part of the deployment story. Coverage, precision, speed, refusals, and budget exits changed the practical value of each run.</p>
-  <div class="table-wrap"><table class="results-table"><thead><tr><th>Model</th><th>Useful signal</th><th>Important limitation</th></tr></thead><tbody>
-    <tr><td><strong>Kimi K3</strong><br><span class="badge">20/20 valid</span></td><td>Best Main, Bonus, decoded-string, and anti-analysis results.</td><td>Slowest complete run: 9.74 summed episode-hours.</td></tr>
-    <tr><td><strong>Claude Opus 5</strong><br><span class="badge">18/20 valid</span></td><td>Best injection-detail mean and strong technique recall.</td><td>Refused two tasks during analysis.</td></tr>
-    <tr><td><strong>GPT-5.6 Sol</strong><br><span class="badge">18/20 valid</span></td><td>Best single score and no unsupported technique claims.</td><td>Both Level 22 variants ended at the tool-call limit.</td></tr>
-    <tr><td><strong>DeepSeek V4 Flash</strong><br><span class="badge">19/20 valid</span></td><td>Second on Bonus and strong on encryption details.</td><td>One budget exit and the most unsupported claims.</td></tr>
-    <tr><td><strong>Gemini 3.6 Flash</strong><br><span class="badge">20/20 valid</span></td><td>Fastest complete run and strong metadata recovery.</td><td>Weaker decoded-string and technique detail.</td></tr>
-    <tr><td><strong>Claude Fable 5</strong><br><span class="badge">0/20 valid</span></td><td>No usable capability result.</td><td>Refused every task before using a tool.</td></tr>
-  </tbody></table></div>
+  <div class="section-tag">Model behavior profiles</div><h2 class="section-title">Scores alone hide operationally important differences.</h2>
+  <p class="section-desc">Coverage, precision, speed, refusal behavior, and budget discipline changed the practical value of each model’s run.</p>
+  <div class="feature-grid">
+    <article class="card"><span class="badge">20/20 valid</span><h3>Kimi K3</h3><p>Strongest overall and best on decoded strings and anti-analysis. Complete, but the slowest successful run at 9.74 summed episode-hours.</p></article>
+    <article class="card"><span class="badge">18/20 valid</span><h3>Claude Opus 5</h3><p>Best injection-detail mean and strong technique recall. Two mid-analysis refusals reduced useful coverage.</p></article>
+    <article class="card"><span class="badge">18/20 valid</span><h3>GPT-5.6 Sol</h3><p>Best single score with no unsupported technique claims. Both Level 22 variants ended at the tool-call limit.</p></article>
+    <article class="card"><span class="badge">19/20 valid</span><h3>DeepSeek V4 Flash</h3><p>Strong bonus and encryption results, with greater variance, one budget exit, and the most unsupported claims.</p></article>
+    <article class="card"><span class="badge">20/20 valid</span><h3>Gemini 3.6 Flash</h3><p>Fastest complete run and strong metadata recovery. Exact decoded-string and technique detail were weaker.</p></article>
+  </div>
+  <div class="comparison-card results-callout" style="margin-top:18px"><strong>Policy coverage outcome:</strong> Claude Fable 5 refused all 20 artifacts before using a tool. That result is operationally relevant, but it is not a clean measure of reverse-engineering knowledge.</div>
+  <details class="compact-details">
+    <summary>Show the failure taxonomy</summary>
+    <div class="details-content">
+      <div class="feature-grid">
+        <article class="card"><h3>Broad identification</h3><p>The technique family was recognized, but required implementation details were missing.</p></article>
+        <article class="card"><h3>Unsupported claims</h3><p>APIs, techniques, configuration values, or execution steps were reported without recovered evidence.</p></article>
+        <article class="card"><h3>Incomplete chains</h3><p>Individual components were found but not connected into the correct execution sequence.</p></article>
+        <article class="card"><h3>Budget exhaustion</h3><p>Low-value exploration consumed the fixed call budget before a complete answer was produced.</p></article>
+        <article class="card"><h3>Premature stopping</h3><p>An early hypothesis was reported before critical details were verified.</p></article>
+        <article class="card"><h3>Refusal</h3><p>A valid defensive analysis task ended without a gradable answer.</p></article>
+      </div>
+    </div>
+  </details>
 </div></section>
 
 <section id="findings"><div class="container">
-  <div class="section-tag">Practical meaning</div><h2 class="section-title">Useful for triage. Not a replacement for expert reverse engineering.</h2>
-  <p class="section-desc">Models were better at identifying the shape of a program than reconstructing the exact details needed for a final incident conclusion.</p>
-  <div class="feature-grid">
-    <article class="card"><span class="badge">Reliable signal</span><h3>Format and broad behavior</h3><p>Valid answers usually identified file type, obfuscation, imports, section flags, constants, and the general technique family.</p></article>
-    <article class="card"><span class="badge">Still brittle</span><h3>Exact execution details</h3><p>Native API chains, keys, decoded content, and manual PE-mapping steps were often incomplete or wrong.</p></article>
-    <article class="card"><span class="badge">Unsolved</span><h3>True Level 23 C2</h3><p>No model recovered the actual command-and-control endpoint. Exact configuration recovery still requires expert validation.</p></article>
+  <div class="section-tag">Capability boundary</div><h2 class="section-title">Useful for orientation. Less reliable for exact reconstruction.</h2>
+  <p class="section-desc">Models were better at identifying the shape of a program than recovering the details required for a final incident conclusion.</p>
+  <div class="comparison">
+    <article class="card"><span class="badge">Stronger capabilities</span><h3>What agents often recovered</h3><ul class="results-list"><li>Broad injection and execution techniques</li><li>Common Windows APIs, imports, strings, and constants</li><li>Initial behavioral hypotheses and recognizable persistence or evasion patterns</li><li>Straightforward control-flow relationships</li></ul></article>
+    <article class="card"><span class="badge">Weaker capabilities</span><h3>What remained brittle</h3><ul class="results-list"><li>Complete multi-stage execution chains</li><li>Exact decoded configuration, keys, and transformations</li><li>Indirect or dynamically resolved APIs</li><li>Distinguishing active logic from decoys without unsupported claims</li></ul></article>
   </div>
-  <div class="comparison-card results-callout" style="margin-top:18px"><strong>Recommended use:</strong> analyst-assisted triage, prioritization, and hypothesis generation. Do not treat an unreviewed model report as authoritative malware attribution or configuration recovery.</div>
+  <div class="comparison-card results-callout" style="margin-top:18px"><strong>Recommended use:</strong> analyst-assisted triage, prioritization, and hypothesis generation. No model recovered the true Level 23 C2 endpoint, and unreviewed output should not be treated as authoritative configuration recovery.</div>
+</div></section>
+
+<section id="limitations"><div class="container">
+  <div class="section-tag">Scope and limitations</div><h2 class="section-title">What Version 3 does—and does not—establish.</h2>
+  <div class="feature-grid">
+    <article class="card"><span class="badge">Measured</span><h3>Command-line static analysis</h3><p>Agents worked from isolated binaries with fixed tools and budgets. The benchmark does not measure dynamic analysis, debugging, or interactive decompiler workflows.</p></article>
+    <article class="card"><span class="badge">Observed once</span><h3>No repeated-run variance</h3><p>Each model-artifact pair was evaluated once, so results characterize the recorded runs rather than a stable population mean.</p></article>
+    <article class="card"><span class="badge">Controlled suite</span><h3>Synthetic known-ground-truth artifacts</h3><p>Deterministic grading is possible because behavior is known, but the suite does not reproduce the full diversity of real-world malware.</p></article>
+  </div>
 </div></section>
 
 <section id="method"><div class="container">
-  <div class="section-tag">Method and verification</div><h2 class="section-title">What was tested—and how to verify it.</h2>
+  <div class="section-tag">Method and verification</div><h2 class="section-title">Every published score is traceable to evidence.</h2>
+  <p class="section-desc">Each result can be followed from input artifact to agent transcript, tool output, final answer, deterministic grader decision, and aggregate score.</p>
   <div class="feature-grid">
     <article class="card"><span class="badge">Environment</span><h3>Static, binary-only analysis</h3><p>One anonymized PE per isolated workspace. No source, Internet, debugger, decompiler, compilation, or dynamic execution.</p></article>
     <article class="card"><span class="badge">Scoring</span><h3>Deterministic ground truth</h3><p>No LLM judge. Terminal refusals and budget exits remain in the aggregates. Main is the broad score; Level 23 supplies the separate Bonus.</p></article>
     <article class="card"><span class="badge">Audit</span><h3>Fully reproducible</h3><p>All 120 answers were rescored, all six aggregates reconciled, and the 366-file checksum ledger and artifact hashes passed verification.</p></article>
   </div>
   <div class="comparison-card results-callout" style="margin-top:18px"><strong>Independent check:</strong> run <span class="mono">python3 version3/verify.py</span> from the repository root. It requires no API key or model call.</div>
+</div></section>
+
+<section id="implications"><div class="container">
+  <div class="section-tag">What Version 3 means</div><h2 class="section-title">Frontier agents are becoming capable binary analysts—not yet dependable reverse engineers.</h2>
+  <p class="section-desc">Current agents can accelerate orientation and hypothesis generation. Exact reconstruction still requires stronger tool planning, longer-horizon evidence tracking, better calibration, efficient budget use, and expert verification.</p>
+  <div class="comparison">
+    <article class="card"><span class="badge">For security teams</span><h3>Use agents as accelerators</h3><p>Apply them to triage, prioritization, and evidence discovery while retaining analyst review for configuration, attribution, and consequential conclusions.</p></article>
+    <article class="card"><span class="badge">For model developers</span><h3>Reward verifiable recovery</h3><p>Optimize for evidence-grounded technical facts, efficient tool paths, uncertainty reporting, and completion reliability—not broader descriptions alone.</p></article>
+  </div>
   <div class="hero-buttons" style="margin-top:22px">
-    <a class="btn btn-primary" href="https://github.com/agentrebench/AgentRE-Bench/blob/f63202ff0f618f4e23a833c55cb92c08e5e87d02/version3/ANALYSIS.md">Read full analysis</a>
-    <a class="btn btn-secondary" href="https://github.com/agentrebench/AgentRE-Bench/tree/main/version3/results">Inspect raw results</a>
-    <a class="text-link" href="https://github.com/agentrebench/AgentRE-Bench/blob/main/version3/verify.py">View verifier</a>
+    <a class="btn btn-primary" href="https://github.com/agentrebench/AgentRE-Bench/blob/f63202ff0f618f4e23a833c55cb92c08e5e87d02/version3/ANALYSIS.md">Inspect the Full Analysis</a>
+    <a class="btn btn-secondary" href="https://github.com/agentrebench/AgentRE-Bench/blob/main/version3/verify.py">Reproduce the Results</a>
+    <a class="text-link" href="mailto:contact@agentrebench.ai?subject=Private%20AgentRE%20Evaluation">Evaluate Your Agent Privately</a>
   </div>
 </div></section>
 </main>
