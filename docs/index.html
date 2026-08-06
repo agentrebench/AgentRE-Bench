@@ -998,8 +998,9 @@ footer a:hover { color: var(--accent); }
       </p>
       <div class="hero-buttons">
         <a href="/results/v3-pe/" class="btn btn-primary">Explore Version 3 Results</a>
+        <a href="/why-agentre/" class="btn btn-secondary">Why AgentRE Matters</a>
         <a href="/results/v3-pe/#method" class="btn btn-secondary">View the Methodology</a>
-        <a href="mailto:contact@agentrebench.ai?subject=Evaluate%20an%20AI%20Agent" class="btn btn-secondary">Evaluate Your Agent</a>
+        <a href="#training" class="btn btn-secondary">Evaluate Your Agent</a>
       </div>
     </div>
     <aside class="hero-panel" aria-label="AgentRE-Bench snapshot">
@@ -1610,19 +1611,39 @@ footer a:hover { color: var(--accent); }
 <!-- ── Training Environment ── -->
 <section id="training">
   <div class="container">
-    <div class="section-tag">Training Environment</div>
-    <h2 class="section-title">An RL training environment for reverse-engineering agents</h2>
+    <div class="section-tag">RL training environment</div>
+    <h2 class="section-title">From evaluation to training</h2>
     <p class="section-kicker">
-      AgentRE-Bench is more than a leaderboard. The same unseen binaries, deterministic graders, sandbox execution traces, and expert-labeled ground truth can serve as a reinforcement-learning environment for training agents to recover real binary behavior rather than produce plausible-sounding reports.
+      AgentRE-Bench is more than a leaderboard. Its deterministic graders, sandboxed tool traces, hidden ground truth, and progressive binary-analysis tasks provide the foundation for training reverse-engineering agents&mdash;not only evaluating them.
     </p>
     <p class="section-kicker">
-      The training program is designed around reward techniques developed specifically for evidence-grounded reverse engineering: rewarding correct findings, penalizing unsupported claims, shaping effective tool-use behavior, and increasing task difficulty through a controlled curriculum.
+      We are developing an RL training environment focused on evidence-grounded reverse engineering. Agents can be rewarded for recovering correct technical facts, penalized for unsupported claims, trained to use analysis tools efficiently, and exposed to increasingly difficult binaries through a controlled curriculum.
     </p>
-    <div class="training-summary-card">
-      <h3>RL-ready evaluation traces</h3>
+    <div class="comparison-card">
+      <h3>RL-ready training signals</h3>
       <p>
-        AgentRE-Bench can support RL pilots by turning hidden task outcomes, deterministic rewards, hallucination penalties, tool-use traces, and curriculum progression into training signals for reverse-engineering agents.
+        AgentRE-Bench can support reinforcement-learning pilots using:
       </p>
+      <ul>
+        <li>Deterministic outcome rewards</li>
+        <li>Evidence-grounded fact recovery</li>
+        <li>Unsupported-claim penalties</li>
+        <li>Tool-use and budget-efficiency signals</li>
+        <li>Structured intermediate findings</li>
+        <li>Progressive task difficulty</li>
+        <li>Complete analysis trajectories</li>
+        <li>Private training and evaluation splits</li>
+      </ul>
+      <p style="margin-top:18px; margin-bottom:0">
+        The goal is to train agents that recover verifiable binary behavior rather than produce technically plausible but unsupported reports.
+      </p>
+    </div>
+    <div class="cta-band">
+      <div>
+        <h3>Interested in an RL pilot?</h3>
+        <p>Work with us to evaluate or train an agent on private reverse-engineering tasks.</p>
+      </div>
+      <a href="mailto:contact@agentrebench.ai?subject=AgentRE-Bench%20RL%20Pilot" class="btn btn-primary">Discuss an RL pilot</a>
     </div>
   </div>
 </section>
