@@ -18,64 +18,49 @@
   <meta name="twitter:description" content="The benchmark and evaluation platform for AI agents that understand compiled software.">
   <meta name="twitter:image" content="https://www.agentre-bench.ai/og-agentre.png">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <link rel="stylesheet" href="/home.css?v=logo-theme-1">
+  <link rel="stylesheet" href="/homepage.css?v=minimal-1">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
-
   <header class="site-header">
     <div class="shell nav-shell">
-      <a class="brand" href="/" aria-label="AgentRE home">
-        <img src="/brand-lockup.webp?v=agentre-2" alt="" width="260" height="61">
-      </a>
-      <nav class="desktop-nav" aria-label="Primary navigation">
-        <div class="nav-menu">
-          <a class="nav-menu-trigger" href="/why-agentre/" aria-haspopup="true">Why AgentRE</a>
-          <div class="nav-dropdown" aria-label="Explore AgentRE">
-            <a href="/why-agentre/">Why AgentRE overview</a>
-            <a href="/#how">How it works</a>
-            <a href="/#benchmark">Benchmark</a>
-            <a href="/#evolution">Benchmark evolution</a>
-            <a href="/results/v3-pe/">Latest research</a>
+      <a class="brand" href="/" aria-label="AgentRE home"><img src="/brand-lockup.webp?v=agentre-2" alt="" width="260" height="61"></a>
+      <nav class="primary-nav" aria-label="Primary navigation">
+        <a class="nav-benchmark" href="#benchmark">Benchmark</a>
+        <a class="nav-service" href="/private-evals/">Private Evals</a>
+        <a class="nav-service" href="/rl-data/">RL Data</a>
+        <a class="nav-blog" href="/blog/">Blog</a>
+        <details class="nav-menu">
+          <summary>Explore <span aria-hidden="true">⌄</span></summary>
+          <div class="nav-dropdown">
+            <a href="/why-agentre/">Why AgentRE</a>
+            <a href="#how">How it works</a>
+            <a href="#benchmark">Benchmark results</a>
+            <a href="#evolution">Benchmark history</a>
+            <a href="/results/v3-pe/">V3 research report</a>
+            <a href="/private-evals/">Private Evals</a>
+            <a href="/rl-data/">RL Data</a>
             <a href="/blog/">Blog</a>
             <a href="/challenge/">Challenge</a>
             <a href="https://github.com/agentrebench/AgentRE-Bench">GitHub ↗</a>
           </div>
-        </div>
-        <a href="/private-evals/">Private Evals</a>
-        <a href="/rl-data/">RL Data</a>
+        </details>
+        <button class="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="false"><span class="theme-dot" aria-hidden="true"></span><span class="theme-label">Light</span></button>
       </nav>
-      <div class="nav-actions">
-        <a class="persistent-blog-link" href="/blog/">Blog</a>
-        <button class="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="false">
-          <span class="theme-dot" aria-hidden="true"></span>
-          <span class="theme-label">Light</span>
-        </button>
-        <a class="nav-cta" href="mailto:contact@agentre-bench.ai?subject=AgentRE%20evaluation%20inquiry">Evaluate your agent <span aria-hidden="true">↗</span></a>
-      </div>
     </div>
   </header>
 
-  <main id="main">
-    <section class="hero" aria-labelledby="hero-title">
-      <div class="hero-grid" aria-hidden="true"></div>
-      <div class="hero-glow hero-glow-one" aria-hidden="true"></div>
-      <div class="hero-glow hero-glow-two" aria-hidden="true"></div>
-      <div class="shell hero-layout">
-        <div class="hero-copy">
-          <p class="eyebrow"><span>AgentRE-Bench</span> Reverse-engineering intelligence, measured</p>
-          <h1 id="hero-title">Building AI that can reason about compiled software.</h1>
-          <p class="hero-lede">AgentRE evaluates models on unseen binaries, identifies where they fail, and turns those failures into training signals for better reverse engineering agents.</p>
-          <div class="hero-actions">
-            <a class="button button-primary" href="/results/v3-pe/">Explore the latest results <span aria-hidden="true">→</span></a>
-            <a class="button button-secondary" href="#how">See how AgentRE works <span aria-hidden="true">↓</span></a>
-          </div>
-          <div class="hero-note">
-            <span class="pulse" aria-hidden="true"></span>
-            <span><strong>Version 3:</strong> 20 Windows PE binaries total—10 unstripped and 10 stripped.</span>
-          </div>
-        </div>
-
+  <main id="main" class="shell main-shell">
+    <section class="intro" aria-labelledby="hero-title">
+      <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> Open benchmark <span class="metadata-divider">/</span> Version 3 · August 2026</p>
+      <h1 id="hero-title">AgentRE-Bench</h1>
+      <p class="intro-question">Can AI agents reason about software without its source code?</p>
+      <p class="intro-description">AgentRE evaluates models on unseen binaries, identifies where they fail, and turns those failures into training signals for better reverse engineering agents.</p>
+      <div class="intro-links">
+        <a class="text-link" href="/results/v3-pe/">Explore the latest results <span aria-hidden="true">↗</span></a>
+        <a href="#how">How it works <span aria-hidden="true">↓</span></a>
+        <a href="mailto:contact@agentre-bench.ai?subject=AgentRE%20evaluation%20inquiry">Evaluate your agent <span aria-hidden="true">↗</span></a>
+      </div>
         <aside class="evidence-console" aria-label="Example AgentRE evaluation flow">
           <div class="console-head">
             <div>
@@ -112,310 +97,113 @@
           </div>
           <div class="signal-scan" aria-hidden="true"></div>
         </aside>
-      </div>
-      <div class="shell proof-rail" aria-label="AgentRE benchmark facts">
-        <div><strong>33</strong><span>distinct binary challenges</span></div>
-        <div><strong>2</strong><span>binary ecosystems: Linux + Windows</span></div>
-        <div><strong>100%</strong><span>replayable scoring</span></div>
-        <div><strong>Open</strong><span>methodology and transcripts</span></div>
-      </div>
+      <dl class="benchmark-facts" aria-label="AgentRE benchmark facts">
+        <div><dt>33</dt><dd>distinct binary challenges</dd></div>
+        <div><dt>Linux + Windows</dt><dd>two binary ecosystems</dd></div>
+        <div><dt>Deterministic</dt><dd>replayable scoring</dd></div>
+        <div><dt>Open</dt><dd>methodology &amp; transcripts</dd></div>
+      </dl>
     </section>
 
-    <section class="story-section why-section" id="why" aria-labelledby="why-title">
-      <div class="shell">
-        <div class="section-intro two-column-intro">
-          <div>
-            <p class="eyebrow"><span>01</span> Why AgentRE</p>
-            <h2 id="why-title">Software does not ship as source code. It ships as evidence.</h2>
-          </div>
-          <div class="intro-copy">
-            <p>Most AI coding benchmarks begin with readable code and a clear task. Security teams often begin with neither. They get a compiled program, limited context, and one question: <em>what does this actually do?</em></p>
-            <p>AgentRE makes that uncertainty measurable. It tests the difference between analysis that sounds right and findings an organization can trust.</p>
-          </div>
-        </div>
-
-        <div class="why-grid">
-          <article class="why-card">
-            <span class="card-number">01 / See</span>
-            <h3>Start with the software that actually runs</h3>
-            <p>Agents receive compiled binaries—not source, descriptive filenames, internet access, or privileged clues.</p>
-            <span class="card-audience">Real-world input</span>
-          </article>
-          <article class="why-card">
-            <span class="card-number">02 / Reason</span>
-            <h3>Turn opaque machine code into a defensible explanation</h3>
-            <p>The task is to recover behaviors, configurations, infrastructure, API chains, and execution details through tool use.</p>
-            <span class="card-audience">Agentic capability</span>
-          </article>
-          <article class="why-card">
-            <span class="card-number">03 / Trust</span>
-            <h3>Know the difference between evidence and confidence</h3>
-            <p>Correct findings earn credit. Unsupported claims are penalized. Every answer is checked against fixed expert ground truth.</p>
-            <span class="card-audience">Deployment readiness</span>
-          </article>
-        </div>
+    <section class="results-section" id="benchmark" aria-labelledby="results-title">
+      <div class="section-heading">
+        <h2 id="results-title">Latest results</h2>
+        <span class="section-meta">V3 · Windows PE</span>
       </div>
+      <p>Ten Windows programs, each evaluated with and without symbols. Six models, 20 binaries, 120 episode slots.</p>
+      <div class="table-scroll" role="region" aria-label="V3 leaderboard, scroll horizontally on small screens" tabindex="0">
+        <table class="results-table">
+          <caption>Version 3 leaderboard · ranked by Total</caption>
+          <thead><tr><th scope="col" class="rank">#</th><th scope="col">Model</th><th scope="col" class="numeric">Main <span>/ 1</span></th><th scope="col" class="numeric">Bonus <span>/ 1</span></th><th scope="col" class="numeric">Total <span>/ 2</span></th><th scope="col" class="numeric">Valid answers</th></tr></thead>
+          <tbody>
+            <tr class="leading-model"><td class="rank">01</td><th scope="row">Kimi K3</th><td class="numeric">0.6757</td><td class="numeric">0.6861</td><td class="numeric total">1.3618</td><td class="numeric">20/20</td></tr>
+            <tr><td class="rank">02</td><th scope="row">Claude Opus 5</th><td class="numeric">0.6147</td><td class="numeric">0.6638</td><td class="numeric total">1.2785</td><td class="numeric">18/20</td></tr>
+            <tr><td class="rank">03</td><th scope="row">GPT-5.6 Sol</th><td class="numeric">0.5859</td><td class="numeric">0.6298</td><td class="numeric total">1.2157</td><td class="numeric">18/20</td></tr>
+            <tr><td class="rank">04</td><th scope="row">DeepSeek V4 Flash</th><td class="numeric">0.5125</td><td class="numeric">0.6782</td><td class="numeric total">1.1906</td><td class="numeric">19/20</td></tr>
+            <tr><td class="rank">05</td><th scope="row">Gemini 3.6 Flash</th><td class="numeric">0.5400</td><td class="numeric">0.5653</td><td class="numeric total">1.1052</td><td class="numeric">20/20</td></tr>
+            <tr><td class="rank">06</td><th scope="row">Claude Fable 5</th><td class="numeric">0.0000</td><td class="numeric">0.0000</td><td class="numeric total">0.0000</td><td class="numeric">0/20</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="table-note">Main measures average performance on 18 core artifacts. Bonus covers the two synthetic-worm artifacts. Total adds the two scores; it is not an average across all 20 artifacts. Refusals and budget exits remain part of the result.</p>
+      <a class="text-link" href="/results/v3-pe/">Read the complete V3 report <span aria-hidden="true">↗</span></a>
     </section>
 
-    <section class="story-section method-section" id="how" aria-labelledby="how-title">
-      <div class="shell">
-        <div class="section-intro two-column-intro">
-          <div>
-            <p class="eyebrow"><span>02</span> How it works</p>
-            <h2 id="how-title">An unknown binary goes in. Auditable evidence comes out.</h2>
-          </div>
-          <div class="intro-copy">
-            <p>AgentRE turns a difficult, open-ended investigation into a repeatable evaluation. Every agent gets the same constrained environment; every claim meets the same fixed ground truth.</p>
-          </div>
-        </div>
-
-        <div class="method-layout reveal">
-          <div class="method-terminal" aria-label="Illustrative AgentRE evaluation transcript">
-            <div class="terminal-bar">
-              <span>Evaluation trace / v3_l17_s</span>
-              <span class="terminal-chip">network: off</span>
-            </div>
-            <div class="terminal-body">
-              <p><span class="prompt">$</span> agentre evaluate <strong>artifact_7f3a.exe</strong></p>
-              <p><span class="muted">workspace</span> isolated · source unavailable · execution disabled</p>
-              <p><span class="prompt">→</span> strings <span class="muted">--encoding utf16</span></p>
-              <p><span class="prompt">→</span> pe_info <span class="muted">--imports --sections</span></p>
-              <p><span class="prompt">→</span> objdump <span class="muted">--disassemble</span></p>
-              <div class="terminal-divider"></div>
-              <p><span class="ok">✓</span> technique <strong>process_hollowing</strong></p>
-              <p><span class="ok">✓</span> execution chain <strong>evidence attached</strong></p>
-              <p><span class="ok">✓</span> unsupported claims <strong>0</strong></p>
-              <div class="terminal-result">
-                <span>Deterministic score</span>
-                <strong>0.8124</strong>
-              </div>
-            </div>
-          </div>
-
-          <ol class="method-steps">
-            <li>
-              <span class="method-index">01</span>
-              <div>
-                <h3>Present unfamiliar software</h3>
-                <p>The agent sees a source-free, anonymized binary in an isolated workspace with ordinary static-analysis tools.</p>
-              </div>
-            </li>
-            <li>
-              <span class="method-index">02</span>
-              <div>
-                <h3>Observe the investigation</h3>
-                <p>AgentRE records the tools, evidence, time, coverage, failures, and final structured claims—not just an answer.</p>
-              </div>
-            </li>
-            <li>
-              <span class="method-index">03</span>
-              <div>
-                <h3>Score what can be proved</h3>
-                <p>Fixed expert ground truth rewards correct technical detail and penalizes unsupported claims. The same answer always receives the same score.</p>
-              </div>
-            </li>
-          </ol>
-        </div>
-      </div>
+    <section class="article-section" id="findings" aria-labelledby="findings-title">
+      <h2 id="findings-title">Key findings</h2>
+      <ul class="findings-list">
+        <li><strong>Recognition is arriving before reconstruction.</strong> Agents often identify behavior families. Recovering the exact execution chain, configuration, key, or endpoint remains harder.</li>
+        <li><strong>Symbols help, but do not explain everything.</strong> Across 46 valid stripped/unstripped pairs, stripping reduced the mean score by 6.47% relative.</li>
+        <li><strong>Coverage matters.</strong> Kimi K3 led overall. Only Kimi and Gemini returned valid answers for all 20 artifacts; refusals and budget exits affected the other runs.</li>
+        <li><strong>Exact recovery remains an open problem.</strong> No model recovered the true Level 23 command-and-control endpoint.</li>
+      </ul>
+      <a class="text-link" href="/results/v3-pe/#findings">Explore the findings and limitations <span aria-hidden="true">↗</span></a>
     </section>
 
-    <section class="story-section evolution-section" id="evolution" aria-labelledby="evolution-title">
-      <div class="shell">
-        <div class="section-intro evolution-intro">
-          <div>
-            <p class="eyebrow"><span>03</span> Benchmark evolution</p>
-            <h2 id="evolution-title">Three versions. One increasingly demanding question.</h2>
-          </div>
-          <p>Each release sharpened the measurement: from establishing a source-free baseline, to exposing calibration, to testing exact reconstruction across paired Windows binaries.</p>
-        </div>
-
-        <div class="timeline" aria-label="AgentRE benchmark history">
-          <article class="version-card reveal">
-            <div class="version-head">
-              <div><span class="version-number">V1</span><span class="version-date">February 2026</span></div>
-              <span class="version-platform">Linux · ELF</span>
-            </div>
-            <p class="version-question">Can source-free binary reasoning be measured?</p>
-            <h3>Establishing the baseline</h3>
-            <p class="version-copy">Thirteen synthetic challenges, constrained static-analysis tools, fixed ground truth, and a scoring penalty for confident guesses.</p>
-            <div class="mini-chart" aria-label="V1 Main scores: Claude Opus 4.6 0.487, DeepSeek V3.2 0.476, GPT-5.2 0.190">
-              <div class="chart-caption"><span>Main score</span><span>0–1</span></div>
-              <div class="chart-row"><span>Claude</span><i><b style="--value:48.7%"></b></i><strong>.487</strong></div>
-              <div class="chart-row"><span>DeepSeek</span><i><b style="--value:47.6%"></b></i><strong>.476</strong></div>
-              <div class="chart-row"><span>GPT</span><i><b style="--value:19%"></b></i><strong>.190</strong></div>
-            </div>
-            <div class="version-finding">
-              <span>The finding</span>
-              <p>Completion was not the same as trust: every model scored zero on the bonus challenge, while unsupported-claim rates varied sharply.</p>
-            </div>
-            <a class="text-link" href="/results/v1-elf/">View the V1 archive <span aria-hidden="true">↗</span></a>
-          </article>
-
-          <article class="version-card reveal">
-            <div class="version-head">
-              <div><span class="version-number">V2</span><span class="version-date">April 2026</span></div>
-              <span class="version-platform">Linux · ELF</span>
-            </div>
-            <p class="version-question">Does more reasoning produce better analysis?</p>
-            <h3>Calibration becomes the advantage</h3>
-            <p class="version-copy">A broader model field ran the same ELF ladder. The strongest result came from a small, non-thinking model that made fewer unsupported claims.</p>
-            <div class="mini-chart" aria-label="V2 Main scores: Gemini 3.1 Flash Lite 0.5618, Kimi K2.6 0.4966, DeepSeek V4 Flash 0.4486">
-              <div class="chart-caption"><span>Main score</span><span>0–1</span></div>
-              <div class="chart-row"><span>Gemini</span><i><b style="--value:56.18%"></b></i><strong>.562</strong></div>
-              <div class="chart-row"><span>Kimi</span><i><b style="--value:49.66%"></b></i><strong>.497</strong></div>
-              <div class="chart-row"><span>DeepSeek</span><i><b style="--value:44.86%"></b></i><strong>.449</strong></div>
-              <p class="chart-note">Flash Lite paired the strongest Main score with full 13/13 coverage.</p>
-            </div>
-            <div class="version-finding">
-              <span>The finding</span>
-              <p>Better judgment beat more deliberation on this suite. The best bonus score rose above zero, but exact decrypted output remained out of reach.</p>
-            </div>
-            <a class="text-link" href="/results/v2-elf/">Read the V2 analysis <span aria-hidden="true">↗</span></a>
-          </article>
-
-          <article class="version-card version-card-current reveal">
-            <div class="version-head">
-              <div><span class="version-number">V3</span><span class="version-date">August 2026</span></div>
-              <span class="version-platform current">Current · Windows PE</span>
-            </div>
-            <p class="version-question">What survives when symbols disappear?</p>
-            <h3>From recognition to reconstruction</h3>
-            <p class="version-copy">Ten Windows programs were evaluated in both unstripped and stripped form across six models: 120 total episode slots.</p>
-            <div class="mini-chart" aria-label="V3 Main scores: Kimi K3 0.6757, Claude Opus 5 0.6147, GPT-5.6 Sol 0.5859">
-              <div class="chart-caption"><span>Main score</span><span>0–1</span></div>
-              <div class="chart-row"><span>Kimi</span><i><b style="--value:67.57%"></b></i><strong>.676</strong></div>
-              <div class="chart-row"><span>Claude</span><i><b style="--value:61.47%"></b></i><strong>.615</strong></div>
-              <div class="chart-row"><span>GPT</span><i><b style="--value:58.59%"></b></i><strong>.586</strong></div>
-              <p class="chart-note">Across 46 valid pairs, stripping reduced the mean score by 6.47% relative.</p>
-            </div>
-            <div class="version-finding">
-              <span>The finding</span>
-              <p>Agents recovered substantial behavior after symbol removal. Exact execution chains, configuration, and the final synthetic-worm endpoint remained the boundary.</p>
-            </div>
-            <a class="text-link" href="/results/v3-pe/">Explore the verified V3 report <span aria-hidden="true">↗</span></a>
-          </article>
-        </div>
-        <p class="timeline-note">V1 and V2 share the Linux suite. V3 introduces a new platform, paired artifacts, tasks, and rubric; its scores are shown as a new measurement surface, not a direct continuation of the earlier scale.</p>
-      </div>
+    <section class="article-section" id="why" aria-labelledby="why-title">
+      <h2 id="why-title">Why reverse engineering?</h2>
+      <p>Most AI coding benchmarks begin with readable code and a clear task. Security teams often begin with neither. They get a compiled program, limited context, and one question: <em>what does this actually do?</em></p>
+      <p>AgentRE measures whether an agent can turn that uncertainty into a defensible explanation. Agents recover behaviors, configurations, infrastructure, API chains, and execution details through tool use. Correct findings earn credit; unsupported claims are penalized against fixed expert ground truth.</p>
+      <a class="text-link" href="/why-agentre/">Why AgentRE matters <span aria-hidden="true">↗</span></a>
     </section>
 
-    <section class="story-section findings-section" id="findings" aria-labelledby="findings-title">
-      <div class="shell findings-layout">
-        <div class="findings-statement reveal">
-          <p class="eyebrow"><span>04</span> What the evidence says today</p>
-          <h2 id="findings-title">Recognition is arriving before reconstruction.</h2>
-          <p>Frontier agents can often identify what family of behavior they are looking at. The harder—and more operationally valuable—step is recovering the exact chain, key, value, or endpoint.</p>
-          <a class="text-link" href="/results/v3-pe/#findings">Read every V3 finding <span aria-hidden="true">→</span></a>
-        </div>
-
-        <div class="capability-ladder reveal" aria-label="Current reverse-engineering capability boundary">
-          <div class="ladder-head"><span>Current capability boundary</span><span>V3 · six models</span></div>
-          <div class="ladder-row"><div><span>01</span><strong>Orient to the artifact</strong></div><span class="signal signal-strong">Strong signal</span></div>
-          <div class="ladder-row"><div><span>02</span><strong>Recognize behavior families</strong></div><span class="signal signal-strong">Strong signal</span></div>
-          <div class="ladder-row"><div><span>03</span><strong>Trace execution details</strong></div><span class="signal signal-mixed">Mixed signal</span></div>
-          <div class="ladder-row"><div><span>04</span><strong>Recover exact configuration</strong></div><span class="signal signal-limited">Open frontier</span></div>
-          <div class="ladder-foot">
-            <span>Best V3 Main</span><strong>0.6757</strong>
-            <span>Valid Kimi K3 answers</span><strong>20/20</strong>
-          </div>
-        </div>
-      </div>
+    <section class="article-section" id="how" aria-labelledby="how-title">
+      <h2 id="how-title">How it works</h2>
+      <p>Every agent gets the same constrained environment. Every claim meets the same fixed ground truth.</p>
+      <ol class="method-list">
+        <li><span class="method-number" aria-hidden="true">01</span><div><h3>Present unfamiliar software</h3><p>A source-free, anonymized binary in an isolated workspace, with ordinary static-analysis tools and no internet access.</p></div></li>
+        <li><span class="method-number" aria-hidden="true">02</span><div><h3>Record the investigation</h3><p>Tool calls, evidence, time, coverage, failures, and final structured claims are captured for review.</p></div></li>
+        <li><span class="method-number" aria-hidden="true">03</span><div><h3>Score what can be proved</h3><p>Fixed expert ground truth rewards correct detail and penalizes unsupported claims. The same answer always receives the same score.</p></div></li>
+      </ol>
+      <a class="text-link" href="https://github.com/agentrebench/AgentRE-Bench">Explore the methodology and transcripts <span aria-hidden="true">↗</span></a>
     </section>
 
-    <section class="story-section platform-section" id="benchmark" aria-labelledby="platform-title">
-      <div class="shell">
-        <div class="section-intro two-column-intro">
-          <div>
-            <p class="eyebrow"><span>05</span> Benchmark · private evals · training</p>
-            <h2 id="platform-title">Measure cyber capability. Find the gaps. Train what comes next.</h2>
-          </div>
-          <div class="intro-copy">
-            <p>AgentRE combines an open benchmark, confidential evaluations, and client-specific post-training to turn reverse-engineering performance into measurable improvement.</p>
-          </div>
-        </div>
-
-        <div class="offering-grid">
-          <article class="offering-card reveal">
-            <div class="offering-top"><span>Open</span><span>01</span></div>
-            <h3>Public benchmark</h3>
-            <p>An open, reproducible standard for measuring how agents investigate compiled software—and whether their conclusions are correct, grounded, and efficient.</p>
-            <ul>
-              <li>33 public binary challenges</li>
-              <li>Deterministic scoring</li>
-              <li>Open results and complete traces</li>
-            </ul>
-            <a class="text-link" href="/results/v3-pe/">Explore the benchmark <span aria-hidden="true">↗</span></a>
-          </article>
-          <article class="offering-card offering-featured reveal" id="private-evals">
-            <div class="offering-top"><span>Commercial</span><span>02</span></div>
-            <h3>Private evals</h3>
-            <p>Fresh, contamination-resistant private benchmarks for industry models, built to expose capability gaps and guide improvements in real cybersecurity workflows.</p>
-            <ul>
-              <li>Held-out and client-specific binaries</li>
-              <li>Model, checkpoint, and agent comparisons</li>
-              <li>Capability maps and failure analysis</li>
-            </ul>
-            <a class="text-link" href="/private-evals/">Explore private evals <span aria-hidden="true">→</span></a>
-          </article>
-          <article class="offering-card reveal" id="rl-data">
-            <div class="offering-top"><span>Client training</span><span>03</span></div>
-            <h3>RL + SFT training</h3>
-            <p>We turn verified outcomes, expert demonstrations, and complete tool trajectories into high-value RL and SFT signals—then train toward the cybersecurity capabilities each client needs.</p>
-            <ul>
-              <li>Granular, deterministic reward signals</li>
-              <li>Expert-curated SFT datasets</li>
-              <li>Client-specific training and re-evaluation</li>
-            </ul>
-            <a class="text-link" href="/rl-data/">Explore RL Data <span aria-hidden="true">→</span></a>
-          </article>
-        </div>
-
-        <div class="audience-rail">
-          <span>Built for</span>
-          <div><strong>Model builders</strong><small>Find capability boundaries</small></div>
-          <div><strong>Security teams</strong><small>Assess operational readiness</small></div>
-          <div><strong>Researchers</strong><small>Run reproducible studies</small></div>
-          <div><strong>Decision-makers</strong><small>Separate demos from evidence</small></div>
-        </div>
+    <section class="article-section" id="evolution" aria-labelledby="evolution-title">
+      <h2 id="evolution-title">Benchmark history</h2>
+      <div class="version-list">
+        <article class="version-entry">
+          <div class="version-label"><span>V3</span><span class="current-label">Current</span><time datetime="2026-08">August 2026</time></div>
+          <div><h3>From recognition to reconstruction</h3><p>Ten Windows programs, paired with and without symbols. Agents recovered substantial behavior after symbol removal, while exact execution chains and configuration remained a boundary.</p><a class="text-link" href="/results/v3-pe/">V3 · Windows PE <span aria-hidden="true">↗</span></a></div>
+        </article>
+        <article class="version-entry">
+          <div class="version-label"><span>V2</span><time datetime="2026-04">April 2026</time></div>
+          <div><h3>Calibration becomes the advantage</h3><p>A broader model field ran the same Linux ladder. Gemini 3.1 Flash Lite led with a 0.5618 Main score and full 13/13 coverage. Fewer unsupported claims mattered more than deeper reasoning on this suite.</p><a class="text-link" href="/results/v2-elf/">V2 · Linux ELF <span aria-hidden="true">↗</span></a></div>
+        </article>
+        <article class="version-entry">
+          <div class="version-label"><span>V1</span><time datetime="2026-02">February 2026</time></div>
+          <div><h3>Establishing the baseline</h3><p>Thirteen synthetic Linux challenges established a source-free baseline with constrained tools and deterministic scoring. Completion was not the same as trust; every model scored zero on the bonus challenge.</p><a class="text-link" href="/results/v1-elf/">V1 · Linux ELF <span aria-hidden="true">↗</span></a></div>
+        </article>
       </div>
+      <p class="table-note">V1 and V2 share the Linux suite. V3 uses a new platform, paired artifacts, tasks, and rubric. Scores are not directly comparable across the two suites.</p>
     </section>
 
-    <section class="research-section" id="research" aria-label="AgentRE-Bench references in research">
-      <div class="shell research-strip">
-        <span class="research-label">Referenced in research</span>
-        <a href="https://arxiv.org/abs/2605.10597"><strong>CrackMeBench</strong><small>Binary Reverse Engineering for Agents</small><span>↗</span></a>
-        <a href="https://ieeexplore.ieee.org/document/11580353"><strong>IEEE survey</strong><small>Automated Vulnerability Discovery</small><span>↗</span></a>
-        <a href="https://arxiv.org/abs/2608.11469"><strong>SRE-Bench</strong><small>Realistic, contamination-free RE benchmark</small><span>↗</span></a>
+    <section class="article-section" id="training" aria-labelledby="training-title">
+      <h2 id="training-title">From evaluation to training</h2>
+      <p>The public benchmark establishes a baseline. Private evaluations and client-specific training turn measured failures into improvements.</p>
+      <div class="service-list">
+        <article id="private-evals"><h3>Private evaluations</h3><p>Held-out and client-specific binaries expose capability gaps across models, checkpoints, and agents. Get capability maps and failure analysis for real cybersecurity workflows.</p><a class="text-link" href="/private-evals/">Explore private evals <span aria-hidden="true">↗</span></a></article>
+        <article id="rl-data"><h3>RL + SFT training</h3><p>Verified outcomes, expert demonstrations, and complete tool trajectories become deterministic reward signals and expert-curated datasets for client-specific training and re-evaluation.</p><a class="text-link" href="/rl-data/">Explore RL Data <span aria-hidden="true">↗</span></a></article>
       </div>
+      <div class="contact-line"><p>Interested in evaluating or training your agent?</p><a class="text-link" href="mailto:contact@agentre-bench.ai?subject=AgentRE%20evaluation%20inquiry">Get in touch <span aria-hidden="true">↗</span></a></div>
     </section>
 
-    <section class="closing-section" aria-labelledby="closing-title">
-      <div class="closing-grid" aria-hidden="true"></div>
-      <div class="shell closing-inner">
-        <p class="eyebrow"><span>AgentRE</span> Evaluation and training</p>
-        <h2 id="closing-title">Contamination-resistant private evals. High-signal RL data.</h2>
-        <p>Private evals reveal the capability gap. Verified RL and SFT signals help close it.</p>
-        <div class="hero-actions">
-          <a class="button button-primary" href="mailto:contact@agentre-bench.ai?subject=AgentRE%20private%20evaluation">Scope a private evaluation <span aria-hidden="true">↗</span></a>
-          <a class="button button-secondary" href="mailto:contact@agentre-bench.ai?subject=AgentRE%20RL%20opportunities">Explore RL opportunities <span aria-hidden="true">→</span></a>
-        </div>
-      </div>
+    <section class="article-section research-section" id="research" aria-labelledby="research-title">
+      <h2 id="research-title">Referenced in research</h2>
+      <ul class="research-list">
+        <li><a href="https://arxiv.org/abs/2605.10597"><strong>CrackMeBench</strong><span>Binary Reverse Engineering for Agents</span><span aria-hidden="true">↗</span></a></li>
+        <li><a href="https://ieeexplore.ieee.org/document/11580353"><strong>IEEE survey</strong><span>Automated Vulnerability Discovery</span><span aria-hidden="true">↗</span></a></li>
+        <li><a href="https://arxiv.org/abs/2608.11469"><strong>SRE-Bench</strong><span>Realistic, contamination-free RE benchmark</span><span aria-hidden="true">↗</span></a></li>
+      </ul>
     </section>
   </main>
 
   <footer class="site-footer" id="site-footer">
-    <div class="shell footer-shell">
-      <div class="footer-brand">
-        <a class="brand" href="/" aria-label="AgentRE home"><img src="/brand-lockup.webp?v=agentre-2" alt="" width="260" height="61"></a>
-      </div>
-      <div class="footer-links">
-        <div><span>Explore</span><a href="#why">Why AgentRE</a><a href="/results/v3-pe/">Benchmark</a><a href="/private-evals/">Private Evals</a><a href="/rl-data/">RL Data</a><a href="/blog/">Blog</a></div>
-        <div><span>Participate</span><a href="/challenge/">Challenge</a><a href="https://github.com/agentrebench/AgentRE-Bench">GitHub ↗</a><a href="https://x.com/AgentREBenchAI">X / Twitter ↗</a><a href="mailto:contact@agentre-bench.ai">Contact</a></div>
-      </div>
+    <div class="shell footer-inner">
+      <a class="footer-wordmark" href="/">AgentRE</a>
+      <nav aria-label="Footer navigation"><a href="/why-agentre/">Why AgentRE</a><a href="/blog/">Blog</a><a href="/challenge/">Challenge</a><a href="https://github.com/agentrebench/AgentRE-Bench">GitHub ↗</a><a href="https://x.com/AgentREBenchAI">X / Twitter ↗</a><a href="mailto:contact@agentre-bench.ai">Contact</a></nav>
+      <div class="footer-base"><span>© 2026 AgentRE-Bench</span><span>Open benchmark · MIT licensed</span></div>
     </div>
-    <div class="shell footer-base"><span>© 2026 AgentRE-Bench</span><span>Open benchmark · MIT licensed</span></div>
   </footer>
-
   <script src="/home.js?v=story-1" defer></script>
 </body>
 </html>
