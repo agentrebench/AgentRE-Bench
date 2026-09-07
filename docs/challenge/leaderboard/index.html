@@ -6,48 +6,52 @@
 <title>AgentRE Challenge Leaderboard</title>
 <meta name="description" content="Public-safe registration and results leaderboard for AgentRE Challenge Season 1.">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<link rel="stylesheet" href="/challenge/challenge.css">
-<link rel="stylesheet" href="/handbook-theme.css?v=logo-theme-1">
 <script defer src="/challenge/challenge-config.js"></script>
 <script defer src="/challenge/challenge-data.js"></script>
-<script defer src="/challenge/challenge-render.js"></script>
-<script defer src="/handbook-theme.js"></script>
+<script defer src="/challenge/challenge-render.js?v=minimal-1"></script>
+<script defer src="/handbook-theme.js?v=minimal-1"></script>
+  <link rel="stylesheet" href="/homepage.css?v=minimal-1">
+  <link rel="stylesheet" href="/minimal-pages.css?v=minimal-1">
 </head>
-<body>
-<nav class="site-nav">
-  <div class="container nav-inner">
-    <a class="brand" href="/" aria-label="AgentRE home">
-      <img src="/brand-lockup.webp?v=agentre-2" alt="" width="260" height="61">
-    </a>
-    <div class="nav-links">
-      <div class="nav-menu">
-        <a class="nav-menu-trigger" href="/why-agentre/" aria-haspopup="true">Why AgentRE</a>
-        <div class="nav-dropdown" aria-label="Explore AgentRE">
-          <a href="/why-agentre/">Why AgentRE overview</a>
-          <a href="/#how">How it works</a>
-          <a href="/#benchmark">Benchmark</a>
-          <a href="/#evolution">Benchmark evolution</a>
-          <a href="/results/v3-pe/">Latest research</a>
-          <a href="/blog/">Blog</a>
-          <a href="/challenge/">Challenge</a>
-          <a href="https://github.com/agentrebench/AgentRE-Bench">GitHub ↗</a>
-        </div>
-      </div>
-      <a href="/private-evals/">Private Evals</a>
-      <a href="/rl-data/">RL Data</a>
-      <a class="nav-cta" data-config-href="registrationPageUrl" href="#">Register</a>
+<body class="minimal-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="shell nav-shell">
+      <a class="brand" href="/" aria-label="AgentRE home"><img src="/brand-lockup.webp?v=agentre-2" alt="" width="260" height="61"></a>
+      <nav class="primary-nav" aria-label="Primary navigation">
+        <a class="nav-benchmark" href="/#benchmark">Benchmark</a>
+        <a class="nav-service" href="/private-evals/">Private Evals</a>
+        <a class="nav-service" href="/rl-data/">RL Data</a>
+        <a class="nav-blog" href="/blog/">Blog</a>
+        <details class="nav-menu">
+          <summary>Explore <span aria-hidden="true">⌄</span></summary>
+          <div class="nav-dropdown">
+            <a href="/why-agentre/">Why AgentRE</a>
+            <a href="/#how">How it works</a>
+            <a href="/#benchmark">Benchmark results</a>
+            <a href="/#evolution">Benchmark history</a>
+            <a href="/results/v3-pe/">V3 research report</a>
+            <a href="/private-evals/">Private Evals</a>
+            <a href="/rl-data/">RL Data</a>
+            <a href="/blog/">Blog</a>
+            <a href="/challenge/">Challenge</a>
+            <a href="https://github.com/agentrebench/AgentRE-Bench">GitHub ↗</a>
+          </div>
+        </details>
+        <button class="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="false"><span class="theme-dot" aria-hidden="true"></span><span class="theme-label">Light</span></button>
+      </nav>
     </div>
-    <a class="persistent-blog-link" href="/blog/">Blog</a>
-    <button class="theme-toggle" type="button" aria-label="Switch color theme">Light</button>
-  </div>
-</nav>
+  </header>
 
-<main>
+<main id="main">
+  <nav class="section-nav" aria-label="Challenge navigation"><a href="/challenge/">Overview</a><a href="/challenge/rules/">Rules</a><a href="/challenge/submit/">Submission</a><a href="/challenge/register/">Register</a><a href="/challenge/leaderboard/" aria-current="page">Leaderboard</a></nav>
+
   <section class="hero">
     <div class="container hero-grid">
       <div>
         <div class="hero-label"><span data-config="competitionName">AgentRE Challenge</span>&nbsp;/ Leaderboard</div>
-        <h1>Season 1 Public Leaderboard</h1>
+        <h1 data-page-title>Challenge leaderboard</h1>
+          <p class="page-deck">Season 1 Public Leaderboard</p>
         <p class="subtitle">
           Public status only during submissions. Private repository URLs, binaries, source code, ground truth, detailed techniques, interim scores, and full model transcripts are not displayed.
         </p>
@@ -57,18 +61,15 @@
           <a class="btn btn-secondary" href="/challenge/submit/">Submission Instructions</a>
         </div>
       </div>
-      <aside class="hero-panel" aria-label="Leaderboard summary">
-        <div class="panel-top">
-          <div class="panel-title">Public Summary</div>
-          <span class="status-pill" data-status-label>Upcoming</span>
-        </div>
+      <details class="hero-panel summary-details" aria-label="Leaderboard summary">
+        <summary class="panel-top"><span class="panel-title">Public Summary</span><span class="status-pill" data-status-label>Upcoming</span></summary>
         <div class="summary-grid">
           <div class="summary-card"><strong data-summary="registered">0</strong><span>Registered</span></div>
           <div class="summary-card"><strong data-summary="validated">0</strong><span>Validated</span></div>
           <div class="summary-card"><strong data-summary="evaluated">0</strong><span>Evaluated</span></div>
           <div class="summary-card"><strong data-config="minimumAcceptedSubmissions">1</strong><span>Prize threshold</span></div>
         </div>
-      </aside>
+      </details>
     </div>
   </section>
 
@@ -90,7 +91,7 @@
         <p>Registered entries will appear here after public-safe registration PRs are merged. Private repositories, binaries, source code, ground truth, and repository URLs are never added to this page during submissions.</p>
       </div>
 
-      <div class="table-wrap desktop-table" aria-describedby="leaderboard-description">
+      <div class="table-wrap desktop-table" aria-describedby="leaderboard-description" role="region" aria-label="Scrollable data table" tabindex="0">
         <table data-render="leaderboard-table">
           <thead>
             <tr>
@@ -165,5 +166,6 @@
     <p>AgentRE-Bench - LLM reverse engineering benchmark with deterministic scoring.</p>
   </div>
 </footer>
+  <script src="/home.js?v=story-1" defer></script>
 </body>
 </html>

@@ -15,42 +15,37 @@
   <meta name="twitter:description" content="Know what your model can do before the data is familiar.">
   <meta name="twitter:image" content="https://www.agentre-bench.ai/og-agentre.png">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <link rel="stylesheet" href="/home.css?v=logo-theme-1">
-  <link rel="stylesheet" href="/services.css?v=services-1">
+  <link rel="stylesheet" href="/homepage.css?v=minimal-1">
+  <link rel="stylesheet" href="/minimal-pages.css?v=minimal-1">
 </head>
-<body class="service-page private-evals-page">
+<body class="minimal-page service-page private-evals-page">
   <a class="skip-link" href="#main">Skip to content</a>
 
-  <header class="site-header">
+    <header class="site-header">
     <div class="shell nav-shell">
-      <a class="brand" href="/" aria-label="AgentRE home">
-        <img src="/brand-lockup.webp?v=agentre-2" alt="" width="260" height="61">
-      </a>
-      <nav class="desktop-nav" aria-label="Primary navigation">
-        <div class="nav-menu">
-          <a class="nav-menu-trigger" href="/why-agentre/" aria-haspopup="true">Why AgentRE</a>
-          <div class="nav-dropdown" aria-label="Explore AgentRE">
-            <a href="/why-agentre/">Why AgentRE overview</a>
+      <a class="brand" href="/" aria-label="AgentRE home"><img src="/brand-lockup.webp?v=agentre-2" alt="" width="260" height="61"></a>
+      <nav class="primary-nav" aria-label="Primary navigation">
+        <a class="nav-benchmark" href="/#benchmark">Benchmark</a>
+        <a class="nav-service" href="/private-evals/" aria-current="page">Private Evals</a>
+        <a class="nav-service" href="/rl-data/">RL Data</a>
+        <a class="nav-blog" href="/blog/">Blog</a>
+        <details class="nav-menu">
+          <summary>Explore <span aria-hidden="true">⌄</span></summary>
+          <div class="nav-dropdown">
+            <a href="/why-agentre/">Why AgentRE</a>
             <a href="/#how">How it works</a>
-            <a href="/#benchmark">Benchmark</a>
-            <a href="/#evolution">Benchmark evolution</a>
-            <a href="/results/v3-pe/">Latest research</a>
+            <a href="/#benchmark">Benchmark results</a>
+            <a href="/#evolution">Benchmark history</a>
+            <a href="/results/v3-pe/">V3 research report</a>
+            <a href="/private-evals/" aria-current="page">Private Evals</a>
+            <a href="/rl-data/">RL Data</a>
             <a href="/blog/">Blog</a>
             <a href="/challenge/">Challenge</a>
             <a href="https://github.com/agentrebench/AgentRE-Bench">GitHub ↗</a>
           </div>
-        </div>
-        <a href="/private-evals/" aria-current="page">Private Evals</a>
-        <a href="/rl-data/">RL Data</a>
+        </details>
+        <button class="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="false"><span class="theme-dot" aria-hidden="true"></span><span class="theme-label">Light</span></button>
       </nav>
-      <div class="nav-actions">
-        <a class="persistent-blog-link" href="/blog/">Blog</a>
-        <button class="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="false">
-          <span class="theme-dot" aria-hidden="true"></span>
-          <span class="theme-label">Light</span>
-        </button>
-        <a class="nav-cta" href="mailto:contact@agentre-bench.ai?subject=AgentRE%20private%20evaluation">Scope an eval <span aria-hidden="true">↗</span></a>
-      </div>
     </div>
   </header>
 
@@ -59,7 +54,8 @@
       <div class="shell service-hero-layout">
         <div class="service-hero-copy">
           <p class="eyebrow"><span>Private evals</span> Held out by design</p>
-          <h1 id="service-title">Know what your model can do before the data is familiar.</h1>
+          <h1 id="service-title" data-page-title>Private evaluations</h1>
+          <p class="page-deck">Know what your model can do before the data is familiar.</p>
           <p class="hero-lede">AgentRE designs confidential reverse-engineering evaluations around your model, tools, and target workflows. Fresh binaries and deterministic ground truth help distinguish generalization from benchmark recall.</p>
           <div class="hero-actions">
             <a class="button button-primary" href="mailto:contact@agentre-bench.ai?subject=AgentRE%20private%20evaluation">Scope a private evaluation <span aria-hidden="true">↗</span></a>
@@ -68,13 +64,13 @@
           <p class="hero-note"><span class="pulse" aria-hidden="true"></span><span>Designed for model developers, security teams, and research organizations evaluating consequential cyber workflows.</span></p>
         </div>
 
-        <aside class="service-panel" aria-label="Private evaluation brief">
-          <div class="service-panel-head"><span>Evaluation brief</span><span class="service-panel-status">Client-specific</span></div>
+        <details class="service-panel summary-details" aria-label="Private evaluation brief">
+          <summary class="service-panel-head"><span>Evaluation brief</span><span class="service-panel-status">Client-specific</span></summary>
           <div class="service-panel-row"><span class="service-panel-index">01</span><div><strong>Target capability</strong><span>The behaviors, decisions, and workflows your team needs to trust.</span></div></div>
           <div class="service-panel-row"><span class="service-panel-index">02</span><div><strong>Fresh corpus</strong><span>Held-out artifacts developed outside the public benchmark.</span></div></div>
           <div class="service-panel-row"><span class="service-panel-index">03</span><div><strong>Controlled run</strong><span>Your models, checkpoints, agents, and tools under repeatable constraints.</span></div></div>
           <div class="service-panel-row"><span class="service-panel-index">04</span><div><strong>Decision-ready evidence</strong><span>Capability maps, failure modes, and complete episode traces.</span></div></div>
-        </aside>
+        </details>
       </div>
 
       <div class="shell service-proof-rail" aria-label="Private evaluation principles">
@@ -172,7 +168,7 @@
 
   <footer class="site-footer">
     <div class="shell footer-shell">
-      <div class="footer-brand"><a class="brand" href="/" aria-label="AgentRE home"><img src="/brand-lockup.webp?v=agentre-2" alt="" width="260" height="61"></a></div>
+      <div class="footer-brand"><a class="brand" href="/" aria-label="AgentRE home">AgentRE</a></div>
       <div class="footer-links">
         <div><span>Explore</span><a href="/why-agentre/">Why AgentRE</a><a href="/results/v3-pe/">Benchmark</a><a href="/private-evals/">Private Evals</a><a href="/rl-data/">RL Data</a><a href="/blog/">Blog</a></div>
         <div><span>Connect</span><a href="/challenge/">Challenge</a><a href="https://github.com/agentrebench/AgentRE-Bench">GitHub ↗</a><a href="https://x.com/AgentREBenchAI">X / Twitter ↗</a><a href="mailto:contact@agentre-bench.ai">contact@agentre-bench.ai</a></div>
@@ -180,7 +176,6 @@
     </div>
     <div class="shell footer-base"><span>© 2026 AgentRE-Bench</span><span>Open benchmark · Client-specific evaluation</span></div>
   </footer>
-
-  <script src="/home.js?v=services-1" defer></script>
+  <script src="/home.js?v=story-1" defer></script>
 </body>
 </html>

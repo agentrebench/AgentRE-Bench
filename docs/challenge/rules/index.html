@@ -6,48 +6,52 @@
 <title>AgentRE Challenge Rules</title>
 <meta name="description" content="Rules, eligibility, safety requirements, scoring methodology, ownership terms, and prize terms for AgentRE Challenge Season 1.">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<link rel="stylesheet" href="/challenge/challenge.css">
-<link rel="stylesheet" href="/handbook-theme.css?v=logo-theme-1">
 <script defer src="/challenge/challenge-config.js"></script>
 <script defer src="/challenge/challenge-data.js"></script>
-<script defer src="/challenge/challenge-render.js"></script>
-<script defer src="/handbook-theme.js"></script>
+<script defer src="/challenge/challenge-render.js?v=minimal-1"></script>
+<script defer src="/handbook-theme.js?v=minimal-1"></script>
+  <link rel="stylesheet" href="/homepage.css?v=minimal-1">
+  <link rel="stylesheet" href="/minimal-pages.css?v=minimal-1">
 </head>
-<body>
-<nav class="site-nav">
-  <div class="container nav-inner">
-    <a class="brand" href="/" aria-label="AgentRE home">
-      <img src="/brand-lockup.webp?v=agentre-2" alt="" width="260" height="61">
-    </a>
-    <div class="nav-links">
-      <div class="nav-menu">
-        <a class="nav-menu-trigger" href="/why-agentre/" aria-haspopup="true">Why AgentRE</a>
-        <div class="nav-dropdown" aria-label="Explore AgentRE">
-          <a href="/why-agentre/">Why AgentRE overview</a>
-          <a href="/#how">How it works</a>
-          <a href="/#benchmark">Benchmark</a>
-          <a href="/#evolution">Benchmark evolution</a>
-          <a href="/results/v3-pe/">Latest research</a>
-          <a href="/blog/">Blog</a>
-          <a href="/challenge/">Challenge</a>
-          <a href="https://github.com/agentrebench/AgentRE-Bench">GitHub ↗</a>
-        </div>
-      </div>
-      <a href="/private-evals/">Private Evals</a>
-      <a href="/rl-data/">RL Data</a>
-      <a class="nav-cta" data-config-href="registrationPageUrl" href="#">Register</a>
+<body class="minimal-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="shell nav-shell">
+      <a class="brand" href="/" aria-label="AgentRE home"><img src="/brand-lockup.webp?v=agentre-2" alt="" width="260" height="61"></a>
+      <nav class="primary-nav" aria-label="Primary navigation">
+        <a class="nav-benchmark" href="/#benchmark">Benchmark</a>
+        <a class="nav-service" href="/private-evals/">Private Evals</a>
+        <a class="nav-service" href="/rl-data/">RL Data</a>
+        <a class="nav-blog" href="/blog/">Blog</a>
+        <details class="nav-menu">
+          <summary>Explore <span aria-hidden="true">⌄</span></summary>
+          <div class="nav-dropdown">
+            <a href="/why-agentre/">Why AgentRE</a>
+            <a href="/#how">How it works</a>
+            <a href="/#benchmark">Benchmark results</a>
+            <a href="/#evolution">Benchmark history</a>
+            <a href="/results/v3-pe/">V3 research report</a>
+            <a href="/private-evals/">Private Evals</a>
+            <a href="/rl-data/">RL Data</a>
+            <a href="/blog/">Blog</a>
+            <a href="/challenge/">Challenge</a>
+            <a href="https://github.com/agentrebench/AgentRE-Bench">GitHub ↗</a>
+          </div>
+        </details>
+        <button class="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="false"><span class="theme-dot" aria-hidden="true"></span><span class="theme-label">Light</span></button>
+      </nav>
     </div>
-    <a class="persistent-blog-link" href="/blog/">Blog</a>
-    <button class="theme-toggle" type="button" aria-label="Switch color theme">Light</button>
-  </div>
-</nav>
+  </header>
 
-<main>
+<main id="main">
+  <nav class="section-nav" aria-label="Challenge navigation"><a href="/challenge/">Overview</a><a href="/challenge/rules/" aria-current="page">Rules</a><a href="/challenge/submit/">Submission</a><a href="/challenge/register/">Register</a><a href="/challenge/leaderboard/">Leaderboard</a></nav>
+
   <section class="hero">
     <div class="container hero-grid">
       <div>
         <div class="hero-label"><span data-config="competitionName">AgentRE Challenge</span>&nbsp;/ Rules</div>
-        <h1>AgentRE Challenge Official Rules</h1>
+        <h1 data-page-title>Challenge rules</h1>
+          <p class="page-deck">AgentRE Challenge Official Rules</p>
         <p class="subtitle">
           Official Rules v1.1, effective August 3, 2026. Season 1 rewards original, safe, reproducible <span data-config="architecture">Linux x86-64 ELF</span> challenges that create meaningful <span data-config="analysisMode">static analysis</span> difficulty for frontier AI agents.
         </p>
@@ -57,18 +61,15 @@
           <a class="btn btn-secondary" href="/challenge/leaderboard/">Leaderboard</a>
         </div>
       </div>
-      <aside class="hero-panel" aria-label="Rules snapshot">
-        <div class="panel-top">
-          <div class="panel-title">Season Status</div>
-          <span class="status-pill" data-status-label>Upcoming</span>
-        </div>
+      <details class="hero-panel summary-details" aria-label="Rules snapshot">
+        <summary class="panel-top"><span class="panel-title">Season Status</span><span class="status-pill" data-status-label>Upcoming</span></summary>
         <div class="fact-grid">
           <div class="fact-card"><strong data-config="prizeAmount">$1,000</strong><span>First-place cash</span></div>
           <div class="fact-card"><strong data-config="minimumAcceptedSubmissions">1</strong><span>Minimum accepted entry</span></div>
           <div class="fact-card"><strong data-config="maximumBinarySize">10 MB</strong><span>Maximum binary size</span></div>
           <div class="fact-card"><strong data-config="maximumEntriesPerEntrant">3</strong><span>Max entries per entrant</span></div>
         </div>
-      </aside>
+      </details>
     </div>
   </section>
 
@@ -111,7 +112,7 @@
       <div class="section-tag">Submission Freeze</div>
       <h2 class="section-title">The final tag freezes the evaluated commit.</h2>
       <div class="grid-2">
-        <article class="code-panel" aria-label="Final tag commands"><pre>git tag <span data-config="finalSubmissionTag">agentre-season-1-final</span>
+        <article class="code-panel" aria-label="Final tag commands"><pre tabindex="0">git tag <span data-config="finalSubmissionTag">agentre-season-1-final</span>
 git push origin <span data-config="finalSubmissionTag">agentre-season-1-final</span></pre></article>
         <article class="callout warning">
           <h3>Frozen commit rules</h3>
@@ -358,7 +359,7 @@ git push origin <span data-config="finalSubmissionTag">agentre-season-1-final</s
         <article class="callout">
           <h3>Docker image</h3>
           <p>AgentRE should build and pin the official image for the harness commit used at contest opening:</p>
-          <div class="code-panel"><pre data-config="officialToolEnvironment.dockerBuildCommand">docker build --platform linux/amd64 -t agentre-bench-tools:latest -f Dockerfile.tools .</pre></div>
+          <div class="code-panel"><pre data-config="officialToolEnvironment.dockerBuildCommand" tabindex="0">docker build --platform linux/amd64 -t agentre-bench-tools:latest -f Dockerfile.tools .</pre></div>
         </article>
         <article class="callout warning">
           <h3>Not allowed in official scoring</h3>
@@ -463,5 +464,6 @@ git push origin <span data-config="finalSubmissionTag">agentre-season-1-final</s
     <p>AgentRE-Bench - LLM reverse engineering benchmark with deterministic scoring.</p>
   </div>
 </footer>
+  <script src="/home.js?v=story-1" defer></script>
 </body>
 </html>

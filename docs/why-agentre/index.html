@@ -15,104 +15,48 @@
 <meta name="twitter:description" content="Measuring AI reverse-engineering capability before organizations must trust it during real incidents.">
 <meta name="twitter:image" content="https://www.agentre-bench.ai/og-agentre.png">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<link rel="stylesheet" href="/challenge/challenge.css">
-<link rel="stylesheet" href="/handbook-theme.css?v=logo-theme-1">
-<script defer src="/handbook-theme.js"></script>
-<style>
-.article-copy {
-  max-width: 800px;
-  color: var(--text-dim);
-  font-size: 1rem;
-  line-height: 1.82;
-}
-.article-copy p { margin-bottom: 1.25em; }
-.article-copy p:last-child { margin-bottom: 0; }
-.article-copy strong { color: var(--text); }
-.source-note {
-  margin-top: 28px;
-  padding-top: 20px;
-  border-top: 1px solid var(--border);
-  color: var(--text-dim);
-  font-size: 0.82rem;
-}
-.reference-list {
-  max-width: 980px;
-  margin: 36px 0 0;
-  padding: 0;
-  list-style: none;
-  border-top: 1px solid var(--border);
-}
-.reference-list li {
-  display: grid;
-  grid-template-columns: 42px minmax(0, 1fr) auto;
-  gap: 20px;
-  align-items: start;
-  padding: 20px 0;
-  border-bottom: 1px solid var(--border);
-}
-.reference-list .reference-index {
-  color: var(--accent);
-  font-family: var(--mono);
-  font-size: 0.66rem;
-  letter-spacing: 0.08em;
-}
-.reference-list a {
-  color: var(--text);
-  font-family: var(--serif);
-  font-size: 1rem;
-  line-height: 1.42;
-}
-.reference-list a:hover { color: var(--accent); }
-.reference-list small {
-  color: var(--text-dim);
-  font-family: var(--mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-@media (max-width: 700px) {
-  .reference-list li { grid-template-columns: 30px minmax(0, 1fr); gap: 14px; }
-  .reference-list small { grid-column: 2; }
-}
-</style>
+<script defer src="/handbook-theme.js?v=minimal-1"></script>
+  <link rel="stylesheet" href="/homepage.css?v=minimal-1">
+  <link rel="stylesheet" href="/minimal-pages.css?v=minimal-1">
 </head>
-<body>
+<body class="minimal-page">
+  <a class="skip-link" href="#main">Skip to content</a>
 
-<nav class="site-nav">
-  <div class="container nav-inner">
-    <a class="brand" href="/" aria-label="AgentRE home">
-      <img src="/brand-lockup.webp?v=agentre-2" alt="" width="260" height="61">
-    </a>
-    <div class="nav-links">
-      <div class="nav-menu">
-        <a class="nav-menu-trigger" href="/why-agentre/" aria-haspopup="true">Why AgentRE</a>
-        <div class="nav-dropdown" aria-label="Explore AgentRE">
-          <a href="/why-agentre/" aria-current="page">Why AgentRE overview</a>
-          <a href="/#how">How it works</a>
-          <a href="/#benchmark">Benchmark</a>
-          <a href="/#evolution">Benchmark evolution</a>
-          <a href="/results/v3-pe/">Latest research</a>
-          <a href="/blog/">Blog</a>
-          <a href="/challenge/">Challenge</a>
-          <a href="https://github.com/agentrebench/AgentRE-Bench">GitHub ↗</a>
-        </div>
-      </div>
-      <a href="/private-evals/">Private Evals</a>
-      <a href="/rl-data/">RL Data</a>
-      <a class="nav-cta" href="mailto:contact@agentre-bench.ai?subject=AgentRE-Bench%20Inquiry">Contact Us</a>
+  <header class="site-header">
+    <div class="shell nav-shell">
+      <a class="brand" href="/" aria-label="AgentRE home"><img src="/brand-lockup.webp?v=agentre-2" alt="" width="260" height="61"></a>
+      <nav class="primary-nav" aria-label="Primary navigation">
+        <a class="nav-benchmark" href="/#benchmark">Benchmark</a>
+        <a class="nav-service" href="/private-evals/">Private Evals</a>
+        <a class="nav-service" href="/rl-data/">RL Data</a>
+        <a class="nav-blog" href="/blog/">Blog</a>
+        <details class="nav-menu">
+          <summary>Explore <span aria-hidden="true">⌄</span></summary>
+          <div class="nav-dropdown">
+            <a href="/why-agentre/" aria-current="page">Why AgentRE</a>
+            <a href="/#how">How it works</a>
+            <a href="/#benchmark">Benchmark results</a>
+            <a href="/#evolution">Benchmark history</a>
+            <a href="/results/v3-pe/">V3 research report</a>
+            <a href="/private-evals/">Private Evals</a>
+            <a href="/rl-data/">RL Data</a>
+            <a href="/blog/">Blog</a>
+            <a href="/challenge/">Challenge</a>
+            <a href="https://github.com/agentrebench/AgentRE-Bench">GitHub ↗</a>
+          </div>
+        </details>
+        <button class="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="false"><span class="theme-dot" aria-hidden="true"></span><span class="theme-label">Light</span></button>
+      </nav>
     </div>
-    <a class="persistent-blog-link" href="/blog/">Blog</a>
-    <button class="theme-toggle" type="button" aria-label="Switch color theme">Light</button>
-  </div>
-</nav>
+  </header>
 
-<main>
+<main id="main">
   <section class="hero">
     <div class="container hero-grid">
       <div>
         <div class="hero-label">AgentRE capability / Why it matters</div>
-        <h1>Measuring AI reverse engineering before we trust it.</h1>
+        <h1 data-page-title>Why AgentRE</h1>
+          <p class="page-deck">Measuring AI reverse engineering before we trust it.</p>
         <p class="subtitle">
           AgentRE evaluates whether AI systems can investigate unknown software under realistic operational constraints—before defenders are forced to depend on them during real incidents.
         </p>
@@ -122,18 +66,15 @@
           <a class="btn btn-secondary" href="https://github.com/agentrebench/AgentRE-Bench/blob/f63202ff0f618f4e23a833c55cb92c08e5e87d02/version3/WHY_AGENTRE_MATTERS.md">View Source</a>
         </div>
       </div>
-      <aside class="hero-panel" aria-label="AgentRE capability principles">
-        <div class="panel-top">
-          <div class="panel-title">Measurement principles</div>
-          <span class="status-pill">Public write-up</span>
-        </div>
+      <details class="hero-panel summary-details" aria-label="AgentRE capability principles">
+        <summary class="panel-top"><span class="panel-title">Measurement principles</span><span class="status-pill">Public write-up</span></summary>
         <div class="fact-grid">
           <div class="fact-card"><strong>Binary</strong><span>Unknown compiled artifacts, not source summaries</span></div>
           <div class="fact-card"><strong>Static</strong><span>Evidence-led analysis without executing the sample</span></div>
           <div class="fact-card"><strong>Grounded</strong><span>Deterministic scoring against known behavior</span></div>
           <div class="fact-card"><strong>Auditable</strong><span>Preserved answers, tools, transcripts, and artifacts</span></div>
         </div>
-      </aside>
+      </details>
     </div>
   </section>
 
@@ -272,19 +213,6 @@
   </div>
 </footer>
 
-<script>
-const themeToggle = document.querySelector(".theme-toggle");
-const themeStorageKey = "agentre-theme-v2";
-const savedTheme = localStorage.getItem(themeStorageKey) || "dark";
-document.documentElement.dataset.theme = savedTheme;
-themeToggle.textContent = savedTheme === "dark" ? "Light" : "Dark";
-
-themeToggle.addEventListener("click", () => {
-  const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
-  document.documentElement.dataset.theme = nextTheme;
-  localStorage.setItem(themeStorageKey, nextTheme);
-  themeToggle.textContent = nextTheme === "dark" ? "Light" : "Dark";
-});
-</script>
+  <script src="/home.js?v=story-1" defer></script>
 </body>
 </html>

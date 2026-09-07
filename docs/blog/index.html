@@ -14,41 +14,41 @@
   <meta name="twitter:title" content="Why AgentRE Starts With Static Analysis">
   <meta name="twitter:description" content="Why AgentRE begins with controlled static analysis—and how private evaluations, trajectories, and reinforcement learning fit into the larger platform.">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <link rel="stylesheet" href="/challenge/challenge.css">
-  <link rel="stylesheet" href="/handbook-theme.css?v=logo-theme-1">
-  <link rel="stylesheet" href="/blog/blog.css?v=2">
-  <script defer src="/handbook-theme.js"></script>
+  <script defer src="/handbook-theme.js?v=minimal-1"></script>
+  <link rel="stylesheet" href="/homepage.css?v=minimal-1">
+  <link rel="stylesheet" href="/minimal-pages.css?v=minimal-1">
 </head>
-<body class="blog-page">
-  <nav class="site-nav">
-    <div class="container nav-inner">
-      <a class="brand" href="/" aria-label="AgentRE home">
-        <img src="/brand-lockup.webp?v=agentre-2" alt="" width="260" height="61">
-      </a>
-      <div class="nav-links">
-        <div class="nav-menu">
-          <a class="nav-menu-trigger" href="/why-agentre/" aria-haspopup="true">Why AgentRE</a>
-          <div class="nav-dropdown" aria-label="Explore AgentRE">
-            <a href="/why-agentre/">Why AgentRE overview</a>
+<body class="minimal-page blog-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+    <div class="shell nav-shell">
+      <a class="brand" href="/" aria-label="AgentRE home"><img src="/brand-lockup.webp?v=agentre-2" alt="" width="260" height="61"></a>
+      <nav class="primary-nav" aria-label="Primary navigation">
+        <a class="nav-benchmark" href="/#benchmark">Benchmark</a>
+        <a class="nav-service" href="/private-evals/">Private Evals</a>
+        <a class="nav-service" href="/rl-data/">RL Data</a>
+        <a class="nav-blog" href="/blog/" aria-current="page">Blog</a>
+        <details class="nav-menu">
+          <summary>Explore <span aria-hidden="true">⌄</span></summary>
+          <div class="nav-dropdown">
+            <a href="/why-agentre/">Why AgentRE</a>
             <a href="/#how">How it works</a>
-            <a href="/#benchmark">Benchmark</a>
-            <a href="/#evolution">Benchmark evolution</a>
-            <a href="/results/v3-pe/">Latest research</a>
+            <a href="/#benchmark">Benchmark results</a>
+            <a href="/#evolution">Benchmark history</a>
+            <a href="/results/v3-pe/">V3 research report</a>
+            <a href="/private-evals/">Private Evals</a>
+            <a href="/rl-data/">RL Data</a>
             <a href="/blog/" aria-current="page">Blog</a>
             <a href="/challenge/">Challenge</a>
             <a href="https://github.com/agentrebench/AgentRE-Bench">GitHub ↗</a>
           </div>
-        </div>
-        <a href="/private-evals/">Private Evals</a>
-        <a href="/rl-data/">RL Data</a>
-        <a class="nav-cta" href="mailto:contact@agentre-bench.ai?subject=AgentRE-Bench%20Inquiry">Contact Us</a>
-      </div>
-      <a class="persistent-blog-link" href="/blog/" aria-current="page">Blog</a>
-      <button class="theme-toggle" type="button" aria-label="Switch color theme">Light</button>
+        </details>
+        <button class="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="false"><span class="theme-dot" aria-hidden="true"></span><span class="theme-label">Light</span></button>
+      </nav>
     </div>
-  </nav>
+  </header>
 
-  <main>
+  <main id="main">
     <section class="hero blog-hero">
       <div class="container hero-grid">
         <div>
@@ -163,19 +163,6 @@
     </div>
   </footer>
 
-  <script>
-  const themeToggle = document.querySelector(".theme-toggle");
-  const themeStorageKey = "agentre-theme-v2";
-  const savedTheme = localStorage.getItem(themeStorageKey) || "dark";
-  document.documentElement.dataset.theme = savedTheme;
-  themeToggle.textContent = savedTheme === "dark" ? "Light" : "Dark";
-
-  themeToggle.addEventListener("click", () => {
-    const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
-    document.documentElement.dataset.theme = nextTheme;
-    localStorage.setItem(themeStorageKey, nextTheme);
-    themeToggle.textContent = nextTheme === "dark" ? "Light" : "Dark";
-  });
-  </script>
+    <script src="/home.js?v=story-1" defer></script>
 </body>
 </html>

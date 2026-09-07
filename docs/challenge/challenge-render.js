@@ -408,25 +408,7 @@
     }
   }
 
-  function initThemeToggle() {
-    const themeToggle = document.querySelector(".theme-toggle");
-    if (!themeToggle) return;
-
-    const themeStorageKey = "agentre-theme-v2";
-    const savedTheme = localStorage.getItem(themeStorageKey) || "dark";
-    document.documentElement.dataset.theme = savedTheme;
-    themeToggle.textContent = savedTheme === "dark" ? "Light" : "Dark";
-
-    themeToggle.addEventListener("click", () => {
-      const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
-      document.documentElement.dataset.theme = nextTheme;
-      localStorage.setItem(themeStorageKey, nextTheme);
-      themeToggle.textContent = nextTheme === "dark" ? "Light" : "Dark";
-    });
-  }
-
   function init() {
-    initThemeToggle();
     populateConfigValues();
     renderTimeline();
     renderScoring();
