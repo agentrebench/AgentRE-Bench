@@ -1,58 +1,65 @@
-# AgentRE-Bench
+<h1 align="center">AgentRE-Bench</h1>
+<p align="center"><em>Reverse-engineering intelligence, measured.</em></p>
 
-A benchmark for evaluating LLM agents on **long-horizon reverse engineering tasks** with deterministic scoring.
+<p align="center">
+<a href="https://github.com/agentrebench/AgentRE-Bench/stargazers"><img src="https://img.shields.io/github/stars/agentrebench/AgentRE-Bench?style=flat&color=6366f1" alt="Stars"></a>
+<a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-00d4aa.svg" alt="MIT"></a>
+<a href="https://agentre-bench.ai"><img src="https://img.shields.io/badge/site-agentre--bench.ai-6366f1.svg" alt="Website"></a>
+<a href="version3/ANALYSIS.md"><img src="https://img.shields.io/badge/results-V3%20PE%20·%20Aug%202026-blue.svg" alt="V3 results"></a>
+</p>
 
-> **Platforms:** Linux/Unix (ELF x86-64) and Windows (PE32+ x86-64).
+## Abstract
 
-AgentRE-Bench gives an LLM agent a compiled binary and a platform-appropriate static-analysis toolset, then measures how well it can identify C2 infrastructure, encoding schemes, anti-analysis techniques, process-injection behavior, and communication protocols — all without human guidance or source code.
+Use of AI agents in cybersecurity is growing. No widely adopted public benchmark measures whether these agents can reverse engineer compiled binaries. Existing evaluations test question answering or recall of vulnerability knowledge, or they use an LLM as the judge. AgentRE-Bench gives an agent an unfamiliar ELF or PE binary, a fixed static-analysis toolset, and a budget of 25 tool calls. A deterministic scorer compares the agent's structured findings to fixed ground truth. The benchmark has 23 levels: 13 Linux ELF x86-64 binaries and 10 Windows PE32+ binaries. Each PE level is evaluated as a stripped and unstripped pair. The levels cover reverse shells, covert channels, encryption, process injection, direct syscall resolution, reflective loading, and control-flow obfuscation. In the V3 Windows evaluation (August 2026), the best of six frontier models scored 1.3618 of 2.0. No model recovered the bonus-level C2 endpoint. Stripping reduced the mean score by 6.47% relative across 46 matched pairs.
 
-The [V3 Windows PE results](version3/ANALYSIS.md) evaluate 10 binaries twice—once unstripped and once stripped—across six frontier models. Raw answers, transcripts, reports, and reproduction metadata are preserved under [`version3/`](version3/).
+## Why this benchmark exists
 
-## Why This Benchmark?
+Most AI coding benchmarks start with readable code and a clear task. Security teams usually start with neither. They get a compiled program, no context, and one question: what does this program do?
 
-### Why Synthetic?
+AgentRE-Bench asks LLM agents that question. Each task is a purpose-built ELF or Windows PE binary compiled from known source. The agent receives the binary and a fixed set of static-analysis tools. It does not receive the source, a description, or a meaningful filename. The agent must choose which tools to run, read hex dumps and disassembly, follow references across tool calls, and submit a structured answer. A deterministic scorer compares the answer to ground truth.
 
-All 23 levels are compiled from purpose-built C/C++ sources with known ground truths. This gives us:
+The benchmark separates reverse engineering from pattern recognition. A model that knows the term "process hollowing" must still find the technique in 18 KB of stripped machine code.
 
-- **Deterministic judging** — every field has an exact expected answer, no ambiguity
-- **Controlled difficulty progression** — from plaintext TCP shells to PE injection, direct syscalls, advanced evasion, and a synthetic ransomware worm
-- **Reproducibility** — anyone can compile identical binaries and verify scores
+## Results
 
-Real malware would require subjective expert judgment and introduce licensing, ethics, and reproducibility issues. Synthetic samples eliminate all of that while testing the same analytical capabilities.
+The current generation is V3, Windows PE, run in August 2026. It contains ten programs, from DLL injection to a synthetic ransomware worm. Each program is evaluated unstripped and stripped. Six frontier models ran all 20 artifacts with a budget of 25 tool calls and 16,000 output tokens per artifact.
 
-### Why Agentic?
+![AgentRE-Bench V3 leaderboard, Total = Main + Bonus](docs/leaderboard-v3.svg)
 
-Traditional RE benchmarks ask a model a question and check the answer. AgentRE-Bench requires the agent to:
+| Rank | Model | Main /1.0 | Bonus /1.0 | Total /2.0 | Valid answers |
+|-----:|-------|----------:|-----------:|-----------:|--------------:|
+| 1 | **Kimi K3** | **0.6757** | **0.6861** | **1.3618** | **20/20** |
+| 2 | Claude Opus 5 | 0.6147 | 0.6638 | 1.2785 | 18/20 |
+| 3 | GPT-5.6 Sol | 0.5859 | 0.6298 | 1.2157 | 18/20 |
+| 4 | DeepSeek V4 Flash | 0.5125 | 0.6782 | 1.1906 | 19/20 |
+| 5 | Gemini 3.6 Flash | 0.5400 | 0.5653 | 1.1052 | 20/20 |
+| 6 | Claude Fable 5 | 0.0000 | 0.0000 | 0.0000 | 0/20 |
 
-- **Plan** which tools to use and in what order
-- **Interpret** raw tool output (hex dumps, disassembly, symbol tables)
-- **Synthesize** findings across multiple tool calls into a structured analysis
-- **Manage a budget** of 25 tool calls — wasting calls on redundant queries means running out before finding the answer
+Main is the mean over the 18 Level 14 to 22 artifacts. Bonus is the mean over the two Level 23 artifacts. Total is Main plus Bonus. Refusals and budget exhaustion count as zero.
 
-This tests reasoning, tool selection, and information synthesis — not just pattern matching.
+Findings from the run:
 
-### Why Long-Horizon?
+- File type and encoded-string presence were easy. Every model that answered scored near 1.0 on both fields. No model recovered the exact Native API chains, the keys, or the Level 23 endpoint (`192.0.2.100:8443`).
+- Stripping reduced the mean score by 0.0416 points across 46 complete pairs. Stripped binaries kept their imports, constants, and code shape.
+- GPT-5.6 Sol made zero unsupported technique claims and recorded the best single-artifact score (0.9272). DeepSeek V4 Flash claimed `manual_getprocaddress` ten times where the ground truth did not contain it.
+- Claude Fable 5 refused all 20 artifacts before its first tool call and scored 0.0. This is a coverage result, not a capability estimate.
 
-Simple RE questions ("What architecture is this binary?") don't differentiate models. The hard problems require chains of 10-25 tool calls where each call's output informs the next decision. Level 13 requires the agent to:
+The full report is in [`version3/ANALYSIS.md`](version3/ANALYSIS.md). It contains per-artifact scores, stripped-versus-unstripped results by level, hallucination tables, and the audit that reproduced all 120 score rows. The Linux ELF generation is in [`version2/ANALYSIS.md`](version2/ANALYSIS.md).
 
-1. Identify encrypted strings via entropy analysis
-2. Locate the encryption key in the binary
-3. Determine the key storage mechanism (XOR mask)
-4. Decode the actual C2 URL
-5. Identify 18 distinct techniques across anti-debugging, process injection, and network evasion
+## Adoption
 
-This is where agent capability differences become visible.
+![GitHub star history for agentrebench/AgentRE-Bench](docs/star-history.svg)
 
-### Why Deterministic Judging?
+agentrebench created the repository on 12 February 2026. As of 24 September 2026 it has 119 stars and 14 forks.
 
-Every agent answer is scored against a fixed ground truth with weighted fields and Jaccard overlap for set comparisons. There is no LLM-as-judge, no subjective rubric, no human grader variance. The same answer always produces the same score.
+## The benchmark
 
-Hallucinations are penalized: claiming a technique not present in the binary costs -0.05 per false claim. This means models can't game scores by guessing everything.
+The benchmark has 23 levels and 33 binary artifacts. Levels 1 to 13 are Linux ELF x86-64. They start with a plaintext TCP reverse shell and end with a metamorphic dropper that uses 18 distinct techniques. Levels 14 to 23 are Windows PE32+. They form an injection ladder that ends with an advanced evasion loader and a synthetic worm. Each PE level is a stripped and unstripped pair with the same anonymized filename.
 
-## Linux Task Difficulty Progression
+<details><summary><strong>Linux ELF, Levels 1 to 13</strong></summary>
 
 | Level | Task | Techniques | Difficulty |
-|-------|------|-----------|------------|
+|------:|------|------------|------------|
 | 1 | TCP Reverse Shell | Plaintext C2, socket connect, dup2, execve | Trivial |
 | 2 | XOR Encoded Strings | XOR encoding, string obfuscation | Easy |
 | 3 | Anti-Debugging Shell | ptrace detection, timing checks | Easy |
@@ -67,156 +74,89 @@ Hallucinations are penalized: claiming a technique not present in the binary cos
 | 12 | JIT Compiled Shellcode | Runtime code generation, JIT | Very Hard |
 | 13 | Metamorphic Dropper | RC4 encryption, anti-analysis, metamorphic code | Bonus |
 
-Levels 1-12 are **standard tasks** (averaged to 1.0 pt max). Level 13 is a **bonus task** with a deeper rubric (1.0 pt max). **Total possible: 2.0 points.**
+</details>
 
-## Windows PE V3 Task Ladder
+<details><summary><strong>Windows PE, Levels 14 to 23</strong></summary>
 
 | Level | Task | Core behavior |
-|-------|------|---------------|
+|------:|------|---------------|
 | 14 | DLL Injection | Manual API resolution, PEB anti-debug, CreateRemoteThread |
 | 15 | APC Injection | RC4 payload, NtQueueApcThread, Native API calls |
 | 16 | Code Cave Injection | PE section scanning, anti-VM, code-cave execution |
 | 17 | Process Hollowing | Suspended process, image replacement, thread-context repair |
-| 18 | Hell’s Gate | Dynamic syscall resolution and anti-hooking checks |
+| 18 | Hell's Gate | Dynamic syscall resolution and anti-hooking checks |
 | 19 | Reflective DLL Injection | Manual PE mapping, relocations, imports, DllMain |
 | 20 | Remote PE Execution | Remote mapping, relocations, Native API writes |
 | 21 | Ghost Process Hollowing | Empty process creation and manual image mapping |
 | 22 | Advanced Evasion Loader | AES-256, TLS callbacks, PEB walk, multi-stage implant |
 | 23 | Synthetic Ransomware Worm | File encryption, propagation, persistence, anti-analysis (bonus) |
 
-Every V3 level is evaluated as an anonymized **unstripped/stripped pair**. Main is the mean over the 18 Level 14-22 artifacts; Bonus is the mean over the two Level 23 artifacts; Total is Main + Bonus (2.0 maximum).
+</details>
 
-## Scoring Model
+### Tools
 
-### Standard Levels (1-12)
+The agent has nine tools and a budget of 25 calls per episode.
 
-Each task is scored across 5 weighted fields:
-
-| Field | Weight | Scoring |
-|-------|--------|---------|
-| `decoded_c2` | 0.40 | Exact match = 1.0, host-only match = 0.5 |
-| `techniques` | 0.30 | Jaccard overlap between predicted and ground truth sets |
-| `file_type` | 0.10 | Exact match (case-insensitive) |
-| `encoded_strings` | 0.10 | Exact match (boolean) |
-| `c2_protocol` | 0.10 | Exact match (case-insensitive) |
-
-**Hallucination penalty**: -0.05 per technique claimed but not in ground truth.
-
-### Bonus Level (13)
-
-10 weighted fields including encryption algorithm, key, key storage mechanism, decoded strings, and anti-analysis techniques. Lighter hallucination penalty (-0.03) given the larger technique set.
-
-### Aggregate Scoring
-
-```
-Main Score  = average(level_1_score, ..., level_12_score)    # 0.0 - 1.0
-Bonus Score = level_13_score                                  # 0.0 - 1.0
-Total Score = Main Score + Bonus Score                        # 0.0 - 2.0
-```
-
-## Benchmark Metrics
-
-Beyond correctness, AgentRE-Bench records research-grade metrics for every task:
-
-**Per-Task Metrics:**
-
-| Metric | Description |
-|--------|-------------|
-| `score` | Final weighted score after hallucination penalty |
-| `field_scores` | Per-field breakdown (decoded_c2, techniques, etc.) |
-| `tool_calls_total` | Number of tool calls used |
-| `tool_calls_by_type` | Distribution across tool types |
-| `redundant_tool_calls` | Identical tool calls repeated (same name + args) |
-| `invalid_tool_calls` | Tool calls that returned errors |
-| `invalid_json_attempts` | Times the agent responded with text instead of a tool call |
-| `hallucinated_techniques` | Techniques claimed but not in ground truth |
-| `missing_techniques` | Ground truth techniques the agent failed to identify |
-| `steps_to_answer` | Tool calls before submitting final answer |
-| `max_steps_hit` | Whether the agent exhausted its 25-call budget |
-| `wall_time_seconds` | End-to-end wall clock time |
-| `input_tokens` / `output_tokens` | Token consumption |
-
-**Aggregate Metrics:**
-
-| Metric | Description |
-|--------|-------------|
-| `success_rate` | Fraction of tasks with a valid submitted answer |
-| `avg_tool_calls_per_task` | Mean tool calls across all tasks |
-| `avg_tool_calls_per_success` | Mean tool calls for tasks that got an answer |
-| `avg_hallucination_rate` | Mean hallucinated technique count per task |
-| `episode_length_*` | Wall time distribution (min/max/mean/median) |
-| `tool_usage_distribution` | Which tools models prefer across all tasks |
-| `max_steps_hit_count` | How often agents exhaust their budget |
-
-These metrics enable **failure taxonomy** — categorizing failures into:
-- Byte-level reasoning failure
-- Control-flow misinterpretation
-- API hallucination
-- Tool misuse
-- Early termination
-- JSON format violation
-
-## Architecture
-
-```
-run_benchmark.py              CLI entry point
-  |
-  v
-harness/
-  config.py                   Configuration (dataclass, .env loading)
-  runner.py                   Orchestrator (load tasks, run agent, score, report)
-  agent.py                    Provider-agnostic agent loop (tool calling)
-  tools.py                    Tool schemas + ToolExecutor dispatch
-  sandbox.py                  PathValidator + DockerRunner / SubprocessRunner
-  metrics.py                  TaskMetrics + AggregateMetrics collection
-  providers/
-    base.py                   Abstract AgentProvider + ProviderResponse
-    anthropic.py              Claude (raw HTTP to Messages API)
-    openai_provider.py        GPT (raw HTTP to Chat Completions API)
-    gemini.py                 Gemini (raw HTTP to GenerativeAI API)
-    deepseek.py               DeepSeek (extends OpenAI-compatible provider)
-    moonshot.py               Kimi (OpenAI-compatible provider)
-
-scorer.py                     Deterministic scorer (standalone + used by harness)
-tasks.json                    Linux ELF manifest (13 entries)
-version3/                     Self-contained PE manifest, sources, binaries, results, and build script
-build_binaries.sh             Linux build script
-Dockerfile.tools              Sandboxed tool execution image
-```
-
-**Zero Python dependencies.** All LLM provider calls use Python's built-in `urllib.request`. No SDKs required.
-
-### Tool Sandbox
-
-All tools execute inside Docker containers with strict isolation:
-
-```
-docker run --rm --platform linux/amd64 \
-  --network=none --read-only --memory=512m --cpus=1 \
-  -v binaries:/workspace:ro \
-  agentre-bench-tools:latest <command>
-```
-
-- `--network=none` — no network access
-- `--read-only` — immutable filesystem
-- `--memory=512m` — memory cap
-- Workspace mounted read-only
-
-### Available Tools
-
-| Tool | Description |
-|------|-------------|
-| `file` | File type identification |
-| `strings` | Extract printable strings (configurable min length) |
+| Tool | Output |
+|------|--------|
+| `file` | File type |
+| `strings` | Printable strings (configurable minimum length, UTF-16LE for PE) |
 | `readelf` | ELF headers, sections, symbols, program headers |
 | `objdump` | Disassembly, symbol tables, section contents |
-| `nm` | Symbol listing |
-| `hexdump` | Hex + ASCII dump at specific offsets |
-| `xxd` | Hex dump (alternative format) |
-| `entropy` | Shannon entropy per sliding window (detects encrypted/compressed data) |
-| `pe_info` | PE headers, sections, imports, exports, and data directories |
+| `nm` | Symbol list |
+| `hexdump` / `xxd` | Hex and ASCII dumps at a given offset |
+| `entropy` | Shannon entropy per sliding window |
+| `pe_info` | PE headers, sections, imports, exports, data directories |
+| `final_answer` | Structured submission. Ends the episode. |
 
-Plus `final_answer` — a structured submission tool the agent calls when done.
+All tools run inside Docker with `--network=none`, `--read-only`, and `--memory=512m`. The workspace is mounted read-only. The harness makes provider API calls outside the agent workspace.
+
+### Scoring
+
+The scorer compares each answer to ground truth field by field. Scalar fields use exact match. Technique sets use Jaccard overlap. Each technique that the agent claims but the binary does not contain costs 0.05 points, or 0.03 on bonus levels. A non-null claim for a null ground-truth field costs the same. No LLM judges the answer. The same answer always receives the same score.
+
+<details><summary><strong>Field weights</strong></summary>
+
+Linux standard levels (1 to 12):
+
+| Field | Weight | Rule |
+|-------|-------:|------|
+| `decoded_c2` | 0.40 | Exact match = 1.0, host-only match = 0.5 |
+| `techniques` | 0.30 | Jaccard overlap between predicted and ground-truth sets |
+| `file_type` | 0.10 | Exact match, case-insensitive |
+| `encoded_strings` | 0.10 | Exact match, boolean |
+| `c2_protocol` | 0.10 | Exact match, case-insensitive |
+
+Windows PE levels (14 to 22). Weights for fields absent from a ground truth are removed. The remaining weights are renormalized.
+
+| PE field | Base weight |
+|----------|------------:|
+| Techniques | 0.25 |
+| Injection details | 0.20 |
+| Decoded C2 | 0.10 |
+| Encryption key | 0.10 |
+| Decoded strings | 0.10 |
+| Anti-analysis | 0.10 |
+| Encryption algorithm | 0.05 |
+| C2 protocol | 0.05 |
+| File type | 0.03 |
+| Encoded strings | 0.02 |
+
+Bonus levels (13 and 23) weight key recovery at 0.20. Decoded C2, techniques, and decoded strings are 0.15 each. Algorithm and anti-analysis are 0.10 each. Key storage and protocol are 0.05 each. File type is 0.03 and encoded strings is 0.02.
+
+```text
+Main  = mean(standard levels)   # Linux: L1-12 · PE: 18 Level 14-22 artifacts   → 0.0-1.0
+Bonus = mean(bonus level)       # Linux: L13   · PE: 2 Level 23 artifacts        → 0.0-1.0
+Total = Main + Bonus                                                            → 0.0-2.0
+```
+
+</details>
+
+### Telemetry
+
+Each episode records these fields in addition to the score: `field_scores`, `tool_calls_total`, `tool_calls_by_type`, `redundant_tool_calls`, `invalid_tool_calls`, `invalid_json_attempts`, `hallucinated_techniques`, `missing_techniques`, `steps_to_answer`, `max_steps_hit`, `wall_time_seconds`, `input_tokens`, and `output_tokens`. The aggregate report adds `success_rate`, `avg_tool_calls_per_task`, `avg_hallucination_rate`, `episode_length_*`, `tool_usage_distribution`, and `max_steps_hit_count`.
+
+These fields support a failure taxonomy with six classes: byte-level reasoning failure, control-flow misinterpretation, API hallucination, tool misuse, early termination, and JSON format violation.
 
 ## Quick start
 
@@ -232,128 +172,127 @@ Provider environment variables can be placed in `.env`, exported in the shell, o
 | GLM | `GLM_API_KEY` |
 
 ```bash
+git clone https://github.com/agentrebench/AgentRE-Bench.git && cd AgentRE-Bench
+cp .env.example .env            # add at least one provider key
 python run_benchmark.py --task level1_TCPServer --provider anthropic -v
 ```
 
 ## Setup
 
-### Prerequisites
-
-- Python 3.10+
-- **Linux x86-64**: gcc, binutils, file, xxd, python3 (for local builds and `--no-docker` mode)
-- **Windows PE builds**: MinGW-w64 (`x86_64-w64-mingw32-gcc` / `g++`)
-- **macOS**: Docker (for cross-compilation and sandboxed tool execution)
-
-### 1. Clone and Configure
+Prerequisites: Python 3.10 or later, and Docker for the sandboxed tools (required on macOS). Local builds need gcc and binutils on Linux x86-64, and MinGW-w64 (`x86_64-w64-mingw32-gcc`) for PE.
 
 ```bash
-git clone https://github.com/agentrebench/AgentRE-Bench.git
-cd AgentRE-Bench
-
-# Create .env with your API key(s)
-cp .env.example .env
-# Edit .env — add at least one provider key
-```
-
-### 2. Build Binaries (optional)
-
-```bash
-chmod +x build_binaries.sh version3/build_windows_binaries.sh
-./build_binaries.sh
-./version3/build_windows_binaries.sh
-```
-
-The benchmark accepts precompiled artifacts; agents never receive or compile source code during evaluation. On **Linux x86-64**, the ELF build uses local gcc. The PE build uses MinGW-w64 and produces both `version3/binaries/windows/` and `version3/binaries/windows_stripped/`.
-
-On **macOS / Apple Silicon**: uses Docker with `--platform linux/amd64` to cross-compile.
-
-### 3. Build Tools Image
-
-```bash
+# 1. Build the sandboxed tool image
 docker build --platform linux/amd64 -t agentre-bench-tools:latest -f Dockerfile.tools .
-```
 
-### 4. Run
+# 2. Optional: rebuild binaries from source. Precompiled artifacts are checked in.
+./build_binaries.sh                      # Linux ELF, levels 1-13
+./version3/build_windows_binaries.sh     # Windows PE, levels 14-23, unstripped + stripped
 
-```bash
-# Single task with verbose output
-python run_benchmark.py --task level1_TCPServer -v
-
-# Full benchmark
-python run_benchmark.py --all
-
-# V3 Windows PE suite (10 unstripped + 10 stripped artifacts)
+# 3. Run
+python run_benchmark.py --all                                        # Linux suite
 python run_benchmark.py --all --manifest version3/tasks_v3.json \
   --max-tool-calls 25 --max-tokens 16000 \
-  --provider openai --model gpt-5.6-sol --reasoning-effort xhigh
-
-# Different providers
-python run_benchmark.py --all --provider anthropic --model claude-opus-4-6
-python run_benchmark.py --all --provider openai --model gpt-4o
-python run_benchmark.py --all --provider gemini --model gemini-2.0-flash
-python run_benchmark.py --all --provider deepseek --model deepseek-chat
-
-# Custom output directory
-python run_benchmark.py --all --report results/opus_run1/
+  --provider openai --model gpt-5.6-sol --reasoning-effort xhigh     # V3 PE suite
+python run_benchmark.py --all --report results/opus_run1/            # custom output dir
 ```
 
-### CLI Flags
+Agents do not receive or compile source code during evaluation. On Apple Silicon the build scripts cross-compile through Docker with `--platform linux/amd64`.
+
+### CLI flags
 
 | Flag | Default | Description |
 |------|---------|-------------|
 | `--all` | | Run every task in the selected manifest |
-| `--task ID` | | Run a single task by ID |
-| `--manifest PATH` | `tasks.json` | Select the Linux or V3 PE task manifest |
+| `--task ID` | | Run one task by ID |
+| `--manifest PATH` | `tasks.json` | Linux manifest, or `version3/tasks_v3.json` for PE |
 | `--provider` | `anthropic` | `anthropic`, `openai`, `gemini`, `deepseek`, `moonshot` |
 | `--model` | per-provider | Model name |
-| `--api-key` | from .env | API key override |
+| `--api-key` | from `.env` | API key override |
 | `--report DIR` | `results/` | Output directory |
-| `--max-tool-calls` | `25` | Tool call budget per task |
-| `--max-tokens` | `4096` | Max tokens per LLM response |
+| `--max-tool-calls` | `25` | Tool-call budget per task |
+| `--max-tokens` | `4096` | Maximum tokens per LLM response |
 | `--reasoning-effort` | provider default | OpenAI-compatible reasoning effort |
-| `--resume` | | Preserve terminal episodes, rescore stored answers, and retry provider errors |
-| `--no-docker` | | Run tools via local subprocess |
-| `-v` | | Verbose: show agent reasoning + tool I/O live |
+| `--resume` | | Keep terminal episodes, rescore stored answers, retry provider errors |
+| `--no-docker` | | Run tools as a local subprocess |
+| `-v` | | Print agent reasoning and tool I/O as they happen |
 
-## Output
+### Output
 
-```
+```text
 results/
-  agent_outputs/              Raw agent JSON answers (one per task)
-  transcripts/                Per-task scoring, metrics, and full message logs
-  benchmark_report.json       Aggregate report with all metrics and scores
+  agent_outputs/          Raw agent JSON answers, one per task
+  transcripts/            Per-task scoring, metrics, full message logs
+  benchmark_report.json   Aggregate report with all metrics and scores
 ```
 
-## Standalone Scorer
-
-The scorer works independently of the agent harness:
+### Standalone scorer
 
 ```bash
-# Single sample
-python scorer.py -g ground_truths/level1_TCPServer.json \
-                 -a agent_outputs/level1_TCPServer.json
-
-# Batch
-python scorer.py -G ground_truths/ -A agent_outputs/ -r report.json
+python scorer.py -g ground_truths/level1_TCPServer.json -a agent_outputs/level1_TCPServer.json
+python scorer.py -G ground_truths/ -A agent_outputs/ -r report.json      # batch
 ```
 
-## Known Limitations
+## Architecture
 
-- **Static analysis only** — no dynamic execution, debugging, or sandboxed runtime. Tests static RE reasoning specifically.
-- **Synthetic samples** — designed to test real RE skills, but production malware has additional complexity (packers, anti-VM, polymorphism at scale) not fully represented.
-- **Fixed tool set** — agents can't install tools, write scripts, or use Ghidra/IDA. Standardizes evaluation but limits agent creativity.
-- **Single-agent** — no multi-agent collaboration or human-in-the-loop.
-- **Single trial per model/task** — paired stripped/unstripped results reveal useful patterns but do not estimate run-to-run variance.
-- **Architecture scope** — current public binaries are x86-64 ELF and PE32+; ARM and MIPS are not yet covered.
-- **Token cost** — frontier runs can consume millions of provider-reported tokens. Budget accordingly.
+```text
+run_benchmark.py            CLI entry point
+harness/
+  config.py                 Configuration (dataclass, .env loading)
+  runner.py                 Orchestrator: load tasks → run agent → score → report
+  agent.py                  Provider-agnostic tool-calling loop
+  tools.py                  Tool schemas + ToolExecutor dispatch
+  sandbox.py                PathValidator + DockerRunner / SubprocessRunner
+  metrics.py                TaskMetrics + AggregateMetrics
+  providers/                anthropic · openai · gemini · deepseek · moonshot (raw HTTP, no SDKs)
+scorer.py                   Deterministic scorer (standalone + used by harness)
+tasks.json                  Linux ELF manifest (13 entries)
+version3/                   Self-contained PE manifest, sources, binaries, results, build script, verify.py
+build_binaries.sh           Linux build script
+Dockerfile.tools            Sandboxed tool-execution image
+```
 
-## Roadmap
+The harness has no Python dependencies. Every provider call uses the standard library module `urllib.request`.
 
-- **Dynamic analysis tools** — strace, ltrace, sandboxed execution
-- **Packed and cross-architecture samples** — ARM, MIPS, and realistic packers
-- **Multi-turn refinement** — tasks requiring iterative hypothesis refinement
-- **Repeated trials** — confidence intervals for model and stripping effects
+## Limits and next steps
+
+- Static analysis only. There is no debugger, emulator, or sandboxed execution.
+- Fixed tool set. The agent cannot use Ghidra or IDA, write scripts, or install tools.
+- Synthetic samples. The binaries have controlled behaviors. They do not have the full complexity of packed production malware.
+- One trial per model and task. The paired stripped and unstripped results are descriptive. They do not estimate variance.
+- x86-64 only. The suite covers ELF and PE32+. It does not cover ARM or MIPS.
+- Token cost. A frontier run uses millions of provider-reported tokens.
+
+Planned work:
+
+- Dynamic-analysis tools: strace, ltrace, and sandboxed execution.
+- Packed and cross-architecture samples: ARM, MIPS, and realistic packers.
+- Multi-turn hypothesis refinement.
+- Repeated trials with confidence intervals for model and stripping effects.
+
+## Links
+
+| | |
+|--|--|
+| [V3 Windows PE report](version3/ANALYSIS.md) | Leaderboard, matched stripped analysis, per-artifact scores, verification audit |
+| [V2 Linux ELF report](version2/ANALYSIS.md) | Frontier reasoning-model run on levels 1 to 13 |
+| [Why AgentRE matters](version3/WHY_AGENTRE_MATTERS.md) | The defensive-security case for measuring RE capability |
+| [agentre-bench.ai](https://agentre-bench.ai) | Website: results, history, blog |
+| [AgentRE Challenge](https://agentre-bench.ai/challenge/) | Season 1. Submit your own binary challenge. |
+| [Private evals](https://agentre-bench.ai/private-evals/) · [RL data](https://agentre-bench.ai/rl-data/) | Held-out evaluation and training data |
+
+## Citation
+
+```bibtex
+@misc{agentrebench2026,
+  title        = {AgentRE-Bench: Measuring Long-Horizon Reverse Engineering in LLM Agents},
+  author       = {agentrebench},
+  year         = {2026},
+  howpublished = {\url{https://github.com/agentrebench/AgentRE-Bench}},
+  note         = {V3 Windows PE results, August 2026}
+}
+```
 
 ## License
 
-MIT
+[MIT](LICENSE) © 2026 agentrebench
