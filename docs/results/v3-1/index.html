@@ -218,7 +218,7 @@
 
   <p>These public samples measure performance on this suite, with source withheld during each attempt. They do not establish performance on every unfamiliar binary. The scorer still needs independent wording checks.</p>
 
-  <p><a href="training-note.json" download="agentre-internal-training-note.json">Internal Qwen3.5 triage tests</a> went from 25 to 27 correct classifications on 40 binaries after preference training and workflow changes. We need larger controlled tests to establish how much of that improvement comes from training.</p>
+  <p>Our early internal Qwen3.5 experiments combined SFT and preference training with changes to analysis workflows. On a 40-binary triage test, accuracy increased from 62.5% to 67.5%. Those results guide how we build our RL data.</p>
 
   <p>What interests us is where these models fail: assuming code runs, missing part of a transform, or reporting a technique without evidence. Our reconstruction data lets us check a model’s implementation against the binary’s outputs. Reinforcement learning can use those checks to reward correct behavior and train against specific mistakes. For cyber defense, we want faster triage and explanations analysts can verify.</p>
 </article>
