@@ -17,7 +17,7 @@
 
   <p>These public samples measure performance on this suite, with source withheld during each attempt. They do not establish performance on every unfamiliar binary. The scorer still needs independent wording checks.</p>
 
-  <p>Our early internal Qwen3.5 experiments combined SFT and preference training with changes to analysis workflows. On a 40-binary triage test, accuracy increased from 62.5% to 67.5%. Those results guide how we build our RL data.</p>
+  <p>A model can recognize a cipher and still get its implementation wrong. Our reconstruction data lets us compare reconstructed functions’ outputs with the binary’s outputs on private test inputs. Reinforcement learning can use those checks to reward correct results and train against specific mistakes. Separate evaluation tasks give us a way to check whether training improves recovery and where errors still remain.</p>
 
-  <p>What interests us is where these models fail: assuming code runs, missing part of a transform, or reporting a technique without evidence. Our reconstruction data lets us check a model’s implementation against the binary’s outputs. Reinforcement learning can use those checks to reward correct behavior and train against specific mistakes. For cyber defense, we want faster triage and explanations analysts can verify.</p>
+  <p>We’re building training data around specific failures: incomplete decoding, incorrect transformations, and unsupported claims. Our goal is to make reverse engineering more reliable, with answers defenders can trace directly back to the binary and verify.</p>
 </article>
