@@ -18,7 +18,7 @@
 <link rel="stylesheet" href="/assets/results.css?v=v31-explorer-2">
 <script defer src="/home.js?v=story-1"></script>
 <script defer src="/handbook-theme.js?v=minimal-1"></script>
-<script defer src="/assets/results.js?v=v31-explorer-2"></script>
+<script defer src="/assets/results.js?v=v31-explorer-3"></script>
 </head>
 <body class="minimal-page v31-page">
 <a class="skip-link" href="#leaderboard">Skip to results</a>
@@ -94,7 +94,7 @@
   </div>
   <noscript><p class="results-note">Showing Muse and Astra. Enable JavaScript to choose another pair.</p></noscript>
   <p id="compare-coverage" class="results-note" aria-live="polite">Both models submitted 100/100 valid answers.</p>
-  <div class="comparison-metadata"><p id="compare-left-meta">Muse Wonder · High thinking · Coding plan</p><p id="compare-right-meta">GPT-6 Astra · Extra high thinking · Coding plan</p></div>
+  <div class="comparison-metadata"><p id="compare-left-meta">Muse Wonder · High thinking</p><p id="compare-right-meta">GPT-6 Astra · Extra high thinking</p></div>
   <div class="table-wrap"><table class="results-table compare-table" id="compare-scores">
     <caption class="sr-only">Full-suite scores, including nonanswers</caption>
     <thead><tr><th scope="col">Score /100</th><th scope="col" data-compare-name="left">@@COMPARE_LEFT_NAME@@</th><th scope="col" data-compare-name="right">@@COMPARE_RIGHT_NAME@@</th></tr></thead>
@@ -150,8 +150,8 @@
   <div class="section-tag">Recorded configurations</div><h2 class="section-title">How each model was run</h2>
   <p class="section-desc">Each model was evaluated on the same 20 Windows binaries, with five attempts per binary. The settings used for those runs are listed below.</p>
   <div class="table-wrap"><table class="results-table responsive-results secondary-table settings-table">
-    <caption class="sr-only">Model access routes, thinking levels, and recorded budgets.</caption>
-    <thead><tr><th scope="col">Model</th><th scope="col">Access</th><th scope="col">Thinking</th><th scope="col" class="num">Tool calls</th></tr></thead>
+    <caption class="sr-only">Model thinking levels and tool-call budgets.</caption>
+    <thead><tr><th scope="col">Model</th><th scope="col">Thinking</th><th scope="col" class="num">Tool calls</th></tr></thead>
     <tbody>@@SETTINGS_ROWS@@</tbody>
   </table></div>
   <p class="results-note">The harness allowed up to 64 model turns. Attempts were unseeded; all five were averaged. Full recorded settings are in the score download.</p>

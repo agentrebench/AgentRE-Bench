@@ -133,7 +133,7 @@
     for (const [side, model] of [['left', left], ['right', right]]) {
       document.querySelectorAll('[data-compare-name="' + side + '"]').forEach(node => { node.textContent = model.name; });
       document.getElementById('compare-' + side + '-meta').textContent = model.name + ' · ' + model.reasoning
-        + ' thinking · ' + model.access + ' · ' + model.refusals + ' refusals/blocks · ' + model.budget + ' budget exits';
+        + ' thinking · ' + model.refusals + ' refusals/blocks · ' + model.budget + ' budget exits';
     }
     document.getElementById('compare-coverage').textContent = left.name + ': ' + left.valid + '/100 valid answers. '
       + right.name + ': ' + right.valid + '/100. Overall includes all 100 attempts for each model.';

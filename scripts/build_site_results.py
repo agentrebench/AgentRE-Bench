@@ -77,7 +77,7 @@ def build():
         name = escape(model["name"])
         identity = (f'<td class="rank" data-label="Rank">{rank:02d}</td>'
                     f'<th scope="row" class="model-name">{name}'
-                    f'<span class="model-meta">{escape(model["reasoning"])} thinking · {model["access"]}</span></th>')
+                    f'<span class="model-meta">{escape(model["reasoning"])} thinking</span></th>')
         low, high = model["interval"]
         rows.append(f'<tr data-model="{model["id"]}">{identity}'
                     + cell("Overall", f'<strong class="overall-score">{model["overall"]:.2f}</strong>'
@@ -106,7 +106,6 @@ def build():
                               + cell("Valid pairs · Δ", signed(s["valid_delta_pp"])) + '</tr>')
         settings = model["settings"]
         settings_rows.append(f'<tr><th scope="row">{name}</th>'
-                             + cell("Access", model["access"], "")
                              + cell("Thinking", model["reasoning"], "")
                              + cell("Tool calls", str(settings["max_tool_calls"])) + '</tr>')
 

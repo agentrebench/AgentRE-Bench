@@ -33,7 +33,7 @@ def mobile_rows(models, quality=False):
         if quality:
             details = [("Artifacts answered", f'{m["answered_artifacts"]}/20'),
                        ("Refusals / blocks", str(m["refusals"])), ("Budget exits", str(m["budget"]))]
-        details += [("Access", m["access"]), ("Thinking", m["reasoning"])]
+        details += [("Thinking", m["reasoning"])]
         rows.append(f'''<details class="mobile-model" data-model="{m['id']}">
           <summary><span class="mobile-rank">{rank:02d}</span><span class="mobile-name">{escape(m['name'])}<small>{m['valid']}/100 valid answers</small></span><span class="mobile-value"><strong>{primary:.2f}</strong><small>{label}</small><span class="mobile-expand" aria-hidden="true">Details ↓</span></span></summary>
           <dl>{''.join('<div><dt>'+escape(k)+'</dt><dd>'+escape(v)+'</dd></div>' for k, v in details)}</dl>
@@ -69,7 +69,7 @@ def interaction_parts(data, findings):
     lookup = {m["id"]: m for m in findings["models"]}
     models = []
     for m in data["models"]:
-        public = {k: m[k] for k in ("id", "name", "overall", "main", "bonus", "valid", "refusals", "budget", "access", "reasoning")}
+        public = {k: m[k] for k in ("id", "name", "overall", "main", "bonus", "valid", "refusals", "budget", "reasoning")}
         public["fields"] = lookup[m["id"]]["fields"]
         enc = lookup[m["id"]]["encryption"]
         public["key_bytes"] = {"correct": enc["correct_key_bytes"], "total": enc["required_components"]}
