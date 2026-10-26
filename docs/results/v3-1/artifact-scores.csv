@@ -1,0 +1,101 @@
+release,model,artifact,variant,mean_score_100,valid_answers,planned_attempts,scorer,rubric
+v3.1,Muse Wonder,v3_l14_u,unstripped,86.866,5,5,6.2.0,v3.4
+v3.1,Muse Wonder,v3_l14_s,stripped,94.586,5,5,6.2.0,v3.4
+v3.1,Muse Wonder,v3_l15_u,unstripped,88.224,5,5,6.2.0,v3.4
+v3.1,Muse Wonder,v3_l15_s,stripped,87.17200000000001,5,5,6.2.0,v3.4
+v3.1,Muse Wonder,v3_l16_u,unstripped,89.972,5,5,6.2.0,v3.4
+v3.1,Muse Wonder,v3_l16_s,stripped,76.92999999999999,5,5,6.2.0,v3.4
+v3.1,Muse Wonder,v3_l17_u,unstripped,90.75200000000001,5,5,6.2.0,v3.4
+v3.1,Muse Wonder,v3_l17_s,stripped,92.376,5,5,6.2.0,v3.4
+v3.1,Muse Wonder,v3_l18_u,unstripped,89.24,5,5,6.2.0,v3.4
+v3.1,Muse Wonder,v3_l18_s,stripped,84.358,5,5,6.2.0,v3.4
+v3.1,Muse Wonder,v3_l19_u,unstripped,93.09200000000001,5,5,6.2.0,v3.4
+v3.1,Muse Wonder,v3_l19_s,stripped,78.164,5,5,6.2.0,v3.4
+v3.1,Muse Wonder,v3_l20_u,unstripped,86.262,5,5,6.2.0,v3.4
+v3.1,Muse Wonder,v3_l20_s,stripped,86.304,5,5,6.2.0,v3.4
+v3.1,Muse Wonder,v3_l21_u,unstripped,87.73199999999999,5,5,6.2.0,v3.4
+v3.1,Muse Wonder,v3_l21_s,stripped,82.792,5,5,6.2.0,v3.4
+v3.1,Muse Wonder,v3_l22_u,unstripped,88.67200000000001,5,5,6.2.0,v3.4
+v3.1,Muse Wonder,v3_l22_s,stripped,89.12400000000001,5,5,6.2.0,v3.4
+v3.1,Muse Wonder,v3_l23_u,unstripped,79.934,5,5,6.2.0,v3.4
+v3.1,Muse Wonder,v3_l23_s,stripped,94.80999999999999,5,5,6.2.0,v3.4
+v3.1,GPT-6 Astra,v3_l14_u,unstripped,87.68599999999999,5,5,6.2.0,v3.4
+v3.1,GPT-6 Astra,v3_l14_s,stripped,95.49,5,5,6.2.0,v3.4
+v3.1,GPT-6 Astra,v3_l15_u,unstripped,86.92999999999999,5,5,6.2.0,v3.4
+v3.1,GPT-6 Astra,v3_l15_s,stripped,92.90800000000002,5,5,6.2.0,v3.4
+v3.1,GPT-6 Astra,v3_l16_u,unstripped,85.33999999999999,5,5,6.2.0,v3.4
+v3.1,GPT-6 Astra,v3_l16_s,stripped,84.504,5,5,6.2.0,v3.4
+v3.1,GPT-6 Astra,v3_l17_u,unstripped,85.96199999999999,5,5,6.2.0,v3.4
+v3.1,GPT-6 Astra,v3_l17_s,stripped,86.43,5,5,6.2.0,v3.4
+v3.1,GPT-6 Astra,v3_l18_u,unstripped,75.398,5,5,6.2.0,v3.4
+v3.1,GPT-6 Astra,v3_l18_s,stripped,73.02799999999999,5,5,6.2.0,v3.4
+v3.1,GPT-6 Astra,v3_l19_u,unstripped,87.658,5,5,6.2.0,v3.4
+v3.1,GPT-6 Astra,v3_l19_s,stripped,91.654,5,5,6.2.0,v3.4
+v3.1,GPT-6 Astra,v3_l20_u,unstripped,88.25200000000001,5,5,6.2.0,v3.4
+v3.1,GPT-6 Astra,v3_l20_s,stripped,89.08200000000001,5,5,6.2.0,v3.4
+v3.1,GPT-6 Astra,v3_l21_u,unstripped,89.268,5,5,6.2.0,v3.4
+v3.1,GPT-6 Astra,v3_l21_s,stripped,88.078,5,5,6.2.0,v3.4
+v3.1,GPT-6 Astra,v3_l22_u,unstripped,84.208,5,5,6.2.0,v3.4
+v3.1,GPT-6 Astra,v3_l22_s,stripped,83.352,5,5,6.2.0,v3.4
+v3.1,GPT-6 Astra,v3_l23_u,unstripped,92.69000000000001,5,5,6.2.0,v3.4
+v3.1,GPT-6 Astra,v3_l23_s,stripped,92.958,5,5,6.2.0,v3.4
+v3.1,Grok 4.7,v3_l14_u,unstripped,85.28,5,5,6.2.0,v3.4
+v3.1,Grok 4.7,v3_l14_s,stripped,70.492,4,5,6.2.0,v3.4
+v3.1,Grok 4.7,v3_l15_u,unstripped,87.062,5,5,6.2.0,v3.4
+v3.1,Grok 4.7,v3_l15_s,stripped,83.088,5,5,6.2.0,v3.4
+v3.1,Grok 4.7,v3_l16_u,unstripped,83.49,5,5,6.2.0,v3.4
+v3.1,Grok 4.7,v3_l16_s,stripped,78.752,5,5,6.2.0,v3.4
+v3.1,Grok 4.7,v3_l17_u,unstripped,87.90599999999999,5,5,6.2.0,v3.4
+v3.1,Grok 4.7,v3_l17_s,stripped,83.55799999999999,5,5,6.2.0,v3.4
+v3.1,Grok 4.7,v3_l18_u,unstripped,88.688,5,5,6.2.0,v3.4
+v3.1,Grok 4.7,v3_l18_s,stripped,88.896,5,5,6.2.0,v3.4
+v3.1,Grok 4.7,v3_l19_u,unstripped,80.422,5,5,6.2.0,v3.4
+v3.1,Grok 4.7,v3_l19_s,stripped,68.412,5,5,6.2.0,v3.4
+v3.1,Grok 4.7,v3_l20_u,unstripped,85.928,5,5,6.2.0,v3.4
+v3.1,Grok 4.7,v3_l20_s,stripped,85.732,5,5,6.2.0,v3.4
+v3.1,Grok 4.7,v3_l21_u,unstripped,80.13999999999999,5,5,6.2.0,v3.4
+v3.1,Grok 4.7,v3_l21_s,stripped,77.082,5,5,6.2.0,v3.4
+v3.1,Grok 4.7,v3_l22_u,unstripped,63.178,4,5,6.2.0,v3.4
+v3.1,Grok 4.7,v3_l22_s,stripped,80.22,5,5,6.2.0,v3.4
+v3.1,Grok 4.7,v3_l23_u,unstripped,64.452,4,5,6.2.0,v3.4
+v3.1,Grok 4.7,v3_l23_s,stripped,69.63000000000001,4,5,6.2.0,v3.4
+v3.1,Claude Opus 5.5,v3_l14_u,unstripped,0.0,0,5,6.2.0,v3.4
+v3.1,Claude Opus 5.5,v3_l14_s,stripped,36.571999999999996,2,5,6.2.0,v3.4
+v3.1,Claude Opus 5.5,v3_l15_u,unstripped,90.38600000000001,5,5,6.2.0,v3.4
+v3.1,Claude Opus 5.5,v3_l15_s,stripped,73.516,4,5,6.2.0,v3.4
+v3.1,Claude Opus 5.5,v3_l16_u,unstripped,85.20400000000001,5,5,6.2.0,v3.4
+v3.1,Claude Opus 5.5,v3_l16_s,stripped,49.022000000000006,3,5,6.2.0,v3.4
+v3.1,Claude Opus 5.5,v3_l17_u,unstripped,91.78399999999999,5,5,6.2.0,v3.4
+v3.1,Claude Opus 5.5,v3_l17_s,stripped,88.87599999999999,5,5,6.2.0,v3.4
+v3.1,Claude Opus 5.5,v3_l18_u,unstripped,88.612,5,5,6.2.0,v3.4
+v3.1,Claude Opus 5.5,v3_l18_s,stripped,87.48400000000001,5,5,6.2.0,v3.4
+v3.1,Claude Opus 5.5,v3_l19_u,unstripped,53.105999999999995,3,5,6.2.0,v3.4
+v3.1,Claude Opus 5.5,v3_l19_s,stripped,56.38999999999999,3,5,6.2.0,v3.4
+v3.1,Claude Opus 5.5,v3_l20_u,unstripped,69.268,4,5,6.2.0,v3.4
+v3.1,Claude Opus 5.5,v3_l20_s,stripped,68.722,4,5,6.2.0,v3.4
+v3.1,Claude Opus 5.5,v3_l21_u,unstripped,68.66600000000001,4,5,6.2.0,v3.4
+v3.1,Claude Opus 5.5,v3_l21_s,stripped,84.978,5,5,6.2.0,v3.4
+v3.1,Claude Opus 5.5,v3_l22_u,unstripped,91.944,5,5,6.2.0,v3.4
+v3.1,Claude Opus 5.5,v3_l22_s,stripped,54.523999999999994,3,5,6.2.0,v3.4
+v3.1,Claude Opus 5.5,v3_l23_u,unstripped,76.69,4,5,6.2.0,v3.4
+v3.1,Claude Opus 5.5,v3_l23_s,stripped,77.376,4,5,6.2.0,v3.4
+v3.1,Gemini 4 Argon,v3_l14_u,unstripped,16.34,1,5,6.2.0,v3.4
+v3.1,Gemini 4 Argon,v3_l14_s,stripped,49.234,3,5,6.2.0,v3.4
+v3.1,Gemini 4 Argon,v3_l15_u,unstripped,18.04,1,5,6.2.0,v3.4
+v3.1,Gemini 4 Argon,v3_l15_s,stripped,52.152,3,5,6.2.0,v3.4
+v3.1,Gemini 4 Argon,v3_l16_u,unstripped,36.112,2,5,6.2.0,v3.4
+v3.1,Gemini 4 Argon,v3_l16_s,stripped,91.25,5,5,6.2.0,v3.4
+v3.1,Gemini 4 Argon,v3_l17_u,unstripped,36.443999999999996,2,5,6.2.0,v3.4
+v3.1,Gemini 4 Argon,v3_l17_s,stripped,16.666,1,5,6.2.0,v3.4
+v3.1,Gemini 4 Argon,v3_l18_u,unstripped,0.0,0,5,6.2.0,v3.4
+v3.1,Gemini 4 Argon,v3_l18_s,stripped,34.548,2,5,6.2.0,v3.4
+v3.1,Gemini 4 Argon,v3_l19_u,unstripped,32.74,2,5,6.2.0,v3.4
+v3.1,Gemini 4 Argon,v3_l19_s,stripped,18.517999999999997,1,5,6.2.0,v3.4
+v3.1,Gemini 4 Argon,v3_l20_u,unstripped,16.412,1,5,6.2.0,v3.4
+v3.1,Gemini 4 Argon,v3_l20_s,stripped,0.0,0,5,6.2.0,v3.4
+v3.1,Gemini 4 Argon,v3_l21_u,unstripped,30.982000000000003,2,5,6.2.0,v3.4
+v3.1,Gemini 4 Argon,v3_l21_s,stripped,52.36000000000001,3,5,6.2.0,v3.4
+v3.1,Gemini 4 Argon,v3_l22_u,unstripped,14.254,1,5,6.2.0,v3.4
+v3.1,Gemini 4 Argon,v3_l22_s,stripped,15.482000000000001,1,5,6.2.0,v3.4
+v3.1,Gemini 4 Argon,v3_l23_u,unstripped,35.656,2,5,6.2.0,v3.4
+v3.1,Gemini 4 Argon,v3_l23_s,stripped,56.798,3,5,6.2.0,v3.4

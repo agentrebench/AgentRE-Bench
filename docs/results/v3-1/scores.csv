@@ -1,0 +1,6 @@
+release,date,model,overall_100,main_100,bonus_100,valid_answers,planned_attempts,refusals,budget_exits,conditional_quality_100,answered_artifacts,access,thinking,scorer,rubric
+v3.1,2026-10-25,Muse Wonder,87.3681,87.36766666666666,87.372,100,100,0,0,87.3681,20,Coding plan,High,6.2.0,v3.4
+v3.1,2026-10-25,GPT-6 Astra,87.0438,86.40155555555555,92.824,100,100,0,0,87.0438,20,Coding plan,Extra high,6.2.0,v3.4
+v3.1,2026-10-25,Grok 4.7,79.6204,81.0181111111111,67.041,96,100,0,4,82.9673,20,API,High,6.2.0,v3.4
+v3.1,2026-10-25,Claude Opus 5.5,69.656,68.83633333333333,77.033,78,100,22,0,89.39818421052632,19,Coding plan,High,6.2.0,v3.4
+v3.1,2026-10-25,Gemini 4 Argon,31.1994,29.529666666666664,46.227000000000004,36,100,64,0,85.38453703703703,18,API,High,6.2.0,v3.4

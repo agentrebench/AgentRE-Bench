@@ -1,0 +1,849 @@
+{
+  "date": "2026-10-25",
+  "suite": "v3.4",
+  "scorer": "6.2.0",
+  "evaluation_type": "saved_answer_rescore",
+  "models": [
+    {
+      "id": "muse-wonder-1.0",
+      "name": "Muse Wonder",
+      "provider": "Muse",
+      "initials": "MW",
+      "reasoning": "High",
+      "access": "Coding plan",
+      "overall": 87.3681,
+      "main": 87.36766666666666,
+      "bonus": 87.372,
+      "interval": [
+        85.17649166624012,
+        89.55970833375989
+      ],
+      "quality": 87.3681,
+      "answered_artifacts": 20,
+      "valid": 100,
+      "refusals": 0,
+      "budget": 0,
+      "artifacts": [
+        {
+          "task_id": "v3_l14_u",
+          "mean": 86.866,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l14_s",
+          "mean": 94.586,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l15_u",
+          "mean": 88.224,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l15_s",
+          "mean": 87.17200000000001,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l16_u",
+          "mean": 89.972,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l16_s",
+          "mean": 76.92999999999999,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l17_u",
+          "mean": 90.75200000000001,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l17_s",
+          "mean": 92.376,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l18_u",
+          "mean": 89.24,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l18_s",
+          "mean": 84.358,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l19_u",
+          "mean": 93.09200000000001,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l19_s",
+          "mean": 78.164,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l20_u",
+          "mean": 86.262,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l20_s",
+          "mean": 86.304,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l21_u",
+          "mean": 87.73199999999999,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l21_s",
+          "mean": 82.792,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l22_u",
+          "mean": 88.67200000000001,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l22_s",
+          "mean": 89.12400000000001,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l23_u",
+          "mean": 79.934,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l23_s",
+          "mean": 94.80999999999999,
+          "attempts": 5,
+          "valid": 5
+        }
+      ],
+      "stripping": {
+        "direction": "stripped_minus_unstripped",
+        "all_pairs": 50,
+        "all_delta_pp": -1.4129999999999998,
+        "interval_pp": [
+          -4.108449639648333,
+          1.282449639648333
+        ],
+        "valid_pairs": 50,
+        "valid_delta_pp": -1.4129999999999998
+      },
+      "settings": {
+        "max_tool_calls": 25,
+        "max_model_turns": 64,
+        "max_tokens": 128000,
+        "effective_output_token_cap": 128000,
+        "seed": null
+      }
+    },
+    {
+      "id": "gpt-6-astra",
+      "name": "GPT-6 Astra",
+      "provider": "OpenAI",
+      "initials": "AS",
+      "reasoning": "Extra high",
+      "access": "Coding plan",
+      "overall": 87.0438,
+      "main": 86.40155555555555,
+      "bonus": 92.824,
+      "interval": [
+        85.79850861052088,
+        88.28909138947913
+      ],
+      "quality": 87.0438,
+      "answered_artifacts": 20,
+      "valid": 100,
+      "refusals": 0,
+      "budget": 0,
+      "artifacts": [
+        {
+          "task_id": "v3_l14_u",
+          "mean": 87.68599999999999,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l14_s",
+          "mean": 95.49,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l15_u",
+          "mean": 86.92999999999999,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l15_s",
+          "mean": 92.90800000000002,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l16_u",
+          "mean": 85.33999999999999,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l16_s",
+          "mean": 84.504,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l17_u",
+          "mean": 85.96199999999999,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l17_s",
+          "mean": 86.43,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l18_u",
+          "mean": 75.398,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l18_s",
+          "mean": 73.02799999999999,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l19_u",
+          "mean": 87.658,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l19_s",
+          "mean": 91.654,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l20_u",
+          "mean": 88.25200000000001,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l20_s",
+          "mean": 89.08200000000001,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l21_u",
+          "mean": 89.268,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l21_s",
+          "mean": 88.078,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l22_u",
+          "mean": 84.208,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l22_s",
+          "mean": 83.352,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l23_u",
+          "mean": 92.69000000000001,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l23_s",
+          "mean": 92.958,
+          "attempts": 5,
+          "valid": 5
+        }
+      ],
+      "stripping": {
+        "direction": "stripped_minus_unstripped",
+        "all_pairs": 50,
+        "all_delta_pp": 1.4091999999999998,
+        "interval_pp": [
+          0.05816475155911577,
+          2.7602352484408836
+        ],
+        "valid_pairs": 50,
+        "valid_delta_pp": 1.4091999999999996
+      },
+      "settings": {
+        "max_tool_calls": 25,
+        "max_model_turns": 64,
+        "max_tokens": 32768,
+        "effective_output_token_cap": null,
+        "seed": null
+      }
+    },
+    {
+      "id": "grok-4.7",
+      "name": "Grok 4.7",
+      "provider": "xAI",
+      "initials": "X",
+      "reasoning": "High",
+      "access": "API",
+      "overall": 79.6204,
+      "main": 81.0181111111111,
+      "bonus": 67.041,
+      "interval": [
+        76.58747481246444,
+        82.65332518753556
+      ],
+      "quality": 82.9673,
+      "answered_artifacts": 20,
+      "valid": 96,
+      "refusals": 0,
+      "budget": 4,
+      "artifacts": [
+        {
+          "task_id": "v3_l14_u",
+          "mean": 85.28,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l14_s",
+          "mean": 70.492,
+          "attempts": 5,
+          "valid": 4
+        },
+        {
+          "task_id": "v3_l15_u",
+          "mean": 87.062,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l15_s",
+          "mean": 83.088,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l16_u",
+          "mean": 83.49,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l16_s",
+          "mean": 78.752,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l17_u",
+          "mean": 87.90599999999999,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l17_s",
+          "mean": 83.55799999999999,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l18_u",
+          "mean": 88.688,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l18_s",
+          "mean": 88.896,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l19_u",
+          "mean": 80.422,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l19_s",
+          "mean": 68.412,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l20_u",
+          "mean": 85.928,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l20_s",
+          "mean": 85.732,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l21_u",
+          "mean": 80.13999999999999,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l21_s",
+          "mean": 77.082,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l22_u",
+          "mean": 63.178,
+          "attempts": 5,
+          "valid": 4
+        },
+        {
+          "task_id": "v3_l22_s",
+          "mean": 80.22,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l23_u",
+          "mean": 64.452,
+          "attempts": 5,
+          "valid": 4
+        },
+        {
+          "task_id": "v3_l23_s",
+          "mean": 69.63000000000001,
+          "attempts": 5,
+          "valid": 4
+        }
+      ],
+      "stripping": {
+        "direction": "stripped_minus_unstripped",
+        "all_pairs": 50,
+        "all_delta_pp": -2.068399999999999,
+        "interval_pp": [
+          -13.043340408113904,
+          8.906540408113907
+        ],
+        "valid_pairs": 46,
+        "valid_delta_pp": -1.9678260869565207
+      },
+      "settings": {
+        "max_tool_calls": 25,
+        "max_model_turns": 64,
+        "max_tokens": 32768,
+        "effective_output_token_cap": null,
+        "seed": null
+      }
+    },
+    {
+      "id": "claude-opus-5-5",
+      "name": "Claude Opus 5.5",
+      "provider": "Anthropic",
+      "initials": "CL",
+      "reasoning": "High",
+      "access": "Coding plan",
+      "overall": 69.656,
+      "main": 68.83633333333333,
+      "bonus": 77.033,
+      "interval": [
+        62.57474007450785,
+        76.73725992549217
+      ],
+      "quality": 89.39818421052632,
+      "answered_artifacts": 19,
+      "valid": 78,
+      "refusals": 22,
+      "budget": 0,
+      "artifacts": [
+        {
+          "task_id": "v3_l14_u",
+          "mean": 0.0,
+          "attempts": 5,
+          "valid": 0
+        },
+        {
+          "task_id": "v3_l14_s",
+          "mean": 36.571999999999996,
+          "attempts": 5,
+          "valid": 2
+        },
+        {
+          "task_id": "v3_l15_u",
+          "mean": 90.38600000000001,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l15_s",
+          "mean": 73.516,
+          "attempts": 5,
+          "valid": 4
+        },
+        {
+          "task_id": "v3_l16_u",
+          "mean": 85.20400000000001,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l16_s",
+          "mean": 49.022000000000006,
+          "attempts": 5,
+          "valid": 3
+        },
+        {
+          "task_id": "v3_l17_u",
+          "mean": 91.78399999999999,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l17_s",
+          "mean": 88.87599999999999,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l18_u",
+          "mean": 88.612,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l18_s",
+          "mean": 87.48400000000001,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l19_u",
+          "mean": 53.105999999999995,
+          "attempts": 5,
+          "valid": 3
+        },
+        {
+          "task_id": "v3_l19_s",
+          "mean": 56.38999999999999,
+          "attempts": 5,
+          "valid": 3
+        },
+        {
+          "task_id": "v3_l20_u",
+          "mean": 69.268,
+          "attempts": 5,
+          "valid": 4
+        },
+        {
+          "task_id": "v3_l20_s",
+          "mean": 68.722,
+          "attempts": 5,
+          "valid": 4
+        },
+        {
+          "task_id": "v3_l21_u",
+          "mean": 68.66600000000001,
+          "attempts": 5,
+          "valid": 4
+        },
+        {
+          "task_id": "v3_l21_s",
+          "mean": 84.978,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l22_u",
+          "mean": 91.944,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l22_s",
+          "mean": 54.523999999999994,
+          "attempts": 5,
+          "valid": 3
+        },
+        {
+          "task_id": "v3_l23_u",
+          "mean": 76.69,
+          "attempts": 5,
+          "valid": 4
+        },
+        {
+          "task_id": "v3_l23_s",
+          "mean": 77.376,
+          "attempts": 5,
+          "valid": 4
+        }
+      ],
+      "stripping": {
+        "direction": "stripped_minus_unstripped",
+        "all_pairs": 50,
+        "all_delta_pp": -3.8200000000000003,
+        "interval_pp": [
+          -24.22979713889617,
+          16.589797138896166
+        ],
+        "valid_pairs": 31,
+        "valid_delta_pp": -0.9680645161290323
+      },
+      "settings": {
+        "max_tool_calls": 25,
+        "max_model_turns": 64,
+        "max_tokens": 32768,
+        "effective_output_token_cap": 32768,
+        "seed": null
+      }
+    },
+    {
+      "id": "gemini-4-argon",
+      "name": "Gemini 4 Argon",
+      "provider": "Google",
+      "initials": "GE",
+      "reasoning": "High",
+      "access": "API",
+      "overall": 31.1994,
+      "main": 29.529666666666664,
+      "bonus": 46.227000000000004,
+      "interval": [
+        13.301262248209579,
+        49.09753775179042
+      ],
+      "quality": 85.38453703703703,
+      "answered_artifacts": 18,
+      "valid": 36,
+      "refusals": 64,
+      "budget": 0,
+      "artifacts": [
+        {
+          "task_id": "v3_l14_u",
+          "mean": 16.34,
+          "attempts": 5,
+          "valid": 1
+        },
+        {
+          "task_id": "v3_l14_s",
+          "mean": 49.234,
+          "attempts": 5,
+          "valid": 3
+        },
+        {
+          "task_id": "v3_l15_u",
+          "mean": 18.04,
+          "attempts": 5,
+          "valid": 1
+        },
+        {
+          "task_id": "v3_l15_s",
+          "mean": 52.152,
+          "attempts": 5,
+          "valid": 3
+        },
+        {
+          "task_id": "v3_l16_u",
+          "mean": 36.112,
+          "attempts": 5,
+          "valid": 2
+        },
+        {
+          "task_id": "v3_l16_s",
+          "mean": 91.25,
+          "attempts": 5,
+          "valid": 5
+        },
+        {
+          "task_id": "v3_l17_u",
+          "mean": 36.443999999999996,
+          "attempts": 5,
+          "valid": 2
+        },
+        {
+          "task_id": "v3_l17_s",
+          "mean": 16.666,
+          "attempts": 5,
+          "valid": 1
+        },
+        {
+          "task_id": "v3_l18_u",
+          "mean": 0.0,
+          "attempts": 5,
+          "valid": 0
+        },
+        {
+          "task_id": "v3_l18_s",
+          "mean": 34.548,
+          "attempts": 5,
+          "valid": 2
+        },
+        {
+          "task_id": "v3_l19_u",
+          "mean": 32.74,
+          "attempts": 5,
+          "valid": 2
+        },
+        {
+          "task_id": "v3_l19_s",
+          "mean": 18.517999999999997,
+          "attempts": 5,
+          "valid": 1
+        },
+        {
+          "task_id": "v3_l20_u",
+          "mean": 16.412,
+          "attempts": 5,
+          "valid": 1
+        },
+        {
+          "task_id": "v3_l20_s",
+          "mean": 0.0,
+          "attempts": 5,
+          "valid": 0
+        },
+        {
+          "task_id": "v3_l21_u",
+          "mean": 30.982000000000003,
+          "attempts": 5,
+          "valid": 2
+        },
+        {
+          "task_id": "v3_l21_s",
+          "mean": 52.36000000000001,
+          "attempts": 5,
+          "valid": 3
+        },
+        {
+          "task_id": "v3_l22_u",
+          "mean": 14.254,
+          "attempts": 5,
+          "valid": 1
+        },
+        {
+          "task_id": "v3_l22_s",
+          "mean": 15.482000000000001,
+          "attempts": 5,
+          "valid": 1
+        },
+        {
+          "task_id": "v3_l23_u",
+          "mean": 35.656,
+          "attempts": 5,
+          "valid": 2
+        },
+        {
+          "task_id": "v3_l23_s",
+          "mean": 56.798,
+          "attempts": 5,
+          "valid": 3
+        }
+      ],
+      "stripping": {
+        "direction": "stripped_minus_unstripped",
+        "all_pairs": 50,
+        "all_delta_pp": 15.002799999999999,
+        "interval_pp": [
+          -9.194636742039252,
+          39.20023674203925
+        ],
+        "valid_pairs": 7,
+        "valid_delta_pp": -1.6214285714285706
+      },
+      "settings": {
+        "max_tool_calls": 25,
+        "max_model_turns": 64,
+        "max_tokens": 32768,
+        "effective_output_token_cap": null,
+        "seed": null
+      }
+    }
+  ],
+  "artifacts": 20,
+  "programs": 10,
+  "attempts_per_artifact": 5,
+  "episodes": 500,
+  "pair": {
+    "direction": "Muse minus Astra",
+    "gap_pp": 0.3243000000000107,
+    "interval_pp": [
+      -3.4939563374349447,
+      4.142556337434962
+    ],
+    "family_confidence": 0.95,
+    "family_comparisons": 10,
+    "statistical_winner": null
+  },
+  "source_report_sha256": {
+    "muse_wonder_high_native_cli.json": "e869904f0db3133a654edc18302f4044035227dcc0561caff95cf411c5ba69ce",
+    "codex_astra_xhigh_subscription.json": "4ce9ae01618c41dae2378d75473bd699f1cd534ec8994478219126a32d5f51cf",
+    "xai_grok47_high.json": "4b61d939c631f16f20f1434607e83f18ed7dc04004776963b282b2691684daa3",
+    "claude_opus55_high_subscription.json": "154dedefe5dfa89c112932bfc69cb02f125015ea281d6f74f17ae1190ca1ef3b",
+    "gemini_argon4_high.json": "5d67cbc8c35f846af752d042eab4824094173f6d7cf40abe2ebca6dbe7650c23",
+    "PAIR_VERIFICATION.json": "3c5308e24173490c4174951aac77b35a3340e39f1e09fe719683be52cd90b373"
+  },
+  "notes": [
+    "Five fresh attempts averaged per artifact; all 20 artifacts weighted equally.",
+    "Overall retains zero-valued refusals and budget exhaustion.",
+    "Conditional quality is artifact-balanced over submitted valid answers; model subsets differ.",
+    "Astra, Opus and Muse used coding plans; Gemini and Grok used APIs. Configurations differ.",
+    "Scoring was calibrated retrospectively against source/binary evidence. Public suite; no held-out generalization claim."
+  ],
+  "release": "v3.1",
+  "rubric": "v3.4",
+  "score_scale": 100,
+  "aggregation": "artifact_mean_v1",
+  "main_weight": 0.9,
+  "bonus_weight": 0.1,
+  "uncertainty": {
+    "individual_intervals": "95% Student t intervals across five full-suite repetition means",
+    "pair_interval": "Welch interval with Bonferroni protection across all ten model pairs",
+    "scope": "Repeat performance on the fixed public artifact suite"
+  }
+}

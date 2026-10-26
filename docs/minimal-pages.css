@@ -1,4 +1,6 @@
 /* Subpages share the approved homepage's palette, typography, and navigation. */
+/* Let nested tables and code scroll inside narrow grid columns. */
+.minimal-page .callout, .minimal-page .code-panel { min-width: 0; }
 :root {
   --text-dim: var(--text-soft);
   --border: var(--line);

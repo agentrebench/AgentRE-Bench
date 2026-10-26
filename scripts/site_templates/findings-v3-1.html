@@ -1,0 +1,21 @@
+<article class="findings-writeup" aria-label="Our findings and why reverse engineering matters">
+  <p>When you get a binary, you still need to know what it actually does. The source might be unavailable. The names might be stripped. The useful details might be buried behind layers of encoding. That matters when you are investigating malware, checking a dependency, or trying to understand software nobody can explain anymore. The answer needs evidence you can check.</p>
+
+  <p>That is what I want AgentRE to measure. Give a model the binary, tools, and a fixed budget, then see what it can recover. Can it follow the execution path? Find the keys? Explain the behavior? Can somebody else take that explanation back to the instructions and confirm it? An analyst should not have to guess which claims were actually checked.</p>
+
+  <p>For v3.1, we ran five models on twenty Windows binaries, covering ten programs with and without symbols. Each model got five attempts per binary. That is 500 attempts in total. We averaged all five scores. A refusal or an attempt that ran out of budget stayed in the results.</p>
+
+  <p>Muse Wonder finished first at 87.37/100, followed by GPT-6 Astra at 87.04. Both submitted answers on all 100 attempts. Muse earned more technique credit. Astra recovered encryption details more consistently and led the bonus tasks. The gap is small, and these runs do not establish that Muse would reliably beat Astra again.</p>
+
+  <p>The high scores came from concrete work. Models usually recovered the injection steps, target processes, and memory operations. Every submitted answer that required RC4 received full algorithm and key credit. The keys are embedded in these samples, so recovery means finding the bytes and understanding where they are used.</p>
+
+  <p>The mistakes are worth looking at closely. Muse reported a cipher using round times 18 where the code uses round times 27. Several answers treated an unregistered TLS routine as something that would execute before the entry point. Finding a function does not establish that the program calls it.</p>
+
+  <p>Encryption also exposed a scoring distinction. Grok found 120 of 124 required component keys, but often left the round count out of the algorithm field. That reduced algorithm and key credit. Some correct details appeared in another field. Those losses reflect the answer format too; they cannot all be called hallucinations.</p>
+
+  <p>Completion mattered. Opus submitted 78 valid answers and Gemini 36. Opus recovered every required algorithm and key in the answers it submitted. Its overall score also reflects the attempts it refused. Showing coverage beside answer quality makes that difference visible.</p>
+
+  <p>These are public samples, with source withheld during each attempt. They measure performance on this suite. They do not establish performance on every unfamiliar binary, and the scorer still needs independent checks on how it handles different wording.</p>
+
+  <p>What interests me is where these models fail: assuming code runs, missing part of a transform, or reporting a plausible technique without enough evidence. Those are specific training targets. Better reverse engineering agents should leave an analyst with an explanation they can verify, and fewer assumptions they have to untangle themselves.</p>
+</article>

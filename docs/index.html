@@ -19,8 +19,9 @@
   <meta name="twitter:image" content="https://www.agentre-bench.ai/og-agentre.png">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="stylesheet" href="/homepage.css?v=minimal-1">
+  <link rel="stylesheet" href="/assets/results.css?v=v31-explorer-2">
 </head>
-<body>
+<body class="v31-home">
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header">
     <div class="shell nav-shell">
@@ -37,7 +38,7 @@
             <a href="#how">How it works</a>
             <a href="#benchmark">Benchmark results</a>
             <a href="#evolution">Benchmark history</a>
-            <a href="/results/v3-pe/">V3 research report</a>
+            <a href="/results/v3-1/">v3.1 research report</a>
             <a href="/private-evals/">Private Evals</a>
             <a href="/rl-data/">RL Data</a>
             <a href="/blog/">Blog</a>
@@ -52,12 +53,12 @@
 
   <main id="main" class="shell main-shell">
     <section class="intro" aria-labelledby="hero-title">
-      <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> Open benchmark <span class="metadata-divider">/</span> Version 3 · August 2026</p>
+      <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> Open benchmark <span class="metadata-divider">/</span> Version 3.1 · October 2026</p>
       <h1 id="hero-title">AgentRE-Bench</h1>
       <p class="intro-question">Can AI agents reason about software without its source code?</p>
-      <p class="intro-description">AgentRE evaluates models on unseen binaries, identifies where they fail, and turns those failures into training signals for better reverse engineering agents.</p>
+      <p class="intro-description">AgentRE tests how models analyze binaries without source code, identifies where they fail, and turns those failures into training signals for better reverse engineering agents.</p>
       <div class="intro-links">
-        <a class="text-link" href="/results/v3-pe/">Explore the latest results <span aria-hidden="true">↗</span></a>
+        <a class="text-link" href="/results/v3-1/">Explore the latest results <span aria-hidden="true">↗</span></a>
         <a href="#how">How it works <span aria-hidden="true">↓</span></a>
         <a href="mailto:contact@agentre-bench.ai?subject=AgentRE%20evaluation%20inquiry">Evaluate your agent <span aria-hidden="true">↗</span></a>
       </div>
@@ -91,7 +92,7 @@
             </div>
             <div class="trace-step is-active">
               <span class="step-index">03</span>
-              <div><strong>Verify</strong><small>Expert ground truth</small></div>
+              <div><strong>Verify</strong><small>Versioned ground truth</small></div>
               <span class="step-state">Deterministic</span>
             </div>
           </div>
@@ -108,52 +109,77 @@
     <section class="results-section" id="benchmark" aria-labelledby="results-title">
       <div class="section-heading">
         <h2 id="results-title">Latest results</h2>
-        <span class="section-meta">V3 · Windows PE</span>
+        <span class="section-meta">v3.1 · Windows PE</span>
       </div>
-      <p>Ten Windows programs, each evaluated with and without symbols. Six models, 20 binaries, 120 episode slots.</p>
-      <div class="table-scroll" role="region" aria-label="V3 leaderboard, scroll horizontally on small screens" tabindex="0">
+      <p>Ten Windows programs, each evaluated with and without symbols. Five models, 20 artifacts, five attempts per artifact: 500 episodes.</p>
+      <div class="metric-guide" aria-label="Explain the metrics"><span>Score guide</span><!-- HOME_METRIC_HELP_START -->
+<button type="button" class="metric-trigger" popovertarget="term-episodes">Episodes<span aria-hidden="true">?</span></button><button type="button" class="metric-trigger" popovertarget="term-overall">Overall<span aria-hidden="true">?</span></button><button type="button" class="metric-trigger" popovertarget="term-main">Main<span aria-hidden="true">?</span></button><button type="button" class="metric-trigger" popovertarget="term-bonus">Bonus<span aria-hidden="true">?</span></button><button type="button" class="metric-trigger" popovertarget="term-valid">Valid answers<span aria-hidden="true">?</span></button><button type="button" class="metric-trigger" popovertarget="term-quality">Answer quality<span aria-hidden="true">?</span></button>
+<!-- HOME_METRIC_HELP_END --></div>
+      <div class="table-scroll desktop-leaderboard" role="region" aria-label="v3.1 leaderboard" tabindex="0">
         <table class="results-table">
-          <caption>Version 3 leaderboard · ranked by Total</caption>
-          <thead><tr><th scope="col" class="rank">#</th><th scope="col">Model</th><th scope="col" class="numeric">Main <span>/ 1</span></th><th scope="col" class="numeric">Bonus <span>/ 1</span></th><th scope="col" class="numeric">Total <span>/ 2</span></th><th scope="col" class="numeric">Valid answers</th></tr></thead>
+          <caption>Version 3.1 leaderboard · ranked by Overall score · scores /100</caption>
+          <thead><tr><th scope="col" class="rank">#</th><th scope="col">Model</th><th scope="col" class="numeric">Overall</th><th scope="col" class="numeric">Main <span>· 90%</span></th><th scope="col" class="numeric">Bonus <span>· 10%</span></th><th scope="col" class="numeric">Valid answers</th></tr></thead>
           <tbody>
-            <tr class="leading-model"><td class="rank">01</td><th scope="row">Kimi K3</th><td class="numeric">0.6757</td><td class="numeric">0.6861</td><td class="numeric total">1.3618</td><td class="numeric">20/20</td></tr>
-            <tr><td class="rank">02</td><th scope="row">Claude Opus 5</th><td class="numeric">0.6147</td><td class="numeric">0.6638</td><td class="numeric total">1.2785</td><td class="numeric">18/20</td></tr>
-            <tr><td class="rank">03</td><th scope="row">GPT-5.6 Sol</th><td class="numeric">0.5859</td><td class="numeric">0.6298</td><td class="numeric total">1.2157</td><td class="numeric">18/20</td></tr>
-            <tr><td class="rank">04</td><th scope="row">DeepSeek V4 Flash</th><td class="numeric">0.5125</td><td class="numeric">0.6782</td><td class="numeric total">1.1906</td><td class="numeric">19/20</td></tr>
-            <tr><td class="rank">05</td><th scope="row">Gemini 3.6 Flash</th><td class="numeric">0.5400</td><td class="numeric">0.5653</td><td class="numeric total">1.1052</td><td class="numeric">20/20</td></tr>
-            <tr><td class="rank">06</td><th scope="row">Claude Fable 5</th><td class="numeric">0.0000</td><td class="numeric">0.0000</td><td class="numeric total">0.0000</td><td class="numeric">0/20</td></tr>
+<!-- CURRENT_RESULTS_START -->
+<tr class="leading-model"><td class="rank">01</td><th scope="row">Muse Wonder</th><td class="numeric total">87.37</td><td class="numeric">87.37</td><td class="numeric">87.37</td><td class="numeric">100/100</td></tr>
+<tr><td class="rank">02</td><th scope="row">GPT-6 Astra</th><td class="numeric total">87.04</td><td class="numeric">86.40</td><td class="numeric">92.82</td><td class="numeric">100/100</td></tr>
+<tr><td class="rank">03</td><th scope="row">Grok 4.7</th><td class="numeric total">79.62</td><td class="numeric">81.02</td><td class="numeric">67.04</td><td class="numeric">96/100</td></tr>
+<tr><td class="rank">04</td><th scope="row">Claude Opus 5.5</th><td class="numeric total">69.66</td><td class="numeric">68.84</td><td class="numeric">77.03</td><td class="numeric">78/100</td></tr>
+<tr><td class="rank">05</td><th scope="row">Gemini 4 Argon</th><td class="numeric total">31.20</td><td class="numeric">29.53</td><td class="numeric">46.23</td><td class="numeric">36/100</td></tr>
+<!-- CURRENT_RESULTS_END -->
           </tbody>
         </table>
       </div>
-      <p class="table-note">Main measures average performance on 18 core artifacts. Bonus covers the two synthetic-worm artifacts. Total adds the two scores; it is not an average across all 20 artifacts. Refusals and budget exits remain part of the result.</p>
-      <a class="text-link" href="/results/v3-pe/">Read the complete V3 report <span aria-hidden="true">↗</span></a>
+      <div class="mobile-leaderboard" aria-label="Overall leaderboard"><!-- HOME_MOBILE_RESULTS_START -->
+<details class="mobile-model" data-model="muse-wonder-1.0">
+          <summary><span class="mobile-rank">01</span><span class="mobile-name">Muse Wonder<small>100/100 valid answers</small></span><span class="mobile-value"><strong>87.37</strong><small>Overall</small><span class="mobile-expand" aria-hidden="true">Details ↓</span></span></summary>
+          <dl><div><dt>Main · 90%</dt><dd>87.37</dd></div><div><dt>Bonus · 10%</dt><dd>87.37</dd></div><div><dt>Overall 95% interval</dt><dd>85.18–89.56</dd></div><div><dt>Access</dt><dd>Coding plan</dd></div><div><dt>Thinking</dt><dd>High</dd></div></dl>
+        </details>
+<details class="mobile-model" data-model="gpt-6-astra">
+          <summary><span class="mobile-rank">02</span><span class="mobile-name">GPT-6 Astra<small>100/100 valid answers</small></span><span class="mobile-value"><strong>87.04</strong><small>Overall</small><span class="mobile-expand" aria-hidden="true">Details ↓</span></span></summary>
+          <dl><div><dt>Main · 90%</dt><dd>86.40</dd></div><div><dt>Bonus · 10%</dt><dd>92.82</dd></div><div><dt>Overall 95% interval</dt><dd>85.80–88.29</dd></div><div><dt>Access</dt><dd>Coding plan</dd></div><div><dt>Thinking</dt><dd>Extra high</dd></div></dl>
+        </details>
+<details class="mobile-model" data-model="grok-4.7">
+          <summary><span class="mobile-rank">03</span><span class="mobile-name">Grok 4.7<small>96/100 valid answers</small></span><span class="mobile-value"><strong>79.62</strong><small>Overall</small><span class="mobile-expand" aria-hidden="true">Details ↓</span></span></summary>
+          <dl><div><dt>Main · 90%</dt><dd>81.02</dd></div><div><dt>Bonus · 10%</dt><dd>67.04</dd></div><div><dt>Overall 95% interval</dt><dd>76.59–82.65</dd></div><div><dt>Access</dt><dd>API</dd></div><div><dt>Thinking</dt><dd>High</dd></div></dl>
+        </details>
+<details class="mobile-model" data-model="claude-opus-5-5">
+          <summary><span class="mobile-rank">04</span><span class="mobile-name">Claude Opus 5.5<small>78/100 valid answers</small></span><span class="mobile-value"><strong>69.66</strong><small>Overall</small><span class="mobile-expand" aria-hidden="true">Details ↓</span></span></summary>
+          <dl><div><dt>Main · 90%</dt><dd>68.84</dd></div><div><dt>Bonus · 10%</dt><dd>77.03</dd></div><div><dt>Overall 95% interval</dt><dd>62.57–76.74</dd></div><div><dt>Access</dt><dd>Coding plan</dd></div><div><dt>Thinking</dt><dd>High</dd></div></dl>
+        </details>
+<details class="mobile-model" data-model="gemini-4-argon">
+          <summary><span class="mobile-rank">05</span><span class="mobile-name">Gemini 4 Argon<small>36/100 valid answers</small></span><span class="mobile-value"><strong>31.20</strong><small>Overall</small><span class="mobile-expand" aria-hidden="true">Details ↓</span></span></summary>
+          <dl><div><dt>Main · 90%</dt><dd>29.53</dd></div><div><dt>Bonus · 10%</dt><dd>46.23</dd></div><div><dt>Overall 95% interval</dt><dd>13.30–49.10</dd></div><div><dt>Access</dt><dd>API</dd></div><div><dt>Thinking</dt><dd>High</dd></div></dl>
+        </details>
+<!-- HOME_MOBILE_RESULTS_END --></div>
+      <p class="table-note">Scores average five attempts per binary. Overall is 90% Main and 10% Bonus; unanswered attempts count as zero. <a class="text-link" href="/results/v3-1/#method">Scoring and methodology ↗</a></p>
+      <a class="text-link" href="/results/v3-1/">Read the complete v3.1 report <span aria-hidden="true">↗</span></a>
     </section>
 
     <section class="article-section" id="findings" aria-labelledby="findings-title">
-      <h2 id="findings-title">Key findings</h2>
+      <div class="section-heading"><h2 id="findings-title">Latest findings</h2><time class="section-meta" datetime="2026-10-25">October 25, 2026</time></div>
       <ul class="findings-list">
-        <li><strong>Recognition is arriving before reconstruction.</strong> Agents often identify behavior families. Recovering the exact execution chain, configuration, key, or endpoint remains harder.</li>
-        <li><strong>Symbols help, but do not explain everything.</strong> Across 46 valid stripped/unstripped pairs, stripping reduced the mean score by 6.47% relative.</li>
-        <li><strong>Coverage matters.</strong> Kimi K3 led overall. Only Kimi and Gemini returned valid answers for all 20 artifacts; refusals and budget exits affected the other runs.</li>
-        <li><strong>Exact recovery remains an open problem.</strong> No model recovered the true Level 23 command-and-control endpoint.</li>
+        <li><strong>Muse Wonder wins v3.1.</strong> It scored 87.37/100 to Astra’s 87.04, earning more credit for technique identification.</li>
+        <li><strong>Astra was stronger on encryption.</strong> It received full algorithm and key credit in all 100 answers. Muse did so in 96.</li>
+        <li><strong>The errors went beyond missing keys.</strong> Models omitted cipher details, confused encrypted payloads with encoded strings, and sometimes claimed code would run when it would not.</li>
       </ul>
-      <a class="text-link" href="/results/v3-pe/#findings">Explore the findings and limitations <span aria-hidden="true">↗</span></a>
+      <a class="text-link" href="/results/v3-1/#latest-findings">What the models got right and wrong <span aria-hidden="true">↗</span></a>
     </section>
 
     <section class="article-section" id="why" aria-labelledby="why-title">
       <h2 id="why-title">Why reverse engineering?</h2>
       <p>Most AI coding benchmarks begin with readable code and a clear task. Security teams often begin with neither. They get a compiled program, limited context, and one question: <em>what does this actually do?</em></p>
-      <p>AgentRE measures whether an agent can turn that uncertainty into a defensible explanation. Agents recover behaviors, configurations, infrastructure, API chains, and execution details through tool use. Correct findings earn credit; unsupported claims are penalized against fixed expert ground truth.</p>
+      <p>AgentRE measures whether an agent can turn that uncertainty into a defensible explanation. Agents recover behaviors, configurations, infrastructure, API chains, and execution details through tool use. Correct findings earn credit; unsupported claims are penalized against versioned ground truth.</p>
       <a class="text-link" href="/why-agentre/">Why AgentRE matters <span aria-hidden="true">↗</span></a>
     </section>
 
     <section class="article-section" id="how" aria-labelledby="how-title">
       <h2 id="how-title">How it works</h2>
-      <p>Every agent gets the same constrained environment. Every claim meets the same fixed ground truth.</p>
+      <p>Agents receive an isolated binary and static-analysis tools. Recorded model configurations and the scoring version accompany each result.</p>
       <ol class="method-list">
-        <li><span class="method-number" aria-hidden="true">01</span><div><h3>Present unfamiliar software</h3><p>A source-free, anonymized binary in an isolated workspace, with ordinary static-analysis tools and no internet access.</p></div></li>
+        <li><span class="method-number" aria-hidden="true">01</span><div><h3>Present a binary without source</h3><p>A source-free, anonymized binary in an isolated workspace, with ordinary static-analysis tools and no internet access.</p></div></li>
         <li><span class="method-number" aria-hidden="true">02</span><div><h3>Record the investigation</h3><p>Tool calls, evidence, time, coverage, failures, and final structured claims are captured for review.</p></div></li>
-        <li><span class="method-number" aria-hidden="true">03</span><div><h3>Score what can be proved</h3><p>Fixed expert ground truth rewards correct detail and penalizes unsupported claims. The same answer always receives the same score.</p></div></li>
+        <li><span class="method-number" aria-hidden="true">03</span><div><h3>Score what can be proved</h3><p>Versioned ground truth rewards correct detail and penalizes unsupported claims. The same answer always receives the same score under the same scorer.</p></div></li>
       </ol>
       <a class="text-link" href="https://github.com/agentrebench/AgentRE-Bench">Explore the methodology and transcripts <span aria-hidden="true">↗</span></a>
     </section>
@@ -162,8 +188,8 @@
       <h2 id="evolution-title">Benchmark history</h2>
       <div class="version-list">
         <article class="version-entry">
-          <div class="version-label"><span>V3</span><span class="current-label">Current</span><time datetime="2026-08">August 2026</time></div>
-          <div><h3>From recognition to reconstruction</h3><p>Ten Windows programs, paired with and without symbols. Agents recovered substantial behavior after symbol removal, while exact execution chains and configuration remained a boundary.</p><a class="text-link" href="/results/v3-pe/">V3 · Windows PE <span aria-hidden="true">↗</span></a></div>
+          <div class="version-label"><span>v3.1</span><span class="current-label">Current</span><time datetime="2026-10">October 2026</time></div>
+          <div><h3>Five attempts per binary</h3><p>Five models, twenty Windows PE binaries, and 500 attempts. Muse Wonder leads the averaged scores. The report shows what each model recovered, missed, and got wrong.</p><a class="text-link" href="/results/v3-1/">v3.1 · Windows PE <span aria-hidden="true">↗</span></a></div>
         </article>
         <article class="version-entry">
           <div class="version-label"><span>V2</span><time datetime="2026-04">April 2026</time></div>
@@ -174,7 +200,7 @@
           <div><h3>Establishing the baseline</h3><p>Thirteen synthetic Linux challenges established a source-free baseline with constrained tools and deterministic scoring. Completion was not the same as trust; every model scored zero on the bonus challenge.</p><a class="text-link" href="/results/v1-elf/">V1 · Linux ELF <span aria-hidden="true">↗</span></a></div>
         </article>
       </div>
-      <p class="table-note">V1 and V2 share the Linux suite. V3 uses a new platform, paired artifacts, tasks, and rubric. Scores are not directly comparable across the two suites.</p>
+      <p class="table-note">V1 and V2 share the Linux suite. v3.1 uses the Windows PE suite and replaces the retired v3 leaderboard. Historical and current scores use different protocols and are not directly comparable.</p>
     </section>
 
     <section class="article-section" id="training" aria-labelledby="training-title">
@@ -195,6 +221,14 @@
         <li><a href="https://arxiv.org/abs/2608.11469"><strong>SRE-Bench</strong><span>Realistic, contamination-free RE benchmark</span><span aria-hidden="true">↗</span></a></li>
       </ul>
     </section>
+    <!-- HOME_POPOVERS_START -->
+<aside class="metric-popover" id="term-episodes" popover role="dialog" aria-labelledby="term-episodes-title" aria-describedby="term-episodes-text"><h3 id="term-episodes-title">Episodes</h3><p id="term-episodes-text">One episode is one complete attempt by one model on one binary, including its tool calls and final outcome. Twenty binaries × five attempts × five models = 500 episodes.</p><button type="button" class="text-button" popovertarget="term-episodes" popovertargetaction="hide" autofocus>Close</button></aside>
+<aside class="metric-popover" id="term-overall" popover role="dialog" aria-labelledby="term-overall-title" aria-describedby="term-overall-text"><h3 id="term-overall-title">Overall</h3><p id="term-overall-text">The average of all 20 binary scores. Each binary score averages five attempts. Main contributes 90% and Bonus 10%. Refusals and budget exits count as zero. All scores are out of 100.</p><button type="button" class="text-button" popovertarget="term-overall" popovertargetaction="hide" autofocus>Close</button></aside>
+<aside class="metric-popover" id="term-main" popover role="dialog" aria-labelledby="term-main-title" aria-describedby="term-main-text"><h3 id="term-main-title">Main</h3><p id="term-main-text">The average across 18 binaries from Levels 14–22. These binaries account for 90% of Overall.</p><button type="button" class="text-button" popovertarget="term-main" popovertargetaction="hide" autofocus>Close</button></aside>
+<aside class="metric-popover" id="term-bonus" popover role="dialog" aria-labelledby="term-bonus-title" aria-describedby="term-bonus-text"><h3 id="term-bonus-title">Bonus</h3><p id="term-bonus-text">The average across the two Level 23 binaries. Together they account for 10% of Overall, the same weight as any other program’s two variants.</p><button type="button" class="text-button" popovertarget="term-bonus" popovertargetaction="hide" autofocus>Close</button></aside>
+<aside class="metric-popover" id="term-valid" popover role="dialog" aria-labelledby="term-valid-title" aria-describedby="term-valid-text"><h3 id="term-valid-title">Valid answers</h3><p id="term-valid-text">Answers that passed the required format checks. Valid does not mean correct. Each model had 100 attempts; the score measures what those answers recovered.</p><button type="button" class="text-button" popovertarget="term-valid" popovertargetaction="hide" autofocus>Close</button></aside>
+<aside class="metric-popover" id="term-quality" popover role="dialog" aria-labelledby="term-quality-title" aria-describedby="term-quality-text"><h3 id="term-quality-title">Answer quality</h3><p id="term-quality-text">Average valid-answer scores within each answered binary, then average those binaries equally. Nonanswers are excluded here. Models answered different subsets, so compare this number alongside coverage.</p><button type="button" class="text-button" popovertarget="term-quality" popovertargetaction="hide" autofocus>Close</button></aside>
+<!-- HOME_POPOVERS_END -->
   </main>
 
   <footer class="site-footer" id="site-footer">
