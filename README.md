@@ -10,7 +10,7 @@
 
 ## Abstract
 
-AgentRE-Bench measures how AI agents analyze compiled binaries using static-analysis tools and a fixed tool-call budget. Agents receive an anonymized binary without source code and submit structured findings. A deterministic, versioned scorer measures credit against a fixed rubric. The corpus includes 13 Linux ELF artifacts and ten Windows programs, each supplied with and without symbols. The current Windows report covers six model configurations, 20 artifacts, five attempts per artifact, and 600 episodes. Muse Wonder has the highest recorded mean at 87.37/100; DeepSeek V4.1 Flash joins at 78.31/100. Scores measure rubric credit, not full-task success or pure factual accuracy.
+AgentRE-Bench evaluates whether AI agents can reverse engineer compiled binaries. It gives an agent an unfamiliar ELF or PE binary, a fixed static-analysis toolset, and a budget of 25 tool calls. A deterministic scorer compares the agent's structured findings to fixed ground truth. The benchmark has 23 levels: 13 Linux ELF x86-64 binaries and 10 Windows PE32+ programs. Each PE level is evaluated as a stripped and unstripped pair. The levels cover reverse shells, covert channels, encryption, process injection, direct syscall resolution, reflective loading, and control-flow obfuscation. The current Windows evaluation covers six models and 600 attempts. The highest mean score is 87.37/100. No attempt received full credit.
 
 ## Why this benchmark exists
 
@@ -22,7 +22,7 @@ The benchmark separates reverse engineering from pattern recognition. A model th
 
 ## Results
 
-**Updated November 5, 2026 · v3.1 Windows PE report.** Six models analyzed the same 20 frozen artifacts, with five attempts per artifact: **100 episodes per model, 600 in total**. The report uses rubric **v3.4** and scoring version **`6.2.0+exact-claim-review-20261105`**. Website release names and rubric versions are distinct.
+The current results use the V3 Windows PE suite: ten programs, from DLL injection to a synthetic ransomware worm. Each program is evaluated unstripped and stripped. Six models ran all 20 artifacts five times, with a budget of 25 tool calls per attempt. This gives 100 attempts per model and 600 in total. The v3.1 report was updated on November 5, 2026.
 
 ![AgentRE-Bench v3.1 leaderboard: Overall out of 100, with 90% Main and 10% Bonus contributions and fixed-suite confidence intervals](docs/leaderboard-v3.svg)
 
@@ -37,22 +37,24 @@ The benchmark separates reverse engineering from pattern recognition. A model th
 | 6 | Gemini 4 Argon | **31.20** | 29.53 | 46.23 | 36/100 | API |
 <!-- CURRENT_RESULTS_END -->
 
-**Overall = 90% Main + 10% Bonus.** Main covers 18 artifacts from Levels 14–22; Bonus covers the two Level 23 artifacts. Each artifact averages all five planned attempts. Refusals and budget exits remain zero. A valid answer passes the submission format checks; it does not mean the task was solved. **No episode earned full rubric credit (0/600).**
+Main is the mean over the 18 Level 14 to 22 artifacts. Bonus is the mean over the two Level 23 artifacts. Overall is 90% Main plus 10% Bonus, reported out of 100. Each artifact score averages five attempts. Refusals and budget exhaustion count as zero. Valid answers meet the submission format; they can still contain errors.
 
-- **DeepSeek V4.1 Flash:** 78.31/100 Overall, with a fixed-suite 95% interval of 75.01–81.60; 98 valid answers and two retained budget exits. Its 100 episodes completed November 4–5. Two transport errors recovered through identical-request retries; no terminal infrastructure failure or failed episode was dropped.
-- **Previous results remain numerically unchanged.** The same exact-claim review was applied to all 600 saved answers. DeepSeek’s base-scorer mean of 75.91 became 78.31 after review; the original five models’ scores did not change.
-- **The leading means are close.** Muse’s 0.3243-point lead over Astra has a simultaneous 95% interval of −3.8203 to +4.4689 points, adjusted across all 15 model pairs. The recorded ranking does not establish repeat-run superiority.
-- **Independent AI verification:** a separate agent reproduced all 600 baseline and reviewed scoring records and inspected all 219 added literal-claim mappings. Its verdict was qualified approval under the versioned rubric. Correct observations outside allowed facts or placed in another field can still lose credit; no independent human certification is claimed.
+Findings from the run:
 
-Read the [current results and methodology](docs/results-current.md) or the [interactive report](https://www.agentre-bench.ai/results/v3-1/). Download [JSON results and provenance](docs/results/v3-1/scores.json), [CSV results](docs/results/v3-1/scores.csv), [per-artifact scores](docs/results/v3-1/artifact-scores.csv), and the [independent AI audit summary](docs/results/v3-1/audit-summary.json).
+- Muse Wonder scored 87.37 and GPT-6 Astra scored 87.04. Their 0.32-point difference is smaller than the uncertainty in the comparison: the adjusted 95% interval spans −3.82 to +4.47 points.
+- GPT-6 Astra recovered the algorithms and keys for all 130 required encryption components across its 100 attempts. Muse Wonder recovered 128 sets of key bytes; 125 received full key credit after accounting for the algorithm description.
+- Claude Opus 5.5 refused 22 of 100 attempts. Gemini 4 Argon refused 64. These refusals lower their overall scores alongside errors in the answers they submitted.
+- None of the 600 attempts earned full credit under the scoring rubric.
 
-The [August V3 report](version3/ANALYSIS.md) is historical: one attempt per artifact and a different scoring/aggregation protocol. Its Kimi K3 results are excluded from this five-attempt comparison. The canceled Kimi and GLM additions are also excluded. [V2 Linux results](version2/ANALYSIS.md) remain a separate evaluation.
+The [full report](docs/results-current.md) contains per-artifact results, scoring details, model settings, and confidence intervals. The [interactive report](https://www.agentre-bench.ai/results/v3-1/) includes field-level findings. Downloads: [JSON results and provenance](docs/results/v3-1/scores.json), [CSV results](docs/results/v3-1/scores.csv), and [per-artifact scores](docs/results/v3-1/artifact-scores.csv).
+
+The [August V3 report](version3/ANALYSIS.md) used one attempt per artifact and an earlier scoring protocol. It is not directly comparable with these results. The Linux ELF evaluation is in the [V2 report](version2/ANALYSIS.md).
 
 ## Adoption
 
 ![GitHub star history for agentrebench/AgentRE-Bench](docs/star-history.svg)
 
-agentrebench created the repository on 12 February 2026. As of 5 November 2026 it has 138 stars and 14 forks. The graphic uses [official GitHub stargazer timestamps](docs/assets/github-stars.json); historical counts represent accounts that still star the repository.
+agentrebench created the repository on 12 February 2026. As of 5 November 2026 it has 138 stars and 14 forks.
 
 ## The benchmark
 
@@ -111,7 +113,7 @@ The current protocol exposes nine static-analysis tools plus `final_answer`, wit
 | `pe_info` | PE headers, sections, imports, exports, data directories |
 | `final_answer` | Structured submission. Ends the episode. |
 
-The current evaluation uses isolated, source-free workspaces and approved static tools. Benchmark executables are never run. The recorded settings accompany each model in the result download; provider requests happen outside the agent workspace.
+Agents work in isolated workspaces without source code. The harness never executes the target binary. Model settings are included in the result download.
 
 ### Scoring
 
@@ -136,13 +138,11 @@ Overall        = 0.9 × Main + 0.1 × Bonus
 Website/table  = Overall × 100
 ```
 
-Scoring is deterministic under a frozen scorer and review ledger. The November update includes disclosed post-hoc AI-assisted interpretation review; it is not a prospective or human-certified evaluation. Earlier ELF and August PE reports retain their original scoring protocols and are not directly comparable.
+The reported scores use rubric v3.4 and scorer `6.2.0+exact-claim-review-20261105`, including post-hoc review of claim wording. The [full report](docs/results-current.md) documents those decisions and their effect on scores.
 
 ### Telemetry
 
-The evaluation records structured answers, outcomes, field scores, tool activity, timing, and token usage. Public [numeric episode records](docs/results/v3-1/reviewed-episodes.json) expose the 600 episode scores, original answer hashes, outcomes, and field breakdowns used for the current summaries. They support aggregate reproduction; they are not a release of the complete current provider logs or raw-answer archive.
-
-Coverage, conditional answer quality, and full-credit success are separate measures. Unmatched claims cannot be interpreted as a hallucination rate because they can include correct observations outside the rubric or answers placed in another field.
+The evaluation records structured answers, outcomes, field scores, tool activity, timing, and token usage. The public [episode records](docs/results/v3-1/reviewed-episodes.json) contain scores, answer hashes, outcomes, and field breakdowns for all 600 attempts. Raw answers and complete provider logs are not included in that download.
 
 ## Reproduce the public tables and graphics
 
@@ -152,11 +152,11 @@ python3 scripts/build_site_results.py
 python3 scripts/build_github_results.py
 ```
 
-These commands derive the website, README table, and existing SVG graphics from the published numeric records. They do not call a model or independently regrade natural-language answers. The [audit summary](docs/results/v3-1/audit-summary.json) records the separate completed scoring reproduction and its limitations.
+These commands rebuild the website, README table, and SVG graphics from the published scores.
 
 <details><summary><strong>Legacy runner setup and CLI reference</strong></summary>
 
-The commands below describe the repository’s earlier runner interface. They do not reproduce the current versioned reviewed scores. Use the public-data build commands above to reproduce the current tables and graphics.
+The commands below use the repository's earlier runner and scorer. The current report also depends on the claim review described in the [methodology](docs/results-current.md).
 
 ## Quick start
 
@@ -262,24 +262,25 @@ The harness has no Python dependencies. Every provider call uses the standard li
 - Static analysis only. There is no debugger, emulator, or sandboxed execution.
 - Fixed tool set. The agent cannot use Ghidra or IDA, write scripts, or install tools.
 - Synthetic samples. The binaries have controlled behaviors. They do not have the full complexity of packed production malware.
-- Five repetitions per artifact estimate repeat variability on the fixed public suite. The 20 artifacts represent ten programs, not 600 independent tasks or unseen families. Public-task contamination cannot be ruled out.
+- Five attempts per artifact measure variability on a fixed suite of ten programs. The binaries are public and may appear in model training data.
 - x86-64 only. The suite covers ELF and PE32+. It does not cover ARM or MIPS.
-- Recorded reasoning settings, token budgets, client behavior, and collection dates differ. These are comparisons of observed configurations, not controlled compute experiments.
-- Synthetic code can contain side effects and incomplete payload paths. The static benchmark does not establish successful execution or suitability as an inert external sample package.
+- Reasoning settings, token budgets, clients, and collection dates differ between models. The report lists each configuration.
+- Scores measure agreement with the rubric. A correct observation outside the rubric can lose credit, so unmatched claims are not a direct measure of hallucination.
+- Some binaries contain file and service operations or incomplete payload paths. Static analysis does not establish how they would behave when executed.
 
 Planned work:
 
 - Dynamic-analysis tools: strace, ltrace, and sandboxed execution.
 - Packed and cross-architecture samples: ARM, MIPS, and realistic packers.
 - Multi-turn hypothesis refinement.
-- Prospective held-out evaluations, independent human grading checks, and matched-resource comparisons.
+- Held-out tasks, human grading checks, and runs with matched resource budgets.
 
 ## Links
 
 | | |
 |--|--|
-| [Current Windows PE results](docs/results-current.md) | Six models, 600 episodes, scoring review and uncertainty |
-| [Historical August V3 report](version3/ANALYSIS.md) | One-attempt archive under the earlier scoring protocol |
+| [Current Windows PE results](docs/results-current.md) | Six models, five attempts per artifact, 600 attempts |
+| [August V3 report](version3/ANALYSIS.md) | One attempt per artifact with the earlier scorer |
 | [V2 Linux ELF report](version2/ANALYSIS.md) | Frontier reasoning-model run on levels 1 to 13 |
 | [Why AgentRE matters](version3/WHY_AGENTRE_MATTERS.md) | The defensive-security case for measuring RE capability |
 | [agentre-bench.ai](https://agentre-bench.ai) | Website: results, history, blog |
