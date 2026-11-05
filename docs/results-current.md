@@ -1,12 +1,14 @@
 # AgentRE-Bench current Windows PE results
 
-Updated **November 5, 2026**. Website release **v3.1**; rubric **v3.4**; scoring version **`6.2.0+exact-claim-review-20261105`**. Six model configurations, ten programs, 20 stripped/unstripped artifacts, five attempts per artifact: **600 episodes**.
+Six models analyzed ten Windows programs, each supplied as a stripped and unstripped binary. Each model made five attempts per artifact with a budget of 25 tool calls: 100 attempts per model, 600 in total. Analysis was static; the target binaries were never executed.
+
+Updated November 5, 2026. Report v3.1; rubric v3.4; scorer `6.2.0+exact-claim-review-20261105`.
 
 ![Current six-model leaderboard with 90/10 Main/Bonus contributions and individual confidence intervals](leaderboard-v3.svg)
 
 ## Scores and coverage
 
-All scores below are out of 100. Overall averages five planned attempts per artifact and weights the 20 artifacts equally: 90% Main (Levels 14–22) and 10% Bonus (Level 23). Refusals and budget exits retain zero.
+All scores below are out of 100. Overall averages five attempts per artifact and weights the 20 artifacts equally: 90% Main (Levels 14–22) and 10% Bonus (Level 23). Refusals and budget exhaustion count as zero.
 
 | Model | Overall | Individual 95% interval | Main | Bonus | Valid answers | Access |
 | --- | ---: | ---: | ---: | ---: | ---: | --- |
@@ -17,7 +19,9 @@ All scores below are out of 100. Overall averages five planned attempts per arti
 | Claude Opus 5.5 | **69.6560** | 62.57–76.74 | 68.8363 | 77.0330 | 78/100 | API |
 | Gemini 4 Argon | **31.1994** | 13.30–49.10 | 29.5297 | 46.2270 | 36/100 | API |
 
-These are rubric scores, not percentages of fully solved tasks. A valid answer meets the submission format. **Full-credit success is 0/100 for every model, or 0/600 overall**, using final score exactly 1.0 as the criterion.
+Scores measure credit under the rubric. A valid answer meets the submission format but can still contain errors. None of the 600 attempts received full credit.
+
+The intervals use Student t across the five complete-suite repetition means. They describe variability on this fixed set of ten programs. Model settings and token limits differ; the [results download](results/v3-1/scores.json) lists each configuration and the pairwise comparisons.
 
 | Model | Conditional answer quality /100 | Artifacts answered | Refusals / blocks | Budget exits | Thinking |
 | --- | ---: | ---: | ---: | ---: | --- |
@@ -28,25 +32,58 @@ These are rubric scores, not percentages of fully solved tasks. A valid answer m
 | Claude Opus 5.5 | 89.3982 | 19/20 | 22 | 0 | High |
 | Gemini 4 Argon | 85.3845 | 18/20 | 64 | 0 | High |
 
-Conditional quality averages valid answers within each answered artifact, then gives those artifacts equal weight. Models answered different subsets; this is not a separate capability ranking. Across the roster, 508 attempts produced valid answers, 86 ended in refusal/block outcomes, and six exhausted the budget.
+Conditional quality averages valid answers within each answered artifact, then gives those artifacts equal weight. Models answered different subsets, so these means cannot be compared as a separate ranking. Across all models, 508 attempts produced valid answers, 86 ended in refusals or blocks, and six exhausted the budget.
 
-## DeepSeek addition and scoring review
+## Findings from the binaries
 
-DeepSeek V4.1 Flash completed 100 new episodes on the frozen artifacts on November 4–5, 2026. Its 98 valid answers and two budget exits remain in the denominator. Two `URLError` requests recovered through identical-request retries; no terminal infrastructure failure or failed episode was discarded. The requested and echoed model ID was `deepseek-flash`, a mutable alias mapped by the provider to DeepSeek-V4.1-Flash-1017 at collection. No immutable weight identifier was returned.
+Models generally recovered the main injection sequence: the target process, memory allocation, payload writes, and execution method. Average injection-detail scores ranged from 95.3 to 99.6/100 among submitted answers where that field applied. Every submitted answer identified the PE file type correctly. Errors became more apparent in the cipher parameters, callback registration, anti-analysis behavior, and decoded strings.
 
-The base scorer gave DeepSeek 75.9084/100. Review of 219 additional literal-claim interpretations, including one negation-scope correction, produced **78.3077/100**. Seventy-four episode totals changed: 68 increased and six decreased. False assertions retain their penalties. The same exact-claim registry was applied to all six models; the previous 500 episode scores are numerically unchanged.
+| Model | Injection details | Techniques | Algorithms | Key credit | Anti-analysis | Decoded strings |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Muse Wonder | 96.2 | 87.1 | 97.0 | 97.0 | 69.2 | 80.0 |
+| GPT-6 Astra | 99.6 | 72.2 | 100.0 | 100.0 | 84.2 | 100.0 |
+| Grok 4.7 | 98.1 | 70.4 | 86.2 | 83.6 | 88.7 | 88.2 |
+| DeepSeek V4.1 Flash | 95.3 | 82.2 | 89.3 | 87.8 | 59.9 | 40.0 |
+| Claude Opus 5.5 | 99.4 | 84.9 | 100.0 | 100.0 | 62.9 | 100.0 |
+| Gemini 4 Argon | 99.4 | 72.4 | 89.6 | 89.6 | 95.8 | 55.6 |
 
-No binaries, ground truths, weights, or saved answers were changed, and semantic review made no new model inference calls. The original five-model collection had previously been rescored from v3.2/scorer 5.0 to v3.4/scorer 6.2.0. The November result is a disclosed retrospective scoring update, not a claim that all runs originally used the final interpretation rules.
+Each cell is a mean out of 100 over valid answers where the field applies. Refusals and budget exits are excluded from this table. Models answered different subsets. Key credit depends on the associated algorithm description; it is not the percentage of key bytes recovered. Field denominators and the answer examples below are in the [findings data](results/v3-1/findings.json).
 
-## Verification and uncertainty
+### Encryption parameters
 
-A separate AI agent independently reproduced **all 600 baseline and all 600 reviewed score objects**, checked source/evidence hashes and historical provenance, inspected all 219 mappings, and found no numerical blocker. Its verdict is **QUALIFIED**: correct under the frozen rubric and versioned ledger. All eight supplied review regressions passed, alongside 23 independent static/log checks and 13 additional adversarial checks. See the [audit summary](results/v3-1/audit-summary.json).
+Levels 16, 19, 22, and 23 contain custom S-box/XOR transforms. They use AES-related names and constants but do not implement standard AES. Levels 16, 19, and 23 use ten rounds; Level 22 uses fourteen. Recovering these routines requires describing the operations and their parameters.
 
-The review is AI-assisted and post-hoc, not independent human certification. Forty-six source-supported mappings still receive fixed-rubric precision penalties because they concern facts outside the allowed set or observations placed in another field. Scores and unmatched-claim counts therefore cannot be treated as pure factual accuracy or a hallucination rate.
+Muse made a specific error on the unstripped Level 23 binary in attempt 1: it reported the round-dependent XOR value as `round × 18`. The implementation uses `round × 27` (`0x1B`). The answer identified the custom transform but gave the wrong constant.
 
-Individual 95% intervals use Student t across the five complete-suite repetition means. Pairwise comparisons use Welch intervals with Bonferroni protection across all **15** pairs. Muse minus Astra is **+0.3243 points**, with simultaneous 95% interval **−3.8203 to +4.4689**. DeepSeek minus Grok is **−1.3127 points**, with interval **−7.9809 to +5.3555**. Both include zero; the recorded ordering does not establish repeat-run superiority.
+The keys are embedded in the binaries. Recovery requires locating their bytes and associating them with the correct component. Astra recovered all 130 required component keys and received full algorithm credit. Muse recovered 128 of 130 keys; 125 received full key credit after accounting for the algorithm descriptions. DeepSeek recovered 111 of 128 keys, with 108 receiving full key credit.
 
-Intervals describe repeated performance on these fixed public artifacts. Twenty artifacts represent ten programs, and 600 episodes are not 600 independent tasks. The different reasoning settings, effective token limits, client behavior, and collection dates prevent a controlled compute comparison. The public suite does not establish held-out generalization or rule out contamination.
+Grok recovered 120 of 124 keys but often omitted the round count from the algorithm field. In one Level 23 answer, it put the correct ten-round description under key storage instead. That answer lost credit because the scorer reads the algorithm field. Gemini recovered all 51 required keys in its submitted answers, but only 43 received full key credit after the algorithm scores were applied. A reduced key score can therefore reflect an incomplete algorithm description even when the key bytes are correct.
+
+### TLS callback registration
+
+Level 22 contains a custom TLS routine that is not registered in the shipped binary's active callback array. The registered callbacks belong to the compiler runtime. Muse's first unstripped answer claimed that the custom callback would execute before `WinMain`. Grok and Opus also described it running on process attach.
+
+Finding the routine establishes that its code is present. Establishing TLS execution requires following the binary's TLS directory and callback array to that routine. These answers asserted execution without the required registration. A function name or source comment cannot establish that path in the compiled artifact.
+
+### Encoded strings and exact decoding
+
+The benchmark distinguishes encrypted payload bytes from encoded strings. Muse marked encoded strings as present in 74 answers where the ground truth specified otherwise; Astra did so in 75. Those errors reduced their Overall scores by 1.97 and 2.00 points, respectively. Recovering an encrypted payload does not establish that the program's strings are encoded.
+
+Exact string recovery also varied. Across the 20 applicable answers from each model, Astra received full decoded-string credit in all 20, Muse in 16, and DeepSeek in eight. DeepSeek's injection-detail mean was 95.3/100, while its decoded-string mean was 40.0/100. It often recovered the main execution sequence without supplying all the required decoded values. Grok received full decoded-string credit in 15 of 17 applicable answers; Gemini did so in five of nine.
+
+### Technique and anti-analysis findings
+
+Muse scored 87.1/100 for technique identification, compared with Astra's 72.2, despite Astra's stronger encryption and string recovery. Both models submitted all 100 answers. The technique field received full credit in six of Muse's answers and one of Astra's.
+
+Anti-analysis was a weaker field for DeepSeek, Opus, and Muse, with means of 59.9, 62.9, and 69.2/100. Opus received full algorithm and key credit in all 78 submitted answers, but full anti-analysis credit in only nine. DeepSeek received full anti-analysis credit in ten of 98 answers; Muse did so in 31 of 100. The TLS example shows one concrete error in this area: attributing behavior to code that is not registered to run as claimed.
+
+These field scores combine missing expected facts with unsupported claims. They also include wording and field-placement effects. Correct observations outside the rubric can lose credit, so the aggregate deductions should not be reported as a count of factual errors or hallucinations.
+
+### Refusals and budget exhaustion
+
+Opus refused or was blocked on 22 attempts; Gemini on 64. Their Overall scores include those zero-valued attempts. Opus recovered all required algorithms and keys in the answers it submitted, so its lower overall result cannot be explained by encryption analysis alone. Gemini's high injection and anti-analysis means cover only the subset it answered.
+
+Grok exhausted the tool budget on four attempts and DeepSeek on two. These also count as zero. Coverage and field scores describe different failures: whether a model submitted an answer, and what it recovered when it did.
 
 ## Downloads and reproduction
 
@@ -54,8 +91,7 @@ Intervals describe repeated performance on these fixed public artifacts. Twenty 
 - [JSON results, configurations, intervals, and provenance hashes](results/v3-1/scores.json)
 - [Summary CSV](results/v3-1/scores.csv) and [artifact CSV](results/v3-1/artifact-scores.csv)
 - [Public numeric records for all 600 episodes](results/v3-1/reviewed-episodes.json)
-- [Field findings and selected previously published examples](results/v3-1/findings.json)
-- [Independent AI audit summary](results/v3-1/audit-summary.json)
+- [Field scores, component counts, and answer examples](results/v3-1/findings.json)
 - [Preserved October five-model results](results/v3-1/archive/20261025/scores.json)
 - [Scoring contract and review history](scoring.md)
 
@@ -67,10 +103,10 @@ python3 scripts/build_site_results.py
 python3 scripts/build_github_results.py
 ```
 
-These commands reproduce the presentation and aggregates from public numeric records without model calls. They do not regrade the raw answers; the current complete answer/log archive and grading evidence are not part of this public presentation update. Original answer, report, review-ledger, and adapter hashes remain in the published provenance.
+These commands rebuild the tables, graphics, and website from the published numeric records. They do not regrade raw answers. The [scoring documentation](scoring.md) records the grading rules and retrospective corrections used for this report.
 
-## Historical and incomplete runs
+## Earlier results
 
-The [August V3 report](../version3/ANALYSIS.md) uses one attempt per artifact and the older Main-plus-Bonus total. Its Kimi K3 results are not included in this five-attempt leaderboard. The stopped Kimi K3.1, GLM 5.3, and GLM Flash campaigns are incomplete and excluded. No new Kimi regrade is included in this release.
+The [August V3 report](../version3/ANALYSIS.md) uses one attempt per artifact and the older Main-plus-Bonus total. Those results, including Kimi K3, are not directly comparable with this five-attempt evaluation. Incomplete campaigns are excluded from the current table.
 
-The binary corpus is unchanged. Its authored code and constants support static-analysis tasks; routine names do not establish working cryptography or successful execution. Synthetic S-box/XOR routines are not standard AES, Level 18’s syscall invocation stub is nonfunctional, and Level 22’s authored TLS routine is not registered. The samples are never executed during evaluation.
+The suite consists of synthetic, public programs. These results describe static analysis of those artifacts; they do not establish performance on unseen malware or successful execution of the behaviors described.
