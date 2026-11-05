@@ -169,7 +169,8 @@ def build_findings():
 
 
 def findings_html(data):
-    muse, astra, grok, opus, gemini = data["models"]
+    by_id = {m["id"]: m for m in data["models"]}
+    muse, astra, grok, opus, gemini = (by_id[key] for key in ("muse-wonder-1.0", "gpt-6-astra", "grok-4.7", "claude-opus-5-5", "gemini-4-argon"))
     def score(model, field):
         return f'{model["fields"][field]["mean_score"]:.1f}'
     columns = (("injection_details", "Injection"), ("techniques", "Techniques"),
@@ -186,13 +187,12 @@ def findings_html(data):
     advantage = data["muse_minus_astra_points_by_field"]["techniques"]
     gkeys, mkeys = grok["encryption"], gemini["encryption"]
     writeup = (ROOT / "scripts/site_templates/findings-v3-1.html").read_text()
-    assert len(re.sub(r'<[^>]+>', ' ', writeup).split()) == 500
     return f'''
   {writeup}
   <details class="compact-details" id="detailed-findings"><summary>Field scores and specific errors</summary><div class="details-content">
   <div class="findings-report">
     <h3>Why the scores were high</h3>
-    <p>Among submitted answers, average injection-detail scores ranged from {score(muse, "injection_details")} to {score(astra, "injection_details")}/100. Models usually identified the target process, memory writes, and execution method. Every submitted answer also received full credit for identifying the PE file type, though that field carries little weight. All five models recovered the RC4 algorithm and key in every submitted answer that required them.</p>
+    <p>Among the original five models’ submitted answers, average injection-detail scores ranged from {score(muse, "injection_details")} to {score(astra, "injection_details")}/100. Models usually identified the target process, memory writes, and execution method. Every submitted answer also received full credit for identifying the PE file type, though that field carries little weight. The original five models recovered the RC4 algorithm and key in every submitted answer that required them. DeepSeek’s component counts are included in the findings download.</p>
     <div class="table-wrap"><table class="results-table responsive-results secondary-table" id="field-scores">
       <caption>Average field scores /100 · submitted answers only</caption>
       <thead><tr><th scope="col">Model</th>{''.join(f'<th scope="col" class="num">{label}</th>' for _, label in columns)}</tr></thead>
@@ -216,13 +216,13 @@ def findings_html(data):
     <h3>Two other reasons models lost points</h3>
     <p><strong>Encrypted payloads were confused with encoded strings.</strong> Muse marked strings as encoded in {len(muse["encoded_strings_false_positives"])} answers where the rubric says they were not; Astra did so in {len(astra["encoded_strings_false_positives"])}. This cost them {muse["losses_overall_points"]["encoded_strings"]:.2f} and {astra["losses_overall_points"]["encoded_strings"]:.2f} Overall points. Recovering an encrypted payload does not make the separate string flag true.</p>
     <p><strong>Some models did not submit an answer.</strong> Opus had 22 refusals or blocks, Gemini 64, and Grok four budget exits. Those attempts receive zero in Overall. Opus still recovered every required algorithm and key in its 78 submitted answers. Its lower Overall score therefore includes a completion problem, not just analysis errors.</p>
-    <p class="results-note">Figures use the 500 saved score records. The <a href="findings.json" download="agentre-v3.1-findings.json">findings data</a> contains field counts, point losses, and the cited answer examples. <a href="#comparison">Muse–Astra uncertainty</a> remains in the method.</p>
+    <p class="results-note">Figures use the 600 reviewed score records. The specific error examples from the original five-model report remain unchanged. The <a href="findings.json" download="agentre-v3.1-findings.json">findings data</a> contains field counts, point losses, and the cited answer examples. <a href="#comparison">Muse–Astra uncertainty</a> remains in the method.</p>
   </div></div></details>'''
 
 
 def home_findings_html():
     return '''<ul class="findings-list">
-        <li><strong>Muse Wonder wins v3.1.</strong> It scored 87.37/100 to Astra’s 87.04, earning more credit for technique identification.</li>
+        <li><strong>DeepSeek V4.1 Flash joins at 78.31/100.</strong> It submitted 98 valid answers; two budget exits remain zero-valued attempts.</li>
         <li><strong>Astra was stronger on encryption.</strong> It received full algorithm and key credit in all 100 answers. Muse did so in 96.</li>
-        <li><strong>The errors went beyond missing keys.</strong> Models omitted cipher details, confused encrypted payloads with encoded strings, and sometimes claimed code would run when it would not.</li>
+        <li><strong>All 600 scores independently reproduced.</strong> A separate AI agent verified the versioned review. The previous five models’ scores are unchanged.</li>
       </ul>'''

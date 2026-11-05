@@ -1,4 +1,4 @@
-"""Build the v3.1 website release from the frozen 6.2.0 aggregate reports.
+"""Build the v3.1 website release from public reviewed numeric episode records.
 
 The website release name does not rename the underlying rubric or artifacts.
 Only explicitly selected aggregate fields are exported; no transcripts or secrets.
@@ -9,8 +9,8 @@ import re
 from html import escape
 from pathlib import Path
 
-from build_results_preview import MODELS, ROOT, SOURCE, build_data
-from site_findings import build_findings, findings_html, home_findings_html
+from build_results_preview import ROOT
+from site_findings import findings_html, home_findings_html
 from site_interactions import interaction_parts, csv_downloads
 
 OUT = ROOT / "docs/results/v3-1"
@@ -32,46 +32,8 @@ def cell(label, content, cls="num"):
 
 
 def build():
-    data = build_data()
-    findings = build_findings()
-    data.update(release="v3.1", rubric=data["suite"], score_scale=100,
-                aggregation="artifact_mean_v1", main_weight=0.9, bonus_weight=0.1)
-    paths = {model_id: SOURCE / (filename + ".json") for filename, model_id, *_ in MODELS}
-    for model in data["models"]:
-        report = json.loads(paths[model["id"]].read_text())
-        assert report["run_status"] == "complete"
-        model["artifacts"] = [
-            {"task_id": row["task_id"], "mean": row["mean_score"] * 100,
-             "attempts": row["trial_count"],
-             "valid": sum(t["status"] == "valid_answer" for t in row["trials"])}
-            for row in report["artifact_results"]
-        ]
-        assert len(model["artifacts"]) == 20
-        assert all(row["attempts"] == 5 for row in model["artifacts"])
-        assert abs(sum(row["mean"] for row in model["artifacts"]) / 20 - model["overall"]) < 1e-8
-        stripping = report["stripping_analysis"]
-        all_pairs = stripping["all_episodes"]
-        complete = stripping["valid_answer_pairs_only"]
-        model["stripping"] = {
-            "direction": "stripped_minus_unstripped",
-            "all_pairs": all_pairs["pair_episodes"],
-            "all_delta_pp": all_pairs["uncertainty"]["mean"] * 100,
-            "interval_pp": [v * 100 for v in all_pairs["uncertainty"]["confidence_interval"]],
-            "valid_pairs": complete["pair_episodes"],
-            "valid_delta_pp": complete["mean"] * 100 if complete["mean"] is not None else None,
-        }
-        settings = report["conditions"]["settings"]
-        model["settings"] = {key: settings.get(key) for key in
-                             ("max_tool_calls", "max_model_turns", "max_tokens",
-                              "effective_output_token_cap", "seed")}
-
-    pair_path = SOURCE / "PAIR_VERIFICATION.json"
-    data["source_report_sha256"][pair_path.name] = hashlib.sha256(pair_path.read_bytes()).hexdigest()
-    data["uncertainty"] = {
-        "individual_intervals": "95% Student t intervals across five full-suite repetition means",
-        "pair_interval": "Welch interval with Bonferroni protection across all ten model pairs",
-        "scope": "Repeat performance on the fixed public artifact suite",
-    }
+    from reviewed_site_data import build_reviewed_data
+    data, findings = build_reviewed_data()
     rows, home_rows, quality_rows, stripping_rows, settings_rows = [], [], [], [], []
     for rank, model in enumerate(data["models"], 1):
         name = escape(model["name"])
@@ -138,6 +100,9 @@ def build():
         "NAV": nav, "FOOTER": footer, "MINI_ROWS": mini_rows,
         "SCORE_ROWS": '\n'.join(rows), "QUALITY_ROWS": '\n'.join(quality_rows),
         "STRIPPING_ROWS": '\n'.join(stripping_rows), "SETTINGS_ROWS": '\n'.join(settings_rows),
+        "ARTIFACT_HEADINGS": ''.join(f'<th scope="col" class="num">{escape(m["name"])}</th>' for m in data["models"]),
+        "PAIR_LOW": f'{data["pair"]["interval_pp"][0]:+.4f}',
+        "PAIR_HIGH": f'{data["pair"]["interval_pp"][1]:+.4f}',
         "ARTIFACT_ROWS": '\n'.join(artifact_rows),
         "FINDINGS": findings_html(findings),
         **interactive,

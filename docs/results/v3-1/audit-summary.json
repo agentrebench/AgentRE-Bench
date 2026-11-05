@@ -1,0 +1,216 @@
+{
+  "verdict": "QUALIFIED",
+  "generated_at": "2026-11-05T02:01:42.433797+00:00",
+  "recommendation": "The parent can honestly state that an independent AI reviewer reproduced and verified the saved results, and found no numerical or provenance blocker. Say they are correct under the fixed rubric and explicitly versioned post-hoc ledger; do not claim independent human certification or unconditional factual-accuracy validation.",
+  "independence": "Fresh reviewer did not implement the campaign, adapters, ledger, or reviewed results. No subagents. Original grading adapter main/load_cases were not used by the independent replay. Frozen score_sample was called directly; hashes, loading, review metadata application, arithmetic, and confidence intervals were independently reconstructed.",
+  "results": [
+    {
+      "model": "claude_opus55_high_subscription",
+      "episodes": 100,
+      "baseline_mean": 0.69656,
+      "reviewed_mean": 0.69656,
+      "trial_means": [
+        0.668825,
+        0.6779,
+        0.75454,
+        0.625715,
+        0.75582
+      ],
+      "ci95": [
+        0.6257474007450784,
+        0.7673725992549215
+      ],
+      "status_counts": {
+        "refusal": 22,
+        "valid_answer": 78
+      },
+      "review_flagged_baseline": 0,
+      "numeric_changed": 0,
+      "increased": 0,
+      "decreased": 0,
+      "full_credit": 0,
+      "distinct_recorded_settings": 1
+    },
+    {
+      "model": "codex_astra_xhigh_subscription",
+      "episodes": 100,
+      "baseline_mean": 0.870438,
+      "reviewed_mean": 0.870438,
+      "trial_means": [
+        0.8673,
+        0.880795,
+        0.85776,
+        0.88057,
+        0.865765
+      ],
+      "ci95": [
+        0.8579850861052087,
+        0.8828909138947914
+      ],
+      "status_counts": {
+        "valid_answer": 100
+      },
+      "review_flagged_baseline": 0,
+      "numeric_changed": 0,
+      "increased": 0,
+      "decreased": 0,
+      "full_credit": 0,
+      "distinct_recorded_settings": 1
+    },
+    {
+      "model": "deepseek",
+      "episodes": 100,
+      "baseline_mean": 0.759084,
+      "reviewed_mean": 0.783077,
+      "trial_means": [
+        0.789785,
+        0.78142,
+        0.78084,
+        0.744505,
+        0.818835
+      ],
+      "ci95": [
+        0.750113329817639,
+        0.816040670182361
+      ],
+      "status_counts": {
+        "valid_answer": 98,
+        "budget_exhaustion": 2
+      },
+      "review_flagged_baseline": 83,
+      "numeric_changed": 74,
+      "increased": 68,
+      "decreased": 6,
+      "full_credit": 0,
+      "distinct_recorded_settings": 1
+    },
+    {
+      "model": "gemini_argon4_high",
+      "episodes": 100,
+      "baseline_mean": 0.311994,
+      "reviewed_mean": 0.311994,
+      "trial_means": [
+        0.12555,
+        0.52176,
+        0.353575,
+        0.29558,
+        0.263505
+      ],
+      "ci95": [
+        0.13301262248209578,
+        0.4909753775179042
+      ],
+      "status_counts": {
+        "refusal": 64,
+        "valid_answer": 36
+      },
+      "review_flagged_baseline": 0,
+      "numeric_changed": 0,
+      "increased": 0,
+      "decreased": 0,
+      "full_credit": 0,
+      "distinct_recorded_settings": 1
+    },
+    {
+      "model": "muse_wonder_high_native_cli",
+      "episodes": 100,
+      "baseline_mean": 0.873681,
+      "reviewed_mean": 0.873681,
+      "trial_means": [
+        0.8795,
+        0.899535,
+        0.851375,
+        0.870105,
+        0.86789
+      ],
+      "ci95": [
+        0.8517649166624013,
+        0.8955970833375988
+      ],
+      "status_counts": {
+        "valid_answer": 100
+      },
+      "review_flagged_baseline": 0,
+      "numeric_changed": 0,
+      "increased": 0,
+      "decreased": 0,
+      "full_credit": 0,
+      "distinct_recorded_settings": 1
+    },
+    {
+      "model": "xai_grok47_high",
+      "episodes": 100,
+      "baseline_mean": 0.796204,
+      "reviewed_mean": 0.796204,
+      "trial_means": [
+        0.7771399999999999,
+        0.7959,
+        0.837175,
+        0.792855,
+        0.77795
+      ],
+      "ci95": [
+        0.7658747481246444,
+        0.8265332518753556
+      ],
+      "status_counts": {
+        "valid_answer": 96,
+        "budget_exhaustion": 4
+      },
+      "review_flagged_baseline": 0,
+      "numeric_changed": 0,
+      "increased": 0,
+      "decreased": 0,
+      "full_credit": 0,
+      "distinct_recorded_settings": 1
+    }
+  ],
+  "verification": {
+    "baseline_objects_reproduced": 600,
+    "reviewed_objects_reproduced": 600,
+    "unique_original_episode_ids": 600,
+    "failure_outcomes_retained_at_zero": 92,
+    "deepseek_valid_answers": 98,
+    "deepseek_budget_exhaustions": 2,
+    "deepseek_baseline_flags": 83,
+    "deepseek_remaining_flags": 0,
+    "deepseek_numeric_changes": 74,
+    "deepseek_increases": 68,
+    "deepseek_decreases": 6,
+    "historical_scores_changed": 0,
+    "full_credit_episodes_all_models": 0,
+    "exact_literals_inspected": 219,
+    "literal_applications": 223,
+    "mixed_or_unsupported_claims_preserved": 36,
+    "review_decisions": {
+      "supported": 183,
+      "mixed": 33,
+      "unsupported": 3
+    },
+    "runtime_inventory_files_verified": 118,
+    "ledger_evidence_references_verified": 596,
+    "original_deepseek_trial_files_verified": 510,
+    "prior_validation_snapshot_files_verified": 1836,
+    "source_report_hashes_verified": 30,
+    "original_answer_and_transcript_hash_pairs_verified": 600,
+    "original_historical_truth_and_manifest_hashes_verified": 500,
+    "independent_static_log_checks_passed": 23,
+    "additional_adversarial_checks_passed": 13,
+    "provided_regression_tests_passed": 8,
+    "no_op_tasks_zero": 20,
+    "new_alias_mutations_excluded": 219,
+    "source_and_evaluation_artifacts_unchanged_during_replay": true
+  },
+  "numerical_blockers": [],
+  "required_code_fixes": [],
+  "audit_report_sha256": "553ae3c703688908f7e1e665b8463e3c827ac7680966f256c45cc377f0477dd3",
+  "limitations": [
+    "Independent AI review, not independent human certification.",
+    "Scores reflect fixed-rubric credit; 46 source-supported mappings still incur precision penalties.",
+    "Post-hoc exact-claim review, applied uniformly to 600 saved answers.",
+    "Prior five models retain documented v3.2 to v3.4 rescoring history.",
+    "Model settings, transports and collection dates differ; five trials estimate variability on the fixed public suite.",
+    "DeepSeek returned a mutable provider alias; two recovered URLError requests are retained in raw logs.",
+    "Zero full-credit episodes across all six models; coverage is not success."
+  ]
+}

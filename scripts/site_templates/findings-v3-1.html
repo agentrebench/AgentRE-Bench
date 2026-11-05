@@ -1,9 +1,11 @@
+  <p><strong>November 5 update:</strong> DeepSeek V4.1 Flash adds 100 attempts on the same frozen artifacts: <strong>78.31/100 Overall</strong>, 78.43 Main, and 77.25 Bonus. Its fixed-suite 95% interval is 75.01–81.60. It submitted 98 valid answers; two budget exits remain zero. Six models now contribute 600 episodes.</p>
+  <p>The exact-claim review changes DeepSeek’s baseline from 75.91 to 78.31. It was applied to all 600 saved answers, leaving the original five models’ numerical scores unchanged. Scores measure credit under the fixed rubric, including field-placement and allowed-fact constraints. A valid answer is not a fully correct solution: no episode earned full rubric credit.</p>
 <article class="findings-writeup" aria-label="Our findings and why reverse engineering matters">
   <p>When you get a binary, you still need to know what it actually does. The source might be unavailable. The names might be stripped. The useful details might be buried behind layers of encoding. That matters when investigating malware, checking a dependency, or understanding software nobody can explain anymore. The answer needs evidence you can check.</p>
 
   <p>That is what we want AgentRE to measure. Give a model the binary, tools, and a fixed budget, then see what it can recover. Can it follow the execution path? Find the keys? Can somebody else take that explanation back to the instructions and confirm it?</p>
 
-  <p>For v3.1, we ran five models on twenty Windows binaries, covering ten programs with and without symbols. Each model got five attempts per binary: 500 attempts. We averaged all five scores. Refusals and budget exhaustion stayed in the results.</p>
+  <p>The original v3.1 report evaluated five models on twenty Windows binaries, covering ten programs with and without symbols. Each model got five attempts per binary: 500 attempts in the October report. We averaged all five scores. Refusals and budget exhaustion stayed in the results.</p>
 
   <p>Muse Wonder finished first at 87.37/100, followed by GPT-6 Astra at 87.04. Both submitted answers on all 100 attempts. Muse earned more technique credit. Astra recovered encryption details more consistently and led the bonus tasks. The gap is small, and these runs do not establish that Muse would reliably beat Astra again.</p>
 
@@ -15,7 +17,7 @@
 
   <p>Completion mattered. Opus submitted 78 valid answers and Gemini 36. Opus recovered every required algorithm and key in its submitted answers. Its Overall score includes refusals. Showing coverage beside answer quality makes that difference visible.</p>
 
-  <p>These public samples measure performance on this suite, with source withheld during each attempt. They do not establish performance on every unfamiliar binary. The scorer still needs independent wording checks.</p>
+  <p>These public samples measure performance on this suite, with source withheld during each attempt. They do not establish performance on every unfamiliar binary. The November extension applies a versioned wording review to all 600 saved answers. A separate AI agent verified the scores and mappings; independent human adjudication remains outstanding.</p>
 
   <p>A model can recognize a cipher and still get its implementation wrong. Our reconstruction data lets us compare reconstructed functions’ outputs with the binary’s outputs on private test inputs. Reinforcement learning can use those checks to reward correct results and train against specific mistakes. Separate evaluation tasks give us a way to check whether training improves recovery and where errors still remain.</p>
 

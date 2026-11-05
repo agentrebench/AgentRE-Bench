@@ -1,13 +1,14 @@
 {
-  "date": "2026-10-25",
+  "date": "2026-11-05",
   "definitions": {
     "correct_key_bytes": "Required component has the correct key bytes, independent of its algorithm score. Component counts differ from answer counts.",
     "examples": "Selected saved-answer examples checked against source or existing static binary evidence, not a new audit of every claim.",
     "field_means": "Mean field score across valid answers where that field is scored; not a new ranking. Models answered different subsets.",
     "losses": "Points lost from 100 across all 100 planned attempts; field losses, penalties, nonanswers and rounding sum to 100 minus Overall.",
+    "review": "Post-hoc assistant review against fixed ground truths and static evidence; not independent human adjudication.",
     "unsupported": "Scorer-rejected claims include incomplete, misplaced and unrecognized wording; these are not a verified hallucination rate."
   },
-  "episodes": 500,
+  "episodes": 600,
   "examples": [
     {
       "answer_fields": {
@@ -2079,6 +2080,111 @@
       }
     },
     {
+      "encryption": {
+        "by_algorithm": {
+          "RC4": {
+            "components": 40,
+            "correct_key_bytes": 39,
+            "full_algorithm_credit": 38
+          },
+          "SBOX-XOR-10": {
+            "components": 30,
+            "correct_key_bytes": 22,
+            "full_algorithm_credit": 21
+          },
+          "SBOX-XOR-14": {
+            "components": 8,
+            "correct_key_bytes": 7,
+            "full_algorithm_credit": 8
+          },
+          "XOR": {
+            "components": 50,
+            "correct_key_bytes": 43,
+            "full_algorithm_credit": 43
+          }
+        },
+        "correct_key_bytes": 111,
+        "fully_scored_keys": 108,
+        "partial_algorithm_reasons": {
+          "bundled_algorithm": 1,
+          "contradictory_or_bundled": 1,
+          "missing_or_malformed": 14,
+          "wrong_rc4_state_size": 1,
+          "wrong_round_constant": 1
+        },
+        "required_components": 128
+      },
+      "fields": {
+        "anti_analysis": {
+          "answers": 98,
+          "full_credit_answers": 10,
+          "mean_score": 59.933632364209856
+        },
+        "c2_protocol": {
+          "answers": 10,
+          "full_credit_answers": 6,
+          "mean_score": 60.0
+        },
+        "decoded_strings": {
+          "answers": 20,
+          "full_credit_answers": 8,
+          "mean_score": 40.0
+        },
+        "encoded_strings": {
+          "answers": 98,
+          "full_credit_answers": 49,
+          "mean_score": 50.0
+        },
+        "encryption_algorithm": {
+          "answers": 98,
+          "full_credit_answers": 86,
+          "mean_score": 89.28571428571429
+        },
+        "encryption_key": {
+          "answers": 98,
+          "full_credit_answers": 84,
+          "mean_score": 87.75510204081633
+        },
+        "file_type": {
+          "answers": 98,
+          "full_credit_answers": 98,
+          "mean_score": 100.0
+        },
+        "injection_details": {
+          "answers": 88,
+          "full_credit_answers": 64,
+          "mean_score": 95.3030303030303
+        },
+        "techniques": {
+          "answers": 98,
+          "full_credit_answers": 7,
+          "mean_score": 82.16233856655262
+        }
+      },
+      "id": "deepseek-v4.1-flash",
+      "losses_overall_points": {
+        "anti_analysis": 5.138710522435366,
+        "c2_protocol": 0.25,
+        "decoded_strings": 1.7610294117647058,
+        "encoded_strings": 1.3066666666666653,
+        "encryption_algorithm": 0.7,
+        "encryption_key": 1.6583333333333332,
+        "extra_field_penalty": 2.4000000000000004,
+        "extra_technique_penalty": 0.0,
+        "file_type": 0.0,
+        "injection_details": 1.102222222222222,
+        "rounding_adjustment": 9.233253958385035e-05,
+        "techniques": 5.375245511038125,
+        "unanswered_attempts": 2
+      },
+      "name": "DeepSeek V4.1 Flash",
+      "outcomes": {
+        "budget_exhaustion": 2,
+        "valid_answer": 98
+      },
+      "overall": 78.3077
+    },
+    {
       "encoded_strings_false_positives": [
         {
           "task_id": "v3_l16_u",
@@ -2306,7 +2412,7 @@
         "extra_technique_penalty": 0.0,
         "file_type": 0.0,
         "injection_details": 0.10476190476190478,
-        "rounding_adjustment": -4.3190071988163936e-05,
+        "rounding_adjustment": -4.319007200237479e-05,
         "techniques": 3.7040219694625414,
         "unanswered_attempts": 22
       },
@@ -2352,7 +2458,7 @@
         "refusal": 22,
         "valid_answer": 78
       },
-      "overall": 69.65599999999999,
+      "overall": 69.656,
       "unmatched_technique_counts": {
         "anti_sandbox_dll_check": 7,
         "base_relocation_fixup": 6,
@@ -2561,13 +2667,19 @@
   },
   "release": "v3.1",
   "rubric": "v3.4",
-  "scorer": "6.2.0",
+  "scorer": "6.2.0+exact-claim-review-20261105",
   "source_sha256": {
+    "claude_opus55_high_subscription.json": "5236b16e678bb526bff08042e90d8fd4142add7084cf816e429a3c878aca54be",
+    "codex_astra_xhigh_subscription.json": "6e08e86985b080a48b929340b77afbfcc634c4c39a3ebde47a59cd2ee2af3b3c",
+    "deepseek.json": "f2e9ff8a653bac38c38376e1ec25a711e5bd01a96ba8568e76965c92d1a094bb",
+    "gemini_argon4_high.json": "7003895fe8fc8cb7e1ecf9c02bc5879099aff13208a9c52832cf7bf4bdf6d500",
+    "muse_wonder_high_native_cli.json": "92be8eda4466b4b8f6d1a13a2e5a09e120dc34be2a435dc842e78e3ef8f8d297",
     "results/v3_4-20261025-rescore-6_2_0/claude_opus55_high_subscription.json": "154dedefe5dfa89c112932bfc69cb02f125015ea281d6f74f17ae1190ca1ef3b",
     "results/v3_4-20261025-rescore-6_2_0/codex_astra_xhigh_subscription.json": "4ce9ae01618c41dae2378d75473bd699f1cd534ec8994478219126a32d5f51cf",
     "results/v3_4-20261025-rescore-6_2_0/gemini_argon4_high.json": "5d67cbc8c35f846af752d042eab4824094173f6d7cf40abe2ebca6dbe7650c23",
     "results/v3_4-20261025-rescore-6_2_0/muse_wonder_high_native_cli.json": "e869904f0db3133a654edc18302f4044035227dcc0561caff95cf411c5ba69ce",
     "results/v3_4-20261025-rescore-6_2_0/xai_grok47_high.json": "4b61d939c631f16f20f1434607e83f18ed7dc04004776963b282b2691684daa3",
+    "reviewed-episodes.json": "a2f87d99d5fa77bac242e92ffe60ba851aa72297f22f69f637dbbf60ef226b88",
     "reviews/claims-20261025/runtime_tls_all_levels.json": "609a66330df36da4b005dfe3e084b53c0a8cc00e3291c9c363988323c7000dcb",
     "version3/sources/windows_level14_DLLInjection.c": "0974819913c49b8493828b174dcb8635966c8bc4031b6e4223eaac1c64bfebc0",
     "version3/sources/windows_level15_APCInjection.c": "1eb8727b149397f0b6dc824fec54b1d6f601bddb3964482132c63dea1ea77c2e",
@@ -2590,7 +2702,8 @@
     "version3/v3_4/ground_truths/windows_level22_AESEncryptedMultiTechnique.json": "ea18836dd9ca3aba764ac6d418838a5640242d8f4e2940e28eb361e49090eb29",
     "version3/v3_4/ground_truths/windows_level23_WannaCryWorm.json": "f152391bda1c88d6be53ecbb2da095cbf73f142bd23a7ea96a083d45690be724",
     "version3/v3_4/scorer_6_2_0/scorer.py": "afcf0b56342fc4c6e79f0820de8b84fa60920b926e8540c98b74f3e5fc32bf68",
-    "version3/v3_4/tasks_v3_4_scorer6_2_0.json": "ee0816f6d5d32789c8e44147cead01d1b1d6e5b936f89126ab2c93e539da3335"
+    "version3/v3_4/tasks_v3_4_scorer6_2_0.json": "ee0816f6d5d32789c8e44147cead01d1b1d6e5b936f89126ab2c93e539da3335",
+    "xai_grok47_high.json": "bdec1fc42711d79407ed9e883af996377b09e5c44aa9ac5f180e5b09a289e2a6"
   },
-  "valid_answers": 410
+  "valid_answers": 508
 }

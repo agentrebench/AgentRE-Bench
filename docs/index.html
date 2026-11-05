@@ -53,7 +53,7 @@
 
   <main id="main" class="shell main-shell">
     <section class="intro" aria-labelledby="hero-title">
-      <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> Open benchmark <span class="metadata-divider">/</span> Version 3.1 · October 2026</p>
+      <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> Open benchmark <span class="metadata-divider">/</span> Version 3.1 · November 2026</p>
       <h1 id="hero-title">AgentRE-Bench</h1>
       <p class="intro-question">Can AI agents reason about software without its source code?</p>
       <p class="intro-description">AgentRE tests how models analyze binaries without source code, identifies where they fail, and turns those failures into training signals for better reverse engineering agents.</p>
@@ -111,7 +111,7 @@
         <h2 id="results-title">Latest results</h2>
         <span class="section-meta">v3.1 · Windows PE</span>
       </div>
-      <p>Ten Windows programs, each evaluated with and without symbols. Five models, 20 artifacts, five attempts per artifact: 500 episodes.</p>
+      <p>Ten Windows programs, each evaluated with and without symbols. Six models, 20 artifacts, five attempts per artifact: 600 episodes.</p>
       <div class="metric-guide" aria-label="Explain the metrics"><span>Score guide</span><!-- HOME_METRIC_HELP_START -->
 <button type="button" class="metric-trigger" popovertarget="term-episodes">Episodes<span aria-hidden="true">?</span></button><button type="button" class="metric-trigger" popovertarget="term-overall">Overall<span aria-hidden="true">?</span></button><button type="button" class="metric-trigger" popovertarget="term-main">Main<span aria-hidden="true">?</span></button><button type="button" class="metric-trigger" popovertarget="term-bonus">Bonus<span aria-hidden="true">?</span></button><button type="button" class="metric-trigger" popovertarget="term-valid">Valid answers<span aria-hidden="true">?</span></button><button type="button" class="metric-trigger" popovertarget="term-quality">Answer quality<span aria-hidden="true">?</span></button>
 <!-- HOME_METRIC_HELP_END --></div>
@@ -124,8 +124,9 @@
 <tr class="leading-model"><td class="rank">01</td><th scope="row">Muse Wonder</th><td class="numeric total">87.37</td><td class="numeric">87.37</td><td class="numeric">87.37</td><td class="numeric">100/100</td></tr>
 <tr><td class="rank">02</td><th scope="row">GPT-6 Astra</th><td class="numeric total">87.04</td><td class="numeric">86.40</td><td class="numeric">92.82</td><td class="numeric">100/100</td></tr>
 <tr><td class="rank">03</td><th scope="row">Grok 4.7</th><td class="numeric total">79.62</td><td class="numeric">81.02</td><td class="numeric">67.04</td><td class="numeric">96/100</td></tr>
-<tr><td class="rank">04</td><th scope="row">Claude Opus 5.5</th><td class="numeric total">69.66</td><td class="numeric">68.84</td><td class="numeric">77.03</td><td class="numeric">78/100</td></tr>
-<tr><td class="rank">05</td><th scope="row">Gemini 4 Argon</th><td class="numeric total">31.20</td><td class="numeric">29.53</td><td class="numeric">46.23</td><td class="numeric">36/100</td></tr>
+<tr><td class="rank">04</td><th scope="row">DeepSeek V4.1 Flash</th><td class="numeric total">78.31</td><td class="numeric">78.43</td><td class="numeric">77.25</td><td class="numeric">98/100</td></tr>
+<tr><td class="rank">05</td><th scope="row">Claude Opus 5.5</th><td class="numeric total">69.66</td><td class="numeric">68.84</td><td class="numeric">77.03</td><td class="numeric">78/100</td></tr>
+<tr><td class="rank">06</td><th scope="row">Gemini 4 Argon</th><td class="numeric total">31.20</td><td class="numeric">29.53</td><td class="numeric">46.23</td><td class="numeric">36/100</td></tr>
 <!-- CURRENT_RESULTS_END -->
           </tbody>
         </table>
@@ -143,12 +144,16 @@
           <summary><span class="mobile-rank">03</span><span class="mobile-name">Grok 4.7<small>96/100 valid answers</small></span><span class="mobile-value"><strong>79.62</strong><small>Overall</small><span class="mobile-expand" aria-hidden="true">Details ↓</span></span></summary>
           <dl><div><dt>Main · 90%</dt><dd>81.02</dd></div><div><dt>Bonus · 10%</dt><dd>67.04</dd></div><div><dt>Overall 95% interval</dt><dd>76.59–82.65</dd></div><div><dt>Thinking</dt><dd>High</dd></div></dl>
         </details>
+<details class="mobile-model" data-model="deepseek-v4.1-flash">
+          <summary><span class="mobile-rank">04</span><span class="mobile-name">DeepSeek V4.1 Flash<small>98/100 valid answers</small></span><span class="mobile-value"><strong>78.31</strong><small>Overall</small><span class="mobile-expand" aria-hidden="true">Details ↓</span></span></summary>
+          <dl><div><dt>Main · 90%</dt><dd>78.43</dd></div><div><dt>Bonus · 10%</dt><dd>77.25</dd></div><div><dt>Overall 95% interval</dt><dd>75.01–81.60</dd></div><div><dt>Thinking</dt><dd>Max</dd></div></dl>
+        </details>
 <details class="mobile-model" data-model="claude-opus-5-5">
-          <summary><span class="mobile-rank">04</span><span class="mobile-name">Claude Opus 5.5<small>78/100 valid answers</small></span><span class="mobile-value"><strong>69.66</strong><small>Overall</small><span class="mobile-expand" aria-hidden="true">Details ↓</span></span></summary>
+          <summary><span class="mobile-rank">05</span><span class="mobile-name">Claude Opus 5.5<small>78/100 valid answers</small></span><span class="mobile-value"><strong>69.66</strong><small>Overall</small><span class="mobile-expand" aria-hidden="true">Details ↓</span></span></summary>
           <dl><div><dt>Main · 90%</dt><dd>68.84</dd></div><div><dt>Bonus · 10%</dt><dd>77.03</dd></div><div><dt>Overall 95% interval</dt><dd>62.57–76.74</dd></div><div><dt>Thinking</dt><dd>High</dd></div></dl>
         </details>
 <details class="mobile-model" data-model="gemini-4-argon">
-          <summary><span class="mobile-rank">05</span><span class="mobile-name">Gemini 4 Argon<small>36/100 valid answers</small></span><span class="mobile-value"><strong>31.20</strong><small>Overall</small><span class="mobile-expand" aria-hidden="true">Details ↓</span></span></summary>
+          <summary><span class="mobile-rank">06</span><span class="mobile-name">Gemini 4 Argon<small>36/100 valid answers</small></span><span class="mobile-value"><strong>31.20</strong><small>Overall</small><span class="mobile-expand" aria-hidden="true">Details ↓</span></span></summary>
           <dl><div><dt>Main · 90%</dt><dd>29.53</dd></div><div><dt>Bonus · 10%</dt><dd>46.23</dd></div><div><dt>Overall 95% interval</dt><dd>13.30–49.10</dd></div><div><dt>Thinking</dt><dd>High</dd></div></dl>
         </details>
 <!-- HOME_MOBILE_RESULTS_END --></div>
@@ -157,11 +162,11 @@
     </section>
 
     <section class="article-section" id="findings" aria-labelledby="findings-title">
-      <div class="section-heading"><h2 id="findings-title">Latest findings</h2><time class="section-meta" datetime="2026-10-25">October 25, 2026</time></div>
+      <div class="section-heading"><h2 id="findings-title">Latest findings</h2><time class="section-meta" datetime="2026-10-25">November 5, 2026</time></div>
       <ul class="findings-list">
-        <li><strong>Muse Wonder wins v3.1.</strong> It scored 87.37/100 to Astra’s 87.04, earning more credit for technique identification.</li>
+        <li><strong>DeepSeek V4.1 Flash joins at 78.31/100.</strong> It submitted 98 valid answers; two budget exits remain zero-valued attempts.</li>
         <li><strong>Astra was stronger on encryption.</strong> It received full algorithm and key credit in all 100 answers. Muse did so in 96.</li>
-        <li><strong>The errors went beyond missing keys.</strong> Models omitted cipher details, confused encrypted payloads with encoded strings, and sometimes claimed code would run when it would not.</li>
+        <li><strong>All 600 scores independently reproduced.</strong> A separate AI agent verified the versioned review. The previous five models’ scores are unchanged.</li>
       </ul>
       <a class="text-link" href="/results/v3-1/#latest-findings">What the models got right and wrong <span aria-hidden="true">↗</span></a>
     </section>
@@ -189,7 +194,7 @@
       <div class="version-list">
         <article class="version-entry">
           <div class="version-label"><span>v3.1</span><span class="current-label">Current</span><time datetime="2026-10">October 2026</time></div>
-          <div><h3>Five attempts per binary</h3><p>Five models, twenty Windows PE binaries, and 500 attempts. Muse Wonder leads the averaged scores. The report shows what each model recovered, missed, and got wrong.</p><a class="text-link" href="/results/v3-1/">v3.1 · Windows PE <span aria-hidden="true">↗</span></a></div>
+          <div><h3>Five attempts per binary</h3><p>Six models, twenty Windows PE binaries, and 600 attempts. Muse Wonder leads the averaged scores. The report shows what each model recovered, missed, and got wrong.</p><a class="text-link" href="/results/v3-1/">v3.1 · Windows PE <span aria-hidden="true">↗</span></a></div>
         </article>
         <article class="version-entry">
           <div class="version-label"><span>V2</span><time datetime="2026-04">April 2026</time></div>
@@ -223,7 +228,7 @@
       </ul>
     </section>
     <!-- HOME_POPOVERS_START -->
-<aside class="metric-popover" id="term-episodes" popover role="dialog" aria-labelledby="term-episodes-title" aria-describedby="term-episodes-text"><h3 id="term-episodes-title">Episodes</h3><p id="term-episodes-text">One episode is one complete attempt by one model on one binary, including its tool calls and final outcome. Twenty binaries × five attempts × five models = 500 episodes.</p><button type="button" class="text-button" popovertarget="term-episodes" popovertargetaction="hide" autofocus>Close</button></aside>
+<aside class="metric-popover" id="term-episodes" popover role="dialog" aria-labelledby="term-episodes-title" aria-describedby="term-episodes-text"><h3 id="term-episodes-title">Episodes</h3><p id="term-episodes-text">One episode is one complete attempt by one model on one binary, including its tool calls and final outcome. Twenty binaries × five attempts × six models = 600 episodes.</p><button type="button" class="text-button" popovertarget="term-episodes" popovertargetaction="hide" autofocus>Close</button></aside>
 <aside class="metric-popover" id="term-overall" popover role="dialog" aria-labelledby="term-overall-title" aria-describedby="term-overall-text"><h3 id="term-overall-title">Overall</h3><p id="term-overall-text">The average of all 20 binary scores. Each binary score averages five attempts. Main contributes 90% and Bonus 10%. Refusals and budget exits count as zero. All scores are out of 100.</p><button type="button" class="text-button" popovertarget="term-overall" popovertargetaction="hide" autofocus>Close</button></aside>
 <aside class="metric-popover" id="term-main" popover role="dialog" aria-labelledby="term-main-title" aria-describedby="term-main-text"><h3 id="term-main-title">Main</h3><p id="term-main-text">The average across 18 binaries from Levels 14–22. These binaries account for 90% of Overall.</p><button type="button" class="text-button" popovertarget="term-main" popovertargetaction="hide" autofocus>Close</button></aside>
 <aside class="metric-popover" id="term-bonus" popover role="dialog" aria-labelledby="term-bonus-title" aria-describedby="term-bonus-text"><h3 id="term-bonus-title">Bonus</h3><p id="term-bonus-text">The average across the two Level 23 binaries. Together they account for 10% of Overall, the same weight as any other program’s two variants.</p><button type="button" class="text-button" popovertarget="term-bonus" popovertargetaction="hide" autofocus>Close</button></aside>

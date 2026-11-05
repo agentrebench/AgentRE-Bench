@@ -8,7 +8,7 @@ from html import escape
 from build_results_preview import ROOT, SOURCE
 
 TERMS = {
-    "episodes": ("Episodes", "One episode is one complete attempt by one model on one binary, including its tool calls and final outcome. Twenty binaries × five attempts × five models = 500 episodes."),
+    "episodes": ("Episodes", "One episode is one complete attempt by one model on one binary, including its tool calls and final outcome. Twenty binaries × five attempts × six models = 600 episodes."),
     "overall": ("Overall", "The average of all 20 binary scores. Each binary score averages five attempts. Main contributes 90% and Bonus 10%. Refusals and budget exits count as zero. All scores are out of 100."),
     "main": ("Main", "The average across 18 binaries from Levels 14–22. These binaries account for 90% of Overall."),
     "bonus": ("Bonus", "The average across the two Level 23 binaries. Together they account for 10% of Overall, the same weight as any other program’s two variants."),
@@ -16,7 +16,7 @@ TERMS = {
     "quality": ("Answer quality", "Average valid-answer scores within each answered binary, then average those binaries equally. Nonanswers are excluded here. Models answered different subsets, so compare this number alongside coverage."),
 }
 CITATION = ("AgentRE-Bench. 2026. AgentRE-Bench v3.1: Windows PE Results. "
-            "October 25, 2026. Scorer 6.2.0; rubric v3.4. "
+            "Updated November 5, 2026. Scorer 6.2.0+exact-claim-review-20261105; rubric v3.4. "
             "https://www.agentre-bench.ai/results/v3-1/")
 FIELDS = (("techniques", "Techniques"), ("injection_details", "Injection details"),
           ("encryption_algorithm", "Algorithms"), ("encryption_key", "Keys"),
@@ -74,15 +74,9 @@ def interaction_parts(data, findings):
         enc = lookup[m["id"]]["encryption"]
         public["key_bytes"] = {"correct": enc["correct_key_bytes"], "total": enc["required_components"]}
         models.append(public)
-    pairs_path = SOURCE / "COMPARISON.json"
-    comparison = json.loads(pairs_path.read_text())
-    pairs = []
-    for pair in comparison["pairwise_comparisons"]:
-        assert pair["status"] == "estimated"
-        pairs.append({"left": pair["left"], "right": pair["right"],
-                      "difference": pair["difference"] * 100,
-                      "interval": [v * 100 for v in pair["simultaneous_interval"]]})
-    assert len(pairs) == 10
+    pairs = data["pairs"]
+    comparison_hash = hashlib.sha256(json.dumps(pairs, sort_keys=True).encode()).hexdigest()
+    assert len(pairs) == len(models) * (len(models) - 1) // 2
     for pair in pairs:
         by_id = {m["id"]: m for m in models}
         assert abs(by_id[pair["left"]]["overall"] - by_id[pair["right"]]["overall"] - pair["difference"]) < 1e-8
@@ -101,19 +95,19 @@ def interaction_parts(data, findings):
         "COMPARE_LEFT_NAME": escape(left["name"]), "COMPARE_RIGHT_NAME": escape(right["name"]),
         "COMPARE_SCORE_ROWS": comparison_rows(left, right), "COMPARE_FIELD_ROWS": comparison_rows(left, right, True),
         "COMPARE_INTERVAL": f'{left["name"]} minus {right["name"]}: {left["overall"]-right["overall"]:+.4f} points. Simultaneous 95% interval: {lo:+.4f} to {hi:+.4f}.',
-        "INTERACTIVE_DATA": json.dumps({"models": models, "pairs": pairs, "comparison_sha256": hashlib.sha256(pairs_path.read_bytes()).hexdigest()}, separators=(',', ':')).replace('<', '\\u003c'),
+        "INTERACTIVE_DATA": json.dumps({"models": models, "pairs": pairs, "comparison_sha256": comparison_hash}, separators=(',', ':')).replace('<', '\\u003c'),
         "CITATION": escape(CITATION),
     }
 
 
 def csv_downloads(data):
     summary = io.StringIO(newline='')
-    writer = csv.writer(summary)
+    writer = csv.writer(summary, lineterminator="\n")
     writer.writerow(['release', 'date', 'model', 'overall_100', 'main_100', 'bonus_100',
                      'valid_answers', 'planned_attempts', 'refusals', 'budget_exits',
                      'conditional_quality_100', 'answered_artifacts', 'access', 'thinking', 'scorer', 'rubric'])
     artifacts = io.StringIO(newline='')
-    aw = csv.writer(artifacts)
+    aw = csv.writer(artifacts, lineterminator="\n")
     aw.writerow(['release', 'model', 'artifact', 'variant', 'mean_score_100', 'valid_answers', 'planned_attempts', 'scorer', 'rubric'])
     for m in data['models']:
         writer.writerow(['v3.1', data['date'], m['name'], m['overall'], m['main'], m['bonus'], m['valid'], 100,
