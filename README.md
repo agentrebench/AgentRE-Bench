@@ -5,12 +5,12 @@
 <a href="https://github.com/agentrebench/AgentRE-Bench/stargazers"><img src="https://img.shields.io/github/stars/agentrebench/AgentRE-Bench?style=flat&color=6366f1" alt="Stars"></a>
 <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-00d4aa.svg" alt="MIT"></a>
 <a href="https://agentre-bench.ai"><img src="https://img.shields.io/badge/site-agentre--bench.ai-6366f1.svg" alt="Website"></a>
-<a href="version3/ANALYSIS.md"><img src="https://img.shields.io/badge/results-V3%20PE%20·%20Aug%202026-blue.svg" alt="V3 results"></a>
+<a href="docs/results-current.md"><img src="https://img.shields.io/badge/results-v3.1%20PE%20·%20Nov%202026-blue.svg" alt="Current v3.1 results"></a>
 </p>
 
 ## Abstract
 
-Use of AI agents in cybersecurity is growing. No widely adopted public benchmark measures whether these agents can reverse engineer compiled binaries. Existing evaluations test question answering or recall of vulnerability knowledge, or they use an LLM as the judge. AgentRE-Bench gives an agent an unfamiliar ELF or PE binary, a fixed static-analysis toolset, and a budget of 25 tool calls. A deterministic scorer compares the agent's structured findings to fixed ground truth. The benchmark has 23 levels: 13 Linux ELF x86-64 binaries and 10 Windows PE32+ binaries. Each PE level is evaluated as a stripped and unstripped pair. The levels cover reverse shells, covert channels, encryption, process injection, direct syscall resolution, reflective loading, and control-flow obfuscation. In the V3 Windows evaluation (August 2026), the best of six frontier models scored 1.3618 of 2.0. No model recovered the bonus-level C2 endpoint. Stripping reduced the mean score by 6.47% relative across 46 matched pairs.
+AgentRE-Bench measures how AI agents analyze compiled binaries using static-analysis tools and a fixed tool-call budget. Agents receive an anonymized binary without source code and submit structured findings. A deterministic, versioned scorer measures credit against a fixed rubric. The corpus includes 13 Linux ELF artifacts and ten Windows programs, each supplied with and without symbols. The current Windows report covers six model configurations, 20 artifacts, five attempts per artifact, and 600 episodes. Muse Wonder has the highest recorded mean at 87.37/100; DeepSeek V4.1 Flash joins at 78.31/100. Scores measure rubric credit, not full-task success or pure factual accuracy.
 
 ## Why this benchmark exists
 
@@ -22,35 +22,37 @@ The benchmark separates reverse engineering from pattern recognition. A model th
 
 ## Results
 
-The current generation is V3, Windows PE, run in August 2026. It contains ten programs, from DLL injection to a synthetic ransomware worm. Each program is evaluated unstripped and stripped. Six frontier models ran all 20 artifacts with a budget of 25 tool calls and 16,000 output tokens per artifact.
+**Updated November 5, 2026 · v3.1 Windows PE report.** Six models analyzed the same 20 frozen artifacts, with five attempts per artifact: **100 episodes per model, 600 in total**. The report uses rubric **v3.4** and scoring version **`6.2.0+exact-claim-review-20261105`**. Website release names and rubric versions are distinct.
 
-![AgentRE-Bench V3 leaderboard, Total = Main + Bonus](docs/leaderboard-v3.svg)
+![AgentRE-Bench v3.1 leaderboard: Overall out of 100, with 90% Main and 10% Bonus contributions and fixed-suite confidence intervals](docs/leaderboard-v3.svg)
 
-| Rank | Model | Main /1.0 | Bonus /1.0 | Total /2.0 | Valid answers |
-|-----:|-------|----------:|-----------:|-----------:|--------------:|
-| 1 | **Kimi K3** | **0.6757** | **0.6861** | **1.3618** | **20/20** |
-| 2 | Claude Opus 5 | 0.6147 | 0.6638 | 1.2785 | 18/20 |
-| 3 | GPT-5.6 Sol | 0.5859 | 0.6298 | 1.2157 | 18/20 |
-| 4 | DeepSeek V4 Flash | 0.5125 | 0.6782 | 1.1906 | 19/20 |
-| 5 | Gemini 3.6 Flash | 0.5400 | 0.5653 | 1.1052 | 20/20 |
-| 6 | Claude Fable 5 | 0.0000 | 0.0000 | 0.0000 | 0/20 |
+<!-- CURRENT_RESULTS_START -->
+| Rank | Model | Overall /100 | Main /100 | Bonus /100 | Valid answers | Access |
+| ---: | --- | ---: | ---: | ---: | ---: | --- |
+| 1 | Muse Wonder | **87.37** | 87.37 | 87.37 | 100/100 | API |
+| 2 | GPT-6 Astra | **87.04** | 86.40 | 92.82 | 100/100 | API |
+| 3 | Grok 4.7 | **79.62** | 81.02 | 67.04 | 96/100 | API |
+| 4 | DeepSeek V4.1 Flash | **78.31** | 78.43 | 77.25 | 98/100 | API |
+| 5 | Claude Opus 5.5 | **69.66** | 68.84 | 77.03 | 78/100 | API |
+| 6 | Gemini 4 Argon | **31.20** | 29.53 | 46.23 | 36/100 | API |
+<!-- CURRENT_RESULTS_END -->
 
-Main is the mean over the 18 Level 14 to 22 artifacts. Bonus is the mean over the two Level 23 artifacts. Total is Main plus Bonus. Refusals and budget exhaustion count as zero.
+**Overall = 90% Main + 10% Bonus.** Main covers 18 artifacts from Levels 14–22; Bonus covers the two Level 23 artifacts. Each artifact averages all five planned attempts. Refusals and budget exits remain zero. A valid answer passes the submission format checks; it does not mean the task was solved. **No episode earned full rubric credit (0/600).**
 
-Findings from the run:
+- **DeepSeek V4.1 Flash:** 78.31/100 Overall, with a fixed-suite 95% interval of 75.01–81.60; 98 valid answers and two retained budget exits. Its 100 episodes completed November 4–5. Two transport errors recovered through identical-request retries; no terminal infrastructure failure or failed episode was dropped.
+- **Previous results remain numerically unchanged.** The same exact-claim review was applied to all 600 saved answers. DeepSeek’s base-scorer mean of 75.91 became 78.31 after review; the original five models’ scores did not change.
+- **The leading means are close.** Muse’s 0.3243-point lead over Astra has a simultaneous 95% interval of −3.8203 to +4.4689 points, adjusted across all 15 model pairs. The recorded ranking does not establish repeat-run superiority.
+- **Independent AI verification:** a separate agent reproduced all 600 baseline and reviewed scoring records and inspected all 219 added literal-claim mappings. Its verdict was qualified approval under the versioned rubric. Correct observations outside allowed facts or placed in another field can still lose credit; no independent human certification is claimed.
 
-- File type and encoded-string presence were easy. Every model that answered scored near 1.0 on both fields. No model recovered the exact Native API chains, the keys, or the Level 23 endpoint (`192.0.2.100:8443`).
-- Stripping reduced the mean score by 0.0416 points across 46 complete pairs. Stripped binaries kept their imports, constants, and code shape.
-- GPT-5.6 Sol made zero unsupported technique claims and recorded the best single-artifact score (0.9272). DeepSeek V4 Flash claimed `manual_getprocaddress` ten times where the ground truth did not contain it.
-- Claude Fable 5 refused all 20 artifacts before its first tool call and scored 0.0. This is a coverage result, not a capability estimate.
+Read the [current results and methodology](docs/results-current.md) or the [interactive report](https://www.agentre-bench.ai/results/v3-1/). Download [JSON results and provenance](docs/results/v3-1/scores.json), [CSV results](docs/results/v3-1/scores.csv), [per-artifact scores](docs/results/v3-1/artifact-scores.csv), and the [independent AI audit summary](docs/results/v3-1/audit-summary.json).
 
-The full report is in [`version3/ANALYSIS.md`](version3/ANALYSIS.md). It contains per-artifact scores, stripped-versus-unstripped results by level, hallucination tables, and the audit that reproduced all 120 score rows. The Linux ELF generation is in [`version2/ANALYSIS.md`](version2/ANALYSIS.md).
+The [August V3 report](version3/ANALYSIS.md) is historical: one attempt per artifact and a different scoring/aggregation protocol. Its Kimi K3 results are excluded from this five-attempt comparison. The canceled Kimi and GLM additions are also excluded. [V2 Linux results](version2/ANALYSIS.md) remain a separate evaluation.
 
 ## Adoption
 
 ![GitHub star history for agentrebench/AgentRE-Bench](docs/star-history.svg)
 
-agentrebench created the repository on 12 February 2026. As of 24 September 2026 it has 119 stars and 14 forks.
+agentrebench created the repository on 12 February 2026. As of 5 November 2026 it has 138 stars and 14 forks. The graphic uses [official GitHub stargazer timestamps](docs/assets/github-stars.json); historical counts represent accounts that still star the repository.
 
 ## The benchmark
 
@@ -82,20 +84,20 @@ The benchmark has 23 levels and 33 binary artifacts. Levels 1 to 13 are Linux EL
 |------:|------|---------------|
 | 14 | DLL Injection | Manual API resolution, PEB anti-debug, CreateRemoteThread |
 | 15 | APC Injection | RC4 payload, NtQueueApcThread, Native API calls |
-| 16 | Code Cave Injection | PE section scanning, anti-VM, code-cave execution |
+| 16 | Code Cave Injection | PE section scanning, CPUID check, XOR payload and auxiliary S-box/XOR transform |
 | 17 | Process Hollowing | Suspended process, image replacement, thread-context repair |
 | 18 | Hell's Gate | Dynamic syscall resolution and anti-hooking checks |
 | 19 | Reflective DLL Injection | Manual PE mapping, relocations, imports, DllMain |
 | 20 | Remote PE Execution | Remote mapping, relocations, Native API writes |
-| 21 | Ghost Process Hollowing | Empty process creation and manual image mapping |
-| 22 | Advanced Evasion Loader | AES-256, TLS callbacks, PEB walk, multi-stage implant |
-| 23 | Synthetic Ransomware Worm | File encryption, propagation, persistence, anti-analysis (bonus) |
+| 21 | Ghost Process Hollowing | Sectionless native process creation, remote allocation and thread creation |
+| 22 | Advanced Evasion Loader | Custom S-box/XOR cipher, C++ dispatch, PEB walk and anti-debug checks |
+| 23 | Synthetic Ransomware Worm | File rewriting, TEST-NET port scanning, service creation and anti-analysis (bonus) |
 
 </details>
 
 ### Tools
 
-The agent has nine tools and a budget of 25 calls per episode.
+The current protocol exposes nine static-analysis tools plus `final_answer`, with a budget of 25 tool attempts per episode. Rejected calls and the final submission consume budget; the harness also limits an attempt to 64 model turns.
 
 | Tool | Output |
 |------|--------|
@@ -109,54 +111,52 @@ The agent has nine tools and a budget of 25 calls per episode.
 | `pe_info` | PE headers, sections, imports, exports, data directories |
 | `final_answer` | Structured submission. Ends the episode. |
 
-All tools run inside Docker with `--network=none`, `--read-only`, and `--memory=512m`. The workspace is mounted read-only. The harness makes provider API calls outside the agent workspace.
+The current evaluation uses isolated, source-free workspaces and approved static tools. Benchmark executables are never run. The recorded settings accompany each model in the result download; provider requests happen outside the agent workspace.
 
 ### Scoring
 
-The scorer compares each answer to ground truth field by field. Scalar fields use exact match. Technique sets use Jaccard overlap. Each technique that the agent claims but the binary does not contain costs 0.05 points, or 0.03 on bonus levels. A non-null claim for a null ground-truth field costs the same. No LLM judges the answer. The same answer always receives the same score.
+The current Windows scorer compares structured claims with rubric v3.4. PE technique and anti-analysis fields use fact-level F1, `2 × matched / (2 × matched + unsupported + missing)`, with exact aliases and bounded semantic rules. Generic findings do not imply specific APIs. Mixed claims retain their unsupported parts. Unknown wording requires review.
 
-<details><summary><strong>Field weights</strong></summary>
-
-Linux standard levels (1 to 12):
-
-| Field | Weight | Rule |
-|-------|-------:|------|
-| `decoded_c2` | 0.40 | Exact match = 1.0, host-only match = 0.5 |
-| `techniques` | 0.30 | Jaccard overlap between predicted and ground-truth sets |
-| `file_type` | 0.10 | Exact match, case-insensitive |
-| `encoded_strings` | 0.10 | Exact match, boolean |
-| `c2_protocol` | 0.10 | Exact match, case-insensitive |
-
-Windows PE levels (14 to 22). Weights for fields absent from a ground truth are removed. The remaining weights are renormalized.
+Encryption algorithms and key bytes are scored separately for every required component. Correct key bytes paired with an incomplete or incorrect algorithm can receive reduced or zero key credit. Explicit decoded bytes must match exactly. Applicable field weights are renormalized; nonanswers retain zero. [The scoring contract](docs/scoring.md) explains the fields, penalties, and interpretation limits.
 
 | PE field | Base weight |
-|----------|------------:|
+| --- | ---: |
 | Techniques | 0.25 |
 | Injection details | 0.20 |
-| Decoded C2 | 0.10 |
-| Encryption key | 0.10 |
-| Decoded strings | 0.10 |
-| Anti-analysis | 0.10 |
-| Encryption algorithm | 0.05 |
-| C2 protocol | 0.05 |
+| Decoded C2, encryption key, decoded strings, anti-analysis | 0.10 each |
+| Encryption algorithm, C2 protocol | 0.05 each |
 | File type | 0.03 |
 | Encoded strings | 0.02 |
 
-Bonus levels (13 and 23) weight key recovery at 0.20. Decoded C2, techniques, and decoded strings are 0.15 each. Algorithm and anti-analysis are 0.10 each. Key storage and protocol are 0.05 each. File type is 0.03 and encoded strings is 0.02.
-
 ```text
-Main  = mean(standard levels)   # Linux: L1-12 · PE: 18 Level 14-22 artifacts   → 0.0-1.0
-Bonus = mean(bonus level)       # Linux: L13   · PE: 2 Level 23 artifacts        → 0.0-1.0
-Total = Main + Bonus                                                            → 0.0-2.0
+Artifact score = mean(all five planned attempts)
+Main           = mean(18 artifact scores, Levels 14–22)
+Bonus          = mean(2 artifact scores, Level 23)
+Overall        = 0.9 × Main + 0.1 × Bonus
+Website/table  = Overall × 100
 ```
 
-</details>
+Scoring is deterministic under a frozen scorer and review ledger. The November update includes disclosed post-hoc AI-assisted interpretation review; it is not a prospective or human-certified evaluation. Earlier ELF and August PE reports retain their original scoring protocols and are not directly comparable.
 
 ### Telemetry
 
-Each episode records these fields in addition to the score: `field_scores`, `tool_calls_total`, `tool_calls_by_type`, `redundant_tool_calls`, `invalid_tool_calls`, `invalid_json_attempts`, `hallucinated_techniques`, `missing_techniques`, `steps_to_answer`, `max_steps_hit`, `wall_time_seconds`, `input_tokens`, and `output_tokens`. The aggregate report adds `success_rate`, `avg_tool_calls_per_task`, `avg_hallucination_rate`, `episode_length_*`, `tool_usage_distribution`, and `max_steps_hit_count`.
+The evaluation records structured answers, outcomes, field scores, tool activity, timing, and token usage. Public [numeric episode records](docs/results/v3-1/reviewed-episodes.json) expose the 600 episode scores, original answer hashes, outcomes, and field breakdowns used for the current summaries. They support aggregate reproduction; they are not a release of the complete current provider logs or raw-answer archive.
 
-These fields support a failure taxonomy with six classes: byte-level reasoning failure, control-flow misinterpretation, API hallucination, tool misuse, early termination, and JSON format violation.
+Coverage, conditional answer quality, and full-credit success are separate measures. Unmatched claims cannot be interpreted as a hallucination rate because they can include correct observations outside the rubric or answers placed in another field.
+
+## Reproduce the public tables and graphics
+
+```bash
+python3 -m pip install -r scripts/requirements-site.txt
+python3 scripts/build_site_results.py
+python3 scripts/build_github_results.py
+```
+
+These commands derive the website, README table, and existing SVG graphics from the published numeric records. They do not call a model or independently regrade natural-language answers. The [audit summary](docs/results/v3-1/audit-summary.json) records the separate completed scoring reproduction and its limitations.
+
+<details><summary><strong>Legacy runner setup and CLI reference</strong></summary>
+
+The commands below describe the repository’s earlier runner interface. They do not reproduce the current versioned reviewed scores. Use the public-data build commands above to reproduce the current tables and graphics.
 
 ## Quick start
 
@@ -185,7 +185,8 @@ Prerequisites: Python 3.10 or later, and Docker for the sandboxed tools (require
 # 1. Build the sandboxed tool image
 docker build --platform linux/amd64 -t agentre-bench-tools:latest -f Dockerfile.tools .
 
-# 2. Optional: rebuild binaries from source. Precompiled artifacts are checked in.
+# 2. Optional development builds only; use a separate checkout.
+# Rebuilding replaces artifact bytes and invalidates the frozen hashes.
 ./build_binaries.sh                      # Linux ELF, levels 1-13
 ./version3/build_windows_binaries.sh     # Windows PE, levels 14-23, unstripped + stripped
 
@@ -254,27 +255,31 @@ Dockerfile.tools            Sandboxed tool-execution image
 
 The harness has no Python dependencies. Every provider call uses the standard library module `urllib.request`.
 
+</details>
+
 ## Limits and next steps
 
 - Static analysis only. There is no debugger, emulator, or sandboxed execution.
 - Fixed tool set. The agent cannot use Ghidra or IDA, write scripts, or install tools.
 - Synthetic samples. The binaries have controlled behaviors. They do not have the full complexity of packed production malware.
-- One trial per model and task. The paired stripped and unstripped results are descriptive. They do not estimate variance.
+- Five repetitions per artifact estimate repeat variability on the fixed public suite. The 20 artifacts represent ten programs, not 600 independent tasks or unseen families. Public-task contamination cannot be ruled out.
 - x86-64 only. The suite covers ELF and PE32+. It does not cover ARM or MIPS.
-- Token cost. A frontier run uses millions of provider-reported tokens.
+- Recorded reasoning settings, token budgets, client behavior, and collection dates differ. These are comparisons of observed configurations, not controlled compute experiments.
+- Synthetic code can contain side effects and incomplete payload paths. The static benchmark does not establish successful execution or suitability as an inert external sample package.
 
 Planned work:
 
 - Dynamic-analysis tools: strace, ltrace, and sandboxed execution.
 - Packed and cross-architecture samples: ARM, MIPS, and realistic packers.
 - Multi-turn hypothesis refinement.
-- Repeated trials with confidence intervals for model and stripping effects.
+- Prospective held-out evaluations, independent human grading checks, and matched-resource comparisons.
 
 ## Links
 
 | | |
 |--|--|
-| [V3 Windows PE report](version3/ANALYSIS.md) | Leaderboard, matched stripped analysis, per-artifact scores, verification audit |
+| [Current Windows PE results](docs/results-current.md) | Six models, 600 episodes, scoring review and uncertainty |
+| [Historical August V3 report](version3/ANALYSIS.md) | One-attempt archive under the earlier scoring protocol |
 | [V2 Linux ELF report](version2/ANALYSIS.md) | Frontier reasoning-model run on levels 1 to 13 |
 | [Why AgentRE matters](version3/WHY_AGENTRE_MATTERS.md) | The defensive-security case for measuring RE capability |
 | [agentre-bench.ai](https://agentre-bench.ai) | Website: results, history, blog |
@@ -289,7 +294,7 @@ Planned work:
   author       = {agentrebench},
   year         = {2026},
   howpublished = {\url{https://github.com/agentrebench/AgentRE-Bench}},
-  note         = {V3 Windows PE results, August 2026}
+  note         = {v3.1 Windows PE report, updated November 5, 2026; six models, 600 episodes; rubric v3.4; scorer 6.2.0+exact-claim-review-20261105}
 }
 ```
 

@@ -1,4 +1,6 @@
-# AgentRE-Bench V3 — Windows PE Results
+# AgentRE-Bench V3 — Historical Windows PE Results
+
+> **Historical August 2026 report.** The current [six-model, 600-episode report](../docs/results-current.md) uses five attempts per artifact and a later scoring contract. This single-attempt archive, including Kimi K3, is excluded from the current comparison. Scores and original evidence below are preserved.
 
 **Run date:** August 4, 2026 (UTC)
 

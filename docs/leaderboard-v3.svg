@@ -1,33 +1,74 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 310" width="880" height="310" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" role="img" aria-label="AgentRE-Bench V3 leaderboard. Total score out of 2.0, split into Main and Bonus, for six models.">
-<title>AgentRE-Bench V3 Windows PE leaderboard, Total = Main + Bonus</title>
-<text x="170" y="18" font-size="12" font-weight="600" fill="#7a7f87" letter-spacing="0.04em">V3 WINDOWS PE · TOTAL SCORE / 2.0 · AUGUST 2026</text>
-<rect x="540" y="8" width="10" height="10" rx="2" fill="#6366f1"/><text x="555" y="18" font-size="11" fill="#7a7f87">Main (18 artifacts)</text>
-<rect x="670" y="8" width="10" height="10" rx="2" fill="#0fa88a"/><text x="685" y="18" font-size="11" fill="#7a7f87">Bonus (2)</text>
-<line x1="170.0" x2="170.0" y1="46" y2="270" stroke="#9a9a9a" stroke-opacity="0.5" stroke-width="1"/><text x="170.0" y="288" text-anchor="middle" font-size="11" fill="#7a7f87">0.0</text>
-<line x1="310.0" x2="310.0" y1="46" y2="270" stroke="#9a9a9a" stroke-opacity="0.25" stroke-width="1"/><text x="310.0" y="288" text-anchor="middle" font-size="11" fill="#7a7f87">0.5</text>
-<line x1="450.0" x2="450.0" y1="46" y2="270" stroke="#9a9a9a" stroke-opacity="0.25" stroke-width="1"/><text x="450.0" y="288" text-anchor="middle" font-size="11" fill="#7a7f87">1.0</text>
-<line x1="590.0" x2="590.0" y1="46" y2="270" stroke="#9a9a9a" stroke-opacity="0.25" stroke-width="1"/><text x="590.0" y="288" text-anchor="middle" font-size="11" fill="#7a7f87">1.5</text>
-<line x1="730.0" x2="730.0" y1="46" y2="270" stroke="#9a9a9a" stroke-opacity="0.25" stroke-width="1"/><text x="730.0" y="288" text-anchor="middle" font-size="11" fill="#7a7f87">2.0</text>
-<text x="158" y="76.0" text-anchor="end" font-size="13" fill="#7a7f87">Kimi K3</text>
-<rect x="170.0" y="64.0" width="188.2" height="16" rx="0" fill="#6366f1"/>
-<rect x="360.2" y="64.0" width="191.1" height="16" rx="4" fill="#0fa88a"/>
-<text x="559.3" y="76.0" font-size="13" font-weight="600" fill="#7a7f87">1.3618</text><text x="621.3" y="76.0" font-size="11" fill="#7a7f87">20/20 valid</text>
-<text x="158" y="112.0" text-anchor="end" font-size="13" fill="#7a7f87">Claude Opus 5</text>
-<rect x="170.0" y="100.0" width="171.1" height="16" rx="0" fill="#6366f1"/>
-<rect x="343.1" y="100.0" width="184.9" height="16" rx="4" fill="#0fa88a"/>
-<text x="536.0" y="112.0" font-size="13" font-weight="600" fill="#7a7f87">1.2785</text><text x="598.0" y="112.0" font-size="11" fill="#7a7f87">18/20 valid</text>
-<text x="158" y="148.0" text-anchor="end" font-size="13" fill="#7a7f87">GPT-5.6 Sol</text>
-<rect x="170.0" y="136.0" width="163.1" height="16" rx="0" fill="#6366f1"/>
-<rect x="335.1" y="136.0" width="175.3" height="16" rx="4" fill="#0fa88a"/>
-<text x="518.4" y="148.0" font-size="13" font-weight="600" fill="#7a7f87">1.2157</text><text x="580.4" y="148.0" font-size="11" fill="#7a7f87">18/20 valid</text>
-<text x="158" y="184.0" text-anchor="end" font-size="13" fill="#7a7f87">DeepSeek V4 Flash</text>
-<rect x="170.0" y="172.0" width="142.5" height="16" rx="0" fill="#6366f1"/>
-<rect x="314.5" y="172.0" width="188.9" height="16" rx="4" fill="#0fa88a"/>
-<text x="511.4" y="184.0" font-size="13" font-weight="600" fill="#7a7f87">1.1906</text><text x="573.4" y="184.0" font-size="11" fill="#7a7f87">19/20 valid</text>
-<text x="158" y="220.0" text-anchor="end" font-size="13" fill="#7a7f87">Gemini 3.6 Flash</text>
-<rect x="170.0" y="208.0" width="150.2" height="16" rx="0" fill="#6366f1"/>
-<rect x="322.2" y="208.0" width="157.3" height="16" rx="4" fill="#0fa88a"/>
-<text x="487.5" y="220.0" font-size="13" font-weight="600" fill="#7a7f87">1.1052</text><text x="549.5" y="220.0" font-size="11" fill="#7a7f87">20/20 valid</text>
-<text x="158" y="256.0" text-anchor="end" font-size="13" fill="#7a7f87">Claude Fable 5</text>
-<text x="178.0" y="256.0" font-size="13" font-weight="600" fill="#7a7f87">0.0000</text><text x="240.0" y="256.0" font-size="11" fill="#7a7f87">0/20 valid, refused every artifact</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 376" width="880" height="376" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" role="img" aria-labelledby="title desc">
+<title id="title">AgentRE-Bench v3.1 Windows PE results — November 2026</title><desc id="desc">Six models, 600 episodes. Overall is 90% Main plus 10% Bonus, out of 100. Whiskers show individual 95% intervals across five full-suite repetitions. Valid answers are format-valid submissions, not full-task successes.</desc>
+<text x="190.00" y="18.00" font-size="12" text-anchor="start" fill="#7a7f87" font-weight="600">V3.1 WINDOWS PE · OVERALL /100 · NOVEMBER 2026</text>
+<rect x="190" y="32" width="10" height="10" rx="2" fill="#6366f1"/>
+<text x="206.00" y="42.00" font-size="11" text-anchor="start" fill="#7a7f87" font-weight="normal">90% Main · 18 artifacts</text>
+<rect x="370" y="32" width="10" height="10" rx="2" fill="#0fa88a"/>
+<text x="386.00" y="42.00" font-size="11" text-anchor="start" fill="#7a7f87" font-weight="normal">10% Bonus · 2 artifacts</text>
+<text x="790.00" y="42.00" font-size="11" text-anchor="middle" fill="#7a7f87" font-weight="normal">Valid answers</text>
+<line x1="190.0" x2="190.0" y1="56" y2="320" stroke="#7a7f87" stroke-opacity="0.25"/>
+<text x="190.00" y="338.00" font-size="11" text-anchor="middle" fill="#7a7f87" font-weight="normal">0</text>
+<line x1="310.0" x2="310.0" y1="56" y2="320" stroke="#7a7f87" stroke-opacity="0.25"/>
+<text x="310.00" y="338.00" font-size="11" text-anchor="middle" fill="#7a7f87" font-weight="normal">25</text>
+<line x1="430.0" x2="430.0" y1="56" y2="320" stroke="#7a7f87" stroke-opacity="0.25"/>
+<text x="430.00" y="338.00" font-size="11" text-anchor="middle" fill="#7a7f87" font-weight="normal">50</text>
+<line x1="550.0" x2="550.0" y1="56" y2="320" stroke="#7a7f87" stroke-opacity="0.25"/>
+<text x="550.00" y="338.00" font-size="11" text-anchor="middle" fill="#7a7f87" font-weight="normal">75</text>
+<line x1="670.0" x2="670.0" y1="56" y2="320" stroke="#7a7f87" stroke-opacity="0.25"/>
+<text x="670.00" y="338.00" font-size="11" text-anchor="middle" fill="#7a7f87" font-weight="normal">100</text>
+<g data-model="muse-wonder-1.0" data-overall="87.3681" data-main-contribution="78.63090000" data-bonus-contribution="8.73720000">
+<text x="178.00" y="81.00" font-size="13" text-anchor="end" fill="#7a7f87" font-weight="normal">Muse Wonder</text>
+<rect x="190" y="69" width="377.428320" height="16" fill="#6366f1"/>
+<rect x="567.428320" y="69" width="41.938560" height="16" fill="#0fa88a"/>
+<text x="716.00" y="81.00" font-size="13" text-anchor="end" fill="#7a7f87" font-weight="600">87.37</text>
+<text x="790.00" y="81.00" font-size="12" text-anchor="middle" fill="#7a7f87" font-weight="normal">100/100</text>
+<line x1="598.847160" x2="619.886600" y1="93" y2="93" stroke="#7a7f87" stroke-width="1.5"/>
+<path d="M598.847160,89v8 M619.886600,89v8" stroke="#7a7f87" stroke-width="1.5"/>
+</g>
+<g data-model="gpt-6-astra" data-overall="87.0438" data-main-contribution="77.76140000" data-bonus-contribution="9.28240000">
+<text x="178.00" y="124.00" font-size="13" text-anchor="end" fill="#7a7f87" font-weight="normal">GPT-6 Astra</text>
+<rect x="190" y="112" width="373.254720" height="16" fill="#6366f1"/>
+<rect x="563.254720" y="112" width="44.555520" height="16" fill="#0fa88a"/>
+<text x="716.00" y="124.00" font-size="13" text-anchor="end" fill="#7a7f87" font-weight="600">87.04</text>
+<text x="790.00" y="124.00" font-size="12" text-anchor="middle" fill="#7a7f87" font-weight="normal">100/100</text>
+<line x1="601.832841" x2="613.787639" y1="136" y2="136" stroke="#7a7f87" stroke-width="1.5"/>
+<path d="M601.832841,132v8 M613.787639,132v8" stroke="#7a7f87" stroke-width="1.5"/>
+</g>
+<g data-model="grok-4.7" data-overall="79.6204" data-main-contribution="72.91630000" data-bonus-contribution="6.70410000">
+<text x="178.00" y="167.00" font-size="13" text-anchor="end" fill="#7a7f87" font-weight="normal">Grok 4.7</text>
+<rect x="190" y="155" width="349.998240" height="16" fill="#6366f1"/>
+<rect x="539.998240" y="155" width="32.179680" height="16" fill="#0fa88a"/>
+<text x="716.00" y="167.00" font-size="13" text-anchor="end" fill="#7a7f87" font-weight="600">79.62</text>
+<text x="790.00" y="167.00" font-size="12" text-anchor="middle" fill="#7a7f87" font-weight="normal">96/100</text>
+<line x1="557.619879" x2="586.735961" y1="179" y2="179" stroke="#7a7f87" stroke-width="1.5"/>
+<path d="M557.619879,175v8 M586.735961,175v8" stroke="#7a7f87" stroke-width="1.5"/>
+</g>
+<g data-model="deepseek-v4.1-flash" data-overall="78.3077" data-main-contribution="70.58290000" data-bonus-contribution="7.72480000">
+<text x="178.00" y="210.00" font-size="13" text-anchor="end" fill="#7a7f87" font-weight="normal">DeepSeek V4.1 Flash</text>
+<rect x="190" y="198" width="338.797920" height="16" fill="#6366f1"/>
+<rect x="528.797920" y="198" width="37.079040" height="16" fill="#0fa88a"/>
+<text x="716.00" y="210.00" font-size="13" text-anchor="end" fill="#7a7f87" font-weight="600">78.31</text>
+<text x="790.00" y="210.00" font-size="12" text-anchor="middle" fill="#7a7f87" font-weight="normal">98/100</text>
+<line x1="550.054398" x2="581.699522" y1="222" y2="222" stroke="#7a7f87" stroke-width="1.5"/>
+<path d="M550.054398,218v8 M581.699522,218v8" stroke="#7a7f87" stroke-width="1.5"/>
+</g>
+<g data-model="claude-opus-5-5" data-overall="69.6560" data-main-contribution="61.95270000" data-bonus-contribution="7.70330000">
+<text x="178.00" y="253.00" font-size="13" text-anchor="end" fill="#7a7f87" font-weight="normal">Claude Opus 5.5</text>
+<rect x="190" y="241" width="297.372960" height="16" fill="#6366f1"/>
+<rect x="487.372960" y="241" width="36.975840" height="16" fill="#0fa88a"/>
+<text x="716.00" y="253.00" font-size="13" text-anchor="end" fill="#7a7f87" font-weight="600">69.66</text>
+<text x="790.00" y="253.00" font-size="12" text-anchor="middle" fill="#7a7f87" font-weight="normal">78/100</text>
+<line x1="490.358752" x2="558.338848" y1="265" y2="265" stroke="#7a7f87" stroke-width="1.5"/>
+<path d="M490.358752,261v8 M558.338848,261v8" stroke="#7a7f87" stroke-width="1.5"/>
+</g>
+<g data-model="gemini-4-argon" data-overall="31.1994" data-main-contribution="26.57670000" data-bonus-contribution="4.62270000">
+<text x="178.00" y="296.00" font-size="13" text-anchor="end" fill="#7a7f87" font-weight="normal">Gemini 4 Argon</text>
+<rect x="190" y="284" width="127.568160" height="16" fill="#6366f1"/>
+<rect x="317.568160" y="284" width="22.188960" height="16" fill="#0fa88a"/>
+<text x="716.00" y="296.00" font-size="13" text-anchor="end" fill="#7a7f87" font-weight="600">31.20</text>
+<text x="790.00" y="296.00" font-size="12" text-anchor="middle" fill="#7a7f87" font-weight="normal">36/100</text>
+<line x1="253.846059" x2="425.668181" y1="308" y2="308" stroke="#7a7f87" stroke-width="1.5"/>
+<path d="M253.846059,304v8 M425.668181,304v8" stroke="#7a7f87" stroke-width="1.5"/>
+</g>
+<text x="190.00" y="363.00" font-size="11" text-anchor="start" fill="#7a7f87" font-weight="normal">20 artifacts × 5 attempts per model · failures retained at zero · whiskers: fixed-suite 95% CI</text>
 </svg>
