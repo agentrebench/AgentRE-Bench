@@ -22,7 +22,7 @@
       "provider": "Muse",
       "initials": "MW",
       "reasoning": "High",
-      "access": "Coding plan",
+      "access": "API",
       "settings": {
         "max_tool_calls": 25,
         "max_model_turns": 64,
@@ -3174,7 +3174,7 @@
       "provider": "OpenAI",
       "initials": "AS",
       "reasoning": "Extra high",
-      "access": "Coding plan",
+      "access": "API",
       "settings": {
         "max_tool_calls": 25,
         "max_model_turns": 64,
@@ -9478,7 +9478,7 @@
       "provider": "Anthropic",
       "initials": "CL",
       "reasoning": "High",
-      "access": "Coding plan",
+      "access": "API",
       "settings": {
         "max_tool_calls": 25,
         "max_model_turns": 64,

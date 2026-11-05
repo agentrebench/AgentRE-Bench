@@ -11,7 +11,7 @@
       "provider": "Muse",
       "initials": "MW",
       "reasoning": "High",
-      "access": "Coding plan",
+      "access": "API",
       "settings": {
         "max_tool_calls": 25,
         "max_model_turns": 64,
@@ -181,7 +181,7 @@
       "provider": "OpenAI",
       "initials": "AS",
       "reasoning": "Extra high",
-      "access": "Coding plan",
+      "access": "API",
       "settings": {
         "max_tool_calls": 25,
         "max_model_turns": 64,
@@ -696,7 +696,7 @@
       "provider": "Anthropic",
       "initials": "CL",
       "reasoning": "High",
-      "access": "Coding plan",
+      "access": "API",
       "settings": {
         "max_tool_calls": 25,
         "max_model_turns": 64,
@@ -1042,7 +1042,7 @@
     "claude_opus55_high_subscription.json": "5236b16e678bb526bff08042e90d8fd4142add7084cf816e429a3c878aca54be",
     "gemini_argon4_high.json": "7003895fe8fc8cb7e1ecf9c02bc5879099aff13208a9c52832cf7bf4bdf6d500",
     "deepseek.json": "f2e9ff8a653bac38c38376e1ec25a711e5bd01a96ba8568e76965c92d1a094bb",
-    "reviewed-episodes.json": "a2f87d99d5fa77bac242e92ffe60ba851aa72297f22f69f637dbbf60ef226b88"
+    "reviewed-episodes.json": "445c1e4c0f17c9b7acc88cde0d96af815932e179f46c3a21d1f67be4927b6204"
   },
   "release": "v3.1",
   "rubric": "v3.4",
